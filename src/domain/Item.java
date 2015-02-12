@@ -1,5 +1,7 @@
 package domain;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Entity;
@@ -13,64 +15,64 @@ public abstract class Item {
     private StringProperty theme = new SimpleStringProperty();
     private StringProperty ageCategory = new SimpleStringProperty();
     private StringProperty location = new SimpleStringProperty();
-    private Damage damage;
+    private ObjectProperty<Damage> damage = new SimpleObjectProperty<>();
 
     public Item() {
     }
 
     public Item(String theme, String ageCategory, String location, Damage damage) {
-        setTheme(theme);
-        setAgeCategory(ageCategory);
-        setLocation(location);
-        this.damage = damage;
+	setTheme(theme);
+	setAgeCategory(ageCategory);
+	setLocation(location);
+	setDamage(damage);
     }
 
     public StringProperty themeProperty() {
-        return theme;
+	return theme;
     }
 
     public StringProperty ageCategoryProperty() {
-        return ageCategory;
+	return ageCategory;
     }
 
     public StringProperty locationProperty() {
-        return location;
+	return location;
     }
 
     public int getId() {
-        return id;
+	return id;
     }
 
     public String getTheme() {
-        return theme.get();
+	return theme.get();
     }
 
     public void setTheme(String theme) {
-        this.theme.set(theme);
+	this.theme.set(theme);
     }
 
     public String getAgeCategory() {
-        return ageCategory.get();
+	return ageCategory.get();
     }
 
     public void setAgeCategory(String ageCategory) {
-        this.ageCategory.set(ageCategory);
+	this.ageCategory.set(ageCategory);
     }
 
     public String getLocation() {
-        return location.get();
+	return location.get();
     }
 
     public void setLocation(String location) {
-        this.location.set(location);
+	this.location.set(location);
     }
 
     public Damage getDamage() {
-        return damage;
+	return damage.get();
     }
 
     public void setDamage(Damage damage) {
-        this.damage = damage;
+	this.damage.set(damage);
     }
 
 }
