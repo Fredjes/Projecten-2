@@ -2,59 +2,61 @@ package domain;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
+@Entity
+@Access(AccessType.FIELD)
 public class Book extends Item {
 
-    private StringProperty title = new SimpleStringProperty();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Transient
     private StringProperty author = new SimpleStringProperty();
+
+    @Transient
     private StringProperty publisher = new SimpleStringProperty();
 
     public Book() {
-        super();
+	super();
     }
 
-    public Book(String theme, String ageCategory, String location,
-            Damage damage, String title, String author, String publisher) {
-
-        super(theme, ageCategory, location, damage);
-        setTitle(title);
-        setAuthor(author);
-        setPublisher(publisher);
-    }
-
-    public StringProperty titleProperty() {
-        return title;
+    public Book(String theme, String ageCategory, String title, String description, String author, String publisher) {
+	super(title, description, theme, ageCategory);
+	setAuthor(author);
+	setPublisher(publisher);
     }
 
     public StringProperty authorProperty() {
-        return author;
+	return author;
     }
 
     public StringProperty publisherProperty() {
-        return publisher;
+	return publisher;
     }
 
-    public String getTitle() {
-        return title.get();
-    }
-
-    public void setTitle(String title) {
-        this.title.set(title);
-    }
-
+    @Access(AccessType.PROPERTY)
     public String getAuthor() {
-        return author.get();
+	return author.get();
     }
 
     public void setAuthor(String author) {
-        this.author.set(author);
+	this.author.set(author);
     }
 
+    @Access(AccessType.PROPERTY)
     public String getPublisher() {
-        return publisher.get();
+	return publisher.get();
     }
 
     public void setPublisher(String publisher) {
-        this.publisher.set(publisher);
+	this.publisher.set(publisher);
     }
 }

@@ -2,43 +2,44 @@ package domain;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
+@Entity
+@Access(AccessType.FIELD)
 public class Game extends Item {
 
-    private StringProperty name = new SimpleStringProperty();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Transient
     private StringProperty brand = new SimpleStringProperty();
 
     public Game() {
-        super();
+	super();
     }
 
-    public Game(String theme, String ageCategory, String location, Damage damage, String name, String brand) {
-        super(theme, ageCategory, location, damage);
-        setName(name);
-        setBrand(brand);
-    }
-
-    public StringProperty nameProperty() {
-        return name;
+    public Game(String theme, String ageCategory, String name, String description, String brand) {
+	super(name, description, theme, ageCategory);
+	setBrand(brand);
     }
 
     public StringProperty brandProperty() {
-        return brand;
+	return brand;
     }
 
-    public String getName() {
-        return name.get();
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
-    }
-
+    @Access(AccessType.PROPERTY)
     public String getBrand() {
-        return brand.get();
+	return brand.get();
     }
 
     public void setBrand(String brand) {
-        this.brand.set(brand);
+	this.brand.set(brand);
     }
 }
