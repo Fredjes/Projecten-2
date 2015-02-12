@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BookTest {
+public class ItemTest {
 
     private Item book;
 
-    public BookTest() {
+    public ItemTest() {
     }
 
     @Before
