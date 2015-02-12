@@ -1,7 +1,12 @@
 package domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public abstract class Item {
 
+    @Id
     private int id;
     private String theme;
     private String ageCategory;
