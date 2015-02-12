@@ -1,48 +1,60 @@
 package domain;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Book extends Item {
 
-    private String title;
-    private String author;
-    private String publisher;
+    private StringProperty title = new SimpleStringProperty();
+    private StringProperty author = new SimpleStringProperty();
+    private StringProperty publisher = new SimpleStringProperty();
 
     public Book() {
         super();
-        this.title = "fredje in wonderland";
-        this.author = "brentje codiction";
-        this.publisher = "pj";
     }
 
     public Book(String theme, String ageCategory, String location,
             Damage damage, String title, String author, String publisher) {
 
         super(theme, ageCategory, location, damage);
-        this.title = title;
-        this.author = author;
-        this.publisher = publisher;
+        setTitle(title);
+        setAuthor(author);
+        setPublisher(publisher);
     }
 
-    public String getTitle() {
+    public StringProperty titleProperty() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
+    public StringProperty authorProperty() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublisher() {
+    public StringProperty publisherProperty() {
         return publisher;
     }
 
+    public String getTitle() {
+        return title.get();
+    }
+
+    public void setTitle(String title) {
+        this.title.set(title);
+    }
+
+    public String getAuthor() {
+        return author.get();
+    }
+
+    public void setAuthor(String author) {
+        this.author.set(author);
+    }
+
+    public String getPublisher() {
+        return publisher.get();
+    }
+
     public void setPublisher(String publisher) {
-        this.publisher = publisher;
+        this.publisher.set(publisher);
     }
 }

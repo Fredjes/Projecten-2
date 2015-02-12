@@ -1,5 +1,7 @@
 package domain;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -8,23 +10,31 @@ public abstract class Item {
 
     @Id
     private int id;
-    private String theme;
-    private String ageCategory;
-    private String location;
+    private StringProperty theme = new SimpleStringProperty();
+    private StringProperty ageCategory = new SimpleStringProperty();
+    private StringProperty location = new SimpleStringProperty();
     private Damage damage;
 
     public Item() {
-        this.theme = "kindjes";
-        this.ageCategory = "5+";
-        this.location = "rek";
-        this.damage = Damage.NO_DAMAGE;
     }
 
     public Item(String theme, String ageCategory, String location, Damage damage) {
-        this.theme = theme;
-        this.ageCategory = ageCategory;
-        this.location = location;
+        setTheme(theme);
+        setAgeCategory(ageCategory);
+        setLocation(location);
         this.damage = damage;
+    }
+
+    public StringProperty themeProperty() {
+        return theme;
+    }
+
+    public StringProperty ageCategoryProperty() {
+        return ageCategory;
+    }
+
+    public StringProperty locationProperty() {
+        return location;
     }
 
     public int getId() {
@@ -32,27 +42,27 @@ public abstract class Item {
     }
 
     public String getTheme() {
-        return theme;
+        return theme.get();
     }
 
     public void setTheme(String theme) {
-        this.theme = theme;
+        this.theme.set(theme);
     }
 
     public String getAgeCategory() {
-        return ageCategory;
+        return ageCategory.get();
     }
 
     public void setAgeCategory(String ageCategory) {
-        this.ageCategory = ageCategory;
+        this.ageCategory.set(ageCategory);
     }
 
     public String getLocation() {
-        return location;
+        return location.get();
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.location.set(location);
     }
 
     public Damage getDamage() {

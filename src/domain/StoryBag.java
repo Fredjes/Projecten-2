@@ -18,4 +18,8 @@ public class StoryBag {
         items.remove(item);
     }
 
+    public ObservableList<Item> getItems() {
+        return items;
+    }
+
 }
