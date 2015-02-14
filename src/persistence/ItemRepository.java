@@ -1,6 +1,7 @@
 package persistence;
 
 import domain.Item;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -18,12 +19,12 @@ public class ItemRepository {
     private ObservableList<Item> items = FXCollections.observableArrayList();
 
     private ItemRepository() {
-	sync();
     }
 
     public void sync() {
+	List<Item> dbItems = JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList();
 	items.clear();
-	items.addAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
+	items.addAll(dbItems);
     }
 
     public static ItemRepository getInstance() {
