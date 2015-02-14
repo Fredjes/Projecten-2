@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
  */
 public class JPAUtil {
 
-    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("krekelschool");
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU");
     private static JPAUtil INSTANCE;
 
     private JPAUtil() {

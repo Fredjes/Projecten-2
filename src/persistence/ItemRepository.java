@@ -1,6 +1,8 @@
 package persistence;
 
 import domain.Item;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
@@ -34,8 +36,28 @@ public class ItemRepository {
 	items.remove(item);
     }
 
+    public ObservableList<Item> getItems() {
+	return items;
+    }
+
     public Item getItemByName(String name) {
-	return null; //items.stream().filter(i -> i.getName().equals(name)).findFirst().get();
+	try {
+	    return items.stream().filter(i -> i.getName().equalsIgnoreCase(name)).findFirst().get();
+	} catch (NoSuchElementException nsex) {
+	    return null;
+	}
+    }
+
+    public ObservableList<Item> getItemsByPartialName(String partialName) {
+	return FXCollections.observableArrayList(items.stream().filter(i -> i.getName().toLowerCase().contains(partialName.toLowerCase())).collect(Collectors.toList()));
+    }
+
+    public ObservableList<Item> getItemsByCategory(String category) {
+	return FXCollections.observableArrayList(items.stream().filter(i -> i.getAgeCategory().equalsIgnoreCase(category)).collect(Collectors.toList()));
+    }
+
+    public ObservableList<Item> getItemsByTheme(String theme) {
+	return FXCollections.observableArrayList(items.stream().filter(i -> i.getTheme().equalsIgnoreCase(theme)).collect(Collectors.toList()));
     }
 
     public void saveChanges() {
@@ -43,5 +65,9 @@ public class ItemRepository {
 	manager.getTransaction().begin();
 	items.forEach(manager::persist);
 	manager.getTransaction().commit();
+    }
+
+    public void clearItems() {
+	items.clear();
     }
 }
