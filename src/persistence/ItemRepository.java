@@ -18,11 +18,12 @@ public class ItemRepository {
     private ObservableList<Item> items = FXCollections.observableArrayList();
 
     private ItemRepository() {
-	initialize();
+	sync();
     }
 
-    public void initialize() {
-	items = FXCollections.observableArrayList(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
+    public void sync() {
+	items.clear();
+	items.addAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
     }
 
     public static ItemRepository getInstance() {
