@@ -3,6 +3,7 @@ package domain;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -30,12 +31,7 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Item {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Access(AccessType.FIELD)
-    private int id;
+public abstract class Item implements Serializable {
 
     private StringProperty name = new SimpleStringProperty();
     private StringProperty description = new SimpleStringProperty();
@@ -47,6 +43,8 @@ public abstract class Item {
     private List<ItemCopy> itemCopies;
 
     private Image image;
+
+    private long id;
 
     public Item() {
     }
@@ -74,9 +72,14 @@ public abstract class Item {
 	return ageCategory;
     }
 
-    @Transient
-    public int getId() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getId() {
 	return id;
+    }
+
+    public void setId(long id) {
+	this.id = id;
     }
 
     public String getTheme() {
@@ -113,6 +116,10 @@ public abstract class Item {
 
     @Lob
     public byte[] getImage() {
+	if (image == null) {
+	    return new byte[0];
+	}
+
 	try {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", out);
@@ -124,6 +131,10 @@ public abstract class Item {
     }
 
     public void setImage(byte[] bytes) {
+	if (bytes.length == 0) {
+	    return;
+	}
+
 	try {
 	    image = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(bytes)), null);
 	} catch (IOException ex) {
@@ -138,5 +149,27 @@ public abstract class Item {
 
     public void setFXImage(Image i) {
 	this.image = i;
+    }
+
+    @Override
+    public int hashCode() {
+	int hash = 5;
+	hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
+	return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	final Item other = (Item) obj;
+	if (this.id != other.id) {
+	    return false;
+	}
+	return true;
     }
 }

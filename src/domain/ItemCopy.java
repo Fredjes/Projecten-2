@@ -1,11 +1,13 @@
 package domain;
 
+import java.io.Serializable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
@@ -21,13 +25,12 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @Access(AccessType.PROPERTY)
-public class ItemCopy {
+@NamedQueries({
+    @NamedQuery(name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
+})
+public class ItemCopy implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Access(AccessType.FIELD)
     private int id;
-
     private final StringProperty location = new SimpleStringProperty();
     private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
     private final ObjectProperty<Damage> damage = new SimpleObjectProperty<>();
@@ -41,6 +44,16 @@ public class ItemCopy {
 	setLocation(location);
 	setItem(i);
 	setDamage(d);
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+	return this.id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
     }
 
     public void setCopyNumber(int copyNumber) {
@@ -84,8 +97,30 @@ public class ItemCopy {
 	this.item.set(i);
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     public Item getItem() {
 	return this.item.get();
+    }
+
+    @Override
+    public int hashCode() {
+	int hash = 7;
+	hash = 97 * hash + this.id;
+	return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	final ItemCopy other = (ItemCopy) obj;
+	if (this.id != other.id) {
+	    return false;
+	}
+	return true;
     }
 }

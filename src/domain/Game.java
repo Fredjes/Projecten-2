@@ -1,24 +1,16 @@
 package domain;
 
+import java.io.Serializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Entity
-@Access(AccessType.FIELD)
-public class Game extends Item {
+@Access(AccessType.PROPERTY)
+public class Game extends Item implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Transient
     private StringProperty brand = new SimpleStringProperty();
 
     public Game() {
@@ -34,7 +26,6 @@ public class Game extends Item {
 	return brand;
     }
 
-    @Access(AccessType.PROPERTY)
     public String getBrand() {
 	return brand.get();
     }

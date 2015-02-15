@@ -1,27 +1,17 @@
 package domain;
 
+import java.io.Serializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Entity
-@Access(AccessType.FIELD)
-public class Book extends Item {
+@Access(AccessType.PROPERTY)
+public class Book extends Item implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Transient
     private StringProperty author = new SimpleStringProperty();
-
-    @Transient
     private StringProperty publisher = new SimpleStringProperty();
 
     public Book() {
@@ -42,7 +32,6 @@ public class Book extends Item {
 	return publisher;
     }
 
-    @Access(AccessType.PROPERTY)
     public String getAuthor() {
 	return author.get();
     }
@@ -51,7 +40,6 @@ public class Book extends Item {
 	this.author.set(author);
     }
 
-    @Access(AccessType.PROPERTY)
     public String getPublisher() {
 	return publisher.get();
     }

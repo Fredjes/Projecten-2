@@ -1,25 +1,25 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
-@Access(AccessType.FIELD)
-public class StoryBag extends Item {
+@Access(AccessType.PROPERTY)
+@NamedQueries({
+    @NamedQuery(name = "StoryBag.findAll", query = "SELECT sb FROM StoryBag sb")
+})
+public class StoryBag extends Item implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Transient
     private ObservableList<ItemCopy> items = FXCollections.observableArrayList();
 
     public StoryBag() {
@@ -33,11 +33,13 @@ public class StoryBag extends Item {
 	items.remove(item);
     }
 
+    @Transient
     public ObservableList<ItemCopy> getObservableItems() {
 	return items;
     }
 
     @Access(AccessType.PROPERTY)
+    @OneToMany(cascade = CascadeType.PERSIST)
     public List<ItemCopy> getItems() {
 	return items;
     }
