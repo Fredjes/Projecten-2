@@ -1,5 +1,6 @@
 package domain;
 
+import domain.annotations.Display;
 import java.io.Serializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,6 +23,7 @@ public class Game extends Item implements Serializable {
 	setBrand(brand);
     }
 
+    @Display("Merk")
     public StringProperty brandProperty() {
 	return brand;
     }

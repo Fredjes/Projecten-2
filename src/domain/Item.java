@@ -1,5 +1,6 @@
 package domain;
 
+import domain.annotations.Display;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -56,18 +57,22 @@ public abstract class Item implements Serializable {
 	setDescription(description);
     }
 
+    @Display("Thema")
     public StringProperty themeProperty() {
 	return theme;
     }
 
+    @Display("Naam")
     public StringProperty nameProperty() {
 	return name;
     }
 
+    @Display("Omschrijving")
     public StringProperty descriptionProperty() {
 	return description;
     }
 
+    @Display("Leeftijd")
     public StringProperty ageCategoryProperty() {
 	return ageCategory;
     }

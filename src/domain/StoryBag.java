@@ -1,5 +1,6 @@
 package domain;
 
+import domain.annotations.Display;
 import java.io.Serializable;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -34,6 +35,7 @@ public class StoryBag extends Item implements Serializable {
     }
 
     @Transient
+    @Display("Voorwerpen")
     public ObservableList<ItemCopy> getObservableItems() {
 	return items;
     }

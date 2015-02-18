@@ -1,5 +1,6 @@
 package domain;
 
+import domain.annotations.Display;
 import java.io.Serializable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -64,6 +65,7 @@ public class ItemCopy implements Serializable {
 	return this.copyNumber;
     }
 
+    @Display("Locatie")
     public StringProperty locationProperty() {
 	return location;
     }
@@ -85,10 +87,12 @@ public class ItemCopy implements Serializable {
 	this.damage.set(damage);
     }
 
+    @Display("Schade")
     public ObjectProperty<Damage> damageProperty() {
 	return damage;
     }
 
+    @Display("Voorwerp")
     public ObjectProperty<Item> itemProperty() {
 	return item;
     }
