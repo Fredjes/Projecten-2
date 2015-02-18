@@ -6,6 +6,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
+ * Application of the project.
  *
  * @author Frederik
  */

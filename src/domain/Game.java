@@ -8,6 +8,11 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 
+/**
+ * Item-subclass representing a game.
+ *
+ * @author Frederik
+ */
 @Entity
 @Access(AccessType.PROPERTY)
 public class Game extends Item implements Serializable {

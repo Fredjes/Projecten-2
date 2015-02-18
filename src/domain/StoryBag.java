@@ -9,11 +9,17 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+/**
+ * An item storing other items.
+ *
+ * @author Frederik
+ */
 @Entity
 @Access(AccessType.PROPERTY)
 @NamedQueries({
@@ -41,7 +47,7 @@ public class StoryBag extends Item implements Serializable {
     }
 
     @Access(AccessType.PROPERTY)
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     public List<ItemCopy> getItems() {
 	return items;
     }

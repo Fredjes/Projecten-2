@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
+ * Singleton containing convenience-methods for JPA-handling.
  *
  * @author Brent
  */
@@ -24,6 +25,11 @@ public class JPAUtil {
 	return INSTANCE;
     }
 
+    /**
+     * Factory-method returning an {@link EntityManager}. Depending on an efficient {@link EntityManagerFactory#createEntityManager() } implementation, for example object reuse.
+     *
+     * @return An {@link EntityManager} connected to the projects database connection.
+     */
     public EntityManager getEntityManager() {
 	return getEntityManagerFactory().createEntityManager();
     }

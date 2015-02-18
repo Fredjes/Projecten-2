@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
+ * Representation of a real-life object containing the location, number for real-life identification, damage and definition of an item.
  *
  * @author Frederik
  */

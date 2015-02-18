@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
 
 /**
+ * The repository used to handle the storing of items, can synchronize save changes with the database (using JPA).
  *
  * @author Brent
  */
@@ -21,6 +22,9 @@ public class ItemRepository {
     private ItemRepository() {
     }
 
+    /**
+     * Will get all items from the database and add them in the internal list. Observers of the ObservableList will receive updates containg the new data.
+     */
     public void sync() {
 	List<Item> dbItems = JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList();
 	items.clear();
@@ -66,6 +70,9 @@ public class ItemRepository {
 	return FXCollections.observableArrayList(items.stream().filter(i -> i.getTheme().equalsIgnoreCase(theme)).collect(Collectors.toList()));
     }
 
+    /**
+     * Saves every item in the internal list to the database.
+     */
     public void saveChanges() {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
@@ -73,6 +80,9 @@ public class ItemRepository {
 	manager.getTransaction().commit();
     }
 
+    /**
+     * Clear the internal list.
+     */
     public void clearItems() {
 	items.clear();
     }

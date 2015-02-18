@@ -8,6 +8,11 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 
+/**
+ * Item-subclass representing a book.
+ *
+ * @author Frederik
+ */
 @Entity
 @Access(AccessType.PROPERTY)
 public class Book extends Item implements Serializable {

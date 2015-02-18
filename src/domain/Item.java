@@ -26,6 +26,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+/**
+ * Represents the definition of every item stored, containing all shared properties of every item.
+ *
+ * @author Frederik
+ */
 @Entity
 @Access(AccessType.PROPERTY)
 @NamedQueries({
