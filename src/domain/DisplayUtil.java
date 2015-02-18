@@ -19,7 +19,7 @@ public class DisplayUtil {
      * @param clazz Class from which the header fields should be generated.
      * @return Header of every property containing a single piece of data.
      */
-    public static List<String> getSingleHeaderFields(Class<?> clazz) {
+    public static List<String> getSingleDataHeaderFields(Class<?> clazz) {
 	return getHeaderFields(clazz, true).collect(Collectors.toList());
     }
 
@@ -29,7 +29,7 @@ public class DisplayUtil {
      * @param clazz Class from which the header fields should be generated.
      * @return Header of every property containing a piece of data composed of multiple pieces.
      */
-    public static List<String> getMultiHeaderFields(Class<?> clazz) {
+    public static List<String> getMultiDataHeaderFields(Class<?> clazz) {
 	return getHeaderFields(clazz, false).map(s -> String.format("Beheer %s", s.toLowerCase())).collect(Collectors.toList());
     }
 
