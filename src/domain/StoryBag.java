@@ -41,7 +41,7 @@ public class StoryBag extends Item implements Serializable {
     }
 
     @Transient
-    @Display("Voorwerpen")
+    @Display(name = "Voorwerpen", single = false)
     public ObservableList<ItemCopy> getObservableItems() {
 	return items;
     }

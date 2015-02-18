@@ -62,22 +62,22 @@ public abstract class Item implements Serializable {
 	setDescription(description);
     }
 
-    @Display("Thema")
+    @Display(name = "Thema")
     public StringProperty themeProperty() {
 	return theme;
     }
 
-    @Display("Naam")
+    @Display(name = "Naam")
     public StringProperty nameProperty() {
 	return name;
     }
 
-    @Display("Omschrijving")
+    @Display(name = "Omschrijving")
     public StringProperty descriptionProperty() {
 	return description;
     }
 
-    @Display("Leeftijd")
+    @Display(name = "Leeftijd")
     public StringProperty ageCategoryProperty() {
 	return ageCategory;
     }

@@ -19,5 +19,11 @@ public @interface Display {
      *
      * @return Name of the property
      */
-    String value();
+    String name();
+    
+    /**
+     * Determines whether the returned data at the annotated method is representable in a single form (for example: no list or multi-composed object).
+     * @return Is the returned data representable in a single form (for example in a TableCell)
+     */
+    boolean single() default true;
 }

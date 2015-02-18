@@ -28,7 +28,7 @@ public class Game extends Item implements Serializable {
 	setBrand(brand);
     }
 
-    @Display("Merk")
+    @Display(name = "Merk")
     public StringProperty brandProperty() {
 	return brand;
     }
