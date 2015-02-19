@@ -16,9 +16,17 @@
 }
 
 .icon{
-    -fx-font: FontAwesome;
+    -fx-font-family: FontAwesome;
 }
 
 .tile .icon{
-    -fx-font-size: 55px;
+    -fx-font-size: 85px;
+}
+
+.white{
+    -fx-background-color: white;
+}
+
+.tile:hover{
+    -fx-cursor: hand;
 }

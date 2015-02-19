@@ -1,0 +1,43 @@
+package gui;
+
+import domain.Item;
+import domain.ItemCopy;
+import domain.StoryBag;
+import javafx.scene.layout.StackPane;
+
+/**
+ *
+ * @author Frederik
+ */
+public class ScreenSwitcher extends StackPane {
+
+    private MainMenu menu = new MainMenu(this);
+
+    public ScreenSwitcher() {
+	setPrefSize(1000, 650);
+	setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
+	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
+    }
+
+    public void openMainMenu() {
+	getChildren().setAll(menu);
+    }
+
+    public void openItemManagement() {
+	throw new UnsupportedOperationException();
+    }
+
+    // With popups, add the new view as a different layer (so that the original view is still visible in background)
+    
+    public boolean openDeletePopup(Item i) {
+	throw new UnsupportedOperationException();
+    }
+
+    public boolean openManageItemsPopup(StoryBag bag) {
+	throw new UnsupportedOperationException();
+    }
+
+    public boolean openSelectItemPopup(ItemCopy copy) {
+	throw new UnsupportedOperationException();
+    }
+}

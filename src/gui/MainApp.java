@@ -2,7 +2,7 @@ package gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -14,8 +14,12 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-	BorderPane pane = new BorderPane();
-	Scene scene = new Scene(pane, 600, 400);
+	Font.loadFont(getClass().getResourceAsStream("/resources/fonts/FontAwesome.otf"), 14);
+	
+	ScreenSwitcher switcher = new ScreenSwitcher();
+	switcher.openMainMenu();
+	
+	Scene scene = new Scene(switcher);
 	primaryStage.setScene(scene);
 	primaryStage.show();
     }
