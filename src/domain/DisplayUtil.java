@@ -38,4 +38,6 @@ public class DisplayUtil {
 		.filter(m -> m.isAnnotationPresent(Display.class) && m.getAnnotation(Display.class).single() == single)
 		.map(m -> m.getAnnotation(Display.class).name());
     }
+    
+    
 }

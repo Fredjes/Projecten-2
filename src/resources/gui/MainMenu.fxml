@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <AnchorPane prefHeight="100.0" prefWidth="1000.0" styleClass="title-bar" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="WHITE" layoutX="29.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hoofdmenu">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <FlowPane alignment="CENTER" hgap="10.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane prefHeight="150.0" prefWidth="250.0">
+               <children>
+                  <Text fill="WHITE" layoutX="14.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="icon" text="B" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font size="55.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="14.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voorwerpen beheren">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+               <styleClass>
+                  <String fx:value="default-tile" />
+                  <String fx:value="tile" />
+               </styleClass>
+            </AnchorPane>
+            <AnchorPane prefHeight="150.0" prefWidth="150.0">
+               <children>
+                  <Text fill="WHITE" layoutX="14.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="icon" text="L" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font size="55.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="14.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Afmelden" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+               <styleClass>
+                  <String fx:value="logout-tile" />
+                  <String fx:value="tile" />
+               </styleClass>
+            </AnchorPane>
+         </children>
+      </FlowPane>
+   </center>
+</BorderPane>

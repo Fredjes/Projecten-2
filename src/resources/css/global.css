@@ -1,0 +1,24 @@
+.default-tile{
+    -fx-background-color:  #5687f0;
+}
+
+.logout-tile{
+    -fx-background-color:  #F2163B;
+}
+
+.title-bar{
+    -fx-background-color:  #666;
+}
+
+.title-bar text,label{
+    -fx-text-fill: white;
+    -fx-font: 24px sans-serif;
+}
+
+.icon{
+    -fx-font: FontAwesome;
+}
+
+.tile .icon{
+    -fx-font-size: 55px;
+}
