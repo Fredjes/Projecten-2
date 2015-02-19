@@ -16,7 +16,7 @@ public class ScreenSwitcher extends StackPane {
 
     public ScreenSwitcher() {
 	setPrefSize(1000, 650);
-	setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
+	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
 	
 	getStylesheets().addAll("/resources/css/font-awesome.css", "/resources/css/global.css");

@@ -6,15 +6,15 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" styleClass="white" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="white" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <AnchorPane prefHeight="100.0" prefWidth="1000.0" styleClass="title-bar" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="title-bar" BorderPane.alignment="CENTER">
          <children>
             <Text id="title" fill="WHITE" layoutX="91.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voorwerpen beheren">
                <font>
                   <Font size="24.0" />
                </font></Text>
-            <Text fx:id="backButton" fill="WHITE" layoutX="23.0" layoutY="72.0" onMouseClicked="#onBack" strokeType="OUTSIDE" strokeWidth="0.0" text="B">
+            <Text fx:id="backButton" fill="WHITE" layoutX="24.0" layoutY="65.0" onMouseClicked="#onBack" strokeType="OUTSIDE" strokeWidth="0.0" text="B">
                <font>
                   <Font size="55.0" />
                </font>
@@ -27,7 +27,7 @@
       </AnchorPane>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefWidth="200.0" spacing="15.0">
                <children>
@@ -35,18 +35,25 @@
                   <Button mnemonicParsing="false" onAction="#onSearch" text="Zoeken" />
                </children>
             </HBox>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <HBox prefWidth="200.0" spacing="10.0">
+                  <HBox spacing="10.0">
                      <children>
                         <ComboBox fx:id="itemSelection" prefWidth="150.0" />
                         <Button mnemonicParsing="false" onAction="#onItemAdd" text="+ Voeg een voorwerp toe" />
                         <Button mnemonicParsing="false" onAction="#onItemDelete" text="- Verwijder het geselecteerde voorwerp" />
                      </children>
                   </HBox>
-                  <TableView fx:id="dataTable" />
+                  <TableView fx:id="dataTable" fixedCellSize="60.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
                </children>
-            </VBox>
+            </GridPane>
          </children>
          <BorderPane.margin>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

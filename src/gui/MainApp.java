@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.scenicview.ScenicView;
 
 /**
  * Application of the project.
@@ -22,6 +23,7 @@ public class MainApp extends Application {
 	Scene scene = new Scene(switcher);
 	primaryStage.setScene(scene);
 	primaryStage.show();
+//	ScenicView.show(scene);
     }
 
     /**
