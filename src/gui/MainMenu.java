@@ -26,17 +26,16 @@ public class MainMenu extends BorderPane {
 	    loader.setController(this);
 	    loader.load();
 
-	    getStylesheets().addAll("/resources/css/font-awesome.css", "/resources/css/global.css");
-	    initIcons();
 	    this.switcher = switcher;
+	    initIcons();
 	} catch (Exception ex) {
 	    System.err.println("Could not load main menu: " + ex.getMessage());
 	}
     }
 
     private void initIcons() {
-	itemIcon.setText("\uf02a");
-	logoutIcon.setText("\uf08b");
+	itemIcon.setText(IconConfig.ITEM_ICON);
+	logoutIcon.setText(IconConfig.LOGOUT_ICON);
     }
 
     public void onItemManage() {

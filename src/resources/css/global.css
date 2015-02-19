@@ -23,10 +23,14 @@
     -fx-font-size: 85px;
 }
 
+.title-bar .icon{
+    -fx-font-size: 55px;
+}
+
 .white{
     -fx-background-color: white;
 }
 
-.tile:hover{
+.tile:hover, .clickable:hover{
     -fx-cursor: hand;
 }

@@ -12,11 +12,14 @@ import javafx.scene.layout.StackPane;
 public class ScreenSwitcher extends StackPane {
 
     private MainMenu menu = new MainMenu(this);
+    private ItemManagement itemManagement = new ItemManagement(this);
 
     public ScreenSwitcher() {
 	setPrefSize(1000, 650);
 	setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
+	
+	getStylesheets().addAll("/resources/css/font-awesome.css", "/resources/css/global.css");
     }
 
     public void openMainMenu() {
@@ -24,11 +27,10 @@ public class ScreenSwitcher extends StackPane {
     }
 
     public void openItemManagement() {
-	throw new UnsupportedOperationException();
+	getChildren().setAll(itemManagement);
     }
 
     // With popups, add the new view as a different layer (so that the original view is still visible in background)
-    
     public boolean openDeletePopup(Item i) {
 	throw new UnsupportedOperationException();
     }
