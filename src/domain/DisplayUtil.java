@@ -1,11 +1,12 @@
 package domain;
 
 import domain.annotations.Display;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
@@ -50,6 +51,19 @@ public class DisplayUtil {
 	}
     }
 
+    private static List<String> getDataContents(Class<?> clazz, Object instance) {
+	return Arrays.asList(clazz.getMethods()).stream()
+		.filter(m -> m.isAnnotationPresent(Display.class) && m.getAnnotation(Display.class).single())
+		.map(m -> {
+		    try {
+			return ((Property) m.invoke(instance)).getValue().toString();
+		    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			System.err.println("Couldn't get data contents of property: " + e.getMessage());
+		    }
+		    return "";
+		}).collect(Collectors.toList());
+    }
+
     private static boolean isSubClass(Class<?> superClass, Class<?> subClass) {
 	return superClass.isAssignableFrom(subClass);
     }
@@ -60,5 +74,13 @@ public class DisplayUtil {
 
     public static boolean isItemCopy(Class<?> clazz) {
 	return clazz.equals(ItemCopy.class);
+    }
+
+    public static Predicate createPredicateForSearch(String searchBy, Class<?> currentClazz) {
+	if (searchBy.isEmpty()) {
+	    return i -> true;
+	} else {
+	    return i -> getDataContents(currentClazz, i).stream().anyMatch(s -> s.toLowerCase().contains(searchBy.toLowerCase()));
+	}
     }
 }

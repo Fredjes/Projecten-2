@@ -8,7 +8,9 @@ import domain.ItemCopy;
 import domain.StoryBag;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.function.Predicate;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +39,7 @@ public class ItemManagement extends BorderPane {
     }));
 
     private ObservableList dataTableList = FXCollections.observableArrayList();
+    private ObservableList filteredDataTableList = FXCollections.observableArrayList(dataTableList);
 
     @FXML
     private Text backButton;
@@ -71,7 +74,8 @@ public class ItemManagement extends BorderPane {
 	    itemSelectionList.sort((a, b) -> a.toString().compareTo(b.toString()));
 	    itemSelection.setItems(itemSelectionList);
 	    itemSelection.getSelectionModel().select(0);
-	    dataTable.setItems(dataTableList);
+	    dataTable.setItems(filteredDataTableList);
+	    dataTableList.addListener((ListChangeListener.Change c) -> onSearch());
 	} catch (IOException ioex) {
 	    System.err.println("Could not load item mangement interface: " + ioex.getMessage());
 	}
@@ -82,7 +86,15 @@ public class ItemManagement extends BorderPane {
     }
 
     public void onSearch() {
-
+	// New predicate each time to enforce update
+	Predicate p = DisplayUtil.createPredicateForSearch(searchBar.getText(), itemSelection.getSelectionModel().getSelectedItem().getItemClass());
+	filteredDataTableList.clear();
+	Class<?> currentClass = itemSelection.getSelectionModel().getSelectedItem().getItemClass();
+	dataTableList.forEach(i -> {
+	    if (currentClass.isAssignableFrom(i.getClass()) && p.test(i)) {
+		filteredDataTableList.add(i);
+	    }
+	});
     }
 
     public void onManageStoryBag() {
