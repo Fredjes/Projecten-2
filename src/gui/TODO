@@ -1,3 +1,3 @@
 TODO:
- - Kolommen moeten worden vergroot of verkleint vooraleer de nieuwe rijen doorkomen (alhoewel het wel in de lijst staat).
+ - Kolommen moeten worden vergroot of verkleint (of search bar action) vooraleer de nieuwe rijen doorkomen (alhoewel het wel in de lijst staat).
  - Wanneer twee kolommen van plaats verwisselt worden (drag&drop) dan crasht de GUI (NullPointerException??!!)
