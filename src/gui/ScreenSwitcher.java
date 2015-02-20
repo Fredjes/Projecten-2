@@ -15,7 +15,7 @@ public class ScreenSwitcher extends StackPane {
     private ItemManagement itemManagement = new ItemManagement(this);
 
     public ScreenSwitcher() {
-	setPrefSize(1000, 650);
+	setPrefSize(1200, 650);
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
 	

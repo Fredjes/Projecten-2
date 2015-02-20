@@ -44,11 +44,13 @@
                   <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <HBox spacing="10.0">
+                  <HBox fx:id="buttonHeader" spacing="10.0">
                      <children>
                         <ComboBox fx:id="itemSelection" onAction="#onItemChange" prefWidth="150.0" />
                         <Button mnemonicParsing="false" onAction="#onItemAdd" text="+ Voeg een voorwerp toe" />
                         <Button mnemonicParsing="false" onAction="#onItemDelete" text="- Verwijder het geselecteerde voorwerp" />
+                        <Button fx:id="manageStoryBagButton" mnemonicParsing="false" onAction="#onManageStoryBag" text="Beheer voorwerpen van de verteltas" />
+                        <Button fx:id="connectItemButton" mnemonicParsing="false" onAction="#onConnectItem" text="Koppel een voorwerp aan het exemplaar" />
                      </children>
                   </HBox>
                   <TableView fx:id="dataTable" editable="true" fixedCellSize="60.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">

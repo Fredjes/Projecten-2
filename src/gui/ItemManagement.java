@@ -8,16 +8,16 @@ import domain.ItemCopy;
 import domain.StoryBag;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import persistence.ItemRepository;
 
@@ -50,6 +50,15 @@ public class ItemManagement extends BorderPane {
     @FXML
     private ComboBox<ItemClass> itemSelection;
 
+    @FXML
+    private Button manageStoryBagButton;
+
+    @FXML
+    private Button connectItemButton;
+
+    @FXML
+    private HBox buttonHeader;
+
     public ItemManagement(ScreenSwitcher switcher) {
 	try {
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/ItemManagement.fxml"));
@@ -76,6 +85,18 @@ public class ItemManagement extends BorderPane {
 
     }
 
+    public void onManageStoryBag() {
+	if (!dataTable.getSelectionModel().isEmpty()) {
+	    switcher.openManageItemsPopup((StoryBag) dataTable.getSelectionModel().getSelectedItem());
+	}
+    }
+
+    public void onConnectItem() {
+	if (!dataTable.getSelectionModel().isEmpty()) {
+	    switcher.openSelectItemPopup((ItemCopy) dataTable.getSelectionModel().getSelectedItem());
+	}
+    }
+
     public void onItemAdd() {
 	// Pieter-Jan: hier moet een item van het juiste type gezet worden
     }
@@ -95,6 +116,18 @@ public class ItemManagement extends BorderPane {
 	    dataTableList.addAll(temp);
 	    dataTableList.retainAll(temp);
 	    dataTable.getColumns().setAll(DisplayUtil.getTableColumns(selectedClass));
+	}
+
+	if (DisplayUtil.isStoryBag(selectedClass)) {
+	    buttonHeader.getChildren().add(manageStoryBagButton);
+	} else {
+	    buttonHeader.getChildren().remove(manageStoryBagButton);
+	}
+
+	if (DisplayUtil.isItemCopy(selectedClass)) {
+	    buttonHeader.getChildren().add(connectItemButton);
+	} else {
+	    buttonHeader.getChildren().remove(connectItemButton);
 	}
     }
 
