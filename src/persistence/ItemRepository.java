@@ -1,10 +1,10 @@
 package persistence;
 
 import domain.Item;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import domain.ItemCopy;
+import java.util.function.Predicate;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
 
@@ -18,17 +18,25 @@ public class ItemRepository {
     private static ItemRepository INSTANCE;
 
     private ObservableList<Item> items = FXCollections.observableArrayList();
+    private ObservableList<ItemCopy> itemCopies = FXCollections.observableArrayList();
 
     private ItemRepository() {
+	ListChangeListener changeListener = c -> {
+	    while (c.next()) {
+		c.getAddedSubList().forEach(i -> JPAUtil.getInstance().getEntityManager().persist(i));
+	    }
+	};
+		
+	items.addListener(changeListener);
+	itemCopies.addListener(changeListener);
     }
 
     /**
      * Will get all items from the database and add them in the internal list. Observers of the ObservableList will receive updates containg the new data.
      */
     public void sync() {
-	List<Item> dbItems = JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList();
-	items.clear();
-	items.addAll(dbItems);
+	items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
+	itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
     }
 
     public static ItemRepository getInstance() {
@@ -46,28 +54,41 @@ public class ItemRepository {
 	items.remove(item);
     }
 
-    public ObservableList<Item> getItems() {
+    public void add(ItemCopy itemCopy) {
+	itemCopies.add(itemCopy);
+    }
+
+    public void remove(ItemCopy itemCopy) {
+	items.remove(itemCopy);
+    }
+
+    public ObservableList<? extends Item> getItems() {
 	return items;
     }
 
-    public Item getItemByName(String name) {
-	try {
-	    return items.stream().filter(i -> i.getName().equalsIgnoreCase(name)).findFirst().get();
-	} catch (NoSuchElementException nsex) {
-	    return null;
-	}
+    public ObservableList<ItemCopy> getItemCopies() {
+	return itemCopies;
     }
 
-    public ObservableList<Item> getItemsByPartialName(String partialName) {
-	return FXCollections.observableArrayList(items.stream().filter(i -> i.getName().toLowerCase().contains(partialName.toLowerCase())).collect(Collectors.toList()));
+    public ObservableList<? extends Item> getItemsByClass(Class<? extends Item> clazz) {
+	return getItemsByPredicate(i -> {
+	    try {
+		clazz.cast(i);
+		return true;
+	    } catch (ClassCastException ex) {
+		return false;
+	    }
+	});
     }
 
-    public ObservableList<Item> getItemsByCategory(String category) {
-	return FXCollections.observableArrayList(items.stream().filter(i -> i.getAgeCategory().equalsIgnoreCase(category)).collect(Collectors.toList()));
+    public ObservableList<ItemCopy> getItemCopiesByPredicate(Predicate<ItemCopy> predicate) {
+	ObservableList<ItemCopy> filteredList = itemCopies.filtered(predicate);
+	return filteredList;
     }
 
-    public ObservableList<Item> getItemsByTheme(String theme) {
-	return FXCollections.observableArrayList(items.stream().filter(i -> i.getTheme().equalsIgnoreCase(theme)).collect(Collectors.toList()));
+    public ObservableList<? extends Item> getItemsByPredicate(Predicate<Item> predicate) {
+	ObservableList<? extends Item> filteredList = items.filtered(predicate);
+	return filteredList;
     }
 
     /**
@@ -76,7 +97,8 @@ public class ItemRepository {
     public void saveChanges() {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
-	items.forEach(manager::persist);
+	items.forEach(manager::merge);
+	itemCopies.forEach(manager::merge);
 	manager.getTransaction().commit();
     }
 
@@ -86,4 +108,18 @@ public class ItemRepository {
     public void clearItems() {
 	items.clear();
     }
+
+    // Add mock data
+//    public static void main(String[] args) {
+//	Book b = new Book("Romantiek", "8+", "Romeo en Julia", "Het beroemde verhaal van Shakespeare", "Shakespeare", "Shakespeare");
+//	Book b2 = new Book("Actie", "12+", "Stormbreaker", "Een 15-jarige jongen treedt in dienst bij de geheime diensten.", "Anthony Horowitz", "Facet");
+//	Game g = new Game("Financieel", "12+", "Monopolie", "Het beroemde Monopolie-spel", "Parkser Brothers");
+//	ItemCopy copy = new ItemCopy(5, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
+//	ItemRepository.getInstance().add(b);
+//	ItemRepository.getInstance().add(b2);
+//	ItemRepository.getInstance().add(g);
+//	ItemRepository.getInstance().add(copy);
+//	ItemRepository.getInstance().saveChanges();
+//	ItemRepository.getInstance().sync();
+//    }
 }

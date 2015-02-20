@@ -21,4 +21,8 @@ public enum Damage {
 	return translation;
     }
 
+    @Override
+    public String toString() {
+	return getTranslation();
+    }
 }

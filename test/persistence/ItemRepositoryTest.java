@@ -32,37 +32,37 @@ public class ItemRepositoryTest {
 	repo.add(new Book("jobs", "3+", "Piet bij de brandweer", "geen description", "Brent", "Frederik"));
     }
 
-    @Test
-    public void testGetItemByName() {
-	Item i = repo.getItemByName("Piet in de keuken");
-	assertNotNull(i);
-	assertEquals("Piet in de keuken", i.getName());
-    }
-
-    @Test
-    public void testRemove() {
-	repo.remove(repo.getItemByName("Piet in de keuken"));
-	assertNull(repo.getItemByName("Piet in de keuken"));
-    }
-
-    @Test
-    public void testGetItemsByPartialName() {
-	ObservableList<Item> items = repo.getItemsByPartialName("piet");
-	assertEquals(5, items.size());
-	items = repo.getItemsByPartialName("in de");
-	assertEquals(4, items.size());
-    }
-
-    @Test
-    public void testGetItemsByCategory() {
-	ObservableList<Item> items = repo.getItemsByCategory("3+");
-	assertEquals(4, items.size());
-    }
-
-    @Test
-    public void testGetItemsByTheme() {
-	ObservableList<Item> items = repo.getItemsByTheme("kleding");
-	assertEquals(2, items.size());
-    }
+//    @Test
+//    public void testGetItemByName() {
+//	Item i = repo.getItemByName("Piet in de keuken");
+//	assertNotNull(i);
+//	assertEquals("Piet in de keuken", i.getName());
+//    }
+//
+//    @Test
+//    public void testRemove() {
+//	repo.remove(repo.getItemByName("Piet in de keuken"));
+//	assertNull(repo.getItemByName("Piet in de keuken"));
+//    }
+//
+//    @Test
+//    public void testGetItemsByPartialName() {
+//	ObservableList<Item> items = repo.getItemsByPartialName("piet");
+//	assertEquals(5, items.size());
+//	items = repo.getItemsByPartialName("in de");
+//	assertEquals(4, items.size());
+//    }
+//
+//    @Test
+//    public void testGetItemsByCategory() {
+//	ObservableList<Item> items = repo.getItemsByCategory("3+");
+//	assertEquals(4, items.size());
+//    }
+//
+//    @Test
+//    public void testGetItemsByTheme() {
+//	ObservableList<Item> items = repo.getItemsByTheme("kleding");
+//	assertEquals(2, items.size());
+//    }
 
 }

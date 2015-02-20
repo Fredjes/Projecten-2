@@ -43,7 +43,6 @@ public class MainMenu extends BorderPane {
     }
 
     public void onLogout() {
-	JPAUtil.getInstance().getEntityManagerFactory().close();
 	System.exit(0);
     }
 }
