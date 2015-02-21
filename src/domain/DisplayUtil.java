@@ -4,6 +4,7 @@ import domain.annotations.Display;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -34,8 +35,17 @@ public class DisplayUtil {
 		    t.setCellValueFactory(new PropertyValueFactory(propertyName));
 		    t.setCellFactory(createAssociatedTableCellCallback(m.getReturnType().asSubclass(Property.class)));
 		    t.setEditable(true);
+		    t.impl_setReorderable(false);
 		    return t;
-		}).collect(Collectors.toList());
+		}).sorted((o1, o2) -> {
+		    if (o1.getText().equalsIgnoreCase("naam")) {
+			return -1;
+		    } else if (o2.getText().equalsIgnoreCase("naam")) {
+			return 1;
+		    } else {
+			return 0;
+		    }
+	}).collect(Collectors.toList());
     }
 
     private static Callback createAssociatedTableCellCallback(Class<? extends Property> p) {
