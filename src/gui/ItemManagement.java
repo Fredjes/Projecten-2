@@ -32,7 +32,7 @@ public class ItemManagement extends BorderPane {
 
     private ScreenSwitcher switcher;
 
-    private ObservableList<ItemClass> itemSelectionList = FXCollections.observableArrayList(Arrays.asList(new ItemClass[]{
+    private ObservableList<ItemClass> itemSelectionList = FXCollections.observableArrayList(Arrays.asList(new ItemClass[] {
 	new ItemClass("Boeken", Book.class),
 	new ItemClass("Spelletjes", Game.class),
 	new ItemClass("Verteltassen", StoryBag.class),
@@ -59,7 +59,7 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     private Button connectItemButton;
-    
+
     @FXML
     private GridPane bodyGrid;
 
@@ -150,7 +150,7 @@ public class ItemManagement extends BorderPane {
     }
 
     public void onItemDelete() {
-	Item selected = (Item) dataTable.getSelectionModel().getSelectedItem();
+	Object selected = dataTable.getSelectionModel().getSelectedItem();
 
 	if (switcher.openDeletePopup(selected)) {
 	    dataTableList.remove(selected);
