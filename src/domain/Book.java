@@ -14,7 +14,7 @@ import javax.persistence.Entity;
  * @author Frederik
  */
 @Entity
-@Access(AccessType.PROPERTY)
+@Access (AccessType.PROPERTY)
 public class Book extends Item implements Serializable {
 
     private StringProperty author = new SimpleStringProperty();
@@ -30,12 +30,12 @@ public class Book extends Item implements Serializable {
 	setPublisher(publisher);
     }
 
-    @Display(name = "Autheur")
+    @Display (name = "Autheur")
     public StringProperty authorProperty() {
 	return author;
     }
 
-    @Display(name = "Uitgeverij")
+    @Display (name = "Uitgeverij")
     public StringProperty publisherProperty() {
 	return publisher;
     }
@@ -54,5 +54,10 @@ public class Book extends Item implements Serializable {
 
     public void setPublisher(String publisher) {
 	this.publisher.set(publisher);
+    }
+
+    @Override
+    public String toString() {
+	return getName() + " (" + getAuthor() + ")";
     }
 }

@@ -3,11 +3,8 @@ package gui;
 import domain.Item;
 import domain.ItemCopy;
 import domain.StoryBag;
-import java.util.Optional;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
+import gui.dialogs.DialogManager;
+import java.util.List;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -69,10 +66,18 @@ public class ScreenSwitcher extends StackPane {
     }
 
     public boolean openManageItemsPopup(StoryBag bag) {
-	throw new UnsupportedOperationException();
+	List<ItemCopy> result = DialogManager.showStorybagItemSelectionDialog(bag);
+	if (result != null) {
+	    bag.setItems(result);
+	}
+	return false;
     }
 
     public boolean openSelectItemPopup(ItemCopy copy) {
-	throw new UnsupportedOperationException();
+	Item result = DialogManager.showItemCopyItemSelectionDialog(copy);
+	if (result != null) {
+	    copy.setItem(result);
+	}
+	return false;
     }
 }

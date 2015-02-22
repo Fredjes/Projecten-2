@@ -4,7 +4,6 @@ import domain.annotations.Display;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class DisplayUtil {
 		    } else {
 			return 0;
 		    }
-	}).collect(Collectors.toList());
+		}).collect(Collectors.toList());
     }
 
     private static Callback createAssociatedTableCellCallback(Class<? extends Property> p) {
@@ -66,6 +65,13 @@ public class DisplayUtil {
 		.filter(m -> m.isAnnotationPresent(Display.class) && m.getAnnotation(Display.class).single())
 		.map(m -> {
 		    try {
+			if (m == null) {
+			    return "-";
+			}
+			Property p = ((Property) m.invoke(instance));
+			if (p == null || p.getValue() == null) {
+			    return "-";
+			}
 			return ((Property) m.invoke(instance)).getValue().toString();
 		    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			System.err.println("Couldn't get data contents of property: " + e.getMessage());
