@@ -3,12 +3,10 @@ package gui.dialogs;
 import domain.DisplayUtil;
 import domain.ItemCopy;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +33,7 @@ public class StoryBagDialogVBox extends VBox {
 
     private ObservableList<ItemCopy> filteredDataList;
     private ObservableList<ItemCopy> fullDataList = FXCollections.observableArrayList();
+    private ObservableList<ItemCopy> selectedItems = FXCollections.observableArrayList();
 
     public StoryBagDialogVBox() {
 	try {
@@ -44,14 +43,22 @@ public class StoryBagDialogVBox extends VBox {
 	    loader.load();
 	    filteredDataList = listView.getItems();
 	    listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-	    listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ItemCopy>() {
+	    listView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<ItemCopy>() {
 
 		@Override
-		public void changed(ObservableValue<? extends ItemCopy> observable, ItemCopy oldValue, ItemCopy newValue) {
+		public void onChanged(ListChangeListener.Change<? extends ItemCopy> c) {
+		    c.next();
+		    if (c.wasAdded()) {
+			selectedItems.addAll(c.getAddedSubList());
+		    } else if (c.wasRemoved()) {
+			selectedItems.removeAll(c.getRemoved());
+		    }
+
 		    updateInfoLabel();
 		}
 
 	    });
+
 	} catch (IOException ex) {
 	    System.err.println("Could not load StoryBag Dialog FXML");
 	}
@@ -68,6 +75,7 @@ public class StoryBagDialogVBox extends VBox {
     }
 
     public void setSelectedItems(List<ItemCopy> items) {
+	selectedItems.addAll(items);
 	items.forEach(i -> listView.getSelectionModel().select(i));
 	updateInfoLabel();
     }
@@ -77,12 +85,11 @@ public class StoryBagDialogVBox extends VBox {
 	String text = searchBox.getText();
 	Predicate<ItemCopy> variablesContain = DisplayUtil.createPredicateForSearch(text, ItemCopy.class);
 	Predicate<ItemCopy> itemContains = i -> i.toString().toLowerCase().contains(text.toLowerCase());
-	List<ItemCopy> selected = new ArrayList(getSelectedItems());
 	filteredDataList.clear();
 	fullDataList.forEach(i -> {
 	    if (variablesContain.test(i) || itemContains.test(i)) {
 		filteredDataList.add(i);
-		if (selected.contains(i)) {
+		if (selectedItems.contains(i)) {
 		    listView.getSelectionModel().select(i);
 		}
 	    }
