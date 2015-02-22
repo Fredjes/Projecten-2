@@ -3,6 +3,8 @@ package gui;
 import domain.Item;
 import domain.ItemCopy;
 import domain.StoryBag;
+import gui.dialogs.DialogManager;
+import java.util.List;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -18,7 +20,7 @@ public class ScreenSwitcher extends StackPane {
 	setPrefSize(1200, 650);
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
-	
+
 	getStylesheets().addAll("/resources/css/font-awesome.css", "/resources/css/global.css");
     }
 
@@ -36,7 +38,12 @@ public class ScreenSwitcher extends StackPane {
     }
 
     public boolean openManageItemsPopup(StoryBag bag) {
-	throw new UnsupportedOperationException();
+	List<ItemCopy> result = DialogManager.showStorybagItemSelectionDialog(bag);
+	if (result != null) {
+	    bag.setItems(result);
+	}
+	return false;
+
     }
 
     public boolean openSelectItemPopup(ItemCopy copy) {

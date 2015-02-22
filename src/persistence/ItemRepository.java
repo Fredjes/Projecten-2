@@ -1,5 +1,7 @@
 package persistence;
 
+import domain.Book;
+import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
 import java.util.function.Predicate;
@@ -26,7 +28,7 @@ public class ItemRepository {
 		c.getAddedSubList().forEach(i -> JPAUtil.getInstance().getEntityManager().persist(i));
 	    }
 	};
-		
+
 	items.addListener(changeListener);
 	itemCopies.addListener(changeListener);
     }
@@ -110,16 +112,26 @@ public class ItemRepository {
     }
 
     // Add mock data
-//    public static void main(String[] args) {
-//	Book b = new Book("Romantiek", "8+", "Romeo en Julia", "Het beroemde verhaal van Shakespeare", "Shakespeare", "Shakespeare");
+    public static void main(String[] args) {
+	//Book b = new Book("Romantiek", "8+", "Romeo en Julia", "Het beroemde verhaal van Shakespeare", "Shakespeare", "Shakespeare");
 //	Book b2 = new Book("Actie", "12+", "Stormbreaker", "Een 15-jarige jongen treedt in dienst bij de geheime diensten.", "Anthony Horowitz", "Facet");
 //	Game g = new Game("Financieel", "12+", "Monopolie", "Het beroemde Monopolie-spel", "Parkser Brothers");
-//	ItemCopy copy = new ItemCopy(5, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
+	ItemRepository.getInstance().sync();
+	Book b = (Book) ItemRepository.getInstance().getItemsByClass(Book.class).filtered(bo -> bo.getName().equals("Romeo en Julia")).stream().findFirst().get();
+	ItemCopy copy = new ItemCopy(6, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
+	ItemCopy copy2 = new ItemCopy(7, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
 //	ItemRepository.getInstance().add(b);
 //	ItemRepository.getInstance().add(b2);
 //	ItemRepository.getInstance().add(g);
-//	ItemRepository.getInstance().add(copy);
-//	ItemRepository.getInstance().saveChanges();
-//	ItemRepository.getInstance().sync();
-//    }
+	ItemRepository.getInstance().add(copy);
+	ItemRepository.getInstance().add(copy2);
+//	StoryBag sb = new StoryBag();
+//	sb.setName("De coole verteltas");
+//	sb.setDescription("Een verteltas met nieuwe voorwerpen");
+//	sb.setAgeCategory("10-12");
+//	sb.setTheme("School");
+	//ItemRepository.getInstance().add(sb);
+	ItemRepository.getInstance().saveChanges();
+	ItemRepository.getInstance().sync();
+    }
 }
