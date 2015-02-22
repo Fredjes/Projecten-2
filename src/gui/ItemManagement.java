@@ -8,6 +8,7 @@ import domain.ItemCopy;
 import domain.StoryBag;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -32,7 +33,7 @@ public class ItemManagement extends BorderPane {
 
     private ScreenSwitcher switcher;
 
-    private ObservableList<ItemClass> itemSelectionList = FXCollections.observableArrayList(Arrays.asList(new ItemClass[] {
+    private ObservableList<ItemClass> itemSelectionList = FXCollections.observableArrayList(Arrays.asList(new ItemClass[]{
 	new ItemClass("Boeken", Book.class),
 	new ItemClass("Spelletjes", Game.class),
 	new ItemClass("Verteltassen", StoryBag.class),
@@ -158,9 +159,12 @@ public class ItemManagement extends BorderPane {
 		Item item = (Item) selected;
 		ObservableList<ItemCopy> itemCopies = ItemRepository.getInstance().getItemCopiesByPredicate(ic -> ic.getItem().equals(item));
 		if (itemCopies.size() > 0) {
-		    itemCopies.forEach((ic) -> {
-			ItemRepository.getInstance().remove(ic, false);
-		    });
+		    try {
+			itemCopies.forEach((ic) -> {
+			    ItemRepository.getInstance().remove(ic, false);
+			});
+		    } catch (NoSuchElementException nsex) {
+		    }
 		}
 		System.out.println("Delete item worked: " + ItemRepository.getInstance().remove(item));
 	    } else if (selected instanceof ItemCopy) {

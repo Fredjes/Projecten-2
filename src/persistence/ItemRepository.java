@@ -1,5 +1,8 @@
 package persistence;
 
+import domain.Book;
+import domain.Damage;
+import domain.Game;
 import domain.Item;
 import domain.ItemCopy;
 import java.util.ArrayList;
@@ -129,16 +132,16 @@ public class ItemRepository {
     }
 
     // Add mock data
-//    public static void main(String[] args) {
-//	Book b = new Book("Romantiek", "8+", "Romeo en Julia", "Het beroemde verhaal van Shakespeare", "Shakespeare", "Shakespeare");
-//	Book b2 = new Book("Actie", "12+", "Stormbreaker", "Een 15-jarige jongen treedt in dienst bij de geheime diensten.", "Anthony Horowitz", "Facet");
-//	Game g = new Game("Financieel", "12+", "Monopolie", "Het beroemde Monopolie-spel", "Parkser Brothers");
-//	ItemCopy copy = new ItemCopy(5, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
-//	ItemRepository.getInstance().add(b);
-//	ItemRepository.getInstance().add(b2);
-//	ItemRepository.getInstance().add(g);
-//	ItemRepository.getInstance().add(copy);
-//	ItemRepository.getInstance().saveChanges();
-//	ItemRepository.getInstance().sync();
-//    }
+    public static void main(String[] args) {
+	Book b = new Book("Romantiek", "8+", "Romeo en Julia", "Het beroemde verhaal van Shakespeare", "Shakespeare", "Shakespeare");
+	Book b2 = new Book("Actie", "12+", "Stormbreaker", "Een 15-jarige jongen treedt in dienst bij de geheime diensten.", "Anthony Horowitz", "Facet");
+	Game g = new Game("Financieel", "12+", "Monopolie", "Het beroemde Monopolie-spel", "Parkser Brothers");
+	ItemCopy copy = new ItemCopy(5, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
+	ItemRepository.getInstance().add(b);
+	ItemRepository.getInstance().add(b2);
+	ItemRepository.getInstance().add(g);
+	ItemRepository.getInstance().add(copy);
+	ItemRepository.getInstance().saveChanges();
+	ItemRepository.getInstance().sync();
+    }
 }
