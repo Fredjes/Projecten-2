@@ -60,18 +60,26 @@ public class DisplayUtil {
 	}
     }
 
-    private static List<String> getDataContents(Class<?> clazz, Object instance) {
+    private static List<String> getDataContents(Class<?> clazz, Object instance, boolean checked) {
 	return Arrays.asList(clazz.getMethods()).stream()
 		.filter(m -> m.isAnnotationPresent(Display.class) && m.getAnnotation(Display.class).single())
 		.map(m -> {
 		    try {
-			if (m == null) {
-			    return "-";
+			if (checked) {
+			    if (m == null) {
+				return "-";
+			    }
+			    Property p = ((Property) m.invoke(instance));
+			    if (p == null || p.getValue() == null) {
+				return "-";
+			    }
+			} else {
+			    Property p = ((Property) m.invoke(instance));
+			    if (p == null || p.getValue() == null) {
+				return "";
+			    }
 			}
-			Property p = ((Property) m.invoke(instance));
-			if (p == null || p.getValue() == null) {
-			    return "-";
-			}
+			
 			return ((Property) m.invoke(instance)).getValue().toString();
 		    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			System.err.println("Couldn't get data contents of property: " + e.getMessage());
@@ -92,11 +100,14 @@ public class DisplayUtil {
 	return clazz.equals(ItemCopy.class);
     }
 
-    public static Predicate createPredicateForSearch(String searchBy, Class<?> currentClazz) {
+    public static Predicate createPredicateForSearch(String searchBy, Class<?> currentClazz, boolean checked) {
 	if (searchBy.isEmpty()) {
 	    return i -> true;
 	} else {
-	    return i -> getDataContents(currentClazz, i).stream().anyMatch(s -> s.toLowerCase().contains(searchBy.toLowerCase()));
+	    return i -> {
+		List<String> dataContents = getDataContents(currentClazz, i, checked);
+		return dataContents.stream().anyMatch(s -> s.toLowerCase().contains(searchBy.toLowerCase()));
+	    };
 	}
     }
 }

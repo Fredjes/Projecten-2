@@ -83,7 +83,7 @@ public class StoryBagDialogVBox extends VBox {
     @FXML
     private void applyFilter() {
 	String text = searchBox.getText();
-	Predicate<ItemCopy> variablesContain = DisplayUtil.createPredicateForSearch(text, ItemCopy.class);
+	Predicate<ItemCopy> variablesContain = DisplayUtil.createPredicateForSearch(text, ItemCopy.class, true);
 	Predicate<ItemCopy> itemContains = i -> i.toString().toLowerCase().contains(text.toLowerCase());
 	filteredDataList.clear();
 	fullDataList.forEach(i -> {

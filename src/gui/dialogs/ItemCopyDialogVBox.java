@@ -79,7 +79,7 @@ public class ItemCopyDialogVBox extends VBox {
     @FXML
     private void applyFilter() {
 	String text = searchBox.getText();
-	Predicate<Item> variablesContain = DisplayUtil.createPredicateForSearch(text, Item.class);
+	Predicate<Item> variablesContain = DisplayUtil.createPredicateForSearch(text, Item.class, true);
 	Predicate<Item> itemContains = i -> i.toString().toLowerCase().contains(text.toLowerCase());
 	selected = getSelectedItem() == null ? selected : getSelectedItem();
 	filteredDataList.clear();

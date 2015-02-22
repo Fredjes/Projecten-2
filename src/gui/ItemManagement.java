@@ -92,7 +92,7 @@ public class ItemManagement extends BorderPane {
 
     public void onSearch() {
 	// New predicate each time to enforce update
-	Predicate p = DisplayUtil.createPredicateForSearch(searchBar.getText(), itemSelection.getSelectionModel().getSelectedItem().getItemClass());
+	Predicate p = DisplayUtil.createPredicateForSearch(searchBar.getText(), itemSelection.getSelectionModel().getSelectedItem().getItemClass(), false);
 	filteredDataTableList.clear();
 	Class<?> currentClass = itemSelection.getSelectionModel().getSelectedItem().getItemClass();
 	dataTableList.forEach(i -> {
@@ -121,7 +121,7 @@ public class ItemManagement extends BorderPane {
     public void onItemChange() {
 	Class<?> selectedClass = itemSelection.getSelectionModel().getSelectedItem().getItemClass();
 	dataTable = new TableView();
-	dataTable.setItems(dataTableList);
+	dataTable.setItems(filteredDataTableList);
 	dataTable.setFixedCellSize(60);
 	dataTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	this.bodyGrid.add(dataTable, 0, 1);
@@ -137,6 +137,8 @@ public class ItemManagement extends BorderPane {
 	    onSearch();
 	    dataTable.getColumns().setAll(DisplayUtil.getTableColumns(selectedClass));
 	}
+	
+	dataTable.setEditable(true);
 
 	if (DisplayUtil.isStoryBag(selectedClass)) {
 	    buttonHeader.getChildren().add(manageStoryBagButton);
