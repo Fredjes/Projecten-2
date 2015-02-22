@@ -2,6 +2,8 @@ package persistence;
 
 import domain.Item;
 import domain.ItemCopy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -20,13 +22,15 @@ public class ItemRepository {
     private ObservableList<Item> items = FXCollections.observableArrayList();
     private ObservableList<ItemCopy> itemCopies = FXCollections.observableArrayList();
 
+    private List<Object> deletedElements = new ArrayList();
+
     private ItemRepository() {
 	ListChangeListener changeListener = c -> {
 	    while (c.next()) {
 		c.getAddedSubList().forEach(i -> JPAUtil.getInstance().getEntityManager().persist(i));
 	    }
 	};
-		
+
 	items.addListener(changeListener);
 	itemCopies.addListener(changeListener);
     }
@@ -50,16 +54,25 @@ public class ItemRepository {
 	items.add(item);
     }
 
-    public void remove(Item item) {
-	items.remove(item);
+    public boolean remove(Item item) {
+	deletedElements.add(item);
+	return items.remove(item);
     }
 
     public void add(ItemCopy itemCopy) {
+
 	itemCopies.add(itemCopy);
     }
 
     public void remove(ItemCopy itemCopy) {
-	items.remove(itemCopy);
+	remove(itemCopy, true);
+    }
+
+    public void remove(ItemCopy itemCopy, boolean removeList) {
+	if (removeList) {
+	    deletedElements.add(itemCopy);
+	}
+	itemCopies.remove(itemCopy);
     }
 
     public ObservableList<? extends Item> getItems() {
@@ -97,8 +110,14 @@ public class ItemRepository {
     public void saveChanges() {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
+
 	items.forEach(manager::merge);
 	itemCopies.forEach(manager::merge);
+	deletedElements.forEach((el) -> {
+	    Object o = manager.merge(el);
+	    manager.remove(o);
+	});
+
 	manager.getTransaction().commit();
     }
 

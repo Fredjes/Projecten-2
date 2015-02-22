@@ -81,7 +81,7 @@ public class ItemManagement extends BorderPane {
 	    dataTableList.addListener((ListChangeListener.Change c) -> onSearch());
 	    onItemChange();
 	} catch (IOException ioex) {
-	    System.err.println("Could not load item mangement interface: " + ioex.getMessage());
+	    System.err.println("Could not load item management interface: " + ioex.getMessage());
 	}
     }
 
@@ -133,6 +133,7 @@ public class ItemManagement extends BorderPane {
 	} else if (ItemCopy.class.isAssignableFrom(selectedClass)) {
 	    ObservableList temp = ItemRepository.getInstance().getItemCopies();
 	    dataTableList.setAll(temp);
+	    onSearch();
 	    dataTable.getColumns().setAll(DisplayUtil.getTableColumns(selectedClass));
 	}
 
@@ -153,7 +154,20 @@ public class ItemManagement extends BorderPane {
 	Object selected = dataTable.getSelectionModel().getSelectedItem();
 
 	if (switcher.openDeletePopup(selected)) {
+	    if (selected instanceof Item) {
+		Item item = (Item) selected;
+		ObservableList<ItemCopy> itemCopies = ItemRepository.getInstance().getItemCopiesByPredicate(ic -> ic.getItem().equals(item));
+		if (itemCopies.size() > 0) {
+		    itemCopies.forEach((ic) -> {
+			ItemRepository.getInstance().remove(ic, false);
+		    });
+		}
+		System.out.println("Delete item worked: " + ItemRepository.getInstance().remove(item));
+	    } else if (selected instanceof ItemCopy) {
+		ItemRepository.getInstance().remove((ItemCopy) selected);
+	    }
 	    dataTableList.remove(selected);
+	    filteredDataTableList.remove(selected);
 	}
     }
 
