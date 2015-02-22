@@ -43,10 +43,13 @@ public class ScreenSwitcher extends StackPane {
 	    bag.setItems(result);
 	}
 	return false;
-
     }
 
     public boolean openSelectItemPopup(ItemCopy copy) {
-	throw new UnsupportedOperationException();
+	Item result = DialogManager.showItemCopyItemSelectionDialog(copy);
+	if (result != null) {
+	    copy.setItem(result);
+	}
+	return false;
     }
 }

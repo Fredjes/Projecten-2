@@ -14,7 +14,7 @@ import javax.persistence.Entity;
  * @author Frederik
  */
 @Entity
-@Access(AccessType.PROPERTY)
+@Access (AccessType.PROPERTY)
 public class Game extends Item implements Serializable {
 
     private StringProperty brand = new SimpleStringProperty();
@@ -28,7 +28,7 @@ public class Game extends Item implements Serializable {
 	setBrand(brand);
     }
 
-    @Display(name = "Merk")
+    @Display (name = "Merk")
     public StringProperty brandProperty() {
 	return brand;
     }
@@ -39,5 +39,10 @@ public class Game extends Item implements Serializable {
 
     public void setBrand(String brand) {
 	this.brand.set(brand);
+    }
+
+    @Override
+    public String toString() {
+	return getName() + " (" + getBrand() + ")";
     }
 }

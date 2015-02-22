@@ -21,9 +21,9 @@ import javax.persistence.Transient;
  * @author Frederik
  */
 @Entity
-@Access(AccessType.PROPERTY)
-@NamedQueries({
-    @NamedQuery(name = "StoryBag.findAll", query = "SELECT sb FROM StoryBag sb")
+@Access (AccessType.PROPERTY)
+@NamedQueries ({
+    @NamedQuery (name = "StoryBag.findAll", query = "SELECT sb FROM StoryBag sb")
 })
 public class StoryBag extends Item implements Serializable {
 
@@ -41,18 +41,23 @@ public class StoryBag extends Item implements Serializable {
     }
 
     @Transient
-    @Display(name = "Voorwerpen", single = false)
+    @Display (name = "Voorwerpen", single = false)
     public ObservableList<ItemCopy> getObservableItems() {
 	return items;
     }
 
-    @Access(AccessType.PROPERTY)
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @Access (AccessType.PROPERTY)
+    @OneToMany (cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     public List<ItemCopy> getItems() {
 	return items;
     }
 
     public void setItems(List<ItemCopy> items) {
 	this.items = FXCollections.observableArrayList(items);
+    }
+
+    @Override
+    public String toString() {
+	return getName() + " (Inhoud: " + (getItems().isEmpty() ? "geen " : getItems().size() + " ") + (getItems().size() == 1 ? "voorwerp" : "voorwerpen") + ")";
     }
 }

@@ -32,11 +32,11 @@ import javax.persistence.Transient;
  * @author Frederik
  */
 @Entity
-@Access(AccessType.PROPERTY)
-@NamedQueries({
-    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
+@Access (AccessType.PROPERTY)
+@NamedQueries ({
+    @NamedQuery (name = "Item.findAll", query = "SELECT i FROM Item i")
 })
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance (strategy = InheritanceType.JOINED)
 public abstract class Item implements Serializable {
 
     private StringProperty name = new SimpleStringProperty();
@@ -44,8 +44,8 @@ public abstract class Item implements Serializable {
     private StringProperty theme = new SimpleStringProperty();
     private StringProperty ageCategory = new SimpleStringProperty();
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    @Access(AccessType.FIELD)
+    @OneToMany (mappedBy = "item", cascade = CascadeType.ALL)
+    @Access (AccessType.FIELD)
     private List<ItemCopy> itemCopies;
 
     private Image image;
@@ -62,28 +62,28 @@ public abstract class Item implements Serializable {
 	setDescription(description);
     }
 
-    @Display(name = "Thema")
+    @Display (name = "Thema")
     public StringProperty themeProperty() {
 	return theme;
     }
 
-    @Display(name = "Naam")
+    @Display (name = "Naam")
     public StringProperty nameProperty() {
 	return name;
     }
 
-    @Display(name = "Omschrijving")
+    @Display (name = "Omschrijving")
     public StringProperty descriptionProperty() {
 	return description;
     }
 
-    @Display(name = "Leeftijd")
+    @Display (name = "Leeftijd")
     public StringProperty ageCategoryProperty() {
 	return ageCategory;
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     public long getId() {
 	return id;
     }
@@ -166,6 +166,11 @@ public abstract class Item implements Serializable {
 	int hash = 5;
 	hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
 	return hash;
+    }
+
+    @Override
+    public String toString() {
+	return getName();
     }
 
     @Override
