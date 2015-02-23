@@ -137,7 +137,7 @@ public class DisplayUtil {
 	} else {
 	    return i -> {
 		List<String> dataContents = getDataContents(currentClazz, i, checked);
-		return dataContents.stream().anyMatch(s -> s.toLowerCase().contains(searchBy.toLowerCase()));
+		return Arrays.asList(searchBy.split(" ")).stream().allMatch(token -> dataContents.stream().anyMatch(s -> s.toLowerCase().contains(token.toLowerCase())));
 	    };
 	}
     }
