@@ -112,6 +112,7 @@ public class ItemManagement extends BorderPane {
     public void onConnectItem() {
         if (!dataTable.getSelectionModel().isEmpty()) {
             switcher.openSelectItemPopup((ItemCopy) dataTable.getSelectionModel().getSelectedItem());
+	    onSearch();
         }
     }
 
@@ -121,7 +122,7 @@ public class ItemManagement extends BorderPane {
         onSearch();
 
         try {
-            Object obj = itemSelection.getSelectionModel().getSelectedItem().getItemClass().getConstructor(null).newInstance();
+            Object obj = itemSelection.getSelectionModel().getSelectedItem().getItemClass().getConstructor((Class<?>[]) null).newInstance();
 
             if (obj instanceof ItemCopy) {
                 ItemRepository.getInstance().add((ItemCopy) obj);
@@ -185,7 +186,8 @@ public class ItemManagement extends BorderPane {
                     } catch (NoSuchElementException nsex) {
                     }
                 }
-                System.out.println("Delete item worked: " + ItemRepository.getInstance().remove(item));
+		
+		ItemRepository.getInstance().remove((Item) selected);
             } else if (selected instanceof ItemCopy) {
                 ItemRepository.getInstance().remove((ItemCopy) selected);
             }

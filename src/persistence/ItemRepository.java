@@ -113,8 +113,30 @@ public class ItemRepository {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
 
-	items.forEach(manager::merge);
-	itemCopies.forEach(manager::merge);
+	items.forEach(item -> {
+	    if (item.getName() == null || item.getName().isEmpty()) {
+		return;
+	    }
+
+	    if (item.getId() == 0) {
+		manager.persist(item);
+	    } else {
+		manager.merge(item);
+	    }
+	});
+
+	itemCopies.forEach(ic -> {
+	    if (ic.getCopyNumber() <= 0) {
+		return;
+	    }
+
+	    if (ic.getId() == 0) {
+		manager.persist(ic);
+	    } else {
+		manager.merge(ic);
+	    }
+	});
+
 	deletedElements.forEach((el) -> {
 	    Object o = manager.merge(el);
 	    manager.remove(o);

@@ -28,9 +28,9 @@ import javax.persistence.NamedQuery;
  * @author Frederik
  */
 @Entity
-@Access (AccessType.PROPERTY)
-@NamedQueries ({
-    @NamedQuery (name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
+@Access(AccessType.PROPERTY)
+@NamedQueries({
+    @NamedQuery(name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
 })
 public class ItemCopy implements Serializable {
 
@@ -51,7 +51,7 @@ public class ItemCopy implements Serializable {
     }
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
 	return this.id;
     }
@@ -68,12 +68,12 @@ public class ItemCopy implements Serializable {
 	return this.copyNumber.get();
     }
 
-    @Display (name = "Nummer")
+    @Display(name = "Nummer")
     public IntegerProperty copyNumberProperty() {
 	return copyNumber;
     }
 
-    @Display (name = "Locatie")
+    @Display(name = "Locatie")
     public StringProperty locationProperty() {
 	return location;
     }
@@ -86,7 +86,7 @@ public class ItemCopy implements Serializable {
 	this.location.set(location);
     }
 
-    @Enumerated (EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     public Damage getDamage() {
 	return damage.get();
     }
@@ -95,12 +95,12 @@ public class ItemCopy implements Serializable {
 	this.damage.set(damage);
     }
 
-    @Display (name = "Schade", single = true)
+    @Display(name = "Schade", single = true)
     public ObjectProperty<Damage> damageProperty() {
 	return damage;
     }
 
-    @Display (name = "Voorwerp", single = false)
+    @Display(name = "Voorwerp", single = false)
     public ObjectProperty<Item> itemProperty() {
 	return item;
     }
@@ -109,7 +109,7 @@ public class ItemCopy implements Serializable {
 	this.item.set(i);
     }
 
-    @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     public Item getItem() {
 	return this.item.get();
     }
@@ -123,7 +123,11 @@ public class ItemCopy implements Serializable {
 
     @Override
     public String toString() {
-	return this.getItem().getName() + " (Exemplaar #" + getCopyNumber() + ")";
+	try {
+	    return this.getItem().getName() + " (Exemplaar #" + getCopyNumber() + ")";
+	} catch (NullPointerException npex) {
+	    return "Exemplaar #" + getCopyNumber();
+	}
     }
 
     @Override

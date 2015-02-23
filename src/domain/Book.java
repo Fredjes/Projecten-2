@@ -30,7 +30,7 @@ public class Book extends Item implements Serializable {
 	setPublisher(publisher);
     }
 
-    @Display (name = "Autheur")
+    @Display (name = "Auteur")
     public StringProperty authorProperty() {
 	return author;
     }

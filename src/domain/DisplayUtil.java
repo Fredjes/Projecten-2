@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -26,7 +28,7 @@ import javafx.util.converter.IntegerStringConverter;
 public class DisplayUtil {
 
     public static List<TableColumn> getTableColumns(Class<?> clazz) {
-	return Arrays.asList(clazz.getMethods()).stream()
+	List<TableColumn> columns = Arrays.asList(clazz.getMethods()).stream()
 		.filter(m -> m.isAnnotationPresent(Display.class) && m.getAnnotation(Display.class).single())
 		.map((Method m) -> {
 		    String propertyName = m.getName().substring(0, m.getName().indexOf("Property"));
@@ -34,17 +36,37 @@ public class DisplayUtil {
 		    t.setCellValueFactory(new PropertyValueFactory(propertyName));
 		    t.setCellFactory(createAssociatedTableCellCallback(m.getReturnType().asSubclass(Property.class)));
 		    t.setEditable(true);
-		    t.impl_setReorderable(false);
 		    return t;
 		}).sorted((o1, o2) -> {
-		    if (o1.getText().equalsIgnoreCase("naam")) {
+		    if (o1.getText().equalsIgnoreCase("naam") || o1.getText().equalsIgnoreCase("nummer")) {
 			return -1;
-		    } else if (o2.getText().equalsIgnoreCase("naam")) {
+		    } else if (o2.getText().equalsIgnoreCase("naam") || o2.getText().equalsIgnoreCase("nummer")) {
 			return 1;
 		    } else {
 			return 0;
 		    }
 		}).collect(Collectors.toList());
+
+	if (clazz.equals(ItemCopy.class)) {
+	    TableColumn column = new TableColumn();
+	    column.setText("Verbonden voorwerp");
+	    column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures, ObservableValue>() {
+
+		@Override
+		public ObservableValue call(TableColumn.CellDataFeatures param) {
+		    try {
+			return ((ItemCopy) param.getValue()).getItem().nameProperty();
+		    } catch (Exception e) {
+			return new SimpleStringProperty("Geen voorwerp verbonden");
+		    }
+		}
+
+	    });
+	    column.setEditable(false);
+	    columns.add(1, column);
+	}
+
+	return columns;
     }
 
     private static Callback createAssociatedTableCellCallback(Class<? extends Property> p) {
@@ -61,7 +83,7 @@ public class DisplayUtil {
     }
 
     private static List<String> getDataContents(Class<?> clazz, Object instance, boolean checked) {
-	return Arrays.asList(clazz.getMethods()).stream()
+	List<String> contents = Arrays.asList(clazz.getMethods()).stream()
 		.filter(m -> m.isAnnotationPresent(Display.class) && m.getAnnotation(Display.class).single())
 		.map(m -> {
 		    try {
@@ -79,13 +101,22 @@ public class DisplayUtil {
 				return "";
 			    }
 			}
-			
+
 			return ((Property) m.invoke(instance)).getValue().toString();
 		    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			System.err.println("Couldn't get data contents of property: " + e.getMessage());
 		    }
 		    return "";
 		}).collect(Collectors.toList());
+
+	if (clazz.equals(ItemCopy.class)) {
+	    try {
+		contents.add(((ItemCopy) instance).getItem().getName());
+	    } catch (Exception e) {
+	    }
+	}
+
+	return contents;
     }
 
     private static boolean isSubClass(Class<?> superClass, Class<?> subClass) {
