@@ -35,10 +35,10 @@ public class ItemManagement extends BorderPane {
     private ScreenSwitcher switcher;
 
     private ObservableList<ItemClass> itemSelectionList = FXCollections.observableArrayList(Arrays.asList(new ItemClass[]{
-        new ItemClass("Boeken", Book.class),
-        new ItemClass("Spelletjes", Game.class),
-        new ItemClass("Verteltassen", StoryBag.class),
-        new ItemClass("Exemplaren", ItemCopy.class)
+	new ItemClass("Boeken", Book.class),
+	new ItemClass("Spelletjes", Game.class),
+	new ItemClass("Verteltassen", StoryBag.class),
+	new ItemClass("Exemplaren", ItemCopy.class)
     }));
 
     private ObservableList dataTableList = FXCollections.observableArrayList();
@@ -69,135 +69,135 @@ public class ItemManagement extends BorderPane {
     private HBox buttonHeader;
 
     public ItemManagement(ScreenSwitcher switcher) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/ItemManagement.fxml"));
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+	try {
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/ItemManagement.fxml"));
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
 
-            this.switcher = switcher;
-            initIcons();
-            itemSelectionList.sort((a, b) -> a.toString().compareTo(b.toString()));
-            itemSelection.setItems(itemSelectionList);
-            itemSelection.getSelectionModel().select(0);
-            dataTableList.addListener((ListChangeListener.Change c) -> onSearch());
-            onItemChange();
-        } catch (IOException ioex) {
-            System.err.println("Could not load item management interface: " + ioex.getMessage());
-        }
+	    this.switcher = switcher;
+	    initIcons();
+	    itemSelectionList.sort((a, b) -> a.toString().compareTo(b.toString()));
+	    itemSelection.setItems(itemSelectionList);
+	    itemSelection.getSelectionModel().select(0);
+	    dataTableList.addListener((ListChangeListener.Change c) -> onSearch());
+	    onItemChange();
+	} catch (IOException ioex) {
+	    System.err.println("Could not load item management interface: " + ioex.getMessage());
+	}
     }
 
     private void initIcons() {
-        backButton.setText(IconConfig.BACK_ICON);
+	backButton.setText(IconConfig.BACK_ICON);
     }
 
     public void onSearch() {
-        // New predicate each time to enforce update
-        Predicate p = DisplayUtil.createPredicateForSearch(searchBar.getText(), itemSelection.getSelectionModel().getSelectedItem().getItemClass(), false);
-        filteredDataTableList.clear();
-        Class<?> currentClass = itemSelection.getSelectionModel().getSelectedItem().getItemClass();
-        dataTableList.forEach(i -> {
-            if (currentClass.isAssignableFrom(i.getClass()) && p.test(i)) {
-                filteredDataTableList.add(i);
-            }
-        });
+	// New predicate each time to enforce update
+	Predicate p = DisplayUtil.createPredicateForSearch(searchBar.getText(), itemSelection.getSelectionModel().getSelectedItem().getItemClass(), false);
+	filteredDataTableList.clear();
+	Class<?> currentClass = itemSelection.getSelectionModel().getSelectedItem().getItemClass();
+	dataTableList.forEach(i -> {
+	    if (currentClass.isAssignableFrom(i.getClass()) && p.test(i)) {
+		filteredDataTableList.add(i);
+	    }
+	});
     }
 
     public void onManageStoryBag() {
-        if (!dataTable.getSelectionModel().isEmpty()) {
-            switcher.openManageItemsPopup((StoryBag) dataTable.getSelectionModel().getSelectedItem());
-        }
+	if (!dataTable.getSelectionModel().isEmpty()) {
+	    switcher.openManageItemsPopup((StoryBag) dataTable.getSelectionModel().getSelectedItem());
+	}
     }
 
     public void onConnectItem() {
-        if (!dataTable.getSelectionModel().isEmpty()) {
-            switcher.openSelectItemPopup((ItemCopy) dataTable.getSelectionModel().getSelectedItem());
+	if (!dataTable.getSelectionModel().isEmpty()) {
+	    switcher.openSelectItemPopup((ItemCopy) dataTable.getSelectionModel().getSelectedItem());
 	    onSearch();
-        }
+	}
     }
 
     public void onItemAdd() {
-        // Pieter-Jan: hier moet een item van het juiste type gezet worden
-        searchBar.setText("");
-        onSearch();
+	// Pieter-Jan: hier moet een item van het juiste type gezet worden
+	searchBar.setText("");
+	onSearch();
 
-        try {
-            Object obj = itemSelection.getSelectionModel().getSelectedItem().getItemClass().getConstructor((Class<?>[]) null).newInstance();
+	try {
+	    Object obj = itemSelection.getSelectionModel().getSelectedItem().getItemClass().getConstructor((Class<?>[]) null).newInstance();
 
-            if (obj instanceof ItemCopy) {
-                ItemRepository.getInstance().add((ItemCopy) obj);
-            } else {
-                ItemRepository.getInstance().add((Item) obj);
-            }
+	    if (obj instanceof ItemCopy) {
+		ItemRepository.getInstance().add((ItemCopy) obj);
+	    } else {
+		ItemRepository.getInstance().add((Item) obj);
+	    }
 
-            dataTableList.add(obj);
-            dataTable.edit(dataTableList.size() - 1, (TableColumn) dataTable.getColumns().get(0));
-        } catch (Exception ex) {
-        }
+	    dataTableList.add(obj);
+	    dataTable.edit(dataTableList.size() - 1, (TableColumn) dataTable.getColumns().get(0));
+	} catch (Exception ex) {
+	}
     }
 
     public void onItemChange() {
-        Class<?> selectedClass = itemSelection.getSelectionModel().getSelectedItem().getItemClass();
-        dataTable = new TableView();
-        dataTable.setItems(filteredDataTableList);
-        dataTable.setFixedCellSize(60);
-        dataTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        this.bodyGrid.add(dataTable, 0, 1);
+	Class<?> selectedClass = itemSelection.getSelectionModel().getSelectedItem().getItemClass();
+	dataTable = new TableView();
+	dataTable.setItems(filteredDataTableList);
+	dataTable.setFixedCellSize(60);
+	dataTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+	this.bodyGrid.add(dataTable, 0, 1);
 
-        if (Item.class.isAssignableFrom(selectedClass)) {
-            // setAll will not trigger tableview update event
-            ObservableList temp = ItemRepository.getInstance().getItemsByClass(selectedClass.asSubclass(Item.class));
-            dataTableList.setAll(temp);
-            dataTable.getColumns().setAll(DisplayUtil.getTableColumns(selectedClass));
-        } else if (ItemCopy.class.isAssignableFrom(selectedClass)) {
-            ObservableList temp = ItemRepository.getInstance().getItemCopies();
-            dataTableList.setAll(temp);
-            onSearch();
-            dataTable.getColumns().setAll(DisplayUtil.getTableColumns(selectedClass));
-        }
+	if (Item.class.isAssignableFrom(selectedClass)) {
+	    // setAll will not trigger tableview update event
+	    ObservableList temp = ItemRepository.getInstance().getItemsByClass(selectedClass.asSubclass(Item.class));
+	    dataTableList.setAll(temp);
+	    dataTable.getColumns().setAll(DisplayUtil.getTableColumns(selectedClass));
+	} else if (ItemCopy.class.isAssignableFrom(selectedClass)) {
+	    ObservableList temp = ItemRepository.getInstance().getItemCopies();
+	    dataTableList.setAll(temp);
+	    onSearch();
+	    dataTable.getColumns().setAll(DisplayUtil.getTableColumns(selectedClass));
+	}
 
-        dataTable.setEditable(true);
+	dataTable.setEditable(true);
 
-        if (DisplayUtil.isStoryBag(selectedClass)) {
-            buttonHeader.getChildren().add(manageStoryBagButton);
-        } else {
-            buttonHeader.getChildren().remove(manageStoryBagButton);
-        }
+	if (DisplayUtil.isStoryBag(selectedClass)) {
+	    buttonHeader.getChildren().add(manageStoryBagButton);
+	} else {
+	    buttonHeader.getChildren().remove(manageStoryBagButton);
+	}
 
-        if (DisplayUtil.isItemCopy(selectedClass)) {
-            buttonHeader.getChildren().add(connectItemButton);
-        } else {
-            buttonHeader.getChildren().remove(connectItemButton);
-        }
+	if (DisplayUtil.isItemCopy(selectedClass)) {
+	    buttonHeader.getChildren().add(connectItemButton);
+	} else {
+	    buttonHeader.getChildren().remove(connectItemButton);
+	}
     }
 
     public void onItemDelete() {
-        Object selected = dataTable.getSelectionModel().getSelectedItem();
+	Object selected = dataTable.getSelectionModel().getSelectedItem();
 
-        if (switcher.openDeletePopup(selected)) {
-            if (selected instanceof Item) {
-                Item item = (Item) selected;
-                ObservableList<ItemCopy> itemCopies = ItemRepository.getInstance().getItemCopiesByPredicate(ic -> ic.getItem().equals(item));
-                if (itemCopies.size() > 0) {
-                    try {
-                        itemCopies.forEach((ic) -> {
-                            ItemRepository.getInstance().remove(ic, false);
-                        });
-                    } catch (NoSuchElementException nsex) {
-                    }
-                }
-		
+	if (switcher.openDeletePopup(selected)) {
+	    if (selected instanceof Item) {
+		Item item = (Item) selected;
+		ObservableList<ItemCopy> itemCopies = ItemRepository.getInstance().getItemCopiesByPredicate(ic -> ic.getItem().equals(item));
+		if (itemCopies.size() > 0) {
+		    try {
+			itemCopies.forEach((ic) -> {
+			    ItemRepository.getInstance().remove(ic, false);
+			});
+		    } catch (NoSuchElementException nsex) {
+		    }
+		}
+
 		ItemRepository.getInstance().remove((Item) selected);
-            } else if (selected instanceof ItemCopy) {
-                ItemRepository.getInstance().remove((ItemCopy) selected);
-            }
-            dataTableList.remove(selected);
-            filteredDataTableList.remove(selected);
-        }
+	    } else if (selected instanceof ItemCopy) {
+		ItemRepository.getInstance().remove((ItemCopy) selected);
+	    }
+	    dataTableList.remove(selected);
+	    filteredDataTableList.remove(selected);
+	}
     }
 
     public void onBack() {
-        ItemRepository.getInstance().saveChanges();
-        switcher.openMainMenu();
+	ItemRepository.getInstance().saveChanges();
+	switcher.openMainMenu();
     }
 }

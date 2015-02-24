@@ -10,11 +10,11 @@
    <top>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="title-bar" BorderPane.alignment="CENTER">
          <children>
-            <Text id="title" fill="WHITE" layoutX="84.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voorwerpen beheren">
+            <Text id="title" fill="WHITE" layoutX="85.0" layoutY="40.0" onKeyPressed="#onSearch" strokeType="OUTSIDE" strokeWidth="0.0" text="Voorwerpen beheren">
                <font>
                   <Font size="24.0" />
                </font></Text>
-            <Text fx:id="backButton" fill="WHITE" layoutX="28.0" layoutY="62.0" onMouseClicked="#onBack" strokeType="OUTSIDE" strokeWidth="0.0" text="B">
+            <Text fx:id="backButton" fill="WHITE" layoutX="29.0" layoutY="48.0" onMouseClicked="#onBack" strokeType="OUTSIDE" strokeWidth="0.0" text="B">
                <font>
                   <Font size="55.0" />
                </font>
@@ -31,8 +31,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefWidth="200.0" spacing="15.0">
                <children>
-                  <TextField fx:id="searchBar" onAction="#onSearch" prefHeight="25.0" prefWidth="322.0" promptText="Zoeken naar een voorwerp" />
-                  <Button mnemonicParsing="false" onAction="#onSearch" text="Zoeken" />
+                  <TextField fx:id="searchBar" onAction="#onSearch" onKeyReleased="#onSearch" prefHeight="25.0" prefWidth="322.0" promptText="Zoeken naar een voorwerp" />
                </children>
             </HBox>
             <GridPane fx:id="bodyGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10.0">

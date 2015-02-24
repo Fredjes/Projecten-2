@@ -3,8 +3,10 @@ package gui.dialogs;
 import domain.Item;
 import domain.ItemCopy;
 import domain.StoryBag;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -26,7 +28,10 @@ public class DialogManager {
 
 	StoryBagDialogVBox box = new StoryBagDialogVBox();
 
-	box.setItems(ItemRepository.getInstance().getItemCopies());
+	ObservableList<ItemCopy> itemCopies = ItemRepository.getInstance().getItemCopies();
+	itemCopies.removeIf(ic -> ic.getItem() instanceof StoryBag);
+	
+	box.setItems(itemCopies);
 	box.setSelectedItems(sb.getItems());
 
 	dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, cancelButtonType);
@@ -38,6 +43,8 @@ public class DialogManager {
 	    }
 	    return null;
 	});
+	
+	Runnable c = (Runnable & Serializable)(() -> {});
 
 	Optional<List<ItemCopy>> result = dialog.showAndWait();
 	return result.isPresent() ? result.get() : null;

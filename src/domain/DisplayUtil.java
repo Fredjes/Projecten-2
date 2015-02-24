@@ -3,6 +3,7 @@ package domain;
 import domain.annotations.Display;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -137,7 +138,8 @@ public class DisplayUtil {
 	} else {
 	    return i -> {
 		List<String> dataContents = getDataContents(currentClazz, i, checked);
-		return Arrays.asList(searchBy.split(" ")).stream().allMatch(token -> dataContents.stream().anyMatch(s -> s.toLowerCase().contains(token.toLowerCase())));
+		List<String> searchTokenList = new ArrayList<>(Arrays.asList(searchBy.split(" ")));
+		return searchTokenList.stream().allMatch(token -> dataContents.stream().anyMatch(s -> s.toLowerCase().contains(token.toLowerCase())));
 	    };
 	}
     }
