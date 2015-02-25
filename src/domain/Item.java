@@ -50,7 +50,7 @@ public abstract class Item implements Serializable {
 
     private Image image;
 
-    private long id;
+    private int id;
 
     public Item() {
     }
@@ -84,11 +84,11 @@ public abstract class Item implements Serializable {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    public long getId() {
+    public int getId() {
 	return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
 	this.id = id;
     }
 
