@@ -28,7 +28,7 @@ public class MainApp extends Application {
 
 	ScreenSwitcher switcher = new ScreenSwitcher();
 	switcher.openMainMenu();
-
+	primaryStage.setTitle("Mediatheek Applicatie");
 	Scene scene = new Scene(switcher);
 	primaryStage.setScene(scene);
 	primaryStage.show();
