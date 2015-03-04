@@ -12,11 +12,6 @@ import javax.persistence.Entity;
 @Access(AccessType.PROPERTY)
 public class Dvd extends Item implements Serializable {
 
-    /*
-     * http://stackoverflow.com/questions/1966503/does-imdb-provide-an-api
-     * http://www.imdb.com/interfaces
-     * IMDB api
-     */
     private StringProperty director = new SimpleStringProperty();
 
     public Dvd() {

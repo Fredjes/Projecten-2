@@ -10,15 +10,12 @@ import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class Cd extends Item implements Serializable {
 
-    /*
-     * http://musicbrainz.org/doc/Development
-     * Music Database with XML/JSON api
-     */
     private StringProperty artist = new SimpleStringProperty();
     private ObservableList<String> songs = FXCollections.observableArrayList();
 
@@ -32,7 +29,7 @@ public class Cd extends Item implements Serializable {
     }
 
     @Display(name = "Artist")
-    public StringProperty ArtistProperty() {
+    public StringProperty artistProperty() {
         return artist;
     }
 
@@ -44,12 +41,9 @@ public class Cd extends Item implements Serializable {
         this.artist.set(artist);
     }
 
+    @Transient
     public ObservableList<String> getObservableSongList() {
         return songs;
-    }
-
-    public void setObservableSongList(ObservableList<String> songList) {
-        this.songs = songList;
     }
 
     public List<String> getSongList() {
