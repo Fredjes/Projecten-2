@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +32,10 @@ public class StoryBag extends Item implements Serializable {
     public StoryBag() {
     }
 
+    public StoryBag(String name, String description, List<String> theme, String ageCategory) {
+	super(name, description, theme, ageCategory);
+    }
+
     public void addItem(ItemCopy item) {
 	items.add(item);
     }
@@ -57,5 +62,12 @@ public class StoryBag extends Item implements Serializable {
     @Override
     public String toString() {
 	return getName() + " (Inhoud: " + (getItems().isEmpty() ? "geen " : getItems().size() + " ") + (getItems().size() == 1 ? "voorwerp" : "voorwerpen") + ")";
+    }
+
+    @Override
+    public boolean test(String query) {
+	boolean currentMatch = super.test(query);
+	
+	return currentMatch || getItems().stream().anyMatch(i -> i.test(query));
     }
 }

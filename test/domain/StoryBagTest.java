@@ -19,8 +19,8 @@ public class StoryBagTest {
 
     private EntityManager manager = JPAUtil.getInstance().getEntityManager();
     private List<ItemCopy> items = new ArrayList<>(Arrays.asList(new ItemCopy[]{
-	new ItemCopy(11, "Gang 11", new Book("Het thema", "8+", "De titel", "De uitleg", "De autheur", "De uitgeverij"), Damage.NO_DAMAGE),
-	new ItemCopy(89, "Klas 2A", new Game("Actie", "6-8", "Pacman", "Het beroemde Pacman-spel", "Atari"), Damage.HIGH_DAMAGE)
+	new ItemCopy("11", "Gang 11", new Book(Arrays.asList("Het thema"), "8+", "De titel", "De uitleg", "De autheur", "De uitgeverij"), Damage.NO_DAMAGE),
+	new ItemCopy("89", "Klas 2A", new Game(Arrays.asList("Actie"), "6-8", "Pacman", "Het beroemde Pacman-spel", "Atari"), Damage.HIGH_DAMAGE)
     }));
 
     private StoryBag bag;
@@ -53,7 +53,7 @@ public class StoryBagTest {
 	assertEquals(bag.getDescription(), dbBag.getDescription());
 	assertEquals(bag.getFXImage(), dbBag.getFXImage());
 	assertEquals(bag.getName(), dbBag.getName());
-	assertEquals(bag.getTheme(), dbBag.getTheme());
+	assertEquals(bag.getThemes(), dbBag.getThemes());
 	assertEquals(2, dbBag.getItems().size());
 
 	manager.getTransaction().begin();

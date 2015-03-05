@@ -126,10 +126,6 @@ public class ItemRepository {
 	});
 
 	itemCopies.forEach(ic -> {
-	    if (ic.getCopyNumber() <= 0) {
-		return;
-	    }
-
 	    if (ic.getId() == 0) {
 		manager.persist(ic);
 	    } else {
@@ -159,13 +155,13 @@ public class ItemRepository {
 //	Game g = new Game("Financieel", "12+", "Monopolie", "Het beroemde Monopolie-spel", "Parkser Brothers");
 	ItemRepository.getInstance().sync();
 	Book b = (Book) ItemRepository.getInstance().getItemsByClass(Book.class).filtered(bo -> bo.getName().equals("Romeo en Julia")).stream().findFirst().get();
-	ItemCopy copy = new ItemCopy(6, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
-	ItemCopy copy2 = new ItemCopy(7, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
+//	ItemCopy copy = new ItemCopy(6, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
+//	ItemCopy copy2 = new ItemCopy(7, "Achterste rij, links", b, Damage.MODERATE_DAMAGE);
 //	ItemRepository.getInstance().add(b);
 //	ItemRepository.getInstance().add(b2);
 //	ItemRepository.getInstance().add(g);
-	ItemRepository.getInstance().add(copy);
-	ItemRepository.getInstance().add(copy2);
+//	ItemRepository.getInstance().add(copy);
+//	ItemRepository.getInstance().add(copy2);
 //	StoryBag sb = new StoryBag();
 //	sb.setName("De coole verteltas");
 //	sb.setDescription("Een verteltas met nieuwe voorwerpen");

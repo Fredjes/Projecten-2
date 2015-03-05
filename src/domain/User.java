@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Access(AccessType.PROPERTY)
 @Table(name = "TBL_USER")
-public class User implements Serializable {
+public class User implements Serializable, Searchable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -91,5 +92,13 @@ public class User implements Serializable {
 
     public StringProperty emailProperty() {
 	return email;
+    }
+
+    @Override
+    public boolean test(String query) {
+	return Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getClassRoom(), t) 
+		|| SearchPredicate.containsIgnoreCase(getEmail(), t) 
+		|| SearchPredicate.containsIgnoreCase(getName(), t) 
+		|| SearchPredicate.containsIgnoreCase(getUserType().toString(), t));
     }
 }

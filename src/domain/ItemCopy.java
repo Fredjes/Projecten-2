@@ -1,9 +1,9 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -31,18 +31,18 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
     @NamedQuery(name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
 })
-public class ItemCopy implements Serializable {
+public class ItemCopy implements Serializable, Searchable {
 
     private int id;
     private final StringProperty location = new SimpleStringProperty();
     private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
     private final ObjectProperty<Damage> damage = new SimpleObjectProperty<>();
-    private final IntegerProperty copyNumber = new SimpleIntegerProperty();
+    private final StringProperty copyNumber = new SimpleStringProperty();
 
     public ItemCopy() {
     }
 
-    public ItemCopy(int copyNumber, String location, Item i, Damage d) {
+    public ItemCopy(String copyNumber, String location, Item i, Damage d) {
 	setCopyNumber(copyNumber);
 	setLocation(location);
 	setItem(i);
@@ -59,15 +59,15 @@ public class ItemCopy implements Serializable {
 	this.id = id;
     }
 
-    public void setCopyNumber(int copyNumber) {
+    public void setCopyNumber(String copyNumber) {
 	this.copyNumber.set(copyNumber);
     }
 
-    public int getCopyNumber() {
+    public String getCopyNumber() {
 	return this.copyNumber.get();
     }
 
-    public IntegerProperty copyNumberProperty() {
+    public StringProperty copyNumberProperty() {
 	return copyNumber;
     }
 
@@ -138,5 +138,14 @@ public class ItemCopy implements Serializable {
 	    return false;
 	}
 	return true;
+    }
+
+    @Override
+    public boolean test(String query) {
+	boolean currentResult = Arrays.stream(query.split("\\s")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getLocation(), t)
+		|| SearchPredicate.containsIgnoreCase(getCopyNumber(), t)
+		|| SearchPredicate.containsIgnoreCase(getDamage().toString(), t));
+	
+	return currentResult || (getItem() != null && getItem().test(query));
     }
 }

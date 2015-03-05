@@ -4,9 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
@@ -26,7 +29,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
- * Represents the definition of every item stored, containing all shared properties of every item.
+ * Represents the definition of every item stored, containing all shared
+ * properties of every item.
  *
  * @author Frederik
  */
@@ -36,11 +40,11 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Item implements Serializable {
+public abstract class Item implements Serializable, Searchable {
 
     private StringProperty name = new SimpleStringProperty();
     private StringProperty description = new SimpleStringProperty();
-    private StringProperty theme = new SimpleStringProperty();
+    private ObservableList<String> theme = FXCollections.observableArrayList();
     private StringProperty ageCategory = new SimpleStringProperty();
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
@@ -54,14 +58,15 @@ public abstract class Item implements Serializable {
     public Item() {
     }
 
-    public Item(String name, String description, String theme, String ageCategory) {
+    public Item(String name, String description, List<String> theme, String ageCategory) {
 	setTheme(theme);
 	setAgeCategory(ageCategory);
 	setName(name);
 	setDescription(description);
     }
 
-    public StringProperty themeProperty() {
+    @Transient
+    public ObservableList<String> getThemeFX() {
 	return theme;
     }
 
@@ -87,12 +92,12 @@ public abstract class Item implements Serializable {
 	this.id = id;
     }
 
-    public String getTheme() {
-	return theme.get();
+    public List<String> getThemes() {
+	return theme;
     }
 
-    public void setTheme(String theme) {
-	this.theme.set(theme);
+    public void setTheme(List<String> theme) {
+	this.theme.setAll(theme);
     }
 
     public String getAgeCategory() {
@@ -182,4 +187,13 @@ public abstract class Item implements Serializable {
 	}
 	return true;
     }
+
+    @Override
+    public boolean test(String query) {
+	return Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
+		|| SearchPredicate.containsIgnoreCase(getDescription(), t)
+		|| SearchPredicate.containsIgnoreCase(getName(), t)
+		|| getThemes().stream().anyMatch(th -> SearchPredicate.containsIgnoreCase(th, t)));
+    }
+
 }

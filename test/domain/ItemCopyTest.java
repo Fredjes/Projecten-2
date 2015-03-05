@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -16,13 +17,13 @@ import persistence.JPAUtil;
 public class ItemCopyTest {
 
     private EntityManager manager = JPAUtil.getInstance().getEntityManager();
-    private Book item = new Book("Het thema", "8+", "De titel", "De uitleg", "De autheur", "De uitgeverij");
+    private Book item = new Book(Arrays.asList("Het thema"), "8+", "De titel", "De uitleg", "De autheur", "De uitgeverij");
     private ItemCopy copy;
 
     @Before
     public void init() {
 	manager.getTransaction().begin();
-	copy = new ItemCopy(25, "Gang 15", item, Damage.MODERATE_DAMAGE);
+	copy = new ItemCopy("25", "Gang 15", item, Damage.MODERATE_DAMAGE);
     }
 
     @After
@@ -50,7 +51,7 @@ public class ItemCopyTest {
 	assertEquals(item.getFXImage(), dbItem.getFXImage());
 	assertEquals(item.getName(), dbItem.getName());
 	assertEquals(item.getPublisher(), dbItem.getPublisher());
-	assertEquals(item.getTheme(), dbItem.getTheme());
+	assertEquals(item.getThemes(), dbItem.getThemes());
 	
 	manager.getTransaction().begin();
 	manager.remove(itemCopy);

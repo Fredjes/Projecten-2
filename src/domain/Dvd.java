@@ -1,6 +1,8 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -17,7 +19,7 @@ public class Dvd extends Item implements Serializable {
 	super();
     }
 
-    public Dvd(String theme, String ageCategory, String title, String description, String director) {
+    public Dvd(List<String> theme, String ageCategory, String title, String description, String director) {
 	super(title, description, theme, ageCategory);
 	setDirector(director);
     }
@@ -37,5 +39,12 @@ public class Dvd extends Item implements Serializable {
     @Override
     public String toString() {
 	return getName() + " (" + getDirector() + ")";
+    }
+
+    @Override
+    public boolean test(String query) {
+	boolean currentMatch = Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getDirector(), t));
+
+	return currentMatch || super.test(query);
     }
 }
