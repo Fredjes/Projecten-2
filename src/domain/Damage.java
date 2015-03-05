@@ -18,12 +18,8 @@ public enum Damage {
         this.translation = translation;
     }
 
-    public String getTranslation() {
-        return translation;
-    }
-
     @Override
     public String toString() {
-        return getTranslation();
+        return translation;
     }
 }
