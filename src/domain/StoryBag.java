@@ -1,6 +1,5 @@
 package domain;
 
-import domain.annotations.Display;
 import java.io.Serializable;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -21,9 +20,9 @@ import javax.persistence.Transient;
  * @author Frederik
  */
 @Entity
-@Access (AccessType.PROPERTY)
-@NamedQueries ({
-    @NamedQuery (name = "StoryBag.findAll", query = "SELECT sb FROM StoryBag sb")
+@Access(AccessType.PROPERTY)
+@NamedQueries({
+    @NamedQuery(name = "StoryBag.findAll", query = "SELECT sb FROM StoryBag sb")
 })
 public class StoryBag extends Item implements Serializable {
 
@@ -41,13 +40,12 @@ public class StoryBag extends Item implements Serializable {
     }
 
     @Transient
-    @Display (name = "Voorwerpen", single = false)
     public ObservableList<ItemCopy> getObservableItems() {
 	return items;
     }
 
-    @Access (AccessType.PROPERTY)
-    @OneToMany (cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @Access(AccessType.PROPERTY)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     public List<ItemCopy> getItems() {
 	return items;
     }

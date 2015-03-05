@@ -1,6 +1,5 @@
 package domain;
 
-import domain.annotations.Display;
 import java.io.Serializable;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,42 +19,41 @@ public class Cd extends Item implements Serializable {
     private ObservableList<String> songs = FXCollections.observableArrayList();
 
     public Cd() {
-        super();
+	super();
     }
 
     public Cd(String theme, String ageCategory, String title, String description, String artist) {
-        super(title, description, theme, ageCategory);
-        setArtist(artist);
+	super(title, description, theme, ageCategory);
+	setArtist(artist);
     }
 
-    @Display(name = "Artist")
     public StringProperty artistProperty() {
-        return artist;
+	return artist;
     }
 
     public String getArtist() {
-        return artist.get();
+	return artist.get();
     }
 
     public void setArtist(String artist) {
-        this.artist.set(artist);
+	this.artist.set(artist);
     }
 
     @Transient
     public ObservableList<String> getObservableSongList() {
-        return songs;
+	return songs;
     }
 
     public List<String> getSongList() {
-        return songs;
+	return songs;
     }
 
     public void setSongList(List<String> songList) {
-        this.songs = FXCollections.observableList(songList);
+	this.songs = FXCollections.observableList(songList);
     }
 
     @Override
     public String toString() {
-        return getName() + " (" + getArtist() + ")";
+	return getName() + " (" + getArtist() + ")";
     }
 }

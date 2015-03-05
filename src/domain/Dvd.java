@@ -1,6 +1,5 @@
 package domain;
 
-import domain.annotations.Display;
 import java.io.Serializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,29 +14,28 @@ public class Dvd extends Item implements Serializable {
     private StringProperty director = new SimpleStringProperty();
 
     public Dvd() {
-        super();
+	super();
     }
 
     public Dvd(String theme, String ageCategory, String title, String description, String director) {
-        super(title, description, theme, ageCategory);
-        setDirector(director);
+	super(title, description, theme, ageCategory);
+	setDirector(director);
     }
 
-    @Display(name = "Director")
     public StringProperty directorProperty() {
-        return director;
+	return director;
     }
 
     public String getDirector() {
-        return director.get();
+	return director.get();
     }
 
     public void setDirector(String director) {
-        this.director.set(director);
+	this.director.set(director);
     }
 
     @Override
     public String toString() {
-        return getName() + " (" + getDirector() + ")";
+	return getName() + " (" + getDirector() + ")";
     }
 }

@@ -1,6 +1,5 @@
 package domain;
 
-import domain.annotations.Display;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,11 +31,11 @@ import javax.persistence.Transient;
  * @author Frederik
  */
 @Entity
-@Access (AccessType.PROPERTY)
-@NamedQueries ({
-    @NamedQuery (name = "Item.findAll", query = "SELECT i FROM Item i")
+@Access(AccessType.PROPERTY)
+@NamedQueries({
+    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
 })
-@Inheritance (strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Item implements Serializable {
 
     private StringProperty name = new SimpleStringProperty();
@@ -44,8 +43,8 @@ public abstract class Item implements Serializable {
     private StringProperty theme = new SimpleStringProperty();
     private StringProperty ageCategory = new SimpleStringProperty();
 
-    @OneToMany (mappedBy = "item", cascade = CascadeType.ALL)
-    @Access (AccessType.FIELD)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @Access(AccessType.FIELD)
     private List<ItemCopy> itemCopies;
 
     private Image image;
@@ -62,28 +61,24 @@ public abstract class Item implements Serializable {
 	setDescription(description);
     }
 
-    @Display (name = "Thema")
     public StringProperty themeProperty() {
 	return theme;
     }
 
-    @Display (name = "Naam")
     public StringProperty nameProperty() {
 	return name;
     }
 
-    @Display (name = "Omschrijving")
     public StringProperty descriptionProperty() {
 	return description;
     }
 
-    @Display (name = "Leeftijd")
     public StringProperty ageCategoryProperty() {
 	return ageCategory;
     }
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
 	return id;
     }

@@ -1,6 +1,5 @@
 package domain;
 
-import domain.annotations.Display;
 import java.io.Serializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -14,7 +13,7 @@ import javax.persistence.Entity;
  * @author Frederik
  */
 @Entity
-@Access (AccessType.PROPERTY)
+@Access(AccessType.PROPERTY)
 public class Book extends Item implements Serializable {
 
     private StringProperty author = new SimpleStringProperty();
@@ -30,12 +29,10 @@ public class Book extends Item implements Serializable {
 	setPublisher(publisher);
     }
 
-    @Display (name = "Auteur")
     public StringProperty authorProperty() {
 	return author;
     }
 
-    @Display (name = "Uitgeverij")
     public StringProperty publisherProperty() {
 	return publisher;
     }

@@ -2,9 +2,6 @@ package gui;
 
 import domain.Item;
 import domain.ItemCopy;
-import domain.StoryBag;
-import gui.dialogs.DialogManager;
-import java.util.List;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -26,7 +23,7 @@ public class ScreenSwitcher extends StackPane {
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
 
-	getStylesheets().addAll("/resources/css/font-awesome.css", "/resources/css/global.css");
+	getStylesheets().addAll("/resources/css/global.css");
     }
 
     public void openMainMenu() {
@@ -68,21 +65,5 @@ public class ScreenSwitcher extends StackPane {
 	a.setTitle("Exemplaar verwijderen");
 	a.setHeaderText("Bent u zeker dat u dit exemplaar wilt verwijderen?");
 	a.setContentText("U staat op het punt om '" + copy.getItem().getName() + " #" + copy.getCopyNumber() + "' definitief te verwijderen.");
-    }
-
-    public boolean openManageItemsPopup(StoryBag bag) {
-	List<ItemCopy> result = DialogManager.showStorybagItemSelectionDialog(bag);
-	if (result != null) {
-	    bag.setItems(result);
-	}
-	return false;
-    }
-
-    public boolean openSelectItemPopup(ItemCopy copy) {
-	Item result = DialogManager.showItemCopyItemSelectionDialog(copy);
-	if (result != null) {
-	    copy.setItem(result);
-	}
-	return false;
     }
 }
