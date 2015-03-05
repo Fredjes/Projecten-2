@@ -37,7 +37,7 @@
                </font>
             </Label>
             <Label alignment="TOP_LEFT" text="Beschrijving" GridPane.rowIndex="1" />
-            <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="2">
+            <HBox alignment="CENTER_RIGHT" spacing="2.0" GridPane.rowIndex="2">
                <children>
                   <Label text="Exemplaren:">
                      <font>
@@ -47,28 +47,43 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Button contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" text="B1">
-                     <styleClass>
-                        <String fx:value="icon" />
-                        <String fx:value="icon-book-text" />
-                        <String fx:value="graphic" />
-                     </styleClass>
-                  </Button>
-                  <Button contentDisplay="BOTTOM" disable="true" focusTraversable="false" mnemonicParsing="false" text="B2">
-                     <styleClass>
-                        <String fx:value="icon" />
-                        <String fx:value="icon-book-text" />
-                        <String fx:value="graphic" />
-                     </styleClass>
-                  </Button>
-                  <Button contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" text="B3">
-                     <styleClass>
-                        <String fx:value="icon" />
-                        <String fx:value="icon-book-text" />
-                        <String fx:value="graphic" />
-                     </styleClass>
-                  </Button>
                   <Button mnemonicParsing="false" styleClass="btn" text="+" />
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="24.0" minWidth="22.0">
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="false" StackPane.alignment="CENTER">
+                           <image>
+                              <Image url="@book.png" />
+                           </image>
+                        </ImageView>
+                        <AnchorPane>
+                           <children>
+                              <Label fx:id="exemplaarId" graphicTextGap="0.0" layoutX="3.0" layoutY="3.0" text="1" textFill="WHITE" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+                  <StackPane layoutX="466.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="24.0" minWidth="22.0">
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="false" StackPane.alignment="CENTER">
+                           <image>
+                              <Image url="@book.png" />
+                           </image>
+                        </ImageView>
+                        <AnchorPane>
+                           <children>
+                              <Label fx:id="exemplaarId1" graphicTextGap="0.0" layoutX="3.0" layoutY="3.0" text="1" textFill="WHITE" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
                </children>
                <padding>
                   <Insets left="2.0" right="2.0" top="2.0" />
