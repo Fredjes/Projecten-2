@@ -61,6 +61,14 @@ public class SearchPredicate implements Predicate<Searchable> {
     }
 
     public static boolean containsIgnoreCase(String base, String contains) {
+	if (base == null) {
+	    return false;
+	}
+
+	if (contains == null) {
+	    return true;
+	}
+
 	return base.toLowerCase().contains(contains.toLowerCase());
     }
 }
