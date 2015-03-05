@@ -8,7 +8,7 @@ import java.util.function.Predicate;
  * allows the Searchable to always accept the search query (inserted by the
  * user). It is possible to directly implement the extended interface in the
  * domain classes, meaning this interface is mainly used as a "convenience
- * interface", avoiding possible future mistakes or inconveniences.
+ * interface" though it also has a semantic meaning.
  *
  * @author Frederik
  */
