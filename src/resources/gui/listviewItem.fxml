@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="105.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-border-style: solid; -fx-border-color: #E2E2E2;">
+               <children>
+                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" smooth="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@unknown.png" />
+                     </image></ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <GridPane hgap="2.0" layoutX="100.0" layoutY="8.0" vgap="2.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="NEVER" />
+          <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+          <RowConstraints vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <Label text="Titel">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" text="Beschrijving" GridPane.rowIndex="1" />
+            <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="2">
+               <children>
+                  <Label text="Exemplaren:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Button contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" text="B1">
+                     <styleClass>
+                        <String fx:value="icon" />
+                        <String fx:value="icon-book-text" />
+                        <String fx:value="graphic" />
+                     </styleClass>
+                  </Button>
+                  <Button contentDisplay="BOTTOM" disable="true" focusTraversable="false" mnemonicParsing="false" text="B2">
+                     <styleClass>
+                        <String fx:value="icon" />
+                        <String fx:value="icon-book-text" />
+                        <String fx:value="graphic" />
+                     </styleClass>
+                  </Button>
+                  <Button contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" text="B3">
+                     <styleClass>
+                        <String fx:value="icon" />
+                        <String fx:value="icon-book-text" />
+                        <String fx:value="graphic" />
+                     </styleClass>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="btn" text="+" />
+               </children>
+               <padding>
+                  <Insets left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

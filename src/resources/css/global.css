@@ -1,5 +1,17 @@
-.default-tile{
+.item-management-tile {
     -fx-background-color:  #5687f0;
+}
+
+.import-excel-tile {
+	-fx-background-color: #217346;
+}
+
+.loan-management-tile {
+	-fx-background-color: #D91E18;
+}
+
+.user-management-tile {
+	-fx-background-color: #F89406;
 }
 
 .logout-tile{
@@ -7,16 +19,13 @@
 }
 
 .title-bar{
-    -fx-background-color:  #666;
+    -fx-background-color:  #99C938;
 }
 
 .title-bar text,label{
+
     -fx-text-fill: white;
     -fx-font: 24px sans-serif;
-}
-
-.icon{
-    -fx-font-family: FontAwesome;
 }
 
 .tile .icon{
@@ -34,3 +43,218 @@
 .tile:hover, .clickable:hover{
     -fx-cursor: hand;
 }
+
+/* ############ BUTTON STYLING ############ */
+.btn {
+	-fx-background: none;
+	-fx-border: none;
+	-fx-font-weight: bold;
+	-fx-border-radius: none;
+	-fx-background-radius: none;
+	-fx-font-size: 14px;
+	-fx-text-fill: #FFFFFF;
+}
+
+.btn-small {
+	-fx-background: none;
+	-fx-border: none;
+	-fx-border-radius: none;
+	-fx-background-radius: none;
+	-fx-font-size: 13px;
+	-fx-text-fill: #FFFFFF;
+}
+
+.btn-toolIcon {
+	-fx-font-size: 27px;
+	-fx-padding: 0px 0px 0px 0px;
+	-fx-min-width: 40px;
+	-fx-min-height: 40px;
+	-fx-max-width: 40px;
+	-fx-max-height: 40px;
+	-fx-alignment: center;
+	-fx-text-origin: top;
+	-fx-cursor: hand;
+}
+
+.warning{
+	-fx-font-weight: bold;
+	-fx-text-fill: #ff0000;
+	-fx-font-size: 15px;
+}
+
+.btn-toolIcon:hover {
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #DEDEDE;
+	-fx-background-color: #FAFAFA;
+	-fx-border-radius: 2px;
+}
+
+.btn-toolIcon:armed{
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #DEDEDE;
+	-fx-background-color: #D8D8D8;
+	-fx-border-radius: 2px;
+}
+
+.btn-big {
+	-fx-padding: 5px 28px;
+}
+
+.btn-blue {
+	-fx-background-color: #0A5BC4;
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #236CCA
+}
+
+.btn-orange {
+	-fx-background-color: #DB562D;
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #E06843;
+}
+
+.btn-green {
+	-fx-background-color: #339933;
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #308C30;
+}
+
+.btn-lime {
+	-fx-background-color: #90CC18;
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #ABCE14;
+}
+
+.btn-red {
+	-fx-background-color: #E51400;
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #D11402;
+}
+
+.btn-default {
+	-fx-background-color: #858585;
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #7A7A7A;
+}
+
+.item-btn{
+	-fx-background-color: #3f88c3;
+}
+
+.text-green {
+	-fx-text-fill: #339933;
+}
+
+.text-red {
+	-fx-text-fill: #E51400;
+}
+
+/* ############ TAB STYLING ############ */
+
+
+.tab-pane {
+	-fx-border-color: #C8C8C8;
+	-fx-border-width: 1px;
+}
+.tab-pane .tab-header-area .tab-header-background {
+    //-fx-opacity: 0;
+}
+
+.tab-pane:top *.tab-header-area {
+    //-fx-background-insets: 0 0 0 1 0;
+    -fx-padding: 0.416667em 0em 0em 0em;
+}
+
+.tab-pane .tab
+{
+    -fx-background-color: #C1CFA5;
+    //-fx-background-insets: 0, 0, 1, 2;
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color: #99C938;
+    -fx-focus-color: 0;
+}
+
+.tab{
+    -fx-background-insets: 0 3 0 0;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #fff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.tab-bg-lime {
+	/*-fx-background-color: #C5D1AB;*/
+}
+
+/* ############ ICON STYLING ############ */
+
+.icon {
+	-fx-background: none;
+	-fx-border: none;
+	-fx-font-weight: normal;
+	-fx-border-radius: none;
+	-fx-background-radius: none;
+}
+
+.graphic {
+
+}
+
+.icon-book {
+	-fx-text-fill: #333;
+	-fx-font-size: 14px;
+}
+
+.icon-book-text {
+	-fx-text-fill: #333;
+	-fx-font-size: 12px;
+}
+
+.icon:hover {
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #DEDEDE;
+	-fx-background-color: #FAFAFA;
+	-fx-border-radius: 2px;
+}
+
+.icon:armed {
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #DEDEDE;
+	-fx-background-color: #D8D8D8;
+	-fx-border-radius: 2px;
+}
+
+/* ############ BOX STYLING ############ */
+
+.border-rounded {
+	-fx-border-radius: 5;
+	-fx-background-radius: 5;
+}
+
+/* ############ ICONS ############ */
+.icon-voorwerpen-beheren {}
+
+.icon-uitleningen-beheren {}
+
+.icon-gebruikers-beheren {}
+
+.icon-excel-importeren {}
+
+.icon-exemplaar {}
+
+.icon-te-laat{} 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" styleClass="title-bar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../logo_krekel.png" />
+               </image>
+            </ImageView>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hoofdmenu">
+               <font>
+                  <Font size="24.0" />
+               </font></Text>
+         </children></HBox>
+      <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1" />
+      <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2">
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+         <children>
+            <Button mnemonicParsing="false" style="-fx-border-width: 0px;" text="Aanmelden">
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="btn-green" />
+               </styleClass>
+            </Button>
+            <GridPane alignment="CENTER" hgap="3.0" HBox.hgrow="NEVER">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="V">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="item-management-tile" />
+                     </styleClass>
+                  </Button>
+                  <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="U" GridPane.columnIndex="1">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="loan-management-tile" />
+                     </styleClass>
+                  </Button>
+                  <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="G" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="user-management-tile" />
+                     </styleClass>
+                  </Button>
+                  <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="I" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="import-excel-tile" />
+                     </styleClass>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="14.0" left="10.0" right="10.0" top="14.0" />
+               </HBox.margin>
+            </GridPane>
+         </children></HBox>
+   </children>
+</GridPane>
