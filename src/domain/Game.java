@@ -1,6 +1,8 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -22,7 +24,7 @@ public class Game extends Item implements Serializable {
 	super();
     }
 
-    public Game(String theme, String ageCategory, String name, String description, String brand) {
+    public Game(List<String> theme, String ageCategory, String name, String description, String brand) {
 	super(name, description, theme, ageCategory);
 	setBrand(brand);
     }
@@ -43,4 +45,13 @@ public class Game extends Item implements Serializable {
     public String toString() {
 	return getName() + " (" + getBrand() + ")";
     }
+
+    @Override
+    public boolean test(String query) {
+	boolean currentMatch = Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getBrand(), t));
+	
+	return currentMatch || super.test(query);
+    }
+    
+    
 }

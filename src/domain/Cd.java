@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,7 +23,7 @@ public class Cd extends Item implements Serializable {
 	super();
     }
 
-    public Cd(String theme, String ageCategory, String title, String description, String artist) {
+    public Cd(List<String> theme, String ageCategory, String title, String description, String artist) {
 	super(title, description, theme, ageCategory);
 	setArtist(artist);
     }
@@ -55,5 +56,13 @@ public class Cd extends Item implements Serializable {
     @Override
     public String toString() {
 	return getName() + " (" + getArtist() + ")";
+    }
+
+    @Override
+    public boolean test(String query) {
+	boolean currentMatch = Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getArtist(), t) ||
+		getSongList().stream().anyMatch(s -> SearchPredicate.containsIgnoreCase(s, t)));
+	
+	return currentMatch || super.test(query);
     }
 }
