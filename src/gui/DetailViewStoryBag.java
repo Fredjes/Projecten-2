@@ -1,6 +1,8 @@
 package gui;
 
+import domain.PropertyListBinding;
 import domain.StoryBag;
+import domain.ThemeConverter;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -22,10 +24,12 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
     private TextField ageCategory;
     @FXML
     private ListView lstItems;
+    
+    private PropertyListBinding themesBinding;
 
     public DetailViewStoryBag() {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_storybag.fxml"));
+	themesBinding = new PropertyListBinding();
 
         try {
             loader.setRoot(this);
@@ -41,7 +45,7 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
     public void bind(StoryBag t) {
         Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
         Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        //Bindings.bindBidirectional(themes.textProperty(), t.getThemeFX(), StringConverter);
+        themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
         Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
         lstItems.setItems(t.getObservableItems());
     }

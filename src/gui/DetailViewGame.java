@@ -1,6 +1,8 @@
 package gui;
 
 import domain.Game;
+import domain.PropertyListBinding;
+import domain.ThemeConverter;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -21,10 +23,12 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
     private TextField ageCategory;
     @FXML
     private TextField brand;
+    
+    private PropertyListBinding themesBinding;
 
     public DetailViewGame() {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_game.fxml"));
+	themesBinding = new PropertyListBinding();
 
         try {
             loader.setRoot(this);
@@ -40,7 +44,7 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
     public void bind(Game t) {
         Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
         Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        //Bindings.bindBidirectional(themes.textProperty(), t.getThemeFX(), StringConverter);
+        themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
         Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
         Bindings.bindBidirectional(brand.textProperty(), t.brandProperty());
     }

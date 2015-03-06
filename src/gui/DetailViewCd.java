@@ -1,6 +1,8 @@
 package gui;
 
 import domain.Cd;
+import domain.PropertyListBinding;
+import domain.ThemeConverter;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -24,10 +26,12 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
     private TextField artist;
     @FXML
     private ListView lstSongs;
+    
+    private PropertyListBinding themesBinding;
 
     public DetailViewCd() {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_cd.fxml"));
+	themesBinding = new PropertyListBinding();
 
         try {
             loader.setRoot(this);
@@ -43,8 +47,8 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
     public void bind(Cd t) {
         Bindings.bindBidirectional(title.textProperty(), t.nameProperty());
         Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        //Bindings.bindBidirectional(themes.textProperty(), t.getThemeFX(), StringConverter);
         Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
+	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
         Bindings.bindBidirectional(artist.textProperty(), t.artistProperty());
         lstSongs.setItems(t.getObservableSongList());
     }

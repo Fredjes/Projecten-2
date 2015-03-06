@@ -1,6 +1,8 @@
 package gui;
 
 import domain.Book;
+import domain.PropertyListBinding;
+import domain.ThemeConverter;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -23,11 +25,13 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
     private TextField author;
     @FXML
     private TextField publisher;
+    
+    private PropertyListBinding themesBinding;
 
     public DetailViewBook() {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_book.fxml"));
-
+	themesBinding = new PropertyListBinding();
+	
         try {
             loader.setRoot(this);
             loader.setController(this);
@@ -42,7 +46,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
     public void bind(Book t) {
         Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
         Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        //Bindings.bindBidirectional(themes.textProperty(), t.getThemeFX(), StringConverter);
+        themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
         Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
         Bindings.bindBidirectional(author.textProperty(), t.authorProperty());
         Bindings.bindBidirectional(publisher.textProperty(), t.publisherProperty());
