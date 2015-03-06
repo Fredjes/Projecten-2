@@ -190,10 +190,23 @@ public abstract class Item implements Serializable, Searchable {
 
     @Override
     public boolean test(String query) {
-	return Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
-		|| SearchPredicate.containsIgnoreCase(getDescription(), t)
-		|| SearchPredicate.containsIgnoreCase(getName(), t)
-		|| getThemes().stream().anyMatch(th -> SearchPredicate.containsIgnoreCase(th, t)));
+	for (String t : query.split("\\s*")) {
+	    boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
+		    || SearchPredicate.containsIgnoreCase(getDescription(), t)
+		    || SearchPredicate.containsIgnoreCase(getName(), t);
+
+	    if (temp == false) {
+		for (String th : getThemes()) {
+		    if (SearchPredicate.containsIgnoreCase(th, t)) {
+			return true;
+		    }
+		}
+	    } else {
+		return true;
+	    }
+	}
+	
+	return false;
     }
 
 }

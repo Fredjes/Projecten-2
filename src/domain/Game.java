@@ -48,9 +48,19 @@ public class Game extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
-	boolean currentMatch = Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getBrand(), t));
+	for (String t : query.split("\\s*")) {
+	    boolean temp = SearchPredicate.containsIgnoreCase(getBrand(), t);
+
+	    if (temp == false) {
+		if (super.test(query)) {
+		    return true;
+		}
+	    } else {
+		return true;
+	    }
+	}
 	
-	return currentMatch || super.test(query);
+	return false;
     }
     
     

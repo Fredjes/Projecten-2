@@ -22,7 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
- * Representation of a real-life object containing the location, number for real-life identification, damage and definition of an item.
+ * Representation of a real-life object containing the location, number for
+ * real-life identification, damage and definition of an item.
  *
  * @author Frederik
  */
@@ -142,10 +143,20 @@ public class ItemCopy implements Serializable, Searchable {
 
     @Override
     public boolean test(String query) {
-	boolean currentResult = Arrays.stream(query.split("\\s")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getLocation(), t)
-		|| SearchPredicate.containsIgnoreCase(getCopyNumber(), t)
-		|| SearchPredicate.containsIgnoreCase(getDamage().toString(), t));
-	
-	return currentResult || (getItem() != null && getItem().test(query));
+	for (String t : query.split("\\s*")) {
+	    boolean temp = SearchPredicate.containsIgnoreCase(getLocation(), t)
+		    || SearchPredicate.containsIgnoreCase(getCopyNumber(), t)
+		    || SearchPredicate.containsIgnoreCase(getDamage().toString(), t);
+
+	    if (temp == false) {
+		if (getItem() != null && getItem().test(query)) {
+		    return true;
+		}
+	    } else {
+		return true;
+	    }
+	}
+
+	return false;
     }
 }

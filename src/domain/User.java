@@ -28,6 +28,7 @@ public class User implements Serializable, Searchable {
     private final StringProperty classRoom = new SimpleStringProperty();
     private final StringProperty email = new SimpleStringProperty();
     private final ObjectProperty<UserType> userType = new SimpleObjectProperty<>();
+    private String passwordHash;
 
     public static enum UserType {
 
@@ -45,6 +46,14 @@ public class User implements Serializable, Searchable {
 	}
     }
 
+    public String getPasswordHash() {
+	return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+	this.passwordHash = passwordHash;
+    }
+    
     public UserType getUserType() {
 	return userType.get();
     }
@@ -96,9 +105,17 @@ public class User implements Serializable, Searchable {
 
     @Override
     public boolean test(String query) {
-	return Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getClassRoom(), t) 
-		|| SearchPredicate.containsIgnoreCase(getEmail(), t) 
-		|| SearchPredicate.containsIgnoreCase(getName(), t) 
-		|| SearchPredicate.containsIgnoreCase(getUserType().toString(), t));
+	for (String t : query.split("\\s*")) {
+	    boolean temp = SearchPredicate.containsIgnoreCase(getClassRoom(), t)
+		    || SearchPredicate.containsIgnoreCase(getEmail(), t)
+		    || SearchPredicate.containsIgnoreCase(getName(), t)
+		    || SearchPredicate.containsIgnoreCase(getUserType().toString(), t);
+
+	    if (temp) {
+		return true;
+	    }
+	}
+
+	return false;
     }
 }

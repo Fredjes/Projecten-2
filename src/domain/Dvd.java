@@ -43,8 +43,18 @@ public class Dvd extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
-	boolean currentMatch = Arrays.stream(query.split("\\s*")).anyMatch(t -> SearchPredicate.containsIgnoreCase(getDirector(), t));
+	for (String t : query.split("\\s*")) {
+	    boolean temp = SearchPredicate.containsIgnoreCase(getDirector(), t);
 
-	return currentMatch || super.test(query);
+	    if (temp == false) {
+		if (super.test(query)) {
+		    return true;
+		}
+	    } else {
+		return true;
+	    }
+	}
+
+	return false;
     }
 }

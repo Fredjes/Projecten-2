@@ -1,7 +1,6 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,8 +65,16 @@ public class StoryBag extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
-	boolean currentMatch = super.test(query);
-	
-	return currentMatch || getItems().stream().anyMatch(i -> i.test(query));
+	if (super.test(query)) {
+	    return true;
+	}
+
+	for (ItemCopy item : getItems()) {
+	    if (item.test(query)) {
+		return true;
+	    }
+	}
+
+	return false;
     }
 }
