@@ -2,7 +2,10 @@ package gui;
 
 import domain.Item;
 import domain.ItemCopy;
+import java.util.List;
 import java.util.Optional;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -24,6 +27,18 @@ public class ScreenSwitcher extends StackPane {
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
 
 	getStylesheets().addAll("/resources/css/global.css");
+    }
+
+    public void loadIcons(Node node) {
+	if (node instanceof Parent) {
+	    Parent p = (Parent) node;
+	    if (!p.getChildrenUnmodifiable().isEmpty()) {
+		p.getChildrenUnmodifiable().forEach(this::loadIcons);
+	    }
+	}
+
+	List<String> classes = node.getStyleClass();
+	classes.stream().forEach(clazz -> IconConfig.identify(node, clazz));
     }
 
     public void openMainMenu() {

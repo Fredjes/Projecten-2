@@ -25,7 +25,6 @@ public class MainApp extends Application {
 
 	Font.loadFont(getClass().getResourceAsStream("/resources/fonts/FontAwesome.otf"), 14);
 	ItemRepository.getInstance().sync();
-
 	ScreenSwitcher switcher = new ScreenSwitcher();
 	switcher.openMainMenu();
 	primaryStage.setTitle("Mediatheek Applicatie");
