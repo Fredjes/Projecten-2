@@ -1,10 +1,12 @@
 package domain.gui;
 
+import gui.FontCache;
 import gui.ScreenSwitcher;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.junit.Assert;
 import org.junit.Before;
@@ -54,10 +56,25 @@ public class IconConfigTest {
     }
 
     @Test
+    public void testFontIsSetCorrectly() {
+	label.setText("test");
+	label.setFont(new Font("Arial", 16));
+	switcher.loadIcons(label);
+	Assert.assertEquals(FontCache.getIconFont(16), label.getFont());
+    }
+
+    @Test
     public void testTextReceivesIcon() {
 	text.setText("test");
 	switcher.loadIcons(text);
 	Assert.assertEquals("\uf071", text.getText());
+    }
+
+    @Test
+    public void testButtonReceivesIcon() {
+	button.setText("test");
+	switcher.loadIcons(button);
+	Assert.assertEquals("\uf0ce" + "test", button.getText());
     }
 
     @Test

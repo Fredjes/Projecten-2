@@ -20,7 +20,7 @@ public class IconConfig {
 	    put("icon-voorwerpen-beheren", new Icon("\uf1b3", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-uitleningen-beheren", new Icon("\uf02c", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-gebruikers-beheren", new Icon("\uf0c0", IconType.TEXT, IconPosition.OVERWRITE));
-	    put("icon-excel-importeren", new Icon("\uf0ce", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-excel-importeren", new Icon("\uf0ce", IconType.TEXT, IconPosition.PREPEND));
 	    put("icon-te-laat", new Icon("\uf071", IconType.TEXT, IconPosition.OVERWRITE));
 	}
     };
