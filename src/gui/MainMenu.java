@@ -33,8 +33,6 @@ public class MainMenu extends BorderPane {
     }
 
     private void initIcons() {
-	itemIcon.setText(IconConfig.ITEM_ICON);
-	logoutIcon.setText(IconConfig.LOGOUT_ICON);
     }
 
     public void onItemManage() {

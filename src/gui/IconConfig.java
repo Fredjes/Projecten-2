@@ -12,9 +12,6 @@ import javafx.scene.text.Text;
  */
 public class IconConfig {
 
-    public static final String ITEM_ICON = "\uf02a";
-    public static final String LOGOUT_ICON = "\uf08b";
-
     private static final HashMap<String, Icon> iconMapping = new HashMap() {
 	{
 	    put("icon-voorwerpen-beheren", new Icon("\uf1b3", IconType.TEXT, IconPosition.OVERWRITE));
