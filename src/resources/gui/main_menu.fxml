@@ -24,7 +24,7 @@
                   <RowConstraints vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+                  <VBox alignment="CENTER" onMouseClicked="#onManageUsers" prefHeight="200.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
                      <children>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="G">
                            <styleClass>
@@ -42,7 +42,7 @@
                         <String fx:value="tile" />
                      </styleClass>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <VBox alignment="CENTER" onMouseClicked="#onImportExcel" prefHeight="200.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="I">
                            <styleClass>
@@ -60,7 +60,7 @@
                         <String fx:value="tile" />
                      </styleClass>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+                  <VBox alignment="CENTER" onMouseClicked="#onManageLoans" prefHeight="200.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
                      <children>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="U">
                            <styleClass>
@@ -78,7 +78,7 @@
                         <String fx:value="tile" />
                      </styleClass>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+                  <VBox alignment="CENTER" onMouseClicked="#onManageItems" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="V">
                            <styleClass>
@@ -108,7 +108,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../logo_krekel.png" />
+                        <Image url="@img/logo_krekel.png" />
                      </image>
                   </ImageView>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hoofdmenu">
@@ -124,40 +124,55 @@
             <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1" />
             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-border-width: 0px;" text="Aanmelden">
+                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLogin" style="-fx-border-width: 0px;" text="Aanmelden">
                      <styleClass>
                         <String fx:value="btn" />
                         <String fx:value="btn-green" />
                      </styleClass>
                   </Button>
-                  <GridPane alignment="CENTER" hgap="3.0" HBox.hgrow="NEVER">
+                  <GridPane fx:id="navigationGrid" alignment="CENTER" hgap="5.0" vgap="5.0" HBox.hgrow="NEVER">
                      <children>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="V">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageItems" prefHeight="40.0" prefWidth="40.0" text="V">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
                            <styleClass>
-                              <String fx:value="btn" />
                               <String fx:value="item-management-tile" />
                               <String fx:value="icon-voorwerpen-beheren" />
+                              <String fx:value="tile" />
                            </styleClass>
                         </Button>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="U" GridPane.columnIndex="1">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageLoans" prefHeight="40.0" prefWidth="40.0" text="U" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
                            <styleClass>
-                              <String fx:value="btn" />
                               <String fx:value="loan-management-tile" />
                               <String fx:value="icon-uitleningen-beheren" />
+                              <String fx:value="tile" />
                            </styleClass>
                         </Button>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="G" GridPane.rowIndex="1">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageUsers" prefHeight="40.0" prefWidth="40.0" text="G" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
                            <styleClass>
-                              <String fx:value="btn" />
                               <String fx:value="user-management-tile" />
                               <String fx:value="icon-gebruikers-beheren" />
+                              <String fx:value="tile" />
                            </styleClass>
                         </Button>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="I" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onImportExcel" prefHeight="40.0" prefWidth="40.0" text="I" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
                            <styleClass>
-                              <String fx:value="btn" />
                               <String fx:value="import-excel-tile" />
                               <String fx:value="icon-excel-importeren" />
+                              <String fx:value="tile" />
                            </styleClass>
                         </Button>
                      </children>
@@ -170,7 +185,7 @@
                         <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <HBox.margin>
-                        <Insets bottom="14.0" left="10.0" right="10.0" top="14.0" />
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </HBox.margin>
                   </GridPane>
                </children>

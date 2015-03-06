@@ -1,7 +1,7 @@
-package gui;
+package domain;
 
-import gui.IconConfig.IconPosition;
-import gui.IconConfig.IconType;
+import domain.IconConfig.IconPosition;
+import domain.IconConfig.IconType;
 
 /**
  *

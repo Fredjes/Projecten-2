@@ -1,5 +1,6 @@
 package gui;
 
+import domain.IconConfig;
 import domain.Item;
 import domain.ItemCopy;
 import java.util.List;
@@ -20,6 +21,8 @@ public class ScreenSwitcher extends StackPane {
 
     private MainMenu menu = new MainMenu(this);
     private ItemManagement itemManagement = new ItemManagement(this);
+    private LoanManagement loanManagement = new LoanManagement(this);
+    private UserManagement userManagement = new UserManagement(this);
 
     public ScreenSwitcher() {
 	setPrefSize(1200, 650);
@@ -27,6 +30,11 @@ public class ScreenSwitcher extends StackPane {
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
 
 	getStylesheets().addAll("/resources/css/global.css");
+	
+	loadIcons(menu);
+	loadIcons(itemManagement);
+	loadIcons(loanManagement);
+	loadIcons(userManagement);
     }
 
     public void loadIcons(Node node) {
@@ -47,6 +55,18 @@ public class ScreenSwitcher extends StackPane {
 
     public void openItemManagement() {
 	getChildren().setAll(itemManagement);
+    }
+
+    public void openUserManagement() {
+	throw new UnsupportedOperationException();
+    }
+
+    public void openLoanManagement() {
+	getChildren().setAll(loanManagement);
+    }
+
+    public void openExcelImport() {
+	throw new UnsupportedOperationException();
     }
 
     public boolean openDeletePopup(Object o) {

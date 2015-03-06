@@ -12,78 +12,44 @@ import javafx.scene.layout.VBox;
  *
  * @author Frederik
  */
-public class ItemManagement extends BorderPane {
+public class LoanManagement extends BorderPane {
 
     @FXML
-    private TextField searchbar;
+    private VBox loanList;
 
     @FXML
     private GridPane navigationGrid;
 
     @FXML
+    private TextField searchBar;
+
+    @FXML
     private Button loginButton;
 
-    @FXML
-    private Button removeButton;
-
-    @FXML
-    private VBox itemList;
-    
-    @FXML
-    private Button addButton;
-
-    @FXML
-    private Button saveButton;
-    
     private ScreenSwitcher switcher;
 
-    public ItemManagement(ScreenSwitcher switcher) {
+    public LoanManagement(ScreenSwitcher switcher) {
 	this.switcher = switcher;
-	FXUtil.loadFXML(this, "item_management");
+	FXUtil.loadFXML(this, "loan_management");
     }
 
     @FXML
-    public void onSearch() {
-
-    }
-
-    @FXML
-    public void onBoek() {
+    public void onSearchQuery() {
 
     }
 
     @FXML
-    public void onSpelletje() {
+    public void onDisplayAllLoans() {
 
     }
 
     @FXML
-    public void onCd() {
+    public void onReturnLoan() {
 
     }
 
     @FXML
-    public void onDvd() {
-
-    }
-
-    @FXML
-    public void onStoryBag() {
-
-    }
-
-    @FXML
-    public void onSave() {
-
-    }
-
-    @FXML
-    public void onAdd() {
-
-    }
-
-    @FXML
-    public void onRemove() {
+    public void onRenewLoanPeriod() {
 
     }
 

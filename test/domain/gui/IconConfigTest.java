@@ -1,6 +1,6 @@
 package domain.gui;
 
-import gui.FontCache;
+import domain.FontCache;
 import gui.ScreenSwitcher;
 import javafx.application.Application;
 import javafx.scene.control.Button;
