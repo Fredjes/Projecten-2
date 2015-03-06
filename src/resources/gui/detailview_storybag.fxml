@@ -7,9 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
-    <Tab text="Details verteltas">
+    <Tab fx:id="tabDetail" text="Details verteltas">
          <content>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
@@ -30,10 +30,10 @@
                         <Label text="Omschrijving:" GridPane.rowIndex="1" />
                         <Label text="Thema's:" GridPane.rowIndex="2" />
                         <Label text="Leeftijdcategorie:" GridPane.rowIndex="3" />
-                        <TextField maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" />
-                        <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextArea maxHeight="-Infinity" prefHeight="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField maxWidth="-Infinity" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="name" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="ageCategory" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextArea fx:id="description" maxHeight="-Infinity" prefHeight="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="genre" maxWidth="-Infinity" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
@@ -55,14 +55,14 @@
             </HBox>
          </content>
     </Tab>
-      <Tab text="Voorwerpen in verteltas">
+      <Tab fx:id="tabItems" text="Voorwerpen in verteltas">
          <content>
             <HBox focusTraversable="true">
                <children>
-                  <ListView focusTraversable="false" prefHeight="200.0" HBox.hgrow="ALWAYS" />
+                  <ListView fx:id="lstItems" focusTraversable="false" prefHeight="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </content>
       </Tab>
   </tabs>
-</TabPane>
+</fx:root>
