@@ -1,7 +1,6 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,16 +11,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Access(AccessType.PROPERTY)
-@Table(name = "TBL_USER")
+@Access (AccessType.PROPERTY)
+@Table (name = "TBL_USER")
+@NamedQueries ({
+    @NamedQuery (name = "User.findAll", query = "SELECT u FROM User u")
+})
 public class User implements Serializable, Searchable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Access(AccessType.FIELD)
+    @GeneratedValue (strategy = GenerationType.AUTO)
+    @Access (AccessType.FIELD)
     private int id;
 
     private final StringProperty name = new SimpleStringProperty();
@@ -46,6 +50,10 @@ public class User implements Serializable, Searchable {
 	}
     }
 
+    public int getId() {
+	return id;
+    }
+
     public String getPasswordHash() {
 	return passwordHash;
     }
@@ -53,7 +61,7 @@ public class User implements Serializable, Searchable {
     public void setPasswordHash(String passwordHash) {
 	this.passwordHash = passwordHash;
     }
-    
+
     public UserType getUserType() {
 	return userType.get();
     }
@@ -86,7 +94,9 @@ public class User implements Serializable, Searchable {
 	this.email.set(email);
     }
 
-    /* Property */
+    /*
+     * Property
+     */
     public StringProperty nameProperty() {
 	return name;
     }
