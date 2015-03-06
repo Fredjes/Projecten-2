@@ -7,6 +7,9 @@
     <class>domain.Item</class>
     <class>domain.ItemCopy</class>
     <class>domain.StoryBag</class>
+    <class>domain.Cd</class>
+    <class>domain.Dvd</class>
+    <class>domain.User</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://bitcode.io:3306/krekelschool?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="projecten"/>
