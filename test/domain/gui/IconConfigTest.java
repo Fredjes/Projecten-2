@@ -74,7 +74,7 @@ public class IconConfigTest {
     public void testButtonReceivesIcon() {
 	button.setText("test");
 	switcher.loadIcons(button);
-	Assert.assertEquals("\uf0ce" + "test", button.getText());
+	Assert.assertEquals("\uf0ce", button.getText());
     }
 
     @Test
