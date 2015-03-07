@@ -19,16 +19,7 @@ public class LoanManagement extends BorderPane {
     private VBox loanList;
 
     @FXML
-    private GridPane navigationGrid;
-
-    @FXML
     private TextField searchBar;
-
-    @FXML
-    private Button loginButton;
-
-    @FXML
-    private Label authenicatedUserLabel;
 
     private ScreenSwitcher switcher;
     private LoanManagementController controller;
@@ -37,18 +28,6 @@ public class LoanManagement extends BorderPane {
 	this.switcher = switcher;
 	FXUtil.loadFXML(this, "loan_management");
 	this.controller = controller;
-    }
-
-    public Button getLoginButton() {
-	return loginButton;
-    }
-
-    public Label getAuthenicatedUserLabel() {
-	return authenicatedUserLabel;
-    }
-
-    public GridPane getNavigationGrid() {
-	return navigationGrid;
     }
 
     @FXML
@@ -69,31 +48,5 @@ public class LoanManagement extends BorderPane {
     @FXML
     public void onRenewLoanPeriod() {
 
-    }
-
-    @FXML
-    public void onLogin() {
-	this.controller.processLoginRequest(this, loginButton, authenicatedUserLabel);
-	this.controller.updateToAuthenticatedUser(this);
-    }
-
-    @FXML
-    public void onManageUsers() {
-	switcher.openUserManagement();
-    }
-
-    @FXML
-    public void onImportExcel() {
-	switcher.openExcelImport();
-    }
-
-    @FXML
-    public void onManageLoans() {
-	switcher.openLoanManagement();
-    }
-
-    @FXML
-    public void onManageItems() {
-	switcher.openItemManagement();
     }
 }
