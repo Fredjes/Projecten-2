@@ -16,16 +16,16 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Access (AccessType.PROPERTY)
-@Table (name = "TBL_USER")
-@NamedQueries ({
-    @NamedQuery (name = "User.findAll", query = "SELECT u FROM User u")
+@Access(AccessType.PROPERTY)
+@Table(name = "TBL_USER")
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 })
 public class User implements Serializable, Searchable {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    @Access (AccessType.FIELD)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Access(AccessType.FIELD)
     private int id;
 
     private final StringProperty name = new SimpleStringProperty();
@@ -48,6 +48,17 @@ public class User implements Serializable, Searchable {
 	public String toString() {
 	    return translation;
 	}
+    }
+
+    public User() {
+    }
+
+    public User(String name, String classroom, String email, UserType userType, String passwordHash) {
+	this.name.set(name);
+	this.classRoom.set(classroom);
+	this.email.set(email);
+	this.userType.set(userType);
+	this.passwordHash = passwordHash;
     }
 
     public int getId() {

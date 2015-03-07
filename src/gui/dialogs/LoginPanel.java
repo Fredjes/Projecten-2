@@ -27,26 +27,26 @@ public class LoginPanel extends GridPane {
     private Button btnLogin;
 
     public LoginPanel() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/login_panel.fxml"));
-        try {
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/login_panel.fxml"));
+	try {
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
 
-            initialize();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+	    initialize();
+	} catch (IOException ex) {
+	    throw new RuntimeException(ex);
+	}
     }
 
     /**
      * Settings for the loginPanel
      */
     public void initialize() {
-        Platform.runLater(() -> {
-            username.requestFocus();
-        });
-        btnLogin.focusTraversableProperty().set(false);
+	Platform.runLater(() -> {
+	    username.requestFocus();
+	});
+	btnLogin.focusTraversableProperty().set(false);
     }
 
     /**
@@ -55,7 +55,7 @@ public class LoginPanel extends GridPane {
      * @return username
      */
     public String getUsername() {
-        return username.textProperty().get().trim().replace(" ", "");
+	return username.textProperty().get().trim();
     }
 
     /**
@@ -64,7 +64,7 @@ public class LoginPanel extends GridPane {
      * @return password
      */
     public String getPassword() {
-        return password.textProperty().get().trim().replace(" ", "");
+	return password.textProperty().get().trim();
     }
 
     /**
@@ -73,7 +73,7 @@ public class LoginPanel extends GridPane {
      * @param e the custom action event to execute when the button is clicked
      */
     public void setOnLogin(EventHandler<ActionEvent> e) {
-        this.action = e;
+	this.action = e;
     }
 
     /**
@@ -83,7 +83,13 @@ public class LoginPanel extends GridPane {
      */
     @FXML
     public void onLogin(ActionEvent evt) {
-        action.handle(evt);
+	action.handle(evt);
     }
 
+    public void resetPanel(boolean showNotification) {
+	password.setText("");
+	if (showNotification) {
+	    PopupManager.showNotification("Kon niet aanmelden", "Het wachtwoord of de gebruikersnaam is verkeerd.", PopupManager.Notification.WARNING);
+	}
+    }
 }

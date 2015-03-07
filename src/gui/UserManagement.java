@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -10,6 +11,9 @@ import javafx.scene.layout.BorderPane;
 public class UserManagement extends BorderPane {
 
     private ScreenSwitcher switcher;
+    
+    @FXML
+    private Label authenicatedUserLabel;
     
     public UserManagement(ScreenSwitcher switcher) {
 	this.switcher = switcher;

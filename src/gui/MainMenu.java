@@ -1,10 +1,12 @@
 package gui;
 
-import gui.dialogs.DialogManager;
-import gui.dialogs.LoginPanel;
-import javafx.event.ActionEvent;
+import domain.controllers.MainMenuController;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -19,40 +21,48 @@ public class MainMenu extends BorderPane {
 
     @FXML
     private GridPane navigationGrid;
+    
+    @FXML
+    private Label authenicatedUserLabel;
 
     private ScreenSwitcher switcher;
+    private MainMenuController controller;
 
-    public MainMenu(ScreenSwitcher switcher) {
-        this.switcher = switcher;
-        FXUtil.loadFXML(this, "main_menu");
+    public MainMenu(ScreenSwitcher switcher, MainMenuController controller) {
+	this.switcher = switcher;
+	this.controller = controller;
+	FXUtil.loadFXML(this, "main_menu");
+	Platform.runLater(() -> controller.updateToAuthenticatedUser(this));
     }
 
     @FXML
     public void onManageUsers() {
-        switcher.openUserManagement();
+	switcher.openUserManagement();
     }
 
     @FXML
     public void onImportExcel() {
-        switcher.openExcelImport();
+	switcher.openExcelImport();
     }
 
     @FXML
     public void onManageLoans() {
-        switcher.openLoanManagement();
+	switcher.openLoanManagement();
     }
 
     @FXML
     public void onManageItems() {
-        switcher.openItemManagement();
+	switcher.openItemManagement();
+    }
+    
+    public GridPane getNavigationGrid(){
+	return navigationGrid;
     }
 
+    private final BooleanProperty loggedIn = new SimpleBooleanProperty();
     @FXML
     public void onLogin() {
-        LoginPanel p = new LoginPanel();
-        p.setOnLogin((ActionEvent e) -> {
-            System.out.printf("Username: %s%nPassword: %s%n", p.getUsername(), p.getPassword());
-        });
-        DialogManager.showPopOver(loginButton, p);
+	this.controller.processLoginRequest(this, loginButton, authenicatedUserLabel, loggedIn);
+	this.controller.updateToAuthenticatedUser(this);
     }
 }

@@ -124,6 +124,7 @@
             <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1" />
             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2">
                <children>
+                  <Label fx:id="authenicatedUserLabel" textFill="WHITE" />
                   <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLogin" style="-fx-border-width: 0px;" text="Aanmelden">
                      <styleClass>
                         <String fx:value="btn" />

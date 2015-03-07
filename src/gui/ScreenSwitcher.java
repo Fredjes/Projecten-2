@@ -3,6 +3,7 @@ package gui;
 import domain.IconConfig;
 import domain.Item;
 import domain.ItemCopy;
+import domain.controllers.MainMenuController;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.Node;
@@ -19,7 +20,7 @@ import javafx.scene.layout.StackPane;
  */
 public class ScreenSwitcher extends StackPane {
 
-    private MainMenu menu = new MainMenu(this);
+    private MainMenu menu = new MainMenu(this, new MainMenuController());
     private ItemManagement itemManagement = new ItemManagement(this);
     private LoanManagement loanManagement = new LoanManagement(this);
     private UserManagement userManagement = new UserManagement(this);
