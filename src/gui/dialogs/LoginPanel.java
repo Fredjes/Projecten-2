@@ -2,13 +2,20 @@ package gui.dialogs;
 
 import java.io.IOException;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import persistence.UserRepository;
 
 public class LoginPanel extends GridPane {
+
+    private UserRepository INSTANCE = UserRepository.getInstance();
+    private EventHandler<ActionEvent> action;
 
     @FXML
     private TextField username;
@@ -16,20 +23,67 @@ public class LoginPanel extends GridPane {
     @FXML
     private PasswordField password;
 
+    @FXML
+    private Button btnLogin;
+
     public LoginPanel() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/LoginPanel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/login_panel.fxml"));
         try {
             loader.setRoot(this);
             loader.setController(this);
             loader.load();
 
-            Platform.runLater(() -> {
-                username.requestFocus();
-            });
+            initialize();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
 
+    /**
+     * Settings for the loginPanel
+     */
+    public void initialize() {
+        Platform.runLater(() -> {
+            username.requestFocus();
+        });
+        btnLogin.focusTraversableProperty().set(false);
+    }
+
+    /**
+     * Get the username from the TextField
+     *
+     * @return username
+     */
+    public String getUsername() {
+        return username.textProperty().get().trim().replace(" ", "");
+    }
+
+    /**
+     * Get the password from the TextField
+     *
+     * @return password
+     */
+    public String getPassword() {
+        return password.textProperty().get().trim().replace(" ", "");
+    }
+
+    /**
+     * Set a custom action event when clicking the button
+     *
+     * @param e the custom action event to execute when the button is clicked
+     */
+    public void setOnLogin(EventHandler<ActionEvent> e) {
+        this.action = e;
+    }
+
+    /**
+     * Event that is called when the button is clicked
+     *
+     * @param evt Event to execute
+     */
+    @FXML
+    public void onLogin(ActionEvent evt) {
+        action.handle(evt);
     }
 
 }
