@@ -1,12 +1,15 @@
 package domain.controllers;
 
 import javafx.scene.layout.GridPane;
+import persistence.UserRepository;
 
 /**
  *
  * @author Frederik
  */
 public abstract class BaseController {
+
+    private final UserRepository INSTANCE = UserRepository.getInstance();
 
     /**
      * Log in using the email of the user and a non-encrypted password.
@@ -16,7 +19,7 @@ public abstract class BaseController {
      * @return true if the email and password are correct
      */
     public boolean login(String email, String password) {
-	throw new UnsupportedOperationException("UserRepository required");
+        return INSTANCE.authenticate(email, password);
     }
 
     /**
@@ -26,7 +29,7 @@ public abstract class BaseController {
      * @return the name of the currently logged in user
      */
     public String getNameAuthenticatedUser() {
-	throw new UnsupportedOperationException("UserRepository required");
+        return INSTANCE.getAuthenticatedUser().getName();
     }
 
     /**
@@ -34,8 +37,8 @@ public abstract class BaseController {
      * required.
      */
     public void removeSecuredNavigationNodes(GridPane navigationGrid) {
-	throw new UnsupportedOperationException("UserRepository required");
+        throw new UnsupportedOperationException("UserRepository required");
     }
-    
+
     public abstract void updateToAuthenticatedUser();
 }
