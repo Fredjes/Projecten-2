@@ -161,6 +161,18 @@
     -fx-text-fill: #E51400;
 }
 
+/* ############ TEXTFIELD STYLING ############ */
+.text-input {
+    -fx-focus-color: transparent;
+    -fx-border-color: #90CC18;
+    -fx-border-width: 1px;
+}
+
+.text-input:focused{
+     -fx-focus-color: transparent;
+}
+
+
 /* ############ TAB STYLING ############ */
 
 
