@@ -2,6 +2,7 @@ package gui;
 
 import domain.Item;
 import domain.ObservableListUtil;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,15 +33,23 @@ public class ItemManagementListItem extends AnchorPane {
 
     private EventHandler<ActionEvent> addHandler;
 
-    public ItemManagementListItem() {
+    private Item backedItem;
+
+    private ItemManagementListItem() {
 	FXUtil.loadFXML(this, "listview_item");
     }
 
     public ItemManagementListItem(Item item) {
 	this();
- 	title.setText(item.getName());
-	description.setText(item.getDescription());
-	itemImage.setImage(item.getFXImage());
+	
+	this.backedItem = item;
+	title.textProperty().bind(item.nameProperty());
+	description.textProperty().bind(item.descriptionProperty());
+	itemImage.imageProperty().bind(item.imageProperty());
+    }
+
+    public Item getBackedItem() {
+	return backedItem;
     }
 
     @FXML

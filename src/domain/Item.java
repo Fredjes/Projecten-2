@@ -4,8 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -42,16 +43,16 @@ import javax.persistence.Transient;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Item implements Serializable, Searchable {
 
-    private StringProperty name = new SimpleStringProperty();
-    private StringProperty description = new SimpleStringProperty();
-    private ObservableList<String> theme = FXCollections.observableArrayList();
-    private StringProperty ageCategory = new SimpleStringProperty();
+    private final StringProperty name = new SimpleStringProperty();
+    private final StringProperty description = new SimpleStringProperty();
+    private final ObservableList<String> theme = FXCollections.observableArrayList();
+    private final StringProperty ageCategory = new SimpleStringProperty();
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     @Access(AccessType.FIELD)
     private List<ItemCopy> itemCopies;
 
-    private Image image;
+    private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
 
     private int id;
 
@@ -126,13 +127,13 @@ public abstract class Item implements Serializable, Searchable {
 
     @Lob
     public byte[] getImage() {
-	if (image == null) {
+	if (image.get() == null) {
 	    return new byte[0];
 	}
 
 	try {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", out);
+	    ImageIO.write(SwingFXUtils.fromFXImage(image.get(), null), "png", out);
 	    return out.toByteArray();
 	} catch (IOException ex) {
 	    System.err.println("Could not save image-data: " + ex.getMessage());
@@ -146,7 +147,7 @@ public abstract class Item implements Serializable, Searchable {
 	}
 
 	try {
-	    image = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(bytes)), null);
+	    image.set(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(bytes)), null));
 	} catch (IOException ex) {
 	    System.err.println("Could not load image-data: " + ex.getMessage());
 	}
@@ -154,11 +155,15 @@ public abstract class Item implements Serializable, Searchable {
 
     @Transient
     public Image getFXImage() {
-	return image;
+	return image.get();
     }
 
     public void setFXImage(Image i) {
-	this.image = i;
+	this.image.set(i);
+    }
+
+    public ObjectProperty<Image> imageProperty() {
+	return image;
     }
 
     @Override

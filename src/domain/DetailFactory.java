@@ -6,11 +6,10 @@ import gui.DetailViewDvd;
 import gui.DetailViewGame;
 import gui.DetailViewStoryBag;
 import gui.DetailViewUser;
-import javafx.scene.control.TabPane;
 
 public class DetailFactory {
 
-    public static TabPane getDetailPane(FilterOption o) {
+    public static Object getDetailPane(FilterOption o) {
 	if (o == FilterOption.BOOK) {
 	    return new DetailViewBook();
 	} else if (o == FilterOption.CD) {
