@@ -60,24 +60,25 @@ public class Cd extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
-	for (String t : query.split("\\s*")) {
+	outer:
+	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getArtist(), t);
 
 	    if (temp == false) {
-		if (super.test(query)) {
-		    return true;
-		} else {
-		    for (String s : getSongList()) {
-			if (SearchPredicate.containsIgnoreCase(s, t)) {
-			    return true;
-			}
+		if (super.test(t)) {
+		    continue;
+		}
+		
+		for (String s : getSongList()) {
+		    if (SearchPredicate.containsIgnoreCase(s, t)) {
+			continue outer;
 		    }
 		}
-	    } else {
-		return true;
+		
+		return false;
 	    }
 	}
 
-	return false;
+	return true;
     }
 }

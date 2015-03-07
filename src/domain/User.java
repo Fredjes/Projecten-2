@@ -126,17 +126,17 @@ public class User implements Serializable, Searchable {
 
     @Override
     public boolean test(String query) {
-	for (String t : query.split("\\s*")) {
+	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getClassRoom(), t)
 		    || SearchPredicate.containsIgnoreCase(getEmail(), t)
 		    || SearchPredicate.containsIgnoreCase(getName(), t)
 		    || SearchPredicate.containsIgnoreCase(getUserType().toString(), t);
 
-	    if (temp) {
-		return true;
+	    if (!temp) {
+		return false;
 	    }
 	}
 
-	return false;
+	return true;
     }
 }

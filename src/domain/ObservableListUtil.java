@@ -22,15 +22,6 @@ public class ObservableListUtil {
 		if (c.wasRemoved()) {
 		    c.getRemoved().forEach(i -> converted.remove(converter.convert(i)));
 		}
-
-		if (c.wasPermutated()) {
-		    int oldIndex = c.getFrom();
-		    int newIndex = c.getPermutation(oldIndex);
-		    
-		    T temp = converted.get(oldIndex);
-		    converted.set(oldIndex, converted.get(newIndex));
-		    converted.set(newIndex, temp);
-		}
 	    }
 	});
 

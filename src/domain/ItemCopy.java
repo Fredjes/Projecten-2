@@ -143,20 +143,18 @@ public class ItemCopy implements Serializable, Searchable {
 
     @Override
     public boolean test(String query) {
-	for (String t : query.split("\\s*")) {
+	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getLocation(), t)
 		    || SearchPredicate.containsIgnoreCase(getCopyNumber(), t)
 		    || SearchPredicate.containsIgnoreCase(getDamage().toString(), t);
 
 	    if (temp == false) {
-		if (getItem() != null && getItem().test(query)) {
+		if (getItem() != null && getItem().test(t)) {
 		    return true;
 		}
-	    } else {
-		return true;
 	    }
 	}
 
-	return false;
+	return true;
     }
 }

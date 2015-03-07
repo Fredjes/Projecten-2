@@ -32,7 +32,7 @@ public class ScreenSwitcher extends BorderPane {
     private MainMenu menu;
     private ItemManagement itemManagement;
     private LoanManagement loanManagement;
-    private UserManagement userManagement = new UserManagement(this);
+    private UserManagement userManagement = new UserManagement();
     private Titlebar titlebar = new Titlebar(this, new TitleBarController());
 
     private UserRepository USER_REPO_INSTANCE = UserRepository.getInstance();
@@ -43,8 +43,8 @@ public class ScreenSwitcher extends BorderPane {
 
     public ScreenSwitcher() {
 	this.menu = new MainMenu(this, mainMenuController);
-	this.itemManagement = new ItemManagement(this, itemManagementController);
-	this.loanManagement = new LoanManagement(this, loanManagementController);
+	this.itemManagement = new ItemManagement(itemManagementController);
+	this.loanManagement = new LoanManagement(loanManagementController);
 
 	setPrefSize(1200, 650);
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);

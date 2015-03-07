@@ -21,11 +21,9 @@ public class LoanManagement extends BorderPane {
     @FXML
     private TextField searchBar;
 
-    private ScreenSwitcher switcher;
     private LoanManagementController controller;
 
-    public LoanManagement(ScreenSwitcher switcher, LoanManagementController controller) {
-	this.switcher = switcher;
+    public LoanManagement(LoanManagementController controller) {
 	FXUtil.loadFXML(this, "loan_management");
 	this.controller = controller;
     }

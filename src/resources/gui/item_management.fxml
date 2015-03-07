@@ -15,7 +15,7 @@
                <children>
                   <VBox maxHeight="1.7976931348623157E308" spacing="10.0">
                      <children>
-                        <TextField fx:id="searchbar" onAction="#onSearch" prefWidth="150.0" promptText="Zoeken..." />
+                        <TextField fx:id="searchbar" prefWidth="150.0" promptText="Zoeken..." />
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBoek" text="Boek">
                            <styleClass>
                               <String fx:value="item-btn" />
@@ -60,9 +60,9 @@
                   </VBox>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <ScrollPane fitToWidth="true" focusTraversable="false" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                        <ScrollPane fx:id="listScroller" fitToHeight="true" fitToWidth="true" focusTraversable="false" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                            <content>
-                              <VBox fx:id="itemList" alignment="CENTER" maxWidth="1.7976931348623157E308" />
+                              <ListView fx:id="itemList" />
                            </content>
                         </ScrollPane>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="0.0" spacing="10.0" style="-fx-border-color: #C8C8C8; -fx-border-width: 1px;" VBox.vgrow="NEVER">
