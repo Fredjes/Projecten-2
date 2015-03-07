@@ -1,3 +1,8 @@
+#loginStatusLabel{
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
 .item-management-tile {
     -fx-background-color:  #5687f0;
 }
@@ -169,7 +174,7 @@
 }
 
 .text-input:focused{
-     -fx-focus-color: transparent;
+    -fx-focus-color: transparent;
 }
 
 

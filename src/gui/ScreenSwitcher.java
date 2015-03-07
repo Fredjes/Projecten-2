@@ -3,6 +3,8 @@ package gui;
 import domain.IconConfig;
 import domain.Item;
 import domain.ItemCopy;
+import domain.controllers.ItemManagementController;
+import domain.controllers.LoanManagementController;
 import domain.controllers.MainMenuController;
 import java.util.List;
 import java.util.Optional;
@@ -20,12 +22,20 @@ import javafx.scene.layout.StackPane;
  */
 public class ScreenSwitcher extends StackPane {
 
-    private MainMenu menu = new MainMenu(this, new MainMenuController());
-    private ItemManagement itemManagement = new ItemManagement(this);
-    private LoanManagement loanManagement = new LoanManagement(this);
+    private MainMenu menu;
+    private ItemManagement itemManagement;
+    private LoanManagement loanManagement;
     private UserManagement userManagement = new UserManagement(this);
+    
+    private MainMenuController mainMenuController = new MainMenuController();
+    private ItemManagementController itemManagementController = new ItemManagementController();
+    private LoanManagementController loanManagementController = new LoanManagementController();
 
     public ScreenSwitcher() {
+	this.menu = new MainMenu(this, mainMenuController);
+	this.itemManagement = new ItemManagement(this, itemManagementController);
+	this.loanManagement = new LoanManagement(this, loanManagementController);
+	
 	setPrefSize(1200, 650);
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
@@ -51,19 +61,21 @@ public class ScreenSwitcher extends StackPane {
     }
 
     public void openMainMenu() {
+	mainMenuController.updateToAuthenticatedUser(menu);
 	getChildren().setAll(menu);
     }
 
     public void openItemManagement() {
+	itemManagementController.updateToAuthenticatedUser(itemManagement);
 	getChildren().setAll(itemManagement);
     }
 
     public void openUserManagement() {
-	loadIcons(menu);
 	throw new UnsupportedOperationException();
     }
 
     public void openLoanManagement() {
+	loanManagementController.updateToAuthenticatedUser(loanManagement);
 	getChildren().setAll(loanManagement);
     }
 

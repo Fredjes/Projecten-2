@@ -32,7 +32,14 @@ public class MainMenu extends BorderPane {
 	this.switcher = switcher;
 	this.controller = controller;
 	FXUtil.loadFXML(this, "main_menu");
-	Platform.runLater(() -> controller.updateToAuthenticatedUser(this));
+    }
+    
+    public Button getLoginButton() {
+	return loginButton;
+    }
+
+    public Label getAuthenicatedUserLabel() {
+	return authenicatedUserLabel;
     }
 
     @FXML
@@ -59,10 +66,9 @@ public class MainMenu extends BorderPane {
 	return navigationGrid;
     }
 
-    private final BooleanProperty loggedIn = new SimpleBooleanProperty();
     @FXML
     public void onLogin() {
-	this.controller.processLoginRequest(this, loginButton, authenicatedUserLabel, loggedIn);
+	this.controller.processLoginRequest(this, loginButton, authenicatedUserLabel);
 	this.controller.updateToAuthenticatedUser(this);
     }
 }

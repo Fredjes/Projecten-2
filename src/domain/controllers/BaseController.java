@@ -34,10 +34,9 @@ public abstract class BaseController<E extends Node> {
 	return INSTANCE.authenticate(email, password);
     }
 
-    public void processLoginRequest(E root, Button loginButton, Label authenticatedUserLabel, BooleanProperty loggedIn) {
-	if (loggedIn.get()) {
+    public void processLoginRequest(E root, Button loginButton, Label authenticatedUserLabel) {
+	if (INSTANCE.getAuthenticatedUser() != null) {
 	    INSTANCE.logout();
-	    loggedIn.set(false);
 	    loginButton.setText("Aanmelden");
 	    authenticatedUserLabel.setText("");
 	} else {
@@ -48,11 +47,9 @@ public abstract class BaseController<E extends Node> {
 		    authenticatedUserLabel.setText("Welkom " + INSTANCE.getAuthenticatedUser().getName());
 		    pop.hide();
 		    loginButton.setText("Afmelden");
-		    loggedIn.set(true);
 		} else {
 		    loginPanel.resetPanel(true);
 		    authenticatedUserLabel.setText("");
-		    loggedIn.set(false);
 		}
 	    });
 	}

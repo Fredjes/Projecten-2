@@ -1,5 +1,6 @@
 package gui;
 
+import domain.controllers.ItemManagementController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,21 +29,35 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     private VBox itemList;
-    
+
     @FXML
     private Button addButton;
 
     @FXML
     private Button saveButton;
-    
+
     @FXML
     private Label authenicatedUserLabel;
-    
-    private ScreenSwitcher switcher;
 
-    public ItemManagement(ScreenSwitcher switcher) {
+    private ScreenSwitcher switcher;
+    private ItemManagementController controller;
+
+    public ItemManagement(ScreenSwitcher switcher, ItemManagementController controller) {
 	this.switcher = switcher;
 	FXUtil.loadFXML(this, "item_management");
+	this.controller = controller;
+    }
+
+    public GridPane getNavigationGrid() {
+	return navigationGrid;
+    }
+
+    public Button getLoginButton() {
+	return loginButton;
+    }
+
+    public Label getAuthenicatedUserLabel() {
+	return authenicatedUserLabel;
     }
 
     @FXML
@@ -92,7 +107,8 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     public void onLogin() {
-
+	this.controller.processLoginRequest(this, loginButton, authenicatedUserLabel);
+	this.controller.updateToAuthenticatedUser(this);
     }
 
     @FXML
