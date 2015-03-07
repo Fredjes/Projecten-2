@@ -29,8 +29,8 @@ public class ScreenSwitcher extends StackPane {
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
 
-	getStylesheets().addAll("/resources/css/global.css");
-	
+	getStylesheets().add("/resources/css/global.css");
+
 	loadIcons(menu);
 	loadIcons(itemManagement);
 	loadIcons(loanManagement);
@@ -58,6 +58,7 @@ public class ScreenSwitcher extends StackPane {
     }
 
     public void openUserManagement() {
+	loadIcons(menu);
 	throw new UnsupportedOperationException();
     }
 

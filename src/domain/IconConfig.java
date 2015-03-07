@@ -22,8 +22,6 @@ public class IconConfig {
 	}
     };
 
-    private static HashMap<Integer, Font> fontCache = new HashMap();
-
     public enum IconType {
 
 	GRAPHIC, TEXT

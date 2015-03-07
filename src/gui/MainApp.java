@@ -31,7 +31,7 @@ public class MainApp extends Application {
 	Scene scene = new Scene(switcher);
 	primaryStage.setScene(scene);
 	primaryStage.show();
-//	ScenicView.show(scene);
+	//ScenicView.show(scene);
 
     }
 

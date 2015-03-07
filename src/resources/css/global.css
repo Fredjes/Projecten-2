@@ -25,7 +25,6 @@
 .title-bar text,label{
 
     -fx-text-fill: white;
-    -fx-font: 24px sans-serif;
 }
 
 .tile .icon{
@@ -254,14 +253,26 @@
 
 /* ############ ICONS ############ */
 
-.icon-voorwerpen-beheren {}
+.icon-voorwerpen-beheren {
+    -fx-font-family: "FontAwesome";
+}
 
-.icon-uitleningen-beheren {}
+.icon-uitleningen-beheren {
+    -fx-font-family: "FontAwesome";
+}
 
-.icon-gebruikers-beheren {}
+.icon-gebruikers-beheren {
+    -fx-font-family: "FontAwesome";
+}
 
-.icon-excel-importeren {}
+.icon-excel-importeren {
+    -fx-font-family: "FontAwesome";
+}
 
-.icon-exemplaar {}
+.icon-exemplaar {
+    -fx-font-family: "FontAwesome";
+}
 
-.icon-te-laat{} 
+.icon-te-laat{
+    -fx-font-family: "FontAwesome";
+} 
