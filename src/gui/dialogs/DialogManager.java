@@ -18,6 +18,7 @@ public class DialogManager {
     public static void showPopOver(Node parent, Node content) {
         PopOver logPop = new PopOver(content);
         logPop.setArrowLocation(PopOver.ArrowLocation.TOP_RIGHT);
+	logPop.setAutoHide(true);
         logPop.show(parent);
     }
 }
