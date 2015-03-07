@@ -24,7 +24,7 @@ public class Titlebar extends GridPane {
 
     @FXML
     private Label authenicatedUserLabel;
-    
+
     private ScreenSwitcher switcher;
     private TitleBarController controller;
 
@@ -33,7 +33,10 @@ public class Titlebar extends GridPane {
 	FXUtil.loadFXML(this, "titlebar");
 	this.controller = controller;
     }
-    
+
+    public void setTitle(String title) {
+	this.title.textProperty().set(title);
+    }
 
     @FXML
     public void onLogin() {

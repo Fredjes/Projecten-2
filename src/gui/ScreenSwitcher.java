@@ -74,11 +74,13 @@ public class ScreenSwitcher extends BorderPane {
 
     public void openMainMenu() {
 	mainMenuController.updateToAuthenticatedUser(menu);
+	titlebar.setTitle("Hoofdmenu");
 	setCenter(menu);
     }
 
     public void openItemManagement() {
 	itemManagementController.updateToAuthenticatedUser(itemManagement);
+	titlebar.setTitle("Voorwerpen beheren");
 	setCenter(itemManagement);
     }
 
@@ -88,6 +90,7 @@ public class ScreenSwitcher extends BorderPane {
 
     public void openLoanManagement() {
 	loanManagementController.updateToAuthenticatedUser(loanManagement);
+	titlebar.setTitle("Uitleningen beheren");
 	setCenter(loanManagement);
     }
 

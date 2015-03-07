@@ -1,13 +1,17 @@
 package gui;
 
+import domain.Item;
+import domain.ObservableListUtil;
+import domain.SearchPredicate;
 import domain.controllers.ItemManagementController;
+import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import persistence.ItemRepository;
 
 /**
  *
@@ -32,11 +36,15 @@ public class ItemManagement extends BorderPane {
 
     private ScreenSwitcher switcher;
     private ItemManagementController controller;
+    private SearchPredicate searchPredicate;
 
     public ItemManagement(ScreenSwitcher switcher, ItemManagementController controller) {
+	searchPredicate = new SearchPredicate();
 	this.switcher = switcher;
 	FXUtil.loadFXML(this, "item_management");
 	this.controller = controller;
+	ItemRepository.getInstance().sync();
+	Bindings.bindContent(itemList.getChildren(), ObservableListUtil.convertObservableList(SearchPredicate.filteredListFor((ObservableList<Item>) ItemRepository.getInstance().getItems(), searchPredicate), ItemManagementListItem.getItemManagementListItemConverter()));
     }
 
     @FXML

@@ -27,6 +27,15 @@
     -fx-background-color:  #99C938;
 }
 
+.bold{
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+#item-title{
+    -fx-font-size: 18px;
+}
+
 .title-bar text,label{
 
     -fx-text-fill: white;
