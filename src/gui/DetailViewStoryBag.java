@@ -24,30 +24,40 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
     private TextField ageCategory;
     @FXML
     private ListView lstItems;
-    
+
     private PropertyListBinding themesBinding;
 
+    private StoryBag boundedStoryBag;
+
     public DetailViewStoryBag() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_storybag.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_storybag.fxml"));
 	themesBinding = new PropertyListBinding();
 
-        try {
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+	try {
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+	} catch (IOException ex) {
+	    throw new RuntimeException(ex);
+	}
     }
 
     @Override
     public void bind(StoryBag t) {
-        Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
-        Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
-        Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
-        lstItems.setItems(t.getObservableItems());
+	if (boundedStoryBag != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundedStoryBag.nameProperty());
+	    Bindings.unbindBidirectional(description.textProperty(), boundedStoryBag.descriptionProperty());
+	    themesBinding.unbind();
+	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedStoryBag.ageCategoryProperty());
+	}
+
+	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
+	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
+	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
+	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
+	lstItems.setItems(t.getObservableItems());
+	this.boundedStoryBag = t;
     }
 
 }

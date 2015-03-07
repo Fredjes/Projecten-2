@@ -23,30 +23,41 @@ public class DetailViewDvd extends TabPane implements Binding<Dvd> {
     private TextField ageCategory;
     @FXML
     private TextField director;
-    
+
     private PropertyListBinding themesBinding;
 
+    private Dvd boundedDvd;
+
     public DetailViewDvd() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_dvd.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_dvd.fxml"));
 	themesBinding = new PropertyListBinding();
 
-        try {
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+	try {
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+	} catch (IOException ex) {
+	    throw new RuntimeException(ex);
+	}
     }
 
     @Override
     public void bind(Dvd t) {
-        Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
-        Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
-        Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
-        Bindings.bindBidirectional(director.textProperty(), t.directorProperty());
+	if (boundedDvd != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundedDvd.nameProperty());
+	    Bindings.unbindBidirectional(description.textProperty(), boundedDvd.descriptionProperty());
+	    themesBinding.unbind();
+	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedDvd.ageCategoryProperty());
+	    Bindings.unbindBidirectional(director.textProperty(), boundedDvd.directorProperty());
+	}   
+
+	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
+	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
+	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
+	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
+	Bindings.bindBidirectional(director.textProperty(), t.directorProperty());
+	boundedDvd = t;
     }
 
 }

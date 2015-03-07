@@ -23,30 +23,41 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
     private TextField ageCategory;
     @FXML
     private TextField brand;
-    
+
+    private Game boundedGame;
+
     private PropertyListBinding themesBinding;
 
     public DetailViewGame() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_game.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_game.fxml"));
 	themesBinding = new PropertyListBinding();
 
-        try {
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+	try {
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+	} catch (IOException ex) {
+	    throw new RuntimeException(ex);
+	}
     }
 
     @Override
     public void bind(Game t) {
-        Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
-        Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
-        Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
-        Bindings.bindBidirectional(brand.textProperty(), t.brandProperty());
+	if (boundedGame != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundedGame.nameProperty());
+	    Bindings.unbindBidirectional(description.textProperty(), boundedGame.descriptionProperty());
+	    themesBinding.unbind();
+	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedGame.ageCategoryProperty());
+	    Bindings.unbindBidirectional(brand.textProperty(), boundedGame.brandProperty());
+	}
+
+	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
+	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
+	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
+	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
+	Bindings.bindBidirectional(brand.textProperty(), t.brandProperty());
+	this.boundedGame = t;
     }
 
 }

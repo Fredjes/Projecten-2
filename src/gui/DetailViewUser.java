@@ -23,26 +23,35 @@ public class DetailViewUser extends TabPane implements Binding<User> {
     @FXML
     private ChoiceBox<FilterOption> userType;
 
+    private User boundedUser;
+
     public DetailViewUser() {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_user.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_user.fxml"));
 
-        try {
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+	try {
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+	} catch (IOException ex) {
+	    throw new RuntimeException(ex);
+	}
     }
 
     @Override
     public void bind(User t) {
-        Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
-        Bindings.bindBidirectional(classRoom.textProperty(), t.classRoomProperty());
-        Bindings.bindBidirectional(email.textProperty(), t.emailProperty());
-        userType.setItems(FXCollections.observableArrayList(FilterOption.values()));
+	if (boundedUser != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundedUser.nameProperty());
+	    Bindings.unbindBidirectional(classRoom.textProperty(), boundedUser.classRoomProperty());
+	    Bindings.unbindBidirectional(email.textProperty(), boundedUser.emailProperty());
+	}
+
+	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
+	Bindings.bindBidirectional(classRoom.textProperty(), t.classRoomProperty());
+	Bindings.bindBidirectional(email.textProperty(), t.emailProperty());
+	userType.setItems(FXCollections.observableArrayList(FilterOption.values()));
+	this.boundedUser = t;
     }
 
 }

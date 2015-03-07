@@ -26,31 +26,43 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
     private TextField artist;
     @FXML
     private ListView lstSongs;
-    
+
     private PropertyListBinding themesBinding;
 
+    private Cd boundedCd;
+
     public DetailViewCd() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_cd.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_cd.fxml"));
 	themesBinding = new PropertyListBinding();
 
-        try {
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+	try {
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+	} catch (IOException ex) {
+	    throw new RuntimeException(ex);
+	}
     }
 
     @Override
     public void bind(Cd t) {
-        Bindings.bindBidirectional(title.textProperty(), t.nameProperty());
-        Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
+	if (boundedCd != null) {
+	    Bindings.unbindBidirectional(title.textProperty(), boundedCd.nameProperty());
+	    Bindings.unbindBidirectional(description.textProperty(), boundedCd.descriptionProperty());
+	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedCd.ageCategoryProperty());
+	    themesBinding.unbind();
+	    Bindings.unbindBidirectional(artist.textProperty(), boundedCd.artistProperty());
+	    lstSongs.setItems(boundedCd.getObservableSongList());
+	}
+
+	Bindings.bindBidirectional(title.textProperty(), t.nameProperty());
+	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
+	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
 	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
-        Bindings.bindBidirectional(artist.textProperty(), t.artistProperty());
-        lstSongs.setItems(t.getObservableSongList());
+	Bindings.bindBidirectional(artist.textProperty(), t.artistProperty());
+	lstSongs.setItems(t.getObservableSongList());
+	this.boundedCd = t;
     }
 
 }

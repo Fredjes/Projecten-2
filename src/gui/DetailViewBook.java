@@ -25,31 +25,43 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
     private TextField author;
     @FXML
     private TextField publisher;
-    
+
     private PropertyListBinding themesBinding;
 
-    public DetailViewBook() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_book.fxml"));
-	themesBinding = new PropertyListBinding();
-	
-        try {
-            loader.setRoot(this);
-            loader.setController(this);
-            loader.load();
+    private Book boundedBook;
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+    public DetailViewBook() {
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_book.fxml"));
+	themesBinding = new PropertyListBinding();
+
+	try {
+	    loader.setRoot(this);
+	    loader.setController(this);
+	    loader.load();
+
+	} catch (IOException ex) {
+	    throw new RuntimeException(ex);
+	}
     }
 
     @Override
     public void bind(Book t) {
-        Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
-        Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-        themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
-        Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
-        Bindings.bindBidirectional(author.textProperty(), t.authorProperty());
-        Bindings.bindBidirectional(publisher.textProperty(), t.publisherProperty());
+	if (boundedBook != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundedBook.nameProperty());
+	    Bindings.unbindBidirectional(description.textProperty(), boundedBook.descriptionProperty());
+	    themesBinding.unbind();
+	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedBook.ageCategoryProperty());
+	    Bindings.unbindBidirectional(author.textProperty(), boundedBook.authorProperty());
+	    Bindings.unbindBidirectional(publisher.textProperty(), boundedBook.publisherProperty());
+	}
+
+	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
+	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
+	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
+	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
+	Bindings.bindBidirectional(author.textProperty(), t.authorProperty());
+	Bindings.bindBidirectional(publisher.textProperty(), t.publisherProperty());
+	this.boundedBook = t;
     }
 
 }
