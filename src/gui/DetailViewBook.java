@@ -7,12 +7,11 @@ import gui.dialogs.PopupManager;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -22,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.TransferMode;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
+import persistence.ItemRepository;
+import persistence.JPAUtil;
 
 public class DetailViewBook extends TabPane implements Binding<Book> {
 
@@ -41,6 +42,9 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
     private ImageView image;
 
     private PropertyListBinding themesBinding;
+
+    @FXML
+    private Button saveImage;
 
     private Book boundedBook;
 
@@ -94,6 +98,17 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
+    }
+
+    @FXML
+    public void onSaveImage() {
+	saveImage.setDisable(true);
+	if (JPAUtil.getInstance().getEntityManagerFactory().isOpen()) {
+	    ItemRepository.getInstance().saveChanges();
+	    JPAUtil.getInstance().getEntityManagerFactory().close();
+	}
+	saveImage.setDisable(false);
+	PopupManager.showNotification("", "De afbeelding is opgeslagen.");
     }
 
     @Override
