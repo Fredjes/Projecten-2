@@ -1,26 +1,20 @@
 package gui;
 
 import domain.Book;
+import domain.DetailViewUtil;
+import domain.Item;
 import domain.PropertyListBinding;
 import domain.ThemeConverter;
-import gui.dialogs.PopupManager;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.TransferMode;
-import javafx.util.Duration;
-import org.controlsfx.control.PopOver;
 import persistence.ItemRepository;
 import persistence.JPAUtil;
 
@@ -43,12 +37,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 
     private PropertyListBinding themesBinding;
 
-    @FXML
-    private Button saveImage;
-
-    private Book boundedBook;
-
-    private PopOver shownPopup;
+    private Book boundBook;
 
     public DetailViewBook() {
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_book.fxml"));
@@ -59,42 +48,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	    loader.setController(this);
 	    loader.load();
 	    description.setWrapText(true);
-
-	    image.setOnDragEntered(evt -> {
-		if (evt.getDragboard().hasFiles()) {
-		    Label shownLabel = new Label();
-
-		    if (evt.getDragboard().getFiles().size() == 1 && evt.getDragboard().getFiles().get(0).getAbsolutePath().toLowerCase().matches(".*(png|gif|jpg|jps|mpo)$")) {
-			shownLabel.setText("Afbeelding toevoegen aan voorwerp.");
-		    } else {
-			shownLabel.setText("Gelieve een afbeelding toe te voegen.");
-		    }
-
-		    shownLabel.setPadding(new Insets(-5, 5, -5, 5));
-		    shownPopup = PopupManager.showPopOver(image, shownLabel, PopOver.ArrowLocation.RIGHT_BOTTOM);
-		}
-	    });
-
-	    image.setOnDragDropped(evt -> {
-		if (evt.getDragboard().hasFiles() && evt.getDragboard().getFiles().size() == 1 && evt.getDragboard().getFiles().get(0).getAbsolutePath().toLowerCase().matches(".*(png|gif|jpg|jps|mpo)$")) {
-		    try {
-			boundedBook.imageProperty().set(new Image(new FileInputStream(evt.getDragboard().getFiles().get(0))));
-		    } catch (FileNotFoundException ex) {
-			PopupManager.showNotification("Mislukt", "De afbeelding kon niet worden toegevoegd.", PopupManager.Notification.ERROR);
-		    }
-		}
-	    });
-
-	    image.setOnDragExited(evt -> {
-		shownPopup.hide(Duration.seconds(1));
-	    });
-
-	    image.setOnDragOver(evt -> {
-		if (evt.getDragboard().hasFiles() && evt.getDragboard().getFiles().size() == 1 && evt.getDragboard().getFiles().get(0).getAbsolutePath().toLowerCase().matches(".*(png|gif|jpg|jps|mpo)$")) {
-		    evt.acceptTransferModes(TransferMode.LINK);
-		}
-	    });
-
+	    DetailViewUtil.initImageDragAndDrop(image);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
@@ -102,25 +56,19 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 
     @FXML
     public void onSaveImage() {
-	saveImage.setDisable(true);
-	if (JPAUtil.getInstance().getEntityManagerFactory().isOpen()) {
-	    ItemRepository.getInstance().saveChanges();
-	    JPAUtil.getInstance().getEntityManagerFactory().close();
-	}
-	saveImage.setDisable(false);
-	PopupManager.showNotification("", "De afbeelding is opgeslagen.");
+	DetailViewUtil.selectImage(image);
     }
 
     @Override
     public void bind(Book t) {
-	if (boundedBook != null) {
-	    Bindings.unbindBidirectional(name.textProperty(), boundedBook.nameProperty());
-	    Bindings.unbindBidirectional(description.textProperty(), boundedBook.descriptionProperty());
+	if (boundBook != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundBook.nameProperty());
+	    Bindings.unbindBidirectional(description.textProperty(), boundBook.descriptionProperty());
 	    themesBinding.unbind();
-	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedBook.ageCategoryProperty());
-	    Bindings.unbindBidirectional(author.textProperty(), boundedBook.authorProperty());
-	    Bindings.unbindBidirectional(publisher.textProperty(), boundedBook.publisherProperty());
-	    Bindings.unbindBidirectional(image.imageProperty(), boundedBook.imageProperty());
+	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundBook.ageCategoryProperty());
+	    Bindings.unbindBidirectional(author.textProperty(), boundBook.authorProperty());
+	    Bindings.unbindBidirectional(publisher.textProperty(), boundBook.publisherProperty());
+	    Bindings.unbindBidirectional(image.imageProperty(), boundBook.imageProperty());
 	}
 
 	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
@@ -130,7 +78,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	Bindings.bindBidirectional(author.textProperty(), t.authorProperty());
 	Bindings.bindBidirectional(publisher.textProperty(), t.publisherProperty());
 	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
-	this.boundedBook = t;
+	this.boundBook = t;
     }
 
 }

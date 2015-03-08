@@ -2,7 +2,7 @@ package gui;
 
 import domain.Book;
 import domain.Cd;
-import domain.DetailFactory;
+import domain.DetailViewUtil;
 import domain.Dvd;
 import domain.FilterOption;
 import domain.Game;
@@ -11,7 +11,7 @@ import domain.ObservableListUtil;
 import domain.SearchPredicate;
 import domain.StoryBag;
 import domain.controllers.ItemManagementController;
-import gui.dialogs.PopupManager;
+import gui.dialogs.PopupUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -63,37 +63,38 @@ public class ItemManagement extends BorderPane {
 	updateList();
 	itemList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 	    try {
+		if (newValue == null) {
+		    return;
+		}
+		
 		Item i = ((ItemManagementListItem) newValue).getBackedItem();
 
 		if (i instanceof Book) {
-		    Object temp = DetailFactory.getDetailPane(FilterOption.BOOK);
+		    Object temp = DetailViewUtil.getDetailPane(FilterOption.BOOK);
 		    detailView = (Binding<Book>) temp;
 		    this.setBottom((Node) temp);
 		} else if (i instanceof Cd) {
-		    Object temp = DetailFactory.getDetailPane(FilterOption.CD);
+		    Object temp = DetailViewUtil.getDetailPane(FilterOption.CD);
 		    detailView = (Binding<Cd>) temp;
 		    this.setBottom((Node) temp);
 		} else if (i instanceof Dvd) {
-		    Object temp = DetailFactory.getDetailPane(FilterOption.DVD);
+		    Object temp = DetailViewUtil.getDetailPane(FilterOption.DVD);
 		    detailView = (Binding<Dvd>) temp;
 		    this.setBottom((Node) temp);
 		} else if (i instanceof Game) {
-		    Object temp = DetailFactory.getDetailPane(FilterOption.GAME);
+		    Object temp = DetailViewUtil.getDetailPane(FilterOption.GAME);
 		    detailView = (Binding<Game>) temp;
 		    this.setBottom((Node) temp);
 		} else if (i instanceof StoryBag) {
-		    Object temp = DetailFactory.getDetailPane(FilterOption.STORYBAG);
+		    Object temp = DetailViewUtil.getDetailPane(FilterOption.STORYBAG);
 		    detailView = (Binding<StoryBag>) temp;
-		    ListView listItems = (ListView) temp;
-		    listItems.setOnDragEntered((dragEvent) -> {
-			// TODO: Handle event
-		    });
 		    this.setBottom((Node) temp);
 		}
 
 		detailView.bind(i);
 	    } catch (Exception ex) {
-		System.err.println("Couldn't bind item: " + ex.getMessage());
+		ex.printStackTrace();
+//		System.err.println("Couldn't bind item: " + ex.getMessage());
 	    }
 	});
     }
@@ -140,6 +141,7 @@ public class ItemManagement extends BorderPane {
 	ItemRepository.getInstance().saveChanges();
 	ItemRepository.getInstance().sync();
 	updateList();
+	PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen.");
     }
 
     @FXML
@@ -153,7 +155,7 @@ public class ItemManagement extends BorderPane {
 		itemList.getItems().add(listItem);
 		itemList.getSelectionModel().select(listItem);
 	    } catch (Exception ex) {
-		PopupManager.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupManager.Notification.WARNING);
+		PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
 	    }
 	}
     }

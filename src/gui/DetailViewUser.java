@@ -1,5 +1,6 @@
 package gui;
 
+import domain.DetailViewUtil;
 import domain.FilterOption;
 import domain.User;
 import java.io.IOException;
@@ -29,17 +30,21 @@ public class DetailViewUser extends TabPane implements Binding<User> {
     private User boundedUser;
 
     public DetailViewUser() {
-
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_user.fxml"));
 
 	try {
 	    loader.setRoot(this);
 	    loader.setController(this);
 	    loader.load();
-
+	    DetailViewUtil.initImageDragAndDrop(image);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
+    }
+
+    @FXML
+    public void onSaveImage() {
+	DetailViewUtil.selectImage(image);
     }
 
     @Override

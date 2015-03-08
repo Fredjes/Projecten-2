@@ -1,6 +1,7 @@
 package gui;
 
 import domain.Cd;
+import domain.DetailViewUtil;
 import domain.PropertyListBinding;
 import domain.ThemeConverter;
 import java.io.IOException;
@@ -43,9 +44,15 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	    loader.setController(this);
 	    loader.load();
 	    description.setWrapText(true);
+	    DetailViewUtil.initImageDragAndDrop(image);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
+    }
+
+    @FXML
+    public void onSaveImage() {
+	DetailViewUtil.selectImage(image);
     }
 
     @Override

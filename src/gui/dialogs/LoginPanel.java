@@ -89,7 +89,7 @@ public class LoginPanel extends GridPane {
     public void resetPanel(boolean showNotification) {
 	password.setText("");
 	if (showNotification) {
-	    PopupManager.showNotification("Kon niet aanmelden", "Het wachtwoord of de gebruikersnaam is verkeerd.", PopupManager.Notification.WARNING);
+	    PopupUtil.showNotification("Kon niet aanmelden", "Het wachtwoord of de gebruikersnaam is verkeerd.", PopupUtil.Notification.WARNING);
 	}
     }
 }

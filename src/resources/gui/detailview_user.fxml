@@ -40,7 +40,7 @@
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
                         <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="changeImage" mnemonicParsing="false" text="Afbeelding veranderen">
+                        <Button mnemonicParsing="false" onAction="#onSaveImage" text="Afbeelding veranderen">
                            <styleClass>
                               <String fx:value="btn" />
                               <String fx:value="btn-lime" />

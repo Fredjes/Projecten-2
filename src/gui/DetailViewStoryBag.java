@@ -1,5 +1,6 @@
 package gui;
 
+import domain.DetailViewUtil;
 import domain.PropertyListBinding;
 import domain.StoryBag;
 import domain.ThemeConverter;
@@ -41,9 +42,15 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 	    loader.setController(this);
 	    loader.load();
 	    description.setWrapText(true);
+	    DetailViewUtil.initImageDragAndDrop(image);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
+    }
+
+    @FXML
+    public void onSaveImage() {
+	DetailViewUtil.selectImage(image);
     }
 
     public ListView getStoredItems() {

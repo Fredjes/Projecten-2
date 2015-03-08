@@ -1,5 +1,6 @@
 package gui;
 
+import domain.DetailViewUtil;
 import domain.Game;
 import domain.PropertyListBinding;
 import domain.ThemeConverter;
@@ -40,9 +41,15 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
 	    loader.setController(this);
 	    loader.load();
 	    description.setWrapText(true);
+	    DetailViewUtil.initImageDragAndDrop(image);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
+    }
+
+    @FXML
+    public void onSaveImage() {
+	DetailViewUtil.selectImage(image);
     }
 
     @Override

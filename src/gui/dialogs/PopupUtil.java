@@ -9,7 +9,7 @@ import org.controlsfx.control.PopOver;
  *
  * @author Brent
  */
-public class PopupManager {
+public class PopupUtil {
 
     /**
      * Shows the popOver with content & parent of your choice

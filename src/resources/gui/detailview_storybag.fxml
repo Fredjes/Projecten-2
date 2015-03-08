@@ -33,14 +33,14 @@
                         <TextField fx:id="name" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" />
                         <TextField fx:id="ageCategory" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextArea fx:id="description" maxHeight="-Infinity" prefHeight="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="genre" maxWidth="-Infinity" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="themes" maxWidth="-Infinity" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
                         <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button mnemonicParsing="false" text="Afbeelding veranderen">
+                        <Button mnemonicParsing="false" onAction="#onSaveImage" text="Afbeelding veranderen">
                            <styleClass>
                               <String fx:value="btn" />
                               <String fx:value="btn-lime" />

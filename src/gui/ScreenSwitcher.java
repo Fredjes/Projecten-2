@@ -8,7 +8,7 @@ import domain.controllers.LoanManagementController;
 import domain.controllers.MainMenuController;
 import domain.controllers.TitleBarController;
 import gui.dialogs.LoginPanel;
-import gui.dialogs.PopupManager;
+import gui.dialogs.PopupUtil;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.Node;
@@ -46,9 +46,8 @@ public class ScreenSwitcher extends BorderPane {
 	this.itemManagement = new ItemManagement(itemManagementController);
 	this.loanManagement = new LoanManagement(loanManagementController);
 
-	setPrefSize(1200, 650);
+	setPrefSize(1024, 768);
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-	setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
 
 	getStylesheets().add("/resources/css/global.css");
 	setTop(titlebar);
@@ -149,7 +148,7 @@ public class ScreenSwitcher extends BorderPane {
 	    authenticatedUserLabel.setText("");
 	} else {
 	    LoginPanel loginPanel = new LoginPanel();
-	    PopOver pop = PopupManager.showPopOver(loginButton, loginPanel);
+	    PopOver pop = PopupUtil.showPopOver(loginButton, loginPanel);
 	    loginPanel.setOnLogin(e -> {
 		if (login(loginPanel.getUsername(), loginPanel.getPassword())) {
 		    authenticatedUserLabel.setText("Welkom " + USER_REPO_INSTANCE.getAuthenticatedUser().getName());
