@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class DetailViewDvd extends TabPane implements Binding<Dvd> {
 
@@ -23,6 +24,8 @@ public class DetailViewDvd extends TabPane implements Binding<Dvd> {
     private TextField ageCategory;
     @FXML
     private TextField director;
+    @FXML
+    private ImageView image;
 
     private PropertyListBinding themesBinding;
 
@@ -36,7 +39,7 @@ public class DetailViewDvd extends TabPane implements Binding<Dvd> {
 	    loader.setRoot(this);
 	    loader.setController(this);
 	    loader.load();
-
+	    description.setWrapText(true);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
@@ -50,13 +53,15 @@ public class DetailViewDvd extends TabPane implements Binding<Dvd> {
 	    themesBinding.unbind();
 	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedDvd.ageCategoryProperty());
 	    Bindings.unbindBidirectional(director.textProperty(), boundedDvd.directorProperty());
-	}   
+	    Bindings.unbindBidirectional(image.imageProperty(), boundedDvd.imageProperty());
+	}
 
 	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
 	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
 	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
 	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
 	Bindings.bindBidirectional(director.textProperty(), t.directorProperty());
+	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
 	boundedDvd = t;
     }
 

@@ -18,8 +18,12 @@ public class PopupManager {
      * @param content Content to place in the popOver
      */
     public static PopOver showPopOver(Node parent, Node content) {
+	return showPopOver(parent, content, PopOver.ArrowLocation.TOP_RIGHT);
+    }
+
+    public static PopOver showPopOver(Node parent, Node content, PopOver.ArrowLocation location) {
 	PopOver logPop = new PopOver(content);
-	logPop.setArrowLocation(PopOver.ArrowLocation.TOP_RIGHT);
+	logPop.setArrowLocation(location);
 	logPop.setAutoHide(true);
 	logPop.show(parent);
 	logPop.setAutoFix(true);

@@ -166,7 +166,7 @@ public class ItemRepository {
 //	sb.setName("De coole verteltas");
 //	sb.setDescription("Een verteltas met nieuwe voorwerpen");
 //	sb.setAgeCategory("10-12");
-//	sb.setTheme("School");
+//	sb.setThemes("School");
 	//ItemRepository.getInstance().add(sb);
 	ItemRepository.getInstance().saveChanges();
 	ItemRepository.getInstance().sync();

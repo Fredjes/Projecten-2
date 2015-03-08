@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -60,7 +61,7 @@ public abstract class Item implements Serializable, Searchable {
     }
 
     public Item(String name, String description, List<String> theme, String ageCategory) {
-	setTheme(theme);
+	setThemes(theme);
 	setAgeCategory(ageCategory);
 	setName(name);
 	setDescription(description);
@@ -93,11 +94,12 @@ public abstract class Item implements Serializable, Searchable {
 	this.id = id;
     }
 
+    @ElementCollection
     public List<String> getThemes() {
 	return theme;
     }
 
-    public void setTheme(List<String> theme) {
+    public void setThemes(List<String> theme) {
 	this.theme.setAll(theme);
     }
 

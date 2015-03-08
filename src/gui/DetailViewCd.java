@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class DetailViewCd extends TabPane implements Binding<Cd> {
 
@@ -26,6 +27,8 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
     private TextField artist;
     @FXML
     private ListView lstSongs;
+    @FXML
+    private ImageView image;
 
     private PropertyListBinding themesBinding;
 
@@ -39,7 +42,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	    loader.setRoot(this);
 	    loader.setController(this);
 	    loader.load();
-
+	    description.setWrapText(true);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
@@ -54,6 +57,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	    themesBinding.unbind();
 	    Bindings.unbindBidirectional(artist.textProperty(), boundedCd.artistProperty());
 	    lstSongs.setItems(boundedCd.getObservableSongList());
+	    Bindings.unbindBidirectional(image.imageProperty(), boundedCd.imageProperty());
 	}
 
 	Bindings.bindBidirectional(title.textProperty(), t.nameProperty());
@@ -62,6 +66,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
 	Bindings.bindBidirectional(artist.textProperty(), t.artistProperty());
 	lstSongs.setItems(t.getObservableSongList());
+	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
 	this.boundedCd = t;
     }
 

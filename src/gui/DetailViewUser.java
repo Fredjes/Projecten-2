@@ -11,6 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class DetailViewUser extends TabPane implements Binding<User> {
 
@@ -22,6 +23,8 @@ public class DetailViewUser extends TabPane implements Binding<User> {
     private TextField email;
     @FXML
     private ChoiceBox<FilterOption> userType;
+    @FXML
+    private ImageView image;
 
     private User boundedUser;
 
@@ -45,12 +48,15 @@ public class DetailViewUser extends TabPane implements Binding<User> {
 	    Bindings.unbindBidirectional(name.textProperty(), boundedUser.nameProperty());
 	    Bindings.unbindBidirectional(classRoom.textProperty(), boundedUser.classRoomProperty());
 	    Bindings.unbindBidirectional(email.textProperty(), boundedUser.emailProperty());
+//	    Bindings.unbindBidirectional(image.imageProperty(), boundedUser.imageProperty());
 	}
 
 	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
 	Bindings.bindBidirectional(classRoom.textProperty(), t.classRoomProperty());
 	Bindings.bindBidirectional(email.textProperty(), t.emailProperty());
 	userType.setItems(FXCollections.observableArrayList(FilterOption.values()));
+	// TODO: Add image-property for user
+//	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
 	this.boundedUser = t;
     }
 

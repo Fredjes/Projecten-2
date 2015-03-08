@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class DetailViewGame extends TabPane implements Binding<Game> {
 
@@ -23,6 +24,8 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
     private TextField ageCategory;
     @FXML
     private TextField brand;
+    @FXML
+    private ImageView image;
 
     private Game boundedGame;
 
@@ -36,7 +39,7 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
 	    loader.setRoot(this);
 	    loader.setController(this);
 	    loader.load();
-
+	    description.setWrapText(true);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
@@ -50,6 +53,7 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
 	    themesBinding.unbind();
 	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedGame.ageCategoryProperty());
 	    Bindings.unbindBidirectional(brand.textProperty(), boundedGame.brandProperty());
+	    Bindings.unbindBidirectional(image.imageProperty(), boundedGame.imageProperty());
 	}
 
 	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
@@ -57,6 +61,7 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
 	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
 	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
 	Bindings.bindBidirectional(brand.textProperty(), t.brandProperty());
+	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
 	this.boundedGame = t;
     }
 

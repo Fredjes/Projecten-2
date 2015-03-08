@@ -36,6 +36,8 @@ public class PropertyListBinding<EProp, EList> {
 
 	this.currentProperty = property;
 	this.currentList = list;
+	
+	this.currentProperty.setValue(converter.toProperty(currentList));
 
 	property.addListener(propertyListener);
 	list.addListener(listListener);

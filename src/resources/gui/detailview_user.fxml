@@ -39,7 +39,7 @@
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                         <Button fx:id="changeImage" mnemonicParsing="false" text="Afbeelding veranderen">
                            <styleClass>
                               <String fx:value="btn" />

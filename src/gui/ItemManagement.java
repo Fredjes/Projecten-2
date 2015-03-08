@@ -11,6 +11,7 @@ import domain.ObservableListUtil;
 import domain.SearchPredicate;
 import domain.StoryBag;
 import domain.controllers.ItemManagementController;
+import gui.dialogs.PopupManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -61,7 +62,39 @@ public class ItemManagement extends BorderPane {
 	searchbar.setOnKeyReleased(e -> updateList());
 	updateList();
 	itemList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-	    detailView.bind(((ItemManagementListItem)newValue).getBackedItem());
+	    try {
+		Item i = ((ItemManagementListItem) newValue).getBackedItem();
+
+		if (i instanceof Book) {
+		    Object temp = DetailFactory.getDetailPane(FilterOption.BOOK);
+		    detailView = (Binding<Book>) temp;
+		    this.setBottom((Node) temp);
+		} else if (i instanceof Cd) {
+		    Object temp = DetailFactory.getDetailPane(FilterOption.CD);
+		    detailView = (Binding<Cd>) temp;
+		    this.setBottom((Node) temp);
+		} else if (i instanceof Dvd) {
+		    Object temp = DetailFactory.getDetailPane(FilterOption.DVD);
+		    detailView = (Binding<Dvd>) temp;
+		    this.setBottom((Node) temp);
+		} else if (i instanceof Game) {
+		    Object temp = DetailFactory.getDetailPane(FilterOption.GAME);
+		    detailView = (Binding<Game>) temp;
+		    this.setBottom((Node) temp);
+		} else if (i instanceof StoryBag) {
+		    Object temp = DetailFactory.getDetailPane(FilterOption.STORYBAG);
+		    detailView = (Binding<StoryBag>) temp;
+		    ListView listItems = (ListView) temp;
+		    listItems.setOnDragEntered((dragEvent) -> {
+			// TODO: Handle event
+		    });
+		    this.setBottom((Node) temp);
+		}
+
+		detailView.bind(i);
+	    } catch (Exception ex) {
+		System.err.println("Couldn't bind item: " + ex.getMessage());
+	    }
 	});
     }
 
@@ -74,61 +107,62 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     public void onBoek() {
-	Object temp = DetailFactory.getDetailPane(FilterOption.BOOK);
-	detailView = (Binding<Book>) temp;
-	this.setBottom((Node)temp);
 	searchPredicate.setSelectedClass(FilterOption.BOOK.getFilterClass());
 	updateList();
     }
 
     @FXML
     public void onSpelletje() {
-	Object temp = DetailFactory.getDetailPane(FilterOption.GAME);
-	detailView = (Binding<Game>) temp;
-	this.setBottom((Node)temp);
 	searchPredicate.setSelectedClass(FilterOption.GAME.getFilterClass());
 	updateList();
     }
 
     @FXML
     public void onCd() {
-	Object temp = DetailFactory.getDetailPane(FilterOption.CD);
-	detailView = (Binding<Cd>) temp;
-	this.setBottom((Node)temp);
 	searchPredicate.setSelectedClass(FilterOption.CD.getFilterClass());
 	updateList();
     }
 
     @FXML
     public void onDvd() {
-	Object temp = DetailFactory.getDetailPane(FilterOption.DVD);
-	detailView = (Binding<Dvd>) temp;
-	this.setBottom((Node)temp);
 	searchPredicate.setSelectedClass(FilterOption.DVD.getFilterClass());
 	updateList();
     }
 
     @FXML
     public void onStoryBag() {
-	Object temp = DetailFactory.getDetailPane(FilterOption.STORYBAG);
-	detailView = (Binding<StoryBag>) temp;
-	this.setBottom((Node)temp);
 	searchPredicate.setSelectedClass(FilterOption.STORYBAG.getFilterClass());
 	updateList();
     }
 
     @FXML
     public void onSave() {
-
+	ItemRepository.getInstance().saveChanges();
+	ItemRepository.getInstance().sync();
+	updateList();
     }
 
     @FXML
     public void onAdd() {
-
+	if (searchPredicate.getSelectedClass() != null) {
+	    try {
+		Item added = (Item) searchPredicate.getSelectedClass().getConstructor().newInstance();
+		ItemRepository.getInstance().add(added);
+		updateList();
+		ItemManagementListItem listItem = new ItemManagementListItem(added);
+		itemList.getItems().add(listItem);
+		itemList.getSelectionModel().select(listItem);
+	    } catch (Exception ex) {
+		PopupManager.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupManager.Notification.WARNING);
+	    }
+	}
     }
 
     @FXML
     public void onRemove() {
-
+	if (!itemList.getSelectionModel().isEmpty()) {
+	    ItemRepository.getInstance().remove(((ItemManagementListItem) itemList.getSelectionModel().getSelectedItem()).getBackedItem());
+	    updateList();
+	}
     }
 }
