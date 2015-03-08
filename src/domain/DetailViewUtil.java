@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.TransferMode;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
@@ -47,6 +48,7 @@ public class DetailViewUtil {
 	image.setOnDragEntered(evt -> {
 	    if (evt.getDragboard().hasFiles()) {
 		Label shownLabel = new Label();
+		shownLabel.setTextFill(Color.BLACK);
 
 		if (evt.getDragboard().getFiles().size() == 1 && isImageDirectory(evt.getDragboard().getFiles().get(0).getAbsolutePath())) {
 		    shownLabel.setText("Afbeelding toevoegen aan voorwerp.");

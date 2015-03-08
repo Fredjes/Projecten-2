@@ -15,7 +15,7 @@ public class FXUtil {
 	    loader.setController(root);
 	    loader.load();
 	} catch (Exception ex) {
-	    System.err.println("Couldn't load FXML: " + ex.getMessage());
+//	    System.err.println("Couldn't load FXML: " + ex.getMessage());
 	}
     }
 }

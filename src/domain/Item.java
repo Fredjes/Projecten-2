@@ -37,11 +37,11 @@ import javax.persistence.Transient;
  * @author Frederik
  */
 @Entity
-@Access (AccessType.PROPERTY)
-@NamedQueries ({
-    @NamedQuery (name = "Item.findAll", query = "SELECT i FROM Item i")
+@Access(AccessType.PROPERTY)
+@NamedQueries({
+    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
 })
-@Inheritance (strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Item implements Serializable, Searchable {
 
     private final StringProperty name = new SimpleStringProperty();
@@ -49,8 +49,8 @@ public abstract class Item implements Serializable, Searchable {
     private final ObservableList<String> theme = FXCollections.observableArrayList();
     private final StringProperty ageCategory = new SimpleStringProperty();
 
-    @OneToMany (mappedBy = "item", cascade = CascadeType.ALL)
-    @Access (AccessType.FIELD)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @Access(AccessType.FIELD)
     private List<ItemCopy> itemCopies;
 
     private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
@@ -72,6 +72,11 @@ public abstract class Item implements Serializable, Searchable {
 	return theme;
     }
 
+    @Transient
+    public List<ItemCopy> getItemCopies() {
+	return itemCopies;
+    }
+
     public StringProperty nameProperty() {
 	return name;
     }
@@ -85,7 +90,7 @@ public abstract class Item implements Serializable, Searchable {
     }
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
 	return id;
     }
@@ -208,5 +213,21 @@ public abstract class Item implements Serializable, Searchable {
 	}
 
 	return true;
+    }
+
+    public static String getCodePrefixFor(Item item) {
+	if (item instanceof Book) {
+	    return "B";
+	} else if (item instanceof Dvd) {
+	    return "D";
+	} else if (item instanceof Cd) {
+	    return "C";
+	} else if (item instanceof Game) {
+	    return "S";
+	} else if (item instanceof StoryBag) {
+	    return "V";
+	}
+
+	throw new IllegalStateException("unknown item-type");
     }
 }

@@ -6,14 +6,18 @@ import domain.Item;
 import domain.ItemCopy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
 
 /**
- * The repository used to handle the storing of items, can synchronize save changes with the database (using JPA).
+ * The repository used to handle the storing of items, can synchronize save
+ * changes with the database (using JPA).
  *
  * @author Brent
  */
@@ -38,7 +42,9 @@ public class ItemRepository {
     }
 
     /**
-     * Will get all items from the database and add them in the internal list. Observers of the ObservableList will receive updates containg the new data.
+     * Will get all items from the database and add them in the internal list.
+     * Observers of the ObservableList will receive updates containg the new
+     * data.
      */
     public void sync() {
 	items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
@@ -125,13 +131,13 @@ public class ItemRepository {
 	    }
 	});
 
-	itemCopies.forEach(ic -> {
-	    if (ic.getId() == 0) {
-		manager.persist(ic);
-	    } else {
-		manager.merge(ic);
-	    }
-	});
+//	itemCopies.forEach(ic -> {
+//	    if (ic.getId() == 0) {
+//		manager.persist(ic);
+//	    } else {
+//		manager.merge(ic);
+//	    }
+//	});
 
 	deletedElements.forEach((el) -> {
 	    Object o = manager.merge(el);
@@ -146,6 +152,20 @@ public class ItemRepository {
      */
     public void clearItems() {
 	items.clear();
+    }
+
+    public ItemCopy createItemCopyFor(Item item) {
+	List<ItemCopy> list = ItemRepository.getInstance().getItemCopiesByPredicate(i -> i.getItem() != null && item.getClass().equals(i.getItem().getClass()));
+	Optional<ItemCopy> last =  list.stream().max((ic1, ic2) -> {
+	    return Integer.parseInt(ic1.getCopyNumber().substring(1)) - Integer.parseInt(ic2.getCopyNumber().substring(1));
+	});
+	
+	StringProperty lastNum = new SimpleStringProperty(Item.getCodePrefixFor(item) + "0");
+	last.ifPresent(i -> lastNum.set(i.getCopyNumber()));
+	lastNum.set(lastNum.get().substring(0,1) + String.valueOf(Integer.parseInt(lastNum.get().substring(1)) + 1));
+	ItemCopy ic = new ItemCopy(lastNum.get(), "", item, Damage.NO_DAMAGE);
+	add(ic);
+	return ic;
     }
 
     // Add mock data

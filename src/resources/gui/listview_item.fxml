@@ -33,7 +33,10 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="description" alignment="TOP_LEFT" styleClass="bold" GridPane.rowIndex="1" />
+            <Label fx:id="description" alignment="TOP_LEFT" GridPane.rowIndex="1">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
             <HBox alignment="CENTER_RIGHT" spacing="2.0" GridPane.rowIndex="2">
                <children>
                   <Label styleClass="bold" text="Exemplaren:">
@@ -44,8 +47,13 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <HBox fx:id="copyList" />
-                  <Button mnemonicParsing="false" onAction="#onAdd" styleClass="btn" text="+" />
+                  <HBox fx:id="copyList" spacing="3.0" />
+                  <Button mnemonicParsing="false" onAction="#onAdd" text="+">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-toolIcon" />
+                        <String fx:value="text-green" />
+                     </styleClass></Button>
                </children>
                <padding>
                   <Insets left="2.0" right="2.0" top="2.0" />
