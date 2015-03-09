@@ -17,30 +17,29 @@ public class TitleBarController extends BaseController<Titlebar> {
 
     @Override
     public void updateToAuthenticatedUser() {
-	Titlebar titlebar = getView();
 	User u = UserRepository.getInstance().getAuthenticatedUser();
 
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
-	    hideNode(titlebar.getExcelImporteren());
-	    hideNode(titlebar.getGebruikersBeheren());
-	    hideNode(titlebar.getVoorwerpenBeheren());
-	    hideNode(titlebar.getUitleningenBeheren());
+	    hideNode(getView().getExcelImporteren());
+	    hideNode(getView().getGebruikersBeheren());
+	    hideNode(getView().getVoorwerpenBeheren());
+	    hideNode(getView().getUitleningenBeheren());
 	    return;
 	}
 
 	switch (u.getUserType()) {
 	    case VOLUNTEER:
-		hideNode(titlebar.getExcelImporteren());
-		hideNode(titlebar.getGebruikersBeheren());
-		hideNode(titlebar.getVoorwerpenBeheren());
-		showNode(titlebar.getUitleningenBeheren());
+		hideNode(getView().getExcelImporteren());
+		hideNode(getView().getGebruikersBeheren());
+		hideNode(getView().getVoorwerpenBeheren());
+		showNode(getView().getUitleningenBeheren());
 		break;
 
 	    case TEACHER:
-		showNode(titlebar.getExcelImporteren());
-		showNode(titlebar.getGebruikersBeheren());
-		showNode(titlebar.getVoorwerpenBeheren());
-		showNode(titlebar.getUitleningenBeheren());
+		showNode(getView().getExcelImporteren());
+		showNode(getView().getGebruikersBeheren());
+		showNode(getView().getVoorwerpenBeheren());
+		showNode(getView().getUitleningenBeheren());
 		break;
 	}
     }

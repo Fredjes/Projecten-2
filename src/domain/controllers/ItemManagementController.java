@@ -20,17 +20,19 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 	User u = UserRepository.getInstance().getAuthenticatedUser();
 
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
-
+	    getSwitcher().openMainMenu();
 	    return;
 	}
 
 	switch (u.getUserType()) {
 	    case VOLUNTEER:
-
+		hideNode(getView().getListCommands());
+		hideNode(getView().getSaveButton());
 		break;
 
 	    case TEACHER:
-
+		showNode(getView().getListCommands());
+		showNode(getView().getSaveButton());
 		break;
 	}
     }

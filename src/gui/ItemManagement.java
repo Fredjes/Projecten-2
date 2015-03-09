@@ -20,9 +20,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
 
 /**
@@ -48,6 +48,9 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     private ScrollPane listScroller;
+
+    @FXML
+    private HBox listCommands;
 
     private ItemManagementController controller;
     private SearchPredicate searchPredicate;
@@ -177,4 +180,13 @@ public class ItemManagement extends BorderPane {
 	    updateList();
 	}
     }
+
+    public Button getSaveButton() {
+	return saveButton;
+    }
+
+    public HBox getListCommands() {
+	return listCommands;
+    }
+
 }
