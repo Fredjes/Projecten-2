@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -34,6 +35,9 @@ public class ItemManagementListItem extends AnchorPane {
 
     @FXML
     private ImageView itemImage;
+
+    @FXML
+    private Button addCopyButton;
 
     private Item backedItem;
 
@@ -88,4 +92,9 @@ public class ItemManagementListItem extends AnchorPane {
 	list.setPredicate(ic -> ic.getItem() == item);
 	return list;
     }
+
+    public Button getAddCopyButton() {
+	return addCopyButton;
+    }
+
 }
