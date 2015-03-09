@@ -25,6 +25,18 @@ public class Titlebar extends GridPane {
     @FXML
     private Label authenicatedUserLabel;
 
+    @FXML
+    private Button voorwerpenBeheren;
+
+    @FXML
+    private Button uitleningenBeheren;
+
+    @FXML
+    private Button gebruikersBeheren;
+
+    @FXML
+    private Button excelImporteren;
+
     private ScreenSwitcher switcher;
     private TitleBarController controller;
 
@@ -34,6 +46,11 @@ public class Titlebar extends GridPane {
 	this.controller = controller;
     }
 
+    Titlebar(ScreenSwitcher switcher) {
+	this.switcher = switcher;
+	FXUtil.loadFXML(this, "titlebar");
+    }
+
     public void setTitle(String title) {
 	this.title.textProperty().set(title);
     }
@@ -41,7 +58,7 @@ public class Titlebar extends GridPane {
     @FXML
     public void onLogin() {
 	this.switcher.processLoginRequest(loginButton, authenicatedUserLabel);
-	this.controller.updateToAuthenticatedUser(this);
+	this.controller.updateToAuthenticatedUser();
     }
 
     @FXML
@@ -63,4 +80,29 @@ public class Titlebar extends GridPane {
     public void onImportExcel() {
 	switcher.openExcelImport();
     }
+
+    public Button getVoorwerpenBeheren() {
+	return voorwerpenBeheren;
+    }
+
+    public Button getUitleningenBeheren() {
+	return uitleningenBeheren;
+    }
+
+    public Button getGebruikersBeheren() {
+	return gebruikersBeheren;
+    }
+
+    public Button getExcelImporteren() {
+	return excelImporteren;
+    }
+
+    public TitleBarController getController() {
+	return controller;
+    }
+
+    void setController(TitleBarController controller) {
+	this.controller = controller;
+    }
+
 }

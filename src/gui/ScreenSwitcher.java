@@ -3,6 +3,7 @@ package gui;
 import domain.IconConfig;
 import domain.Item;
 import domain.ItemCopy;
+import domain.controllers.BaseController;
 import domain.controllers.ItemManagementController;
 import domain.controllers.LoanManagementController;
 import domain.controllers.MainMenuController;
@@ -32,20 +33,17 @@ public class ScreenSwitcher extends BorderPane {
     private MainMenu menu;
     private ItemManagement itemManagement;
     private LoanManagement loanManagement;
-    private UserManagement userManagement = new UserManagement();
-    private Titlebar titlebar = new Titlebar(this, new TitleBarController());
+    private UserManagement userManagement;
+    private Titlebar titlebar;
 
     private UserRepository USER_REPO_INSTANCE = UserRepository.getInstance();
 
-    private MainMenuController mainMenuController = new MainMenuController();
-    private ItemManagementController itemManagementController = new ItemManagementController();
-    private LoanManagementController loanManagementController = new LoanManagementController();
+    private MainMenuController mainMenuController;
+    private ItemManagementController itemManagementController;
+    private LoanManagementController loanManagementController;
 
     public ScreenSwitcher() {
-	this.menu = new MainMenu(this, mainMenuController);
-	this.itemManagement = new ItemManagement(itemManagementController);
-	this.loanManagement = new LoanManagement(loanManagementController);
-
+	initialize();
 	setPrefSize(1024, 768);
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
@@ -57,6 +55,19 @@ public class ScreenSwitcher extends BorderPane {
 	loadIcons(loanManagement);
 	loadIcons(userManagement);
 	loadIcons(titlebar);
+
+    }
+
+    private void initialize() {
+	titlebar = new Titlebar(this);
+	titlebar.setController(new TitleBarController(titlebar));
+	this.menu = new MainMenu(this, mainMenuController);
+	userManagement = new UserManagement();
+	this.itemManagement = new ItemManagement(itemManagementController);
+	this.loanManagement = new LoanManagement(loanManagementController);
+	mainMenuController = new MainMenuController(menu);
+	itemManagementController = new ItemManagementController(itemManagement);
+	loanManagementController = new LoanManagementController(loanManagement);
     }
 
     public void loadIcons(Node node) {
@@ -72,13 +83,13 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openMainMenu() {
-	mainMenuController.updateToAuthenticatedUser(menu);
+	updateController(mainMenuController);
 	titlebar.setTitle("Hoofdmenu");
 	setCenter(menu);
     }
 
     public void openItemManagement() {
-	itemManagementController.updateToAuthenticatedUser(itemManagement);
+	updateController(itemManagementController);
 	titlebar.setTitle("Voorwerpen beheren");
 	setCenter(itemManagement);
     }
@@ -88,7 +99,7 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openLoanManagement() {
-	loanManagementController.updateToAuthenticatedUser(loanManagement);
+	updateController(loanManagementController);
 	titlebar.setTitle("Uitleningen beheren");
 	setCenter(loanManagement);
     }
@@ -133,7 +144,7 @@ public class ScreenSwitcher extends BorderPane {
     /**
      * Log in using the email of the user and a non-encrypted password.
      *
-     * @param email the email of the user
+     * @param email    the email of the user
      * @param password the password of the user
      * @return true if the email and password are correct
      */
@@ -146,6 +157,7 @@ public class ScreenSwitcher extends BorderPane {
 	    USER_REPO_INSTANCE.logout();
 	    loginButton.setText("Aanmelden");
 	    authenticatedUserLabel.setText("");
+	    openMainMenu();
 	} else {
 	    LoginPanel loginPanel = new LoginPanel();
 	    PopOver pop = PopupUtil.showPopOver(loginButton, loginPanel);
@@ -154,11 +166,24 @@ public class ScreenSwitcher extends BorderPane {
 		    authenticatedUserLabel.setText("Welkom " + USER_REPO_INSTANCE.getAuthenticatedUser().getName());
 		    pop.hide();
 		    loginButton.setText("Afmelden");
+		    updateAllControllers();
 		} else {
 		    loginPanel.resetPanel(true);
 		    authenticatedUserLabel.setText("");
 		}
 	    });
 	}
+
+    }
+
+    private void updateAllControllers() {
+	updateController(mainMenuController);
+	updateController(itemManagementController);
+	updateController(loanManagementController);
+    }
+
+    private void updateController(BaseController controller) {
+	controller.updateToAuthenticatedUser();
+	titlebar.getController().updateToAuthenticatedUser();
     }
 }

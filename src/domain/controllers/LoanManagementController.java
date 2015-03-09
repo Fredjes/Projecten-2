@@ -6,11 +6,15 @@ import gui.LoanManagement;
  *
  * @author Frederik
  */
-public class LoanManagementController implements BaseController<LoanManagement> {
+public class LoanManagementController extends BaseController<LoanManagement> {
+
+    public LoanManagementController(LoanManagement view) {
+	super(view);
+    }
 
     @Override
-    public void updateToAuthenticatedUser(LoanManagement root) {
-	
+    public void updateToAuthenticatedUser() {
+
     }
 
 }

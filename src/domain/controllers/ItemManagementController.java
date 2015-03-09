@@ -1,16 +1,20 @@
 package domain.controllers;
 
 import gui.ItemManagement;
-import javafx.scene.control.ListView;
 
 /**
  *
  * @author Frederik
  */
-public class ItemManagementController implements BaseController<ItemManagement> {
+public class ItemManagementController extends BaseController<ItemManagement> {
+
+    public ItemManagementController(ItemManagement view) {
+	super(view);
+    }
 
     @Override
-    public void updateToAuthenticatedUser(ItemManagement root) {
+    public void updateToAuthenticatedUser() {
 
     }
+
 }

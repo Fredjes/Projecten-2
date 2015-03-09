@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" styleClass="title-bar" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" styleClass="title-bar" type="GridPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER_LEFT" spacing="10.0">
          <children>
@@ -38,7 +38,7 @@
             </Button>
             <GridPane fx:id="navigationGrid" alignment="CENTER" hgap="5.0" vgap="5.0" HBox.hgrow="NEVER">
                <children>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageItems" prefHeight="40.0" prefWidth="40.0" text="V">
+                  <Button fx:id="voorwerpenBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageItems" prefHeight="40.0" prefWidth="40.0" text="V">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -51,7 +51,7 @@
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageLoans" prefHeight="40.0" prefWidth="40.0" text="U" GridPane.columnIndex="1">
+                  <Button fx:id="uitleningenBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageLoans" prefHeight="40.0" prefWidth="40.0" text="U" GridPane.columnIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -61,7 +61,7 @@
                         <String fx:value="tile" />
                      </styleClass>
                   </Button>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageUsers" prefHeight="40.0" prefWidth="40.0" text="G" GridPane.rowIndex="1">
+                  <Button fx:id="gebruikersBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageUsers" prefHeight="40.0" prefWidth="40.0" text="G" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -71,7 +71,7 @@
                         <String fx:value="tile" />
                      </styleClass>
                   </Button>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onImportExcel" prefHeight="40.0" prefWidth="40.0" text="I" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="excelImporteren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onImportExcel" prefHeight="40.0" prefWidth="40.0" text="I" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>

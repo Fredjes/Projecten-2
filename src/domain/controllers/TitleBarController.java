@@ -1,15 +1,47 @@
 package domain.controllers;
 
-import javafx.scene.Node;
+import domain.User;
+import gui.Titlebar;
+import persistence.UserRepository;
 
 /**
  *
  * @author Frederik
  */
-public class TitleBarController implements BaseController {
+public class TitleBarController extends BaseController<Titlebar> {
+
+    public TitleBarController(Titlebar view) {
+	super(view);
+    }
 
     @Override
-    public void updateToAuthenticatedUser(Node root) {
-	/* Update navigation grid */
+    public void updateToAuthenticatedUser() {
+	Titlebar titlebar = getView();
+	User u = UserRepository.getInstance().getAuthenticatedUser();
+
+	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
+	    hideNode(titlebar.getExcelImporteren());
+	    hideNode(titlebar.getGebruikersBeheren());
+	    hideNode(titlebar.getVoorwerpenBeheren());
+	    hideNode(titlebar.getUitleningenBeheren());
+	    return;
+	}
+
+	switch (u.getUserType()) {
+	    case VOLUNTEER:
+		hideNode(titlebar.getExcelImporteren());
+		hideNode(titlebar.getGebruikersBeheren());
+		hideNode(titlebar.getVoorwerpenBeheren());
+		showNode(titlebar.getUitleningenBeheren());
+		break;
+
+	    case TEACHER:
+		showNode(titlebar.getExcelImporteren());
+		showNode(titlebar.getGebruikersBeheren());
+		showNode(titlebar.getVoorwerpenBeheren());
+		showNode(titlebar.getUitleningenBeheren());
+		break;
+	}
     }
+
 }
