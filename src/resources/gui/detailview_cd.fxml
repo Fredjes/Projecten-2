@@ -86,14 +86,14 @@
                         <Insets top="5.0" />
                      </padding>
                      <children>
-                        <Button focusTraversable="false" mnemonicParsing="false" prefHeight="0.0" prefWidth="30.0" text="+">
+                        <Button focusTraversable="false" mnemonicParsing="false" onAction="#onAddSong" prefHeight="0.0" prefWidth="30.0" text="+">
                            <styleClass>
                               <String fx:value="btn" />
                               <String fx:value="btn-toolIcon" />
                               <String fx:value="text-green" />
                            </styleClass>
                         </Button>
-                        <Button focusTraversable="false" mnemonicParsing="false" text="-">
+                        <Button focusTraversable="false" mnemonicParsing="false" onAction="#onRemoveSong" text="-">
                            <styleClass>
                               <String fx:value="btn" />
                               <String fx:value="btn-toolIcon" />

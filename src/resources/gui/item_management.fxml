@@ -16,6 +16,12 @@
                   <VBox maxHeight="1.7976931348623157E308" spacing="10.0">
                      <children>
                         <TextField fx:id="searchbar" prefWidth="150.0" promptText="Zoeken..." />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAll" text="Allemaal">
+                           <styleClass>
+                              <String fx:value="item-btn" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                        </Button>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBoek" text="Boek">
                            <styleClass>
                               <String fx:value="item-btn" />

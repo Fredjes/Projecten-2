@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.ImageView;
 
 public class DetailViewCd extends TabPane implements Binding<Cd> {
@@ -27,7 +28,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
     @FXML
     private TextField artist;
     @FXML
-    private ListView lstSongs;
+    private ListView<String> lstSongs;
     @FXML
     private ImageView image;
 
@@ -43,7 +44,9 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	    loader.setRoot(this);
 	    loader.setController(this);
 	    loader.load();
+	    lstSongs.setCellFactory(TextFieldListCell.forListView());
 	    description.setWrapText(true);
+	    lstSongs.setEditable(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
@@ -77,4 +80,15 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	this.boundedCd = t;
     }
 
+    @FXML
+    public void onAddSong() {
+	boundedCd.getSongList().add("Nieuw liedje");
+    }
+
+    @FXML
+    public void onRemoveSong() {
+	if (!lstSongs.getSelectionModel().isEmpty()) {
+	    boundedCd.getSongList().remove(lstSongs.getSelectionModel().getSelectedItem());
+	}
+    }
 }

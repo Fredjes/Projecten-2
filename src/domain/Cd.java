@@ -1,7 +1,6 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -9,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
@@ -45,6 +45,7 @@ public class Cd extends Item implements Serializable {
 	return songs;
     }
 
+    @ElementCollection
     public List<String> getSongList() {
 	return songs;
     }

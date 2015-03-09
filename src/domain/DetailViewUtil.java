@@ -1,5 +1,6 @@
 package domain;
 
+import domain.controllers.StoryBagController;
 import gui.DetailViewBook;
 import gui.DetailViewCd;
 import gui.DetailViewDvd;
@@ -10,8 +11,6 @@ import gui.dialogs.PopupUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
@@ -36,7 +35,7 @@ public class DetailViewUtil {
 	} else if (o == FilterOption.GAME) {
 	    return new DetailViewGame();
 	} else if (o == FilterOption.STORYBAG) {
-	    return new DetailViewStoryBag();
+	    return new DetailViewStoryBag(new StoryBagController());
 	} else if (o == FilterOption.USER) {
 	    return new DetailViewUser();
 	}

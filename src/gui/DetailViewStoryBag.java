@@ -4,6 +4,7 @@ import domain.DetailViewUtil;
 import domain.PropertyListBinding;
 import domain.StoryBag;
 import domain.ThemeConverter;
+import domain.controllers.StoryBagController;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 
 public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 
@@ -33,8 +36,11 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 
     private StoryBag boundedStoryBag;
 
-    public DetailViewStoryBag() {
+    private StoryBagController controller;
+
+    public DetailViewStoryBag(StoryBagController controller) {
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_storybag.fxml"));
+	this.controller = controller;
 	themesBinding = new PropertyListBinding();
 
 	try {
@@ -43,9 +49,30 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 	    loader.load();
 	    description.setWrapText(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
+	    initListItemDrag();
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
+    }
+
+    private void initListItemDrag() {
+	final String copyDragText = "COPY_DRAG:";
+	lstItems.setOnDragEntered(de -> {
+	    System.out.println(de.getDragboard().getString());
+	    Dragboard board = de.getDragboard();
+	    if (board.hasString() && board.getString().startsWith(copyDragText)) {
+		System.out.println("accepted");
+		de.acceptTransferModes(TransferMode.LINK);
+	    }
+	});
+
+	lstItems.setOnDragDropped(de -> {
+	    Dragboard board = de.getDragboard();
+	    if (board.hasString() && board.getString().startsWith(copyDragText)) {
+		controller.addItemCopyToStoryBagByCopyId(board.getString().substring(copyDragText.length()), lstItems);
+		de.setDropCompleted(true);
+	    }
+	});
     }
 
     @FXML

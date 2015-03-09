@@ -20,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import persistence.ItemRepository;
@@ -57,6 +58,7 @@ public class ItemManagement extends BorderPane {
     public ItemManagement(ItemManagementController controller) {
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
+
 	this.controller = controller;
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
 	searchbar.setOnKeyReleased(e -> updateList());
@@ -66,7 +68,7 @@ public class ItemManagement extends BorderPane {
 		if (newValue == null) {
 		    return;
 		}
-		
+
 		Item i = ((ItemManagementListItem) newValue).getBackedItem();
 
 		if (i instanceof Book) {
@@ -137,11 +139,19 @@ public class ItemManagement extends BorderPane {
     }
 
     @FXML
+    public void onAll() {
+	searchPredicate.setSelectedClass(Object.class);
+	updateList();
+    }
+
+    @FXML
     public void onSave() {
+	saveButton.setDisable(true);
 	ItemRepository.getInstance().saveChanges();
 	ItemRepository.getInstance().sync();
 	updateList();
 	PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen.");
+	saveButton.setDisable(false);
     }
 
     @FXML

@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import persistence.ItemRepository;
 
 /**
  *
@@ -43,7 +44,7 @@ public class CopyPopOver extends BorderPane {
 	FXUtil.loadFXML(this, "popover_exemplaar");
 	damage.setItems(FXCollections.observableArrayList(Damage.values()));
 	this.backedCopy = copy;
-	Bindings.bindBidirectional(location.textProperty(), copy.locationProperty());
+	location.textProperty().bindBidirectional(copy.locationProperty());
 	damage.getSelectionModel().select(copy.getDamage());
 	copy.damageProperty().bind(damage.getSelectionModel().selectedItemProperty());
 	copyNumber.textProperty().bind(copy.copyNumberProperty());

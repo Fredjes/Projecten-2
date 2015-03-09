@@ -131,13 +131,13 @@ public class ItemRepository {
 	    }
 	});
 
-//	itemCopies.forEach(ic -> {
-//	    if (ic.getId() == 0) {
-//		manager.persist(ic);
-//	    } else {
-//		manager.merge(ic);
-//	    }
-//	});
+	itemCopies.forEach(ic -> {
+	    if (ic.getId() == 0) {
+		manager.persist(ic);
+	    } else {
+		manager.merge(ic);
+	    }
+	});
 
 	deletedElements.forEach((el) -> {
 	    Object o = manager.merge(el);

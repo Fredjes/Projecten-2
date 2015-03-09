@@ -11,7 +11,7 @@ public class ThemeConverter implements PropertyListConverter<String, String> {
 
     @Override
     public List<String> toList(String prop) {
-	return Arrays.asList(prop.split("\\s+"));
+	return Arrays.asList(prop.split("\\s*,\\s*"));
     }
 
     @Override

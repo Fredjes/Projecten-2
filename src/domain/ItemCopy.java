@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.input.DataFormat;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
@@ -39,7 +40,7 @@ public class ItemCopy implements Serializable, Searchable {
     private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
     private final ObjectProperty<Damage> damage = new SimpleObjectProperty<>();
     private final StringProperty copyNumber = new SimpleStringProperty();
-
+    
     public ItemCopy() {
     }
 
@@ -105,7 +106,7 @@ public class ItemCopy implements Serializable, Searchable {
 	this.item.set(i);
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne
     public Item getItem() {
 	return this.item.get();
     }
