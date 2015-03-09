@@ -60,14 +60,14 @@ public class ScreenSwitcher extends BorderPane {
 
     private void initialize() {
 	titlebar = new Titlebar(this);
-	titlebar.setController(new TitleBarController(titlebar));
+	titlebar.setController(new TitleBarController(titlebar, this));
 	this.menu = new MainMenu(this, mainMenuController);
 	userManagement = new UserManagement();
 	this.itemManagement = new ItemManagement(itemManagementController);
 	this.loanManagement = new LoanManagement(loanManagementController);
-	mainMenuController = new MainMenuController(menu);
-	itemManagementController = new ItemManagementController(itemManagement);
-	loanManagementController = new LoanManagementController(loanManagement);
+	mainMenuController = new MainMenuController(menu, this);
+	itemManagementController = new ItemManagementController(itemManagement, this);
+	loanManagementController = new LoanManagementController(loanManagement, this);
     }
 
     public void loadIcons(Node node) {

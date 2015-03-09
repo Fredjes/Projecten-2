@@ -2,6 +2,7 @@ package domain.controllers;
 
 import domain.User;
 import gui.MainMenu;
+import gui.ScreenSwitcher;
 import persistence.UserRepository;
 
 /**
@@ -10,8 +11,8 @@ import persistence.UserRepository;
  */
 public class MainMenuController extends BaseController<MainMenu> {
 
-    public MainMenuController(MainMenu view) {
-	super(view);
+    public MainMenuController(MainMenu view, ScreenSwitcher sw) {
+	super(view, sw);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package domain.controllers;
 
+import gui.ScreenSwitcher;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
@@ -11,13 +12,19 @@ import javafx.scene.layout.Pane;
 public abstract class BaseController<E extends Node> {
 
     private final E view;
+    private ScreenSwitcher switcher;
 
-    public BaseController(E view) {
+    public BaseController(E view, ScreenSwitcher sw) {
 	this.view = view;
+	this.switcher = sw;
     }
 
     public E getView() {
 	return view;
+    }
+
+    public ScreenSwitcher getSwitcher() {
+	return switcher;
     }
 
     public abstract void updateToAuthenticatedUser();

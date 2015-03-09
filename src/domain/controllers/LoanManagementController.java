@@ -1,6 +1,7 @@
 package domain.controllers;
 
 import gui.LoanManagement;
+import gui.ScreenSwitcher;
 
 /**
  *
@@ -8,8 +9,8 @@ import gui.LoanManagement;
  */
 public class LoanManagementController extends BaseController<LoanManagement> {
 
-    public LoanManagementController(LoanManagement view) {
-	super(view);
+    public LoanManagementController(LoanManagement view, ScreenSwitcher sw) {
+	super(view, sw);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package domain.controllers;
 
 import domain.User;
+import gui.ScreenSwitcher;
 import gui.Titlebar;
 import persistence.UserRepository;
 
@@ -10,8 +11,8 @@ import persistence.UserRepository;
  */
 public class TitleBarController extends BaseController<Titlebar> {
 
-    public TitleBarController(Titlebar view) {
-	super(view);
+    public TitleBarController(Titlebar view, ScreenSwitcher sw) {
+	super(view, sw);
     }
 
     @Override
