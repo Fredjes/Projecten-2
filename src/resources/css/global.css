@@ -175,6 +175,11 @@
     -fx-text-fill: #E51400;
 }
 
+.active {
+    -fx-background-color: #3f88c3;
+    -fx-border-width: 5px;
+}
+
 /* ############ TEXTFIELD STYLING ############ */
 .text-input {
     -fx-focus-color: transparent;
@@ -182,8 +187,10 @@
     -fx-border-width: 1px;
 }
 
-.text-input:focused{
-    -fx-focus-color: transparent;
+.text-input:focused {
+    -fx-border-width: 2px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
 }
 
 
