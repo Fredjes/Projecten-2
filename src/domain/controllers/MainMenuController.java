@@ -31,15 +31,15 @@ public class MainMenuController extends BaseController<MainMenu> {
 	    case VOLUNTEER:
 		hideNode(getView().getExcelImporteren(), "excel");
 		hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
-		hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
+		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
 		break;
 
 	    case TEACHER:
-		showNode(getView().getExcelImporteren());
-		showNode(getView().getGebruikersBeheren());
-		showNode(getView().getVoorwerpenBeheren());
-		showNode(getView().getUitleningenBeheren());
+		showNode("excel");
+		showNode("gebruikersBeheren");
+		showNode("voorwerpenBeheren");
+		showNode("uitleningenBeheren");
 		break;
 	}
     }

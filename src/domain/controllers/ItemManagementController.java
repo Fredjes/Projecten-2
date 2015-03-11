@@ -26,13 +26,13 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 
 	switch (u.getUserType()) {
 	    case VOLUNTEER:
-		hideNode(getView().getListCommands());
-		hideNode(getView().getSaveButton());
+		hideNode(getView().getListCommands(), "listTools");
+		hideNode(getView().getSaveButton(), "save");
 		break;
 
 	    case TEACHER:
-		showNode(getView().getListCommands());
-		showNode(getView().getSaveButton());
+		showNode("listTools");
+		showNode("save");
 		break;
 	}
     }
