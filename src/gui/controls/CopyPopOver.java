@@ -3,7 +3,6 @@ package gui.controls;
 import domain.Damage;
 import domain.ItemCopy;
 import gui.FXUtil;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import persistence.ItemRepository;
 
 /**
  *
@@ -50,6 +48,7 @@ public class CopyPopOver extends BorderPane {
 	copyNumber.textProperty().bind(copy.copyNumberProperty());
 	locationLabel.setTextFill(Color.BLACK);
 	damageLabel.setTextFill(Color.BLACK);
+
     }
 
     @FXML
