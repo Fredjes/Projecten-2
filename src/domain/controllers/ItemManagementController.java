@@ -27,12 +27,15 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 	switch (u.getUserType()) {
 	    case VOLUNTEER:
 		hideNode(getView().getListCommands(), "listTools");
+		//hideNode(getView().getDetailView());
 		hideNode(getView().getSaveButton(), "save");
+		getView().getFilteredList().forEach((item) -> hideNode(item.getAddCopyButton()));
 		break;
 
 	    case TEACHER:
 		showNode("listTools");
 		showNode("save");
+		getView().getFilteredList().forEach((item) -> showNode(item.getAddCopyButton()));
 		break;
 	}
     }

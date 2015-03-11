@@ -45,6 +45,10 @@ public class ItemManagementListItem extends AnchorPane {
 	FXUtil.loadFXML(this, "listview_item");
     }
 
+    public Button getAddCopyButton() {
+	return addCopyButton;
+    }
+
     public ItemManagementListItem(Item item) {
 	this();
 
@@ -91,10 +95,6 @@ public class ItemManagementListItem extends AnchorPane {
 	FilteredList<ItemCopy> list = new FilteredList<>(ItemRepository.getInstance().getItemCopies());
 	list.setPredicate(ic -> ic.getItem() == item);
 	return list;
-    }
-
-    public Button getAddCopyButton() {
-	return addCopyButton;
     }
 
 }

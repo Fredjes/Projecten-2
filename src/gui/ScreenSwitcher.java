@@ -59,15 +59,20 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     private void initialize() {
+
 	titlebar = new Titlebar(this);
 	titlebar.setController(new TitleBarController(titlebar, this));
 	this.menu = new MainMenu(this, mainMenuController);
 	userManagement = new UserManagement();
 	this.itemManagement = new ItemManagement(itemManagementController);
 	this.loanManagement = new LoanManagement(loanManagementController);
+
 	mainMenuController = new MainMenuController(menu, this);
 	itemManagementController = new ItemManagementController(itemManagement, this);
 	loanManagementController = new LoanManagementController(loanManagement, this);
+
+	itemManagement.setController(itemManagementController);
+
     }
 
     public void loadIcons(Node node) {
@@ -83,15 +88,15 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openMainMenu() {
-	updateController(mainMenuController);
 	titlebar.setTitle("Hoofdmenu");
 	setCenter(menu);
+	updateController(mainMenuController);
     }
 
     public void openItemManagement() {
-	updateController(itemManagementController);
 	titlebar.setTitle("Voorwerpen beheren");
 	setCenter(itemManagement);
+	updateController(itemManagementController);
     }
 
     public void openUserManagement() {
@@ -99,9 +104,9 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openLoanManagement() {
-	updateController(loanManagementController);
 	titlebar.setTitle("Uitleningen beheren");
 	setCenter(loanManagement);
+	updateController(loanManagementController);
     }
 
     public void openExcelImport() {

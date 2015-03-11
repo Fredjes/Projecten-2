@@ -22,7 +22,7 @@ public class TitleBarController extends BaseController<Titlebar> {
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
 	    hideNode(getView().getExcelImporteren(), "excel");
 	    hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
-	    hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
+	    //hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
 	    hideNode(getView().getUitleningenBeheren(), "uitleningenBeheren");
 	    return;
 	}

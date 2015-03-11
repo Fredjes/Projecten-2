@@ -58,11 +58,14 @@ public class ItemManagement extends BorderPane {
     private FilteredList<Item> predicateList;
     private Binding detailView;
 
+    public void setController(ItemManagementController cont) {
+	controller = cont;
+    }
+
     public ItemManagement(ItemManagementController controller) {
+	this.controller = controller;
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
-
-	this.controller = controller;
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
 	searchbar.setOnKeyReleased(e -> updateList());
 	updateList();
@@ -115,36 +118,42 @@ public class ItemManagement extends BorderPane {
     public void onBoek() {
 	searchPredicate.setSelectedClass(FilterOption.BOOK.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onSpelletje() {
 	searchPredicate.setSelectedClass(FilterOption.GAME.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onCd() {
 	searchPredicate.setSelectedClass(FilterOption.CD.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onDvd() {
 	searchPredicate.setSelectedClass(FilterOption.DVD.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onStoryBag() {
 	searchPredicate.setSelectedClass(FilterOption.STORYBAG.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onAll() {
 	searchPredicate.setSelectedClass(Object.class);
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
@@ -187,6 +196,10 @@ public class ItemManagement extends BorderPane {
 
     public HBox getListCommands() {
 	return listCommands;
+    }
+
+    public ObservableList<ItemManagementListItem> getFilteredList() {
+	return filteredList;
     }
 
 }
