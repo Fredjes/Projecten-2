@@ -4,10 +4,7 @@ import domain.DetailViewUtil;
 import domain.Item;
 import domain.ItemCopy;
 import domain.ObservableListUtil;
-import domain.User;
-import domain.User.UserType;
 import gui.controls.CopyButton;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -18,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
-import persistence.UserRepository;
 
 /**
  *
@@ -46,9 +42,6 @@ public class ItemManagementListItem extends AnchorPane {
     @FXML
     private HBox managementTab;
 
-    @FXML
-    private Button btnDelete;
-
     private Item backedItem;
 
     private ItemManagementListItem() {
@@ -71,15 +64,6 @@ public class ItemManagementListItem extends AnchorPane {
 	    CopyButton button = new CopyButton(ic);
 	    initOnDelete(button, ic);
 	    copyList.getChildren().add(button);
-	});
-
-	btnDelete.setText("bla");
-
-	Platform.runLater(() -> {
-	    User u = UserRepository.getInstance().getAuthenticatedUser();
-	    if (u == null || u.getUserType() != UserType.TEACHER) {
-		//buttonBox.getChildren().remove(btnDelete);
-	    }
 	});
     }
 
