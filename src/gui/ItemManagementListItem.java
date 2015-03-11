@@ -39,6 +39,9 @@ public class ItemManagementListItem extends AnchorPane {
     @FXML
     private Button addCopyButton;
 
+    @FXML
+    private HBox managementTab;
+
     private Item backedItem;
 
     private ItemManagementListItem() {
@@ -95,6 +98,10 @@ public class ItemManagementListItem extends AnchorPane {
 	FilteredList<ItemCopy> list = new FilteredList<>(ItemRepository.getInstance().getItemCopies());
 	list.setPredicate(ic -> ic.getItem() == item);
 	return list;
+    }
+
+    public HBox getManagementTab() {
+	return managementTab;
     }
 
 }

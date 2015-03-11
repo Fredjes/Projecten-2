@@ -20,14 +20,15 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 	User u = UserRepository.getInstance().getAuthenticatedUser();
 
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
-	    getSwitcher().openMainMenu();
+	    hideNode(getView().getListCommands(), "listTools");
+	    hideNode(getView().getSaveButton(), "save");
+	    getView().getFilteredList().forEach((item) -> hideNode(item.getManagementTab()));
 	    return;
 	}
 
 	switch (u.getUserType()) {
 	    case VOLUNTEER:
 		hideNode(getView().getListCommands(), "listTools");
-		//hideNode(getView().getDetailView());
 		hideNode(getView().getSaveButton(), "save");
 		getView().getFilteredList().forEach((item) -> hideNode(item.getAddCopyButton()));
 		break;

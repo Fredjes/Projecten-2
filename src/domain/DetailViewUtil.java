@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
+import persistence.UserRepository;
 
 public class DetailViewUtil {
 
@@ -43,6 +44,12 @@ public class DetailViewUtil {
     }
 
     public static void initImageDragAndDrop(ImageView image) {
+
+	User u = UserRepository.getInstance().getAuthenticatedUser();
+	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT || u.getUserType() == User.UserType.VOLUNTEER) {
+	    return;
+	}
+
 	final ObjectProperty<PopOver> shownPopup = new SimpleObjectProperty<>(new PopOver());
 	image.setOnDragEntered(evt -> {
 	    if (evt.getDragboard().hasFiles()) {

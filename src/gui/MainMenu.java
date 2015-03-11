@@ -2,6 +2,7 @@ package gui;
 
 import domain.controllers.MainMenuController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -18,13 +19,41 @@ public class MainMenu extends BorderPane {
     private VBox gebruikersBeheren;
 
     @FXML
+    private Label lblGebruikers;
+
+    @FXML
     private VBox excelImporteren;
+
+    @FXML
+    private Label lblExcel;
 
     @FXML
     private VBox UitleningenBeheren;
 
     @FXML
+    private Label lblUitleningen;
+
+    @FXML
     private VBox voorwerpenBeheren;
+
+    @FXML
+    private Label lblVoorwerpen;
+
+    public Label getLblGebruikers() {
+	return lblGebruikers;
+    }
+
+    public Label getLblExcel() {
+	return lblExcel;
+    }
+
+    public Label getLblUitleningen() {
+	return lblUitleningen;
+    }
+
+    public Label getLblVoorwerpen() {
+	return lblVoorwerpen;
+    }
 
     public MainMenu(ScreenSwitcher switcher, MainMenuController controller) {
 	this.switcher = switcher;
