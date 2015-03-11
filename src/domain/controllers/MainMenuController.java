@@ -17,33 +17,31 @@ public class MainMenuController extends BaseController<MainMenu> {
 
     @Override
     public void updateToAuthenticatedUser() {
-	MainMenu mainMenu = getView();
 	User u = UserRepository.getInstance().getAuthenticatedUser();
 
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
-	    hideNode(mainMenu.getExcelImporteren());
-	    hideNode(mainMenu.getGebruikersBeheren());
-	    hideNode(mainMenu.getVoorwerpenBeheren());
-	    hideNode(mainMenu.getUitleningenBeheren());
+	    hideNode(getView().getExcelImporteren(), "excel");
+	    hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
+	    hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
+	    hideNode(getView().getUitleningenBeheren(), "uitleningenBeheren");
 	    return;
 	}
 
 	switch (u.getUserType()) {
 	    case VOLUNTEER:
-		hideNode(mainMenu.getExcelImporteren());
-		hideNode(mainMenu.getGebruikersBeheren());
-		hideNode(mainMenu.getVoorwerpenBeheren());
-		showNode(mainMenu.getUitleningenBeheren());
+		hideNode(getView().getExcelImporteren(), "excel");
+		hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
+		hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
+		showNode("uitleningenBeheren");
 		break;
 
 	    case TEACHER:
-		showNode(mainMenu.getExcelImporteren());
-		showNode(mainMenu.getGebruikersBeheren());
-		showNode(mainMenu.getVoorwerpenBeheren());
-		showNode(mainMenu.getUitleningenBeheren());
+		showNode(getView().getExcelImporteren());
+		showNode(getView().getGebruikersBeheren());
+		showNode(getView().getVoorwerpenBeheren());
+		showNode(getView().getUitleningenBeheren());
 		break;
 	}
-
     }
 
 }

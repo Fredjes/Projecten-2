@@ -20,19 +20,19 @@ public class TitleBarController extends BaseController<Titlebar> {
 	User u = UserRepository.getInstance().getAuthenticatedUser();
 
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
-	    hideNode(getView().getExcelImporteren());
-	    hideNode(getView().getGebruikersBeheren());
-	    hideNode(getView().getVoorwerpenBeheren());
-	    hideNode(getView().getUitleningenBeheren());
+	    hideNode(getView().getExcelImporteren(), "excel");
+	    hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
+	    hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
+	    hideNode(getView().getUitleningenBeheren(), "uitleningenBeheren");
 	    return;
 	}
 
 	switch (u.getUserType()) {
 	    case VOLUNTEER:
-		hideNode(getView().getExcelImporteren());
-		hideNode(getView().getGebruikersBeheren());
-		hideNode(getView().getVoorwerpenBeheren());
-		showNode(getView().getUitleningenBeheren());
+		hideNode(getView().getExcelImporteren(), "excel");
+		hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
+		hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
+		showNode("uitleningenBeheren");
 		break;
 
 	    case TEACHER:
