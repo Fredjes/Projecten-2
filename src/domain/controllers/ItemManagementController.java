@@ -31,6 +31,7 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 		hideNode(getView().getListCommands(), "listTools");
 		hideNode(getView().getSaveButton(), "save");
 		getView().getFilteredList().forEach((item) -> hideNode(item.getAddCopyButton()));
+		getView().getChildren().remove(getView().getDetailView());
 		break;
 
 	    case TEACHER:
@@ -39,6 +40,8 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 		getView().getFilteredList().forEach((item) -> showNode(item.getAddCopyButton()));
 		break;
 	}
+	
+	getView().updateList();
     }
 
 }

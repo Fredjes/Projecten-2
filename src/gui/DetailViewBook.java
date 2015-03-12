@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import persistence.ItemRepository;
 import persistence.JPAUtil;
+import persistence.UserRepository;
 
 public class DetailViewBook extends TabPane implements Binding<Book> {
 

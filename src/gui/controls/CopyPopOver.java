@@ -29,7 +29,7 @@ public class CopyPopOver extends BorderPane {
 
     @FXML
     private TextField locationTxt;
-    ;
+
     @FXML
     private Label copyNumber;
 
@@ -62,6 +62,8 @@ public class CopyPopOver extends BorderPane {
 
 	if (UserRepository.getInstance().getAuthenticatedUser() == null || UserRepository.getInstance().getAuthenticatedUser().getUserType() != User.UserType.TEACHER) {
 	    buttonGroup.getChildren().remove(btnDelete);
+	    locationTxt.setDisable(true);
+	    damage.setDisable(true);
 	}
     }
 

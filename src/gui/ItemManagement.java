@@ -122,7 +122,7 @@ public class ItemManagement extends BorderPane {
 	});
     }
 
-    private void updateList() {
+    public void updateList() {
 	itemList.setItems(FXCollections.observableArrayList());
 	predicateList = (FilteredList<Item>) SearchPredicate.filteredListFor((ObservableList<Item>) ItemRepository.getInstance().getItems(), searchPredicate);
 	filteredList = ObservableListUtil.convertObservableList(predicateList, ItemManagementListItem.getItemManagementListItemConverter());
@@ -221,4 +221,7 @@ public class ItemManagement extends BorderPane {
 	return filteredList;
     }
 
+    public Node getDetailView(){
+	return (Node) this.detailView;
+    }
 }
