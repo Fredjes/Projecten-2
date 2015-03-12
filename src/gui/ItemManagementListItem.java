@@ -4,7 +4,9 @@ import domain.DetailViewUtil;
 import domain.Item;
 import domain.ItemCopy;
 import domain.ObservableListUtil;
+import domain.User;
 import gui.controls.CopyButton;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
+import persistence.UserRepository;
 
 /**
  *
@@ -103,5 +106,4 @@ public class ItemManagementListItem extends AnchorPane {
     public HBox getManagementTab() {
 	return managementTab;
     }
-
 }

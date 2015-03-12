@@ -2,16 +2,21 @@ package gui.controls;
 
 import domain.Damage;
 import domain.ItemCopy;
+import domain.User;
 import gui.FXUtil;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import persistence.UserRepository;
 
 /**
  *
@@ -23,8 +28,8 @@ public class CopyPopOver extends BorderPane {
     private ChoiceBox<Damage> damage;
 
     @FXML
-    private TextField location;
-
+    private TextField locationTxt;
+    ;
     @FXML
     private Label copyNumber;
 
@@ -32,7 +37,13 @@ public class CopyPopOver extends BorderPane {
     private Label locationLabel;
 
     @FXML
+    private Button btnDelete;
+
+    @FXML
     private Label damageLabel;
+
+    @FXML
+    private HBox buttonGroup;
 
     private ItemCopy backedCopy;
     private EventHandler<ActionEvent> onDelete;
@@ -42,13 +53,16 @@ public class CopyPopOver extends BorderPane {
 	FXUtil.loadFXML(this, "popover_exemplaar");
 	damage.setItems(FXCollections.observableArrayList(Damage.values()));
 	this.backedCopy = copy;
-	location.textProperty().bindBidirectional(copy.locationProperty());
+	locationTxt.textProperty().bindBidirectional(copy.locationProperty());
 	damage.getSelectionModel().select(copy.getDamage());
 	copy.damageProperty().bind(damage.getSelectionModel().selectedItemProperty());
 	copyNumber.textProperty().bind(copy.copyNumberProperty());
 	locationLabel.setTextFill(Color.BLACK);
 	damageLabel.setTextFill(Color.BLACK);
 
+	if (UserRepository.getInstance().getAuthenticatedUser() == null || UserRepository.getInstance().getAuthenticatedUser().getUserType() != User.UserType.TEACHER) {
+	    buttonGroup.getChildren().remove(btnDelete);
+	}
     }
 
     @FXML
