@@ -16,10 +16,10 @@ public class ThemeConverter implements PropertyListConverter<String, String> {
 
     @Override
     public String toProperty(List<String> list) {
-	String separator = " ";
+	String separator = ", ";
 	StringBuilder builder = new StringBuilder();
 	list.forEach(s -> builder.append(s).append(separator));
-	return builder.toString();
+	return builder.length() > 2 ? builder.substring(0, builder.length() - 2) : builder.toString();
     }
 
 }

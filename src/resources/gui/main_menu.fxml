@@ -31,7 +31,7 @@
                               <String fx:value="icon" />
                               <String fx:value="icon-gebruikers-beheren" />
                            </styleClass></Text>
-                        <Label text="Gebruikers beheren" textFill="WHITE">
+                        <Label fx:id="lblGebruikers" text="Gebruikers beheren" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -49,7 +49,7 @@
                               <String fx:value="icon" />
                               <String fx:value="icon-excel-importeren" />
                            </styleClass></Text>
-                        <Label text="Excel importeren" textFill="WHITE">
+                        <Label fx:id="lblExcel" text="Excel importeren" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -67,7 +67,7 @@
                               <String fx:value="icon" />
                               <String fx:value="icon-uitleningen-beheren" />
                            </styleClass></Text>
-                        <Label text="Uitleningen beheren" textFill="WHITE">
+                        <Label fx:id="lblUitleningen" text="Uitleningen beheren" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -85,7 +85,7 @@
                               <String fx:value="icon" />
                               <String fx:value="icon-voorwerpen-beheren" />
                            </styleClass></Text>
-                        <Label text="Voorwerpen beheren" textFill="WHITE">
+                        <Label fx:id="lblVoorwerpen" text="Voorwerpen beheren" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>

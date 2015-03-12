@@ -37,7 +37,7 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <HBox alignment="CENTER_RIGHT" spacing="2.0" GridPane.rowIndex="2">
+            <HBox fx:id="managementTab" alignment="CENTER_RIGHT" spacing="2.0" GridPane.rowIndex="2">
                <children>
                   <Label styleClass="bold" text="Exemplaren:">
                      <font>

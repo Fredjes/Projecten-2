@@ -4,7 +4,9 @@ import domain.DetailViewUtil;
 import domain.Item;
 import domain.ItemCopy;
 import domain.ObservableListUtil;
+import domain.User;
 import gui.controls.CopyButton;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
+import persistence.UserRepository;
 
 /**
  *
@@ -39,10 +42,17 @@ public class ItemManagementListItem extends AnchorPane {
     @FXML
     private Button addCopyButton;
 
+    @FXML
+    private HBox managementTab;
+
     private Item backedItem;
 
     private ItemManagementListItem() {
 	FXUtil.loadFXML(this, "listview_item");
+    }
+
+    public Button getAddCopyButton() {
+	return addCopyButton;
     }
 
     public ItemManagementListItem(Item item) {
@@ -93,8 +103,7 @@ public class ItemManagementListItem extends AnchorPane {
 	return list;
     }
 
-    public Button getAddCopyButton() {
-	return addCopyButton;
+    public HBox getManagementTab() {
+	return managementTab;
     }
-
 }

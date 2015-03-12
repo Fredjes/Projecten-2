@@ -15,7 +15,6 @@ public class LoanManagementController extends BaseController<LoanManagement> {
 
     @Override
     public void updateToAuthenticatedUser() {
-
     }
 
 }

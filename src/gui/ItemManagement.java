@@ -10,6 +10,7 @@ import domain.Item;
 import domain.ObservableListUtil;
 import domain.SearchPredicate;
 import domain.StoryBag;
+import domain.User;
 import domain.controllers.ItemManagementController;
 import gui.dialogs.PopupUtil;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
+import persistence.UserRepository;
 
 /**
  *
@@ -58,17 +60,33 @@ public class ItemManagement extends BorderPane {
     private FilteredList<Item> predicateList;
     private Binding detailView;
 
+    public void setController(ItemManagementController cont) {
+	controller = cont;
+    }
+
+    public ItemManagementController getController() {
+	return controller;
+    }
+
     public ItemManagement(ItemManagementController controller) {
+	this.controller = controller;
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
-
-	this.controller = controller;
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
-	searchbar.setOnKeyReleased(e -> updateList());
+	searchbar.setOnKeyReleased((e) -> {
+	    updateList();
+	    getController().updateToAuthenticatedUser();
+	});
 	updateList();
 	itemList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 	    try {
 		if (newValue == null) {
+		    return;
+		}
+
+		User u = UserRepository.getInstance().getAuthenticatedUser();
+
+		if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT || u.getUserType() == User.UserType.VOLUNTEER) {
 		    return;
 		}
 
@@ -115,36 +133,42 @@ public class ItemManagement extends BorderPane {
     public void onBoek() {
 	searchPredicate.setSelectedClass(FilterOption.BOOK.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onSpelletje() {
 	searchPredicate.setSelectedClass(FilterOption.GAME.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onCd() {
 	searchPredicate.setSelectedClass(FilterOption.CD.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onDvd() {
 	searchPredicate.setSelectedClass(FilterOption.DVD.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onStoryBag() {
 	searchPredicate.setSelectedClass(FilterOption.STORYBAG.getFilterClass());
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onAll() {
 	searchPredicate.setSelectedClass(Object.class);
 	updateList();
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
@@ -171,6 +195,8 @@ public class ItemManagement extends BorderPane {
 		PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
 	    }
 	}
+
+	controller.updateToAuthenticatedUser();
     }
 
     @FXML
@@ -179,6 +205,8 @@ public class ItemManagement extends BorderPane {
 	    ItemRepository.getInstance().remove(((ItemManagementListItem) itemList.getSelectionModel().getSelectedItem()).getBackedItem());
 	    updateList();
 	}
+
+	controller.updateToAuthenticatedUser();
     }
 
     public Button getSaveButton() {
@@ -187,6 +215,10 @@ public class ItemManagement extends BorderPane {
 
     public HBox getListCommands() {
 	return listCommands;
+    }
+
+    public ObservableList<ItemManagementListItem> getFilteredList() {
+	return filteredList;
     }
 
 }
