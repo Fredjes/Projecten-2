@@ -58,7 +58,6 @@ public class Titlebar extends GridPane {
     @FXML
     public void onLogin() {
 	this.switcher.processLoginRequest(loginButton, authenicatedUserLabel);
-	this.controller.updateToAuthenticatedUser();
     }
 
     @FXML

@@ -75,7 +75,6 @@ public class ItemManagement extends BorderPane {
 	itemList.setCellFactory(ItemManagementListItemCell.forListView());
 	searchbar.setOnKeyReleased((e) -> {
 	    updateList();
-	    getController().updateToAuthenticatedUser();
 	});
 	updateList();
 	itemList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -130,42 +129,36 @@ public class ItemManagement extends BorderPane {
     public void onBoek() {
 	searchPredicate.setSelectedClass(FilterOption.BOOK.getFilterClass());
 	updateList();
-	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onSpelletje() {
 	searchPredicate.setSelectedClass(FilterOption.GAME.getFilterClass());
 	updateList();
-	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onCd() {
 	searchPredicate.setSelectedClass(FilterOption.CD.getFilterClass());
 	updateList();
-	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onDvd() {
 	searchPredicate.setSelectedClass(FilterOption.DVD.getFilterClass());
 	updateList();
-	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onStoryBag() {
 	searchPredicate.setSelectedClass(FilterOption.STORYBAG.getFilterClass());
 	updateList();
-	controller.updateToAuthenticatedUser();
     }
 
     @FXML
     public void onAll() {
 	searchPredicate.setSelectedClass(Object.class);
 	updateList();
-	controller.updateToAuthenticatedUser();
     }
 
     @FXML
@@ -192,8 +185,6 @@ public class ItemManagement extends BorderPane {
 		PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
 	    }
 	}
-
-	controller.updateToAuthenticatedUser();
     }
 
     @FXML
@@ -202,8 +193,6 @@ public class ItemManagement extends BorderPane {
 	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
 	    updateList();
 	}
-
-	controller.updateToAuthenticatedUser();
     }
 
     public Button getSaveButton() {

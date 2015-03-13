@@ -2,9 +2,12 @@ package domain.controllers;
 
 import gui.ScreenSwitcher;
 import java.util.HashMap;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import persistence.UserRepository;
 
 /**
  *
@@ -22,6 +25,11 @@ public abstract class BaseController<E extends Node> {
     public BaseController(E view, ScreenSwitcher sw) {
 	this.view = view;
 	this.switcher = sw;
+	UserRepository.getInstance().authenticatedUserProperty().addListener(o -> {
+	    updateToAuthenticatedUser();
+	    sw.loadIcons(view);
+	});
+	updateToAuthenticatedUser();
     }
 
     public E getView() {
@@ -35,7 +43,6 @@ public abstract class BaseController<E extends Node> {
     public abstract void updateToAuthenticatedUser();
 
     private void removeNode(Node node, String identifier) {
-
 	Parent parentNode = node.getParent();
 
 	if (parentNode == null) {

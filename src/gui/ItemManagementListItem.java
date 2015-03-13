@@ -5,6 +5,7 @@ import domain.Item;
 import domain.ItemCopy;
 import domain.ObservableListUtil;
 import domain.User;
+import domain.controllers.ItemManagementListItemController;
 import gui.controls.CopyButton;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -48,11 +49,13 @@ public class ItemManagementListItem extends AnchorPane {
 
     private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
     private Item oldItem;
+    private ItemManagementListItemController controller;
 
     public ItemManagementListItem() {
 	FXUtil.loadFXML(this, "listview_item");
 	DetailViewUtil.initImageDragAndDrop(itemImage);
 	item.addListener(o -> updateBindings());
+	controller = new ItemManagementListItemController(this, null);
     }
 
     public Button getAddCopyButton() {

@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
@@ -24,7 +27,7 @@ public class UserRepository {
 
     private ObservableList<User> users = FXCollections.observableArrayList();
 
-    private User authenticatedUser;
+    private final ObjectProperty<User> authenticatedUser = new SimpleObjectProperty<>();
 
     private final List<User> deletedUsers = new ArrayList();
 
@@ -72,11 +75,15 @@ public class UserRepository {
     }
 
     public User getAuthenticatedUser() {
+	return authenticatedUser.get();
+    }
+
+    public ReadOnlyObjectProperty<User> authenticatedUserProperty() {
 	return authenticatedUser;
     }
 
     public void logout() {
-	authenticatedUser = null;
+	authenticatedUser.set(null);
     }
 
     public boolean authenticate(String username, String password) {
@@ -85,7 +92,8 @@ public class UserRepository {
 	});
 
 	if (!found.isEmpty()) {
-	    authenticatedUser = found.get(0);
+	    assert found.size() == 1;
+	    authenticatedUser.set(found.get(0));
 	    return true;
 	}
 	return false;

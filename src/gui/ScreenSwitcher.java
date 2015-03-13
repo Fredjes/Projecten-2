@@ -55,7 +55,6 @@ public class ScreenSwitcher extends BorderPane {
 	loadIcons(loanManagement);
 	loadIcons(userManagement);
 	loadIcons(titlebar);
-
     }
 
     private void initialize() {
@@ -90,13 +89,11 @@ public class ScreenSwitcher extends BorderPane {
     public void openMainMenu() {
 	titlebar.setTitle("Hoofdmenu");
 	setCenter(menu);
-	updateController(mainMenuController);
     }
 
     public void openItemManagement() {
 	titlebar.setTitle("Voorwerpen beheren");
 	setCenter(itemManagement);
-	updateController(itemManagementController);
     }
 
     public void openUserManagement() {
@@ -106,7 +103,6 @@ public class ScreenSwitcher extends BorderPane {
     public void openLoanManagement() {
 	titlebar.setTitle("Uitleningen beheren");
 	setCenter(loanManagement);
-	updateController(loanManagementController);
     }
 
     public void openExcelImport() {
@@ -171,7 +167,6 @@ public class ScreenSwitcher extends BorderPane {
 		    authenticatedUserLabel.setText("Welkom " + USER_REPO_INSTANCE.getAuthenticatedUser().getName());
 		    pop.hide();
 		    loginButton.setText("Afmelden");
-		    updateAllControllers();
 		} else {
 		    loginPanel.resetPanel(true);
 		    authenticatedUserLabel.setText("");
@@ -179,16 +174,5 @@ public class ScreenSwitcher extends BorderPane {
 	    });
 	}
 
-    }
-
-    private void updateAllControllers() {
-	updateController(mainMenuController);
-	updateController(itemManagementController);
-	updateController(loanManagementController);
-    }
-
-    private void updateController(BaseController controller) {
-	controller.updateToAuthenticatedUser();
-	titlebar.getController().updateToAuthenticatedUser();
     }
 }
