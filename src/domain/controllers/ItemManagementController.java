@@ -22,7 +22,7 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
 	    hideNode(getView().getListCommands(), "listTools");
 	    hideNode(getView().getSaveButton(), "save");
-	    getView().getFilteredList().forEach((item) -> hideNode(item.getManagementTab()));
+//	    getView().getFilteredList().forEach((item) -> hideNode(item.getManagementTab()));
 	    return;
 	}
 
@@ -30,14 +30,14 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 	    case VOLUNTEER:
 		hideNode(getView().getListCommands(), "listTools");
 		hideNode(getView().getSaveButton(), "save");
-		getView().getFilteredList().forEach((item) -> hideNode(item.getAddCopyButton()));
+//		getView().getFilteredList().forEach((item) -> hideNode(item.getAddCopyButton()));
 		getView().getChildren().remove(getView().getDetailView());
 		break;
 
 	    case TEACHER:
 		showNode("listTools");
 		showNode("save");
-		getView().getFilteredList().forEach((item) -> showNode(item.getAddCopyButton()));
+//		getView().getFilteredList().forEach((item) -> showNode(item.getAddCopyButton()));
 		break;
 	}
 	

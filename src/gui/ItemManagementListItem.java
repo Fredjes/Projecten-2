@@ -6,6 +6,10 @@ import domain.ItemCopy;
 import domain.ObservableListUtil;
 import domain.User;
 import gui.controls.CopyButton;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -23,8 +27,6 @@ import persistence.UserRepository;
  * @author Frederik
  */
 public class ItemManagementListItem extends AnchorPane {
-
-    private static final ObservableListUtil.ListConverter<Item, ItemManagementListItem> converter = ItemManagementListItem::new;
 
     @FXML
     private HBox copyList;
@@ -44,25 +46,38 @@ public class ItemManagementListItem extends AnchorPane {
     @FXML
     private HBox managementTab;
 
-    private Item backedItem;
+    private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
+    private Item oldItem;
 
-    private ItemManagementListItem() {
+    public ItemManagementListItem() {
 	FXUtil.loadFXML(this, "listview_item");
+	DetailViewUtil.initImageDragAndDrop(itemImage);
+	item.addListener(o -> updateBindings());
     }
 
     public Button getAddCopyButton() {
 	return addCopyButton;
     }
 
-    public ItemManagementListItem(Item item) {
-	this();
+    public void setItem(Item item) {
+	this.item.set(item);
+    }
 
-	this.backedItem = item;
-	title.textProperty().bind(item.nameProperty());
-	description.textProperty().bind(item.descriptionProperty());
-	itemImage.imageProperty().bindBidirectional(item.imageProperty());
-	DetailViewUtil.initImageDragAndDrop(itemImage);
-	ItemRepository.getInstance().getItemCopiesByPredicate((ItemCopy ic) -> ic.getItem() == backedItem || ic.getItem().equals(backedItem)).forEach(ic -> {
+    public Item getItem() {
+	return item.get();
+    }
+
+    private void updateBindings() {
+	if (oldItem != null) {
+	    title.textProperty().unbind();
+	    description.textProperty().unbind();
+	    itemImage.imageProperty().unbindBidirectional(oldItem.imageProperty());
+	}
+
+	title.textProperty().bind(item.get().nameProperty());
+	description.textProperty().bind(item.get().descriptionProperty());
+	itemImage.imageProperty().bindBidirectional(item.get().imageProperty());
+	ItemRepository.getInstance().getItemCopiesByPredicate((ItemCopy ic) -> ic.getItem() == item.get() || ic.getItem().equals(item.get())).forEach(ic -> {
 	    CopyButton button = new CopyButton(ic);
 	    initOnDelete(button, ic);
 	    copyList.getChildren().add(button);
@@ -71,33 +86,27 @@ public class ItemManagementListItem extends AnchorPane {
 	if (UserRepository.getInstance().getAuthenticatedUser() == null || UserRepository.getInstance().getAuthenticatedUser().getUserType() != User.UserType.TEACHER) {
 	    addCopyButton.setVisible(false);
 	}
-    }
 
-    public Item getBackedItem() {
-	return backedItem;
+	oldItem = item.get();
     }
 
     private void initOnDelete(CopyButton button, ItemCopy backedCopy) {
 	button.setOnDelete(e -> {
 	    ItemRepository.getInstance().remove(backedCopy);
-	    backedItem.getItemCopies().remove(backedCopy);
+	    item.get().getItemCopies().remove(backedCopy);
 	    copyList.getChildren().remove(button);
 	});
     }
 
     @FXML
     public void onAdd(ActionEvent evt) {
-	ItemCopy copy = ItemRepository.getInstance().createItemCopyFor(backedItem);
-	copy.setItem(backedItem);
-	backedItem.getItemCopies().add(copy);
+	ItemCopy copy = ItemRepository.getInstance().createItemCopyFor(item.get());
+	copy.setItem(item.get());
+	item.get().getItemCopies().add(copy);
 	CopyButton button = new CopyButton(copy);
 	initOnDelete(button, copy);
 	copyList.getChildren().add(button);
 
-    }
-
-    public static ObservableListUtil.ListConverter<Item, ItemManagementListItem> getItemManagementListItemConverter() {
-	return converter;
     }
 
     private ObservableList<ItemCopy> getCopiesOfItem(Item item) {

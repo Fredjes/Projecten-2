@@ -7,7 +7,6 @@ import domain.Dvd;
 import domain.FilterOption;
 import domain.Game;
 import domain.Item;
-import domain.ObservableListUtil;
 import domain.SearchPredicate;
 import domain.StoryBag;
 import domain.User;
@@ -40,7 +39,7 @@ public class ItemManagement extends BorderPane {
     private Button removeButton;
 
     @FXML
-    private ListView itemList;
+    private ListView<Item> itemList;
 
     @FXML
     private Button addButton;
@@ -56,7 +55,7 @@ public class ItemManagement extends BorderPane {
 
     private ItemManagementController controller;
     private SearchPredicate searchPredicate;
-    private ObservableList<ItemManagementListItem> filteredList;
+    private ObservableList<Item> filteredList;
     private FilteredList<Item> predicateList;
     private Binding detailView;
 
@@ -73,6 +72,7 @@ public class ItemManagement extends BorderPane {
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
+	itemList.setCellFactory(ItemManagementListItemCell.forListView());
 	searchbar.setOnKeyReleased((e) -> {
 	    updateList();
 	    getController().updateToAuthenticatedUser();
@@ -90,31 +90,29 @@ public class ItemManagement extends BorderPane {
 		    return;
 		}
 
-		Item i = ((ItemManagementListItem) newValue).getBackedItem();
-
-		if (i instanceof Book) {
+		if (newValue instanceof Book) {
 		    Object temp = DetailViewUtil.getDetailPane(FilterOption.BOOK);
 		    detailView = (Binding<Book>) temp;
 		    this.setBottom((Node) temp);
-		} else if (i instanceof Cd) {
+		} else if (newValue instanceof Cd) {
 		    Object temp = DetailViewUtil.getDetailPane(FilterOption.CD);
 		    detailView = (Binding<Cd>) temp;
 		    this.setBottom((Node) temp);
-		} else if (i instanceof Dvd) {
+		} else if (newValue instanceof Dvd) {
 		    Object temp = DetailViewUtil.getDetailPane(FilterOption.DVD);
 		    detailView = (Binding<Dvd>) temp;
 		    this.setBottom((Node) temp);
-		} else if (i instanceof Game) {
+		} else if (newValue instanceof Game) {
 		    Object temp = DetailViewUtil.getDetailPane(FilterOption.GAME);
 		    detailView = (Binding<Game>) temp;
 		    this.setBottom((Node) temp);
-		} else if (i instanceof StoryBag) {
+		} else if (newValue instanceof StoryBag) {
 		    Object temp = DetailViewUtil.getDetailPane(FilterOption.STORYBAG);
 		    detailView = (Binding<StoryBag>) temp;
 		    this.setBottom((Node) temp);
 		}
 
-		detailView.bind(i);
+		detailView.bind(newValue);
 	    } catch (Exception ex) {
 		ex.printStackTrace();
 //		System.err.println("Couldn't bind item: " + ex.getMessage());
@@ -124,8 +122,7 @@ public class ItemManagement extends BorderPane {
 
     public void updateList() {
 	itemList.setItems(FXCollections.observableArrayList());
-	predicateList = (FilteredList<Item>) SearchPredicate.filteredListFor((ObservableList<Item>) ItemRepository.getInstance().getItems(), searchPredicate);
-	filteredList = ObservableListUtil.convertObservableList(predicateList, ItemManagementListItem.getItemManagementListItemConverter());
+	filteredList = SearchPredicate.filteredListFor((ObservableList<Item>) ItemRepository.getInstance().getItems(), searchPredicate);
 	itemList.setItems(filteredList);
     }
 
@@ -188,9 +185,8 @@ public class ItemManagement extends BorderPane {
 		Item added = (Item) searchPredicate.getSelectedClass().getConstructor().newInstance();
 		added.setName("Naam");
 		ItemRepository.getInstance().add(added);
-		ItemManagementListItem listItem = new ItemManagementListItem(added);
-		itemList.getItems().add(listItem);
-		itemList.getSelectionModel().select(listItem);
+		filteredList.add(added);
+		itemList.getSelectionModel().select(added);
 		updateList();
 	    } catch (Exception ex) {
 		PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
@@ -203,7 +199,7 @@ public class ItemManagement extends BorderPane {
     @FXML
     public void onRemove() {
 	if (!itemList.getSelectionModel().isEmpty()) {
-	    ItemRepository.getInstance().remove(((ItemManagementListItem) itemList.getSelectionModel().getSelectedItem()).getBackedItem());
+	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
 	    updateList();
 	}
 
@@ -218,7 +214,7 @@ public class ItemManagement extends BorderPane {
 	return listCommands;
     }
 
-    public ObservableList<ItemManagementListItem> getFilteredList() {
+    public ObservableList<Item> getFilteredList() {
 	return filteredList;
     }
 
