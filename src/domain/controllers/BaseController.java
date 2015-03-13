@@ -27,7 +27,9 @@ public abstract class BaseController<E extends Node> {
 	this.switcher = sw;
 	UserRepository.getInstance().authenticatedUserProperty().addListener(o -> {
 	    updateToAuthenticatedUser();
-	    sw.loadIcons(view);
+	    if (sw != null) {
+		sw.loadIcons(view);
+	    }
 	});
 	updateToAuthenticatedUser();
     }

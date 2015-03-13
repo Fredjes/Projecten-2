@@ -77,20 +77,22 @@ public class ItemManagementListItem extends AnchorPane {
 	    itemImage.imageProperty().unbindBidirectional(oldItem.imageProperty());
 	}
 
-	title.textProperty().bind(item.get().nameProperty());
-	description.textProperty().bind(item.get().descriptionProperty());
-	itemImage.imageProperty().bindBidirectional(item.get().imageProperty());
-	ItemRepository.getInstance().getItemCopiesByPredicate((ItemCopy ic) -> ic.getItem() == item.get() || ic.getItem().equals(item.get())).forEach(ic -> {
-	    CopyButton button = new CopyButton(ic);
-	    initOnDelete(button, ic);
-	    copyList.getChildren().add(button);
-	});
+	if (item != null) {
+	    title.textProperty().bind(item.get().nameProperty());
+	    description.textProperty().bind(item.get().descriptionProperty());
+	    itemImage.imageProperty().bindBidirectional(item.get().imageProperty());
+	    ItemRepository.getInstance().getItemCopiesByPredicate((ItemCopy ic) -> ic.getItem() == item.get() || ic.getItem().equals(item.get())).forEach(ic -> {
+		CopyButton button = new CopyButton(ic);
+		initOnDelete(button, ic);
+		copyList.getChildren().add(button);
+	    });
 
-	if (UserRepository.getInstance().getAuthenticatedUser() == null || UserRepository.getInstance().getAuthenticatedUser().getUserType() != User.UserType.TEACHER) {
-	    addCopyButton.setVisible(false);
+	    if (UserRepository.getInstance().getAuthenticatedUser() == null || UserRepository.getInstance().getAuthenticatedUser().getUserType() != User.UserType.TEACHER) {
+		addCopyButton.setVisible(false);
+	    }
+
+	    oldItem = item.get();
 	}
-
-	oldItem = item.get();
     }
 
     private void initOnDelete(CopyButton button, ItemCopy backedCopy) {

@@ -66,16 +66,6 @@ public class SearchPredicate implements Predicate<Searchable> {
 
     public static <E extends Searchable> ObservableList<E> filteredListFor(ObservableList<E> list, SearchPredicate predicate) {
 	FilteredList<E> filteredList = new FilteredList(list);
-	InvalidationListener l = e -> {
-	    Searchable[] tempArr = new Searchable[filteredList.size()];
-	    filteredList.toArray(tempArr);
-	    List<Searchable> temp = new ArrayList<>(Arrays.asList(tempArr));
-	    filteredList.forEach(filteredList::remove);
-	    temp.forEach(s -> filteredList.add((E) s));
-	};
-
-//	predicate.searchQueryProperty().addListener(l);
-//	predicate.selectedClassProperty().addListener(l);
 	filteredList.setPredicate(predicate);
 	return filteredList;
     }

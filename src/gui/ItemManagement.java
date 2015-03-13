@@ -12,7 +12,6 @@ import domain.StoryBag;
 import domain.User;
 import domain.controllers.ItemManagementController;
 import gui.dialogs.PopupUtil;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -21,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
@@ -55,9 +55,9 @@ public class ItemManagement extends BorderPane {
 
     private ItemManagementController controller;
     private SearchPredicate searchPredicate;
-    private ObservableList<Item> filteredList;
-    private FilteredList<Item> predicateList;
+    private FilteredList<Item> filteredList;
     private Binding detailView;
+    private PerformantListViewSkin<Item> listSkin;
 
     public void setController(ItemManagementController cont) {
 	controller = cont;
@@ -71,8 +71,11 @@ public class ItemManagement extends BorderPane {
 	this.controller = controller;
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
+	listSkin = new PerformantListViewSkin<>(itemList);
+	filteredList = new FilteredList<Item>((ObservableList<Item>) ItemRepository.getInstance().getItems());
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
 	itemList.setCellFactory(ItemManagementListItemCell.forListView());
+	itemList.setItems(filteredList);
 	searchbar.setOnKeyReleased((e) -> {
 	    updateList();
 	});
@@ -120,9 +123,7 @@ public class ItemManagement extends BorderPane {
     }
 
     public void updateList() {
-	itemList.setItems(FXCollections.observableArrayList());
-	filteredList = SearchPredicate.filteredListFor((ObservableList<Item>) ItemRepository.getInstance().getItems(), searchPredicate);
-	itemList.setItems(filteredList);
+	filteredList.setPredicate(searchPredicate::test);
     }
 
     @FXML
@@ -207,7 +208,7 @@ public class ItemManagement extends BorderPane {
 	return filteredList;
     }
 
-    public Node getDetailView(){
+    public Node getDetailView() {
 	return (Node) this.detailView;
     }
 }
