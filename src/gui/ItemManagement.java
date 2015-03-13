@@ -186,11 +186,12 @@ public class ItemManagement extends BorderPane {
 	if (searchPredicate.getSelectedClass() != null) {
 	    try {
 		Item added = (Item) searchPredicate.getSelectedClass().getConstructor().newInstance();
+		added.setName("Naam");
 		ItemRepository.getInstance().add(added);
-		updateList();
 		ItemManagementListItem listItem = new ItemManagementListItem(added);
 		itemList.getItems().add(listItem);
 		itemList.getSelectionModel().select(listItem);
+		updateList();
 	    } catch (Exception ex) {
 		PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
 	    }
