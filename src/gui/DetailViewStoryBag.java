@@ -49,6 +49,7 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 	    loader.load();
 	    description.setWrapText(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
+	    DetailViewUtil.setBounds(this);
 	    initListItemDrag();
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);

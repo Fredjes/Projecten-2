@@ -1,6 +1,7 @@
 package domain;
 
 import domain.controllers.StoryBagController;
+import gui.Binding;
 import gui.DetailViewBook;
 import gui.DetailViewCd;
 import gui.DetailViewDvd;
@@ -15,9 +16,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -117,5 +120,15 @@ public class DetailViewUtil {
 
     private static boolean isImageDirectory(String directory) {
 	return directory.matches(".*(png|gif|jpg|jps|mpo)$");
+    }
+
+    public static void setBounds(Binding binding) {
+	try {
+	    TabPane pane = ((TabPane) binding);
+	    pane.setPrefHeight(300);
+	    pane.setMinHeight(Region.USE_PREF_SIZE);
+	    pane.setMaxHeight(Region.USE_PREF_SIZE);
+	} catch (Exception ex) {
+	}
     }
 }

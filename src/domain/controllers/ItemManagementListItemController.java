@@ -23,6 +23,8 @@ public class ItemManagementListItemController extends BaseController<ItemManagem
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
 	    hideNode(getView().getManagementTab());
 	    return;
+	} else {
+	    showNode(getView().getManagementTab());
 	}
 
 	switch (u.getUserType()) {

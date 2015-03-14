@@ -42,6 +42,7 @@ public class DetailViewGame extends TabPane implements Binding<Game> {
 	    loader.load();
 	    description.setWrapText(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
+	    DetailViewUtil.setBounds(this);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}

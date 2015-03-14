@@ -38,7 +38,7 @@ public class PopupUtil {
 	if (notification == Notification.CONFIRM) {
 	    showNotification(title, message, notification, Duration.INDEFINITE);
 	} else {
-	    showNotification(title, message, notification, Duration.seconds(10));
+	    showNotification(title, message, notification, Duration.seconds(5));
 	}
     }
 

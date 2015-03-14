@@ -49,9 +49,7 @@ public abstract class Item implements Serializable, Searchable {
     private final ObservableList<String> theme = FXCollections.observableArrayList();
     private final StringProperty ageCategory = new SimpleStringProperty();
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    @Access(AccessType.FIELD)
-    private List<ItemCopy> itemCopies;
+    private final ObservableList<ItemCopy> itemCopies = FXCollections.observableArrayList();
 
     private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
 
@@ -71,10 +69,19 @@ public abstract class Item implements Serializable, Searchable {
     public ObservableList<String> getThemeFX() {
 	return theme;
     }
-
+    
     @Transient
+    public ObservableList<ItemCopy> getObservableItemCopies(){
+	return itemCopies;
+    }
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     public List<ItemCopy> getItemCopies() {
 	return itemCopies;
+    }
+
+    public void setItemCopies(List<ItemCopy> itemCopies) {
+	this.itemCopies.setAll(itemCopies);
     }
 
     public StringProperty nameProperty() {

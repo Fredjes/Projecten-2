@@ -55,11 +55,14 @@ public class CopyPopOver extends BorderPane {
 	this.backedCopy = copy;
 	locationTxt.textProperty().bindBidirectional(copy.locationProperty());
 	damage.getSelectionModel().select(copy.getDamage());
-	copy.damageProperty().bind(damage.getSelectionModel().selectedItemProperty());
-	copyNumber.textProperty().bind(copy.copyNumberProperty());
+	copy.damageProperty().unbind();
+	damage.getSelectionModel().selectedItemProperty().addListener(i -> copy.setDamage(damage.getSelectionModel().getSelectedItem()));
+	copyNumber.textProperty().bindBidirectional(copy.copyNumberProperty());
 	locationLabel.setTextFill(Color.BLACK);
 	damageLabel.setTextFill(Color.BLACK);
+    }
 
+    public void update() {
 	if (UserRepository.getInstance().getAuthenticatedUser() == null || UserRepository.getInstance().getAuthenticatedUser().getUserType() != User.UserType.TEACHER) {
 	    buttonGroup.getChildren().remove(btnDelete);
 	    locationTxt.setDisable(true);

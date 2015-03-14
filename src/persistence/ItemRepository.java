@@ -4,15 +4,18 @@ import domain.Book;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
+import gui.dialogs.PopupUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javax.persistence.EntityManager;
 
 /**
@@ -116,35 +119,41 @@ public class ItemRepository {
      * Saves every item in the internal list to the database.
      */
     public void saveChanges() {
-	EntityManager manager = JPAUtil.getInstance().getEntityManager();
-	manager.getTransaction().begin();
+	Thread t = new Thread(() -> {
+	    EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	    manager.getTransaction().begin();
 
-	items.forEach(item -> {
-	    if (item.getName() == null || item.getName().isEmpty()) {
-		return;
-	    }
+	    items.forEach(item -> {
+		if (item.getName() == null || item.getName().isEmpty()) {
+		    return;
+		}
 
-	    if (item.getId() == 0) {
-		manager.persist(item);
-	    } else {
-		manager.merge(item);
-	    }
+		if (item.getId() == 0) {
+		    manager.persist(item);
+		} else {
+		    manager.merge(item);
+		}
+	    });
+
+	    itemCopies.forEach(ic -> {
+		if (ic.getId() == 0) {
+		    manager.persist(ic);
+		} else {
+		    manager.merge(ic);
+		}
+	    });
+
+	    deletedElements.forEach((el) -> {
+		Object o = manager.merge(el);
+		manager.remove(o);
+	    });
+
+	    manager.getTransaction().commit();
+	    ItemRepository.getInstance().sync();
+	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen."));
 	});
-
-	itemCopies.forEach(ic -> {
-	    if (ic.getId() == 0) {
-		manager.persist(ic);
-	    } else {
-		manager.merge(ic);
-	    }
-	});
-
-	deletedElements.forEach((el) -> {
-	    Object o = manager.merge(el);
-	    manager.remove(o);
-	});
-
-	manager.getTransaction().commit();
+	
+	t.start();
     }
 
     /**
@@ -156,13 +165,13 @@ public class ItemRepository {
 
     public ItemCopy createItemCopyFor(Item item) {
 	List<ItemCopy> list = ItemRepository.getInstance().getItemCopiesByPredicate(i -> i.getItem() != null && item.getClass().equals(i.getItem().getClass()));
-	Optional<ItemCopy> last =  list.stream().max((ic1, ic2) -> {
+	Optional<ItemCopy> last = list.stream().max((ic1, ic2) -> {
 	    return Integer.parseInt(ic1.getCopyNumber().substring(1)) - Integer.parseInt(ic2.getCopyNumber().substring(1));
 	});
-	
+
 	StringProperty lastNum = new SimpleStringProperty(Item.getCodePrefixFor(item) + "0");
 	last.ifPresent(i -> lastNum.set(i.getCopyNumber()));
-	lastNum.set(lastNum.get().substring(0,1) + String.valueOf(Integer.parseInt(lastNum.get().substring(1)) + 1));
+	lastNum.set(lastNum.get().substring(0, 1) + String.valueOf(Integer.parseInt(lastNum.get().substring(1)) + 1));
 	ItemCopy ic = new ItemCopy(lastNum.get(), "", item, Damage.NO_DAMAGE);
 	add(ic);
 	return ic;

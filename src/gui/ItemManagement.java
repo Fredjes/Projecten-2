@@ -20,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
@@ -57,7 +56,6 @@ public class ItemManagement extends BorderPane {
     private SearchPredicate searchPredicate;
     private FilteredList<Item> filteredList;
     private Binding detailView;
-    private PerformantListViewSkin<Item> listSkin;
 
     public void setController(ItemManagementController cont) {
 	controller = cont;
@@ -71,7 +69,6 @@ public class ItemManagement extends BorderPane {
 	this.controller = controller;
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
-	listSkin = new PerformantListViewSkin<>(itemList);
 	filteredList = new FilteredList<Item>((ObservableList<Item>) ItemRepository.getInstance().getItems());
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
 	itemList.setCellFactory(ItemManagementListItemCell.forListView());
@@ -166,9 +163,8 @@ public class ItemManagement extends BorderPane {
     public void onSave() {
 	saveButton.setDisable(true);
 	ItemRepository.getInstance().saveChanges();
-	ItemRepository.getInstance().sync();
 	updateList();
-	PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen.");
+	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslagen...");
 	saveButton.setDisable(false);
     }
 
@@ -176,14 +172,20 @@ public class ItemManagement extends BorderPane {
     public void onAdd() {
 	if (searchPredicate.getSelectedClass() != null) {
 	    try {
+		if (searchPredicate.getSelectedClass() == null) {
+		    PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
+		    return;
+		}
+
+		searchbar.setText("");
 		Item added = (Item) searchPredicate.getSelectedClass().getConstructor().newInstance();
-		added.setName("Naam");
 		ItemRepository.getInstance().add(added);
-		filteredList.add(added);
-		itemList.getSelectionModel().select(added);
+		added.setName(" ");
 		updateList();
+		added.setName("");
+		itemList.getSelectionModel().select(added);
 	    } catch (Exception ex) {
-		PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
+		ex.printStackTrace();
 	    }
 	}
     }

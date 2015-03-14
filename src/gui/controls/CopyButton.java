@@ -39,7 +39,7 @@ public class CopyButton extends StackPane {
     @FXML
     private Label icon;
 
-    private ItemCopy backedCopy;
+    private ItemCopy copy;
 
     private CopyPopOver popOverContent;
     private PopOver popOver;
@@ -52,8 +52,8 @@ public class CopyButton extends StackPane {
 	ds.setOffsetY(1f);
 	copyId.setEffect(ds);
 
-	this.backedCopy = copy;
-	popOverContent = new CopyPopOver(backedCopy);
+	this.copy = copy;
+	popOverContent = new CopyPopOver(copy);
 	super.setOnMouseClicked(e -> showDetails());
 	copyId.setText(copy.getCopyNumber().substring(1));
 	createIcon();
@@ -61,11 +61,15 @@ public class CopyButton extends StackPane {
 	initCopyButtonDrag();
 	updateIconAvailability();
 
-	backedCopy.damageProperty().addListener(i -> updateIconAvailability());
+	copy.damageProperty().addListener(i -> updateIconAvailability());
+    }
+
+    public ItemCopy getCopy() {
+	return copy;
     }
 
     private void updateIconAvailability() {
-	if (backedCopy.damageProperty().get() == Damage.HIGH_DAMAGE) {
+	if (copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
 	    icon.setTextFill(Color.GRAY);
 	} else {
 	    icon.setTextFill(Color.BLACK);
@@ -75,15 +79,15 @@ public class CopyButton extends StackPane {
     private void createIcon() {
 	icon.setFont(FontCache.getIconFont(30));
 	icon.setTextFill(Color.BLACK);
-	if (backedCopy.getItem() instanceof Book) {
+	if (copy.getItem() instanceof Book) {
 	    icon.setText("\uf02d");
-	} else if (backedCopy.getItem() instanceof Game) {
+	} else if (copy.getItem() instanceof Game) {
 	    icon.setText("\uf091");
-	} else if (backedCopy.getItem() instanceof Dvd) {
+	} else if (copy.getItem() instanceof Dvd) {
 	    icon.setText("\uf008");
-	} else if (backedCopy.getItem() instanceof Cd) {
+	} else if (copy.getItem() instanceof Cd) {
 	    icon.setText("\uf025");
-	} else if (backedCopy.getItem() instanceof StoryBag) {
+	} else if (copy.getItem() instanceof StoryBag) {
 	    icon.setText("\uf0b1");
 	}
     }
@@ -92,13 +96,14 @@ public class CopyButton extends StackPane {
 	super.setOnDragDetected(me -> {
 	    Dragboard board = this.startDragAndDrop(TransferMode.ANY);
 	    ClipboardContent content = new ClipboardContent();
-	    content.putString("COPY_DRAG:" + backedCopy.getCopyNumber());
+	    content.putString("COPY_DRAG:" + copy.getCopyNumber());
 	    board.setContent(content);
 	    me.consume();
 	});
     }
 
     public void showDetails() {
+	popOverContent.update();
 	popOver = PopupUtil.showPopOver(this, popOverContent);
     }
 

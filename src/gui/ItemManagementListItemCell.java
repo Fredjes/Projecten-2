@@ -1,5 +1,6 @@
 package gui;
 
+import domain.Cache;
 import domain.Item;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -15,25 +16,26 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	return i -> new ItemManagementListItemCell();
     }
 
-    private ItemManagementListItem listItem = ItemManagementListItemCache.getInstance().getItemManagementListItem();
+    private ItemManagementListItem listItem;
 
     public ItemManagementListItemCell() {
     }
 
     @Override
     protected void updateItem(Item item, boolean empty) {
-	this.listItem.setItem(empty ? null : item);
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
+	    listItem = null;
 	    super.setGraphic(null);
 	} else {
+	    listItem = Cache.getListItemCache().get(item);
 	    super.setGraphic(listItem);
 	}
     }
     
     @Override
     public void updateSelected(boolean selected) {
-	super.updateSelected(selected); //To change body of generated methods, choose Tools | Templates.
+	super.updateSelected(selected);
     }
 
     @Override

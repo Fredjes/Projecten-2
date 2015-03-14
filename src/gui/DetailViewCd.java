@@ -48,6 +48,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	    description.setWrapText(true);
 	    lstSongs.setEditable(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
+	    DetailViewUtil.setBounds(this);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
