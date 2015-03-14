@@ -16,6 +16,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+	ItemRepository.getInstance().sync();
 	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 	    if (JPAUtil.getInstance().getEntityManagerFactory().isOpen()) {
 		ItemRepository.getInstance().saveChanges();
@@ -24,7 +25,6 @@ public class MainApp extends Application {
 	}));
 
 	Font.loadFont(getClass().getResourceAsStream("/resources/fonts/FontAwesome.otf"), 14);
-	ItemRepository.getInstance().sync();
 	ScreenSwitcher switcher = new ScreenSwitcher();
 	switcher.openMainMenu();
 	primaryStage.setTitle("Mediatheek Applicatie");
@@ -32,7 +32,6 @@ public class MainApp extends Application {
 	primaryStage.setScene(scene);
 	primaryStage.show();
 	//ScenicView.show(scene);
-
     }
 
     /**

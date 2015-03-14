@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -50,8 +52,14 @@ public class ItemRepository {
      * data.
      */
     public void sync() {
-	items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
-	itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
+	Thread t = new Thread(() -> {
+	    items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
+	    itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
+	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized repo with database");
+	});
+	
+	t.setName("DB sync thread");
+	t.start();
     }
 
     public static ItemRepository getInstance() {
@@ -152,7 +160,8 @@ public class ItemRepository {
 	    ItemRepository.getInstance().sync();
 	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen."));
 	});
-	
+
+	t.setName("DB save thread");
 	t.start();
     }
 
