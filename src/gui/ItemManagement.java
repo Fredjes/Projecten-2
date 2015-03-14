@@ -172,7 +172,7 @@ public class ItemManagement extends BorderPane {
     public void onAdd() {
 	if (searchPredicate.getSelectedClass() != null) {
 	    try {
-		if (searchPredicate.getSelectedClass() == null) {
+		if (searchPredicate.getSelectedClass().equals(Object.class)) {
 		    PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
 		    return;
 		}

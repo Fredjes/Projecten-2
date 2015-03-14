@@ -52,11 +52,7 @@ public class ItemManagementListItem extends AnchorPane {
 	item.getObservableItemCopies().addListener((ListChangeListener.Change<? extends ItemCopy> c) -> {
 	    while (c.next()) {
 		if (c.wasAdded()) {
-		    c.getAddedSubList().forEach(ic -> {
-			CopyButton button = new CopyButton(ic);
-			initOnDelete(button, ic);
-			copyList.getChildren().add(button);
-		    });
+		    c.getAddedSubList().forEach(this::addCopyButtonFor);
 		} else if (c.wasRemoved()) {
 		    copyList.getChildren().removeIf(b -> {
 			if (b instanceof CopyButton) {
@@ -68,9 +64,17 @@ public class ItemManagementListItem extends AnchorPane {
 		}
 	    }
 	});
+	
+	item.getItemCopies().forEach(this::addCopyButtonFor);
     }
 
-    public ItemManagementListItem() {
+    private void addCopyButtonFor(ItemCopy copy) {
+	CopyButton button = new CopyButton(copy);
+	initOnDelete(button, copy);
+	copyList.getChildren().add(button);
+    }
+
+    private ItemManagementListItem() {
 	FXUtil.loadFXML(this, "listview_item");
 	DetailViewUtil.initImageDragAndDrop(itemImage);
 	item.addListener(o -> updateBindings());

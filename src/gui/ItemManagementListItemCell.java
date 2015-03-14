@@ -2,6 +2,7 @@ package gui;
 
 import domain.Cache;
 import domain.Item;
+import javafx.application.Platform;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -29,7 +30,7 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	    super.setGraphic(null);
 	} else {
 	    listItem = Cache.getListItemCache().get(item);
-	    super.setGraphic(listItem);
+	    Platform.runLater(() -> super.setGraphic(listItem));
 	}
     }
     
@@ -37,13 +38,4 @@ public class ItemManagementListItemCell extends ListCell<Item> {
     public void updateSelected(boolean selected) {
 	super.updateSelected(selected);
     }
-
-    @Override
-    public void updateIndex(int i) {
-	super.updateIndex(i);
-	if (super.getItem() != null && !super.getListView().getItems().contains(super.getItem())) {
-	    super.setGraphic(null);
-	}
-    }
-
 }

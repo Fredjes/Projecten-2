@@ -200,6 +200,9 @@ public abstract class Item implements Serializable, Searchable {
 	if (getClass() != obj.getClass()) {
 	    return false;
 	}
+	if(this != obj){
+	    return false;
+	}
 	final Item other = (Item) obj;
 	if (this.id != other.id) {
 	    return false;
