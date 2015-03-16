@@ -17,6 +17,10 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 
     @Override
     public void updateToAuthenticatedUser() {
+	if (getView() == null) {
+	    return;
+	}
+	
 	User u = UserRepository.getInstance().getAuthenticatedUser();
 
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
@@ -37,7 +41,7 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 		showNode("save");
 		break;
 	}
-	
+
 	getView().updateList();
     }
 

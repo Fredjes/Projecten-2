@@ -58,7 +58,6 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     private void initialize() {
-
 	titlebar = new Titlebar(this);
 	titlebar.setController(new TitleBarController(titlebar, this));
 	this.menu = new MainMenu(this, mainMenuController);
@@ -71,7 +70,6 @@ public class ScreenSwitcher extends BorderPane {
 	loanManagementController = new LoanManagementController(loanManagement, this);
 
 	itemManagement.setController(itemManagementController);
-
     }
 
     public void loadIcons(Node node) {

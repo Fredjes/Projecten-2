@@ -3,7 +3,6 @@ package domain;
 import gui.ItemManagementListItem;
 import java.util.WeakHashMap;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  *
