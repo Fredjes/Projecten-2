@@ -163,8 +163,21 @@
     -fx-border-color: #7A7A7A;
 }
 
-.item-btn{
+.item-btn {
+    -fx-cursor: hand;
     -fx-background-color: #3f88c3;
+}
+
+.item-btn:hover {
+    -fx-background-color: #217346;
+}
+
+.item-btn:armed {
+    -fx-background-color: #BD4B28;
+}
+
+.item-btn-selected {
+    -fx-background-color: #DB562D;
 }
 
 .text-green {

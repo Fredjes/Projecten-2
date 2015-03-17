@@ -14,6 +14,7 @@ import domain.controllers.ItemManagementController;
 import gui.dialogs.PopupUtil;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -22,6 +23,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import persistence.ItemRepository;
 import persistence.UserRepository;
 
@@ -56,6 +58,9 @@ public class ItemManagement extends BorderPane {
     private SearchPredicate searchPredicate;
     private FilteredList<Item> filteredList;
     private Binding detailView;
+
+    @FXML
+    private VBox buttonBox;
 
     public void setController(ItemManagementController cont) {
 	controller = cont;
@@ -123,38 +128,58 @@ public class ItemManagement extends BorderPane {
 	filteredList.setPredicate(searchPredicate::test);
     }
 
+    private void refreshSelectedFilter(Object source) {
+	for (Node n : buttonBox.getChildren()) {
+	    if (n instanceof Button) {
+		if (source == n) {
+		    n.getStyleClass().remove("item-btn");
+		    n.getStyleClass().add("item-btn-selected");
+		} else {
+		    n.getStyleClass().add("item-btn");
+		    n.getStyleClass().remove("item-btn-selected");
+		}
+	    }
+	}
+    }
+
     @FXML
-    public void onBoek() {
+    public void onBoek(ActionEvent evt) {
+	refreshSelectedFilter(evt.getSource());
 	searchPredicate.setSelectedClass(FilterOption.BOOK.getFilterClass());
 	updateList();
     }
 
     @FXML
-    public void onSpelletje() {
+    public void onSpelletje(ActionEvent evt) {
+	refreshSelectedFilter(evt.getSource());
 	searchPredicate.setSelectedClass(FilterOption.GAME.getFilterClass());
 	updateList();
     }
 
     @FXML
-    public void onCd() {
+    public void onCd(ActionEvent evt) {
+	refreshSelectedFilter(evt.getSource());
 	searchPredicate.setSelectedClass(FilterOption.CD.getFilterClass());
 	updateList();
     }
 
     @FXML
-    public void onDvd() {
+    public void onDvd(ActionEvent evt) {
+	refreshSelectedFilter(evt.getSource());
 	searchPredicate.setSelectedClass(FilterOption.DVD.getFilterClass());
 	updateList();
     }
 
     @FXML
-    public void onStoryBag() {
+    public void onStoryBag(ActionEvent evt) {
+	refreshSelectedFilter(evt.getSource());
 	searchPredicate.setSelectedClass(FilterOption.STORYBAG.getFilterClass());
 	updateList();
     }
 
     @FXML
-    public void onAll() {
+    public void onAll(ActionEvent evt) {
+	refreshSelectedFilter(evt.getSource());
 	searchPredicate.setSelectedClass(Object.class);
 	updateList();
     }
