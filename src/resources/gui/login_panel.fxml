@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root hgap="10.0" type="GridPane" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root hgap="10.0" type="GridPane" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.0" minWidth="141.0" prefWidth="141.0" />
     <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" />
@@ -28,12 +28,12 @@
             <Insets left="10.0" />
          </padding>
       </Label>
-      <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <PasswordField fx:id="password" onKeyReleased="#onLoginEnter" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </PasswordField>
-      <TextField fx:id="username" GridPane.columnIndex="1">
+      <TextField fx:id="username" onKeyReleased="#onLoginEnter" GridPane.columnIndex="1">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>

@@ -277,6 +277,17 @@
     -fx-border-radius: 2px;
 }
 
+
+.icon-nb:hover {
+    //-fx-text-fill: #858585;
+    -fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%, center 50% 50%, radius 55%, #99C938, #99C938, rgba(255,255,255,0));
+}
+
+.icon-nb:armed {
+    -fx-text-fill: white;
+    -fx-background-color: radial-gradient(focus-angle 45deg, focus-distance 20%, center 25% 25%, radius 50%, reflect, gray, greenyellow 75%, rgba(255,255,255,0));
+}
+
 /* ############ BOX STYLING ############ */
 
 .border-rounded {
@@ -284,10 +295,16 @@
     -fx-background-radius: 5;
 }
 
+.list-cell:selected {
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-background-color: rgb(153,201,56);
+}
+
 /* ############ ICONS ############ */
 
 .icon-voorwerpen-beheren {
     -fx-font-family: "FontAwesome";
+    
 }
 
 .icon-uitleningen-beheren {
@@ -308,4 +325,12 @@
 
 .icon-te-laat{
     -fx-font-family: "FontAwesome";
-} 
+}
+
+.icon-search {
+    -fx-font-family: "FontAwesome";
+}
+
+.hand {
+    -fx-cursor: hand;
+}
