@@ -19,6 +19,7 @@ public class IconConfig {
 	    put("icon-gebruikers-beheren", new Icon("\uf0c0", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-excel-importeren", new Icon("\uf0ce", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-te-laat", new Icon("\uf071", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-search", new Icon("\uf002", IconType.TEXT, IconPosition.OVERWRITE));
 	}
     };
 
