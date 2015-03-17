@@ -177,7 +177,7 @@
 }
 
 .item-btn-selected {
-    -fx-background-color: #DB562D;
+    -fx-background-color: rgb(153,201,56);
 }
 
 .text-green {
@@ -342,6 +342,12 @@
 
 .icon-search {
     -fx-font-family: "FontAwesome";
+}
+
+.search-icon-image {
+    -fx-background-image: url("/resources/gui/img/searchicon.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
 }
 
 .hand {
