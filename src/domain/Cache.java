@@ -1,6 +1,7 @@
 package domain;
 
 import gui.ItemManagementListItem;
+import gui.LoanManagementListItem;
 import java.util.WeakHashMap;
 import java.util.function.Function;
 
@@ -11,6 +12,7 @@ import java.util.function.Function;
 public class Cache<K, E> {
 
     private static Cache<Item, ItemManagementListItem> listItemInstance;
+    private static Cache<Loan, LoanManagementListItem> loanInstance;
 
     private WeakHashMap<K, E> cache = new WeakHashMap<>();
     private Function<K, E> supplier;
@@ -23,12 +25,20 @@ public class Cache<K, E> {
 	return supplier.apply(key);
     }
 
-    public static Cache<Item, ItemManagementListItem> getListItemCache() {
+    public static Cache<Item, ItemManagementListItem> getItemCache() {
 	if (listItemInstance == null) {
 	    listItemInstance = new Cache<>(ItemManagementListItem::new);
 	}
 
 	return listItemInstance;
+    }
+
+    public static Cache<Loan, LoanManagementListItem> getLoanCache() {
+	if (loanInstance == null) {
+	    loanInstance = new Cache<>(LoanManagementListItem::new);
+	}
+	
+	return loanInstance;
     }
 
     public E get(K key) {

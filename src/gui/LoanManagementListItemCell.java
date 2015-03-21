@@ -1,7 +1,7 @@
 package gui;
 
 import domain.Cache;
-import domain.Item;
+import domain.Loan;
 import javafx.application.Platform;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -11,25 +11,22 @@ import javafx.util.Callback;
  *
  * @author Frederik
  */
-public class ItemManagementListItemCell extends ListCell<Item> {
+public class LoanManagementListItemCell extends ListCell<Loan> {
 
-    public static Callback<ListView<Item>, ListCell<Item>> forListView() {
-	return i -> new ItemManagementListItemCell();
+    public static Callback<ListView<Loan>, ListCell<Loan>> forListView() {
+	return l -> new LoanManagementListItemCell();
     }
 
-    private ItemManagementListItem listItem;
-
-    public ItemManagementListItemCell() {
-    }
+    private LoanManagementListItem listItem;
 
     @Override
-    protected void updateItem(Item item, boolean empty) {
+    protected void updateItem(Loan item, boolean empty) {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
 	    super.setGraphic(null);
 	} else {
-	    listItem = Cache.getItemCache().get(item);
+	    listItem = Cache.getLoanCache().get(item);
 	    Platform.runLater(() -> super.setGraphic(listItem));
 	}
     }

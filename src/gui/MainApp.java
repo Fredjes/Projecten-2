@@ -6,6 +6,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import persistence.ItemRepository;
 import persistence.JPAUtil;
+import persistence.LoanRepository;
+import persistence.UserRepository;
 
 /**
  * Application of the project.
@@ -17,6 +19,9 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
 	ItemRepository.getInstance().sync();
+	LoanRepository.getInstance().sync();
+	UserRepository.getInstance().sync();
+	
 	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 	    if (JPAUtil.getInstance().getEntityManagerFactory().isOpen()) {
 		ItemRepository.getInstance().saveChanges();

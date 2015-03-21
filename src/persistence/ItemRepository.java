@@ -17,7 +17,6 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javax.persistence.EntityManager;
 
 /**
@@ -55,10 +54,10 @@ public class ItemRepository {
 	Thread t = new Thread(() -> {
 	    items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
 	    itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
-	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized repo with database");
+	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
 	});
 	
-	t.setName("DB sync thread");
+	t.setName("Item repository sync thread");
 	t.start();
     }
 

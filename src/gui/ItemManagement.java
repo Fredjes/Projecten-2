@@ -69,7 +69,7 @@ public class ItemManagement extends BorderPane {
 	this.controller = controller;
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
-	filteredList = new FilteredList<Item>((ObservableList<Item>) ItemRepository.getInstance().getItems());
+	filteredList = new FilteredList<>((ObservableList<Item>) ItemRepository.getInstance().getItems());
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
 	itemList.setCellFactory(ItemManagementListItemCell.forListView());
 	itemList.setItems(filteredList);

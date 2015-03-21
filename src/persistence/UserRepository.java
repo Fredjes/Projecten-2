@@ -32,7 +32,6 @@ public class UserRepository {
     private final List<User> deletedUsers = new ArrayList();
 
     private UserRepository() {
-	sync();
     }
 
     public static UserRepository getInstance() {
@@ -100,8 +99,14 @@ public class UserRepository {
     }
 
     public void sync() {
-	users.clear();
-	users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
+	Thread t = new Thread(() -> {
+	    users.clear();
+	    users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
+	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
+	});
+	
+	t.setName("User repository sync thread");
+	t.start();
     }
 
     public ObservableList<User> getUsersByPredicate(Predicate<User> predicate) {

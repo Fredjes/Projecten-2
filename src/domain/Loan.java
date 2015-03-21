@@ -2,7 +2,9 @@ package domain;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -31,7 +33,9 @@ public class Loan implements Serializable, Searchable {
 
     private final ObjectProperty<ItemCopy> itemCopy = new SimpleObjectProperty<>();
     private final ObjectProperty<User> user = new SimpleObjectProperty<>();
+    private final ObjectProperty<Calendar> startDate = new SimpleObjectProperty<>();
     private final ObjectProperty<Calendar> date = new SimpleObjectProperty<>();
+    private final BooleanProperty returned = new SimpleBooleanProperty(false);
 
     public Loan() {
     }
@@ -39,7 +43,21 @@ public class Loan implements Serializable, Searchable {
     public Loan(ItemCopy copy, User user) {
 	this.itemCopy.set(copy);
 	this.user.set(user);
-	date.set(Calendar.getInstance());
+	startDate.set(Calendar.getInstance());
+	date.set(startDate.get());
+	date.get().add(Calendar.DATE, 7);
+    }
+
+    public boolean getReturned() {
+	return returned.get();
+    }
+
+    public void setReturned(boolean isReturned) {
+	this.returned.set(isReturned);
+    }
+
+    public BooleanProperty returnedProperty() {
+	return this.returned;
     }
 
     @ManyToOne
@@ -79,6 +97,19 @@ public class Loan implements Serializable, Searchable {
 
     public ObjectProperty<Calendar> dateProperty() {
 	return this.date;
+    }
+
+    @Temporal(TemporalType.DATE)
+    public Calendar getStartDate() {
+	return this.startDate.get();
+    }
+
+    public void setStartDate(Calendar date) {
+	this.startDate.set(date);
+    }
+
+    public ObjectProperty<Calendar> startDateProperty() {
+	return this.startDate;
     }
 
     @Override
