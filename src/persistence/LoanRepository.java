@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
  *
  * @author Frederik
  */
-public class LoanRepository {
+public class LoanRepository extends Repository {
 
     private final ObservableList<Loan> loans = FXCollections.observableArrayList();
     private List<Loan> removedLoans = new ArrayList<>();
@@ -44,6 +44,7 @@ public class LoanRepository {
 	Thread t = new Thread(() -> {
 	    loans.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Loan.findAll", Loan.class).getResultList());
 	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized loan repository with database");
+	    super.triggerListeners();
 	});
 	
 	t.setName("Loan repository sync thread");

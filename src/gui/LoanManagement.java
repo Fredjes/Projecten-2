@@ -31,6 +31,7 @@ public class LoanManagement extends BorderPane {
 	FXUtil.loadFXML(this, "loan_management");
 	this.controller = controller;
 	predicate = new SearchPredicate(Loan.class, "");
+	predicate.searchQueryProperty().bind(searchBar.textProperty());
 	filteredList = new FilteredList<>(LoanRepository.getInstance().getLoans());
 	loanList.setCellFactory(LoanManagementListItemCell.forListView());
 	loanList.setItems(filteredList);

@@ -25,7 +25,7 @@ import javax.persistence.EntityManager;
  *
  * @author Brent
  */
-public class ItemRepository {
+public class ItemRepository extends Repository {
 
     private static ItemRepository INSTANCE;
 
@@ -55,6 +55,7 @@ public class ItemRepository {
 	    items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
 	    itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
 	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
+	    super.triggerListeners();
 	});
 	
 	t.setName("Item repository sync thread");

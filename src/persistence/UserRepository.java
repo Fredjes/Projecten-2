@@ -21,7 +21,7 @@ import javax.persistence.RollbackException;
  *
  * @author Brent
  */
-public class UserRepository {
+public class UserRepository extends Repository {
 
     private static UserRepository INSTANCE;
 
@@ -103,6 +103,7 @@ public class UserRepository {
 	    users.clear();
 	    users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
 	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
+	    super.triggerListeners();
 	});
 	
 	t.setName("User repository sync thread");

@@ -62,9 +62,11 @@ public class LoanManagementListItem extends AnchorPane {
     }
 
     private void updateCopy(Observable obs, ItemCopy oldCopy, ItemCopy newCopy) {
+	System.out.println("update 1");
 	final ChangeListener<Item> updateItemListener = (o, oi, ni) -> {
-	    itemImage.imageProperty().bind(ni.imageProperty());
-	    itemName.textProperty().bind(ni.nameProperty());
+	    System.out.println("update2");
+	    itemImage.imageProperty().bind(loan.getItemCopy().getItem().imageProperty());
+	    itemName.textProperty().bind(loan.getItemCopy().getItem().nameProperty());
 	};
 
 	if (oldCopy != null) {
@@ -75,7 +77,7 @@ public class LoanManagementListItem extends AnchorPane {
 	}
 
 	newCopy.itemProperty().addListener(updateItemListener);
-	updateItemListener.changed(newCopy.itemProperty(), null, newCopy.itemProperty().get());
+	updateItemListener.changed(loan.itemCopyProperty().get().itemProperty(), null, loan.itemCopyProperty().get().itemProperty().get());
     }
 
     private void updateUser(Observable user, User oldUser, User newUser) {

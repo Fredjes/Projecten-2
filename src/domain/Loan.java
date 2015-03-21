@@ -44,8 +44,8 @@ public class Loan implements Serializable, Searchable {
 	this.itemCopy.set(copy);
 	this.user.set(user);
 	startDate.set(Calendar.getInstance());
-	date.set(startDate.get());
-	date.get().add(Calendar.DATE, 7);
+	date.set(Calendar.getInstance());
+	date.get().add(Calendar.WEEK_OF_MONTH, 1);
     }
 
     public boolean getReturned() {

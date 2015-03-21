@@ -159,8 +159,8 @@ public class ItemCopy implements Serializable, Searchable {
 		    || SearchPredicate.containsIgnoreCase(getDamage().toString(), t);
 
 	    if (temp == false) {
-		if (getItem() != null && getItem().test(t)) {
-		    return true;
+		if (getItem() != null && !getItem().test(t)) {
+		    return false;
 		}
 	    }
 	}

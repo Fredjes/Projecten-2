@@ -18,10 +18,14 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+	ItemRepository.getInstance().addSyncListener(() -> {
+	    UserRepository.getInstance().addSyncListener(() -> {
+		LoanRepository.getInstance().sync();
+	    });
+	    UserRepository.getInstance().sync();
+	});
 	ItemRepository.getInstance().sync();
-	LoanRepository.getInstance().sync();
-	UserRepository.getInstance().sync();
-	
+
 	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 	    if (JPAUtil.getInstance().getEntityManagerFactory().isOpen()) {
 		ItemRepository.getInstance().saveChanges();
