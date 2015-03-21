@@ -3,6 +3,7 @@
     -fx-font-size: 15px;
 }
 
+
 .item-management-tile {
     -fx-background-color:  #5687f0;
 }
@@ -17,6 +18,26 @@
 
 .user-management-tile {
     -fx-background-color: #F89406;
+}
+
+.item-management-tile:hover {
+    -fx-background-color: derive(#5687f0, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#5687f0, 15%), 10, 0.001, 0, 0);
+}
+
+.import-excel-tile:hover {
+    -fx-background-color: derive(#217346, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#217346, 15%), 10, 0.001, 0, 0);
+}
+
+.loan-management-tile:hover {
+    -fx-background-color: derive(#D91E18, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#D91E18, 15%), 10, 0.001, 0, 0);
+}
+
+.user-management-tile:hover {
+    -fx-background-color: derive(#F89406, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#F89406, 15%), 10, 0.001, 0, 0);
 }
 
 .logout-tile{
@@ -49,10 +70,12 @@
     -fx-font-size: 55px;
 }
 
-.tile{
+.tile {
     -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
 }
 
 .white{
@@ -72,6 +95,7 @@
     -fx-background-radius: none;
     -fx-font-size: 14px;
     -fx-text-fill: #FFFFFF;
+    -fx-cursor: hand;
 }
 
 .btn-small {
@@ -142,6 +166,10 @@
     -fx-border-color: #308C30;
 }
 
+.btn-green:hover {
+    -fx-background-color: derive(#339933, 15%);
+}
+
 .btn-lime {
     -fx-background-color: #90CC18;
     -fx-border-style: solid;
@@ -196,9 +224,9 @@
 
 /* ############ TEXTFIELD STYLING ############ */
 .text-input {
-/*    -fx-focus-color: transparent;
+    -fx-focus-color: transparent;
     -fx-border-color: #90CC18;
-    -fx-border-width: 1px;*/
+    -fx-border-width: 1px;
 }
 
 .text-input:focused {
@@ -319,20 +347,23 @@
     -fx-text-fill: -fx-text-inner-color;
     -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
     -fx-cursor: text;
-    
     -fx-focus-color: transparent;
     -fx-border-color: #90CC18;
     -fx-border-width: 1px;
+    -fx-background-radius: 0px;
 }
 
-.custom-text-field > .text-input {
-    -fx-background-color: transparent;
+.custom-text-field .text-input {
+    -fx-focus-color: transparent;
+    -fx-background-color: -fx-text-box-border, -fx-control-inner-background;
     -fx-background-insets: 0, 0;
     -fx-background-radius: 0, 0;
     -fx-padding: 0 0 0 0;
     -fx-text-fill: -fx-text-inner-color;
     -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
     -fx-cursor: text;
+    -fx-border-width: 0px;
+    -fx-background-radius: 0px;
 }
 
 /* ############ ICONS ############ */
