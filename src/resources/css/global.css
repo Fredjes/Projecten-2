@@ -185,10 +185,15 @@
 }
 
 .btn-default {
-    -fx-background-color: #858585;
+    -fx-background-color: derive(#7A7A7A, -5%);
     -fx-border-style: solid;
     -fx-border-width: 1px;
     -fx-border-color: #7A7A7A;
+}
+
+.btn-default:hover {
+    -fx-background-color: derive(#7A7A7A, 15%);
+    -fx-border-color: derive(#7A7A7A, 15%);
 }
 
 .item-btn {
@@ -201,7 +206,7 @@
 }
 
 .item-btn:armed {
-    -fx-background-color: #185433;
+    -fx-background-color: derive(#217346, -10%);
 }
 
 .item-btn-selected {
@@ -394,6 +399,10 @@
 }
 
 .icon-search {
+    -fx-font-family: "FontAwesome";
+}
+
+.icon-home {
     -fx-font-family: "FontAwesome";
 }
 

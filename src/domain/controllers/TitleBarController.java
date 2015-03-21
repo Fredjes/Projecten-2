@@ -24,6 +24,8 @@ public class TitleBarController extends BaseController<Titlebar> {
 	    hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
 	    //hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
 	    hideNode(getView().getUitleningenBeheren(), "uitleningenBeheren");
+	    getView().getVoorwerpenBeheren().getStyleClass().remove("icon-voorwerpen-beheren");
+	    getView().getVoorwerpenBeheren().getStyleClass().add("icon-search");
 	    return;
 	}
 
@@ -33,6 +35,8 @@ public class TitleBarController extends BaseController<Titlebar> {
 		hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
+		getView().getVoorwerpenBeheren().getStyleClass().remove("icon-voorwerpen-beheren");
+		getView().getVoorwerpenBeheren().getStyleClass().add("icon-search");
 		break;
 
 	    case TEACHER:
@@ -40,6 +44,8 @@ public class TitleBarController extends BaseController<Titlebar> {
 		showNode("gebruikersBeheren");
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
+		getView().getVoorwerpenBeheren().getStyleClass().add("icon-voorwerpen-beheren");
+		getView().getVoorwerpenBeheren().getStyleClass().remove("icon-search");
 		break;
 	}
     }

@@ -27,16 +27,27 @@
          </GridPane.margin>
       </HBox>
       <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1" />
-      <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2">
+      <HBox alignment="CENTER_RIGHT" fillHeight="false" spacing="10.0" GridPane.columnIndex="2">
          <children>
             <Label id="loginStatusLabel" fx:id="authenicatedUserLabel" textFill="WHITE" />
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLogin" style="-fx-border-width: 0px;" text="Aanmelden">
-               <styleClass>
-                  <String fx:value="btn" />
-                  <String fx:value="btn-green" />
-               </styleClass>
-            </Button>
-            <GridPane fx:id="navigationGrid" alignment="CENTER" hgap="5.0" vgap="5.0" HBox.hgrow="NEVER">
+            <HBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Button fx:id="loginButton" focusTraversable="false" mnemonicParsing="false" onAction="#onLogin" style="-fx-border-width: 0px;" text="Aanmelden">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-green" />
+                     </styleClass>
+                  </Button>
+                  <Button focusTraversable="false" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onHome" text="Home">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-default" />
+                        <String fx:value="icon-home" />
+                     </styleClass>
+                  </Button>
+               </children>
+            </HBox>
+            <TilePane fx:id="navigationGrid" alignment="CENTER" hgap="5.0" prefColumns="2" prefRows="2" prefTileHeight="40.0" prefTileWidth="40.0" vgap="5.0" HBox.hgrow="NEVER">
                <children>
                   <Button fx:id="voorwerpenBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageItems" prefHeight="40.0" prefWidth="40.0" text="V">
                      <font>
@@ -47,11 +58,8 @@
                         <String fx:value="icon-voorwerpen-beheren" />
                         <String fx:value="tile" />
                      </styleClass>
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
                   </Button>
-                  <Button fx:id="uitleningenBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageLoans" prefHeight="40.0" prefWidth="40.0" text="U" GridPane.columnIndex="1">
+                  <Button fx:id="uitleningenBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageLoans" prefHeight="40.0" prefWidth="40.0" text="U">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -61,7 +69,7 @@
                         <String fx:value="tile" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="gebruikersBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageUsers" prefHeight="40.0" prefWidth="40.0" text="G" GridPane.rowIndex="1">
+                  <Button fx:id="gebruikersBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageUsers" prefHeight="40.0" prefWidth="40.0" text="G">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -71,7 +79,7 @@
                         <String fx:value="tile" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="excelImporteren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onImportExcel" prefHeight="40.0" prefWidth="40.0" text="I" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="excelImporteren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onImportExcel" prefHeight="40.0" prefWidth="40.0" text="I">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -82,18 +90,7 @@
                      </styleClass>
                   </Button>
                </children>
-               <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
-                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <HBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </HBox.margin>
-            </GridPane>
+            </TilePane>
          </children>
          <GridPane.margin>
             <Insets right="10.0" />

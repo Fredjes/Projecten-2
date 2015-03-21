@@ -80,7 +80,7 @@
                   </VBox>
                   <VBox fx:id="voorwerpenBeheren" alignment="CENTER" onMouseClicked="#onManageItems" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="V">
+                        <Text fx:id="voorwerpenBeherenIcon" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="V">
                            <styleClass>
                               <String fx:value="icon" />
                               <String fx:value="icon-voorwerpen-beheren" />

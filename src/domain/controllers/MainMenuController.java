@@ -25,6 +25,8 @@ public class MainMenuController extends BaseController<MainMenu> {
 	    //hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
 	    hideNode(getView().getUitleningenBeheren(), "uitleningenBeheren");
 	    getView().getLblVoorwerpen().setText("Voorwerpen opzoeken");
+	    getView().getVoorwerpenBeherenIcon().getStyleClass().remove("icon-voorwerpen-beheren");
+	    getView().getVoorwerpenBeherenIcon().getStyleClass().add("icon-search");
 	    return;
 	}
 
@@ -35,6 +37,8 @@ public class MainMenuController extends BaseController<MainMenu> {
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
 		getView().getLblVoorwerpen().setText("Voorwerpen beheren");
+		getView().getVoorwerpenBeherenIcon().getStyleClass().remove("icon-voorwerpen-beheren");
+		getView().getVoorwerpenBeherenIcon().getStyleClass().add("icon-search");
 		break;
 
 	    case TEACHER:
@@ -43,6 +47,8 @@ public class MainMenuController extends BaseController<MainMenu> {
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
 		getView().getLblVoorwerpen().setText("Voorwerpen beheren");
+		getView().getVoorwerpenBeherenIcon().getStyleClass().add("icon-voorwerpen-beheren");
+		getView().getVoorwerpenBeherenIcon().getStyleClass().remove("icon-search");
 		break;
 	}
     }
