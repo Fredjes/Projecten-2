@@ -1,10 +1,13 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
@@ -13,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,15 +27,13 @@ import javax.persistence.Table;
 })
 public class User implements Serializable, Searchable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Access(AccessType.FIELD)
     private int id;
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty classRoom = new SimpleStringProperty();
     private final StringProperty email = new SimpleStringProperty();
     private final ObjectProperty<UserType> userType = new SimpleObjectProperty<>();
+    private final ObservableList<Loan> loans = FXCollections.observableArrayList();
     private String passwordHash;
 
     public static enum UserType {
@@ -61,8 +63,23 @@ public class User implements Serializable, Searchable {
 	this.passwordHash = passwordHash;
     }
 
+    @OneToMany(mappedBy = "user")
+    public List<Loan> getLoans() {
+	return this.loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+	this.loans.setAll(loans);
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
 	return id;
+    }
+
+    protected void setId(int id) {
+	this.id = id;
     }
 
     public String getPasswordHash() {

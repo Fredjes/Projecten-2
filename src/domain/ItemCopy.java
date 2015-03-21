@@ -1,26 +1,25 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import javafx.beans.property.IntegerProperty;
+import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.input.DataFormat;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  * Representation of a real-life object containing the location, number for
@@ -40,7 +39,8 @@ public class ItemCopy implements Serializable, Searchable {
     private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
     private final ObjectProperty<Damage> damage = new SimpleObjectProperty<>();
     private final StringProperty copyNumber = new SimpleStringProperty();
-    
+    private final ObservableList<Loan> loans = FXCollections.observableArrayList();
+
     public ItemCopy() {
     }
 
@@ -49,6 +49,15 @@ public class ItemCopy implements Serializable, Searchable {
 	setLocation(location);
 	setItem(i);
 	setDamage(d);
+    }
+
+    @OneToMany(mappedBy = "itemCopy")
+    public List<Loan> getLoans() {
+	return this.loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+	this.loans.setAll(loans);
     }
 
     @Id

@@ -10,6 +10,7 @@
     <class>domain.Cd</class>
     <class>domain.Dvd</class>
     <class>domain.User</class>
+    <class>domain.Loan</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://bitcode.io:3306/krekelschool?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="projecten"/>
