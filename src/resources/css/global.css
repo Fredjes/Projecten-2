@@ -173,11 +173,12 @@
 }
 
 .item-btn:armed {
-    -fx-background-color: #BD4B28;
+    -fx-background-color: #185433;
 }
 
 .item-btn-selected {
     -fx-background-color: rgb(153,201,56);
+    -fx-effect: dropshadow(gaussian, rgb(153,201,56), 4, 0, 0, 0);
 }
 
 .text-green {
@@ -292,13 +293,10 @@
 
 
 .icon-nb:hover {
-    //-fx-text-fill: #858585;
-    -fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%, center 50% 50%, radius 55%, #99C938, #99C938, rgba(255,255,255,0));
-}
-
-.icon-nb:armed {
-    -fx-text-fill: white;
-    -fx-background-color: radial-gradient(focus-angle 45deg, focus-distance 20%, center 25% 25%, radius 50%, reflect, gray, greenyellow 75%, rgba(255,255,255,0));
+    //-fx-text-fill: red;
+    //-fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%, center 50% 50%, radius 55%, #99C938, #99C938, rgba(255,255,255,0));
+    -fx-effect: dropshadow(gaussian, #333333, 4, 0, 0, 0);
+    //-fx-effect: innershadow(gaussian, #CC7549, 15, 0.1, 0, 0);
 }
 
 /* ############ BOX STYLING ############ */

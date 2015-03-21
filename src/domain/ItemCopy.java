@@ -1,20 +1,15 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.input.DataFormat;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,9 +24,9 @@ import javax.persistence.NamedQuery;
  * @author Frederik
  */
 @Entity
-@Access(AccessType.PROPERTY)
-@NamedQueries({
-    @NamedQuery(name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
+@Access (AccessType.PROPERTY)
+@NamedQueries ({
+    @NamedQuery (name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
 })
 public class ItemCopy implements Serializable, Searchable {
 
@@ -40,7 +35,7 @@ public class ItemCopy implements Serializable, Searchable {
     private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
     private final ObjectProperty<Damage> damage = new SimpleObjectProperty<>();
     private final StringProperty copyNumber = new SimpleStringProperty();
-    
+
     public ItemCopy() {
     }
 
@@ -52,7 +47,7 @@ public class ItemCopy implements Serializable, Searchable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     public int getId() {
 	return this.id;
     }
@@ -85,7 +80,7 @@ public class ItemCopy implements Serializable, Searchable {
 	this.location.set(location);
     }
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated (EnumType.STRING)
     public Damage getDamage() {
 	return damage.get();
     }

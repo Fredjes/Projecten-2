@@ -7,17 +7,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <fx:root alignment="CENTER" minHeight="24.0" minWidth="22.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="icon">
          <font>
             <Font size="20.0" />
          </font>
-         <styleClass>
-            <String fx:value="hand" />
-            <String fx:value="icon-nb" />
-         </styleClass>
          <HBox.margin>
             <Insets />
          </HBox.margin>
@@ -31,4 +26,8 @@
          </font>
       </Label>
    </children>
+   <styleClass>
+      <String fx:value="hand" />
+      <String fx:value="icon-nb" />
+   </styleClass>
 </fx:root>
