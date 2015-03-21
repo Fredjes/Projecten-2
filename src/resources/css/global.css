@@ -177,6 +177,10 @@
     -fx-border-color: #ABCE14;
 }
 
+.btn-lime:hover {
+    -fx-background-color: derive(#90CC18, 15%);
+}
+
 .btn-red {
     -fx-background-color: #E51400;
     -fx-border-style: solid;
