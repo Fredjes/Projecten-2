@@ -196,9 +196,9 @@
 
 /* ############ TEXTFIELD STYLING ############ */
 .text-input {
-    -fx-focus-color: transparent;
+/*    -fx-focus-color: transparent;
     -fx-border-color: #90CC18;
-    -fx-border-width: 1px;
+    -fx-border-width: 1px;*/
 }
 
 .text-input:focused {
@@ -311,11 +311,35 @@
     -fx-background-color: rgb(153,201,56);
 }
 
+.custom-text-field {
+    -fx-background-color: -fx-text-box-border, -fx-control-inner-background;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 3, 2;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
+    -fx-cursor: text;
+    
+    -fx-focus-color: transparent;
+    -fx-border-color: #90CC18;
+    -fx-border-width: 1px;
+}
+
+.custom-text-field > .text-input {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 0;
+    -fx-background-radius: 0, 0;
+    -fx-padding: 0 0 0 0;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
+    -fx-cursor: text;
+}
+
 /* ############ ICONS ############ */
 
 .icon-voorwerpen-beheren {
     -fx-font-family: "FontAwesome";
-    
+
 }
 
 .icon-uitleningen-beheren {
@@ -340,12 +364,6 @@
 
 .icon-search {
     -fx-font-family: "FontAwesome";
-}
-
-.search-icon-image {
-    -fx-background-image: url("/resources/gui/img/searchicon.png");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: right center;
 }
 
 .hand {

@@ -15,7 +15,12 @@
                <children>
                   <VBox fx:id="buttonBox" maxHeight="1.7976931348623157E308" spacing="10.0">
                      <children>
-                        <TextField fx:id="searchbar" prefWidth="150.0" promptText="Zoeken..." styleClass="search-icon-image" />
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="custom-text-field">
+                           <children>
+                              <TextField fx:id="searchbar" promptText="Zoeken..." HBox.hgrow="ALWAYS" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="icon-search" text="Text" HBox.hgrow="NEVER" />
+                           </children>
+                        </HBox>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAll" text="Allemaal">
                            <styleClass>
                               <String fx:value="item-btn-selected" />
