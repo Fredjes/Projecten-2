@@ -3,6 +3,7 @@
     -fx-font-size: 15px;
 }
 
+
 .item-management-tile {
     -fx-background-color:  #5687f0;
 }
@@ -17,6 +18,26 @@
 
 .user-management-tile {
     -fx-background-color: #F89406;
+}
+
+.item-management-tile:hover {
+    -fx-background-color: derive(#5687f0, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#5687f0, 15%), 10, 0.001, 0, 0);
+}
+
+.import-excel-tile:hover {
+    -fx-background-color: derive(#217346, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#217346, 15%), 10, 0.001, 0, 0);
+}
+
+.loan-management-tile:hover {
+    -fx-background-color: derive(#D91E18, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#D91E18, 15%), 10, 0.001, 0, 0);
+}
+
+.user-management-tile:hover {
+    -fx-background-color: derive(#F89406, 15%);
+    -fx-effect: dropshadow(gaussian, derive(#F89406, 15%), 10, 0.001, 0, 0);
 }
 
 .logout-tile{
@@ -49,10 +70,12 @@
     -fx-font-size: 55px;
 }
 
-.tile{
+.tile {
     -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
 }
 
 .white{
@@ -72,6 +95,7 @@
     -fx-background-radius: none;
     -fx-font-size: 14px;
     -fx-text-fill: #FFFFFF;
+    -fx-cursor: hand;
 }
 
 .btn-small {
@@ -142,11 +166,19 @@
     -fx-border-color: #308C30;
 }
 
+.btn-green:hover {
+    -fx-background-color: derive(#339933, 15%);
+}
+
 .btn-lime {
     -fx-background-color: #90CC18;
     -fx-border-style: solid;
     -fx-border-width: 1px;
     -fx-border-color: #ABCE14;
+}
+
+.btn-lime:hover {
+    -fx-background-color: derive(#90CC18, 15%);
 }
 
 .btn-red {
@@ -157,14 +189,33 @@
 }
 
 .btn-default {
-    -fx-background-color: #858585;
+    -fx-background-color: derive(#7A7A7A, -5%);
     -fx-border-style: solid;
     -fx-border-width: 1px;
     -fx-border-color: #7A7A7A;
 }
 
-.item-btn{
+.btn-default:hover {
+    -fx-background-color: derive(#7A7A7A, 15%);
+    -fx-border-color: derive(#7A7A7A, 15%);
+}
+
+.item-btn {
+    -fx-cursor: hand;
     -fx-background-color: #3f88c3;
+}
+
+.item-btn:hover {
+    -fx-background-color: #217346;
+}
+
+.item-btn:armed {
+    -fx-background-color: derive(#217346, -10%);
+}
+
+.item-btn-selected {
+    -fx-background-color: rgb(153,201,56);
+    -fx-effect: dropshadow(gaussian, rgb(153,201,56), 4, 0, 0, 0);
 }
 
 .text-green {
@@ -277,6 +328,14 @@
     -fx-border-radius: 2px;
 }
 
+
+.icon-nb:hover {
+    //-fx-text-fill: red;
+    //-fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%, center 50% 50%, radius 55%, #99C938, #99C938, rgba(255,255,255,0));
+    -fx-effect: dropshadow(gaussian, #333333, 4, 0, 0, 0);
+    //-fx-effect: innershadow(gaussian, #CC7549, 15, 0.1, 0, 0);
+}
+
 /* ############ BOX STYLING ############ */
 
 .border-rounded {
@@ -284,10 +343,43 @@
     -fx-background-radius: 5;
 }
 
+.list-cell:selected {
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-background-color: rgb(153,201,56);
+}
+
+.custom-text-field {
+    -fx-background-color: -fx-text-box-border, -fx-control-inner-background;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 3, 2;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
+    -fx-cursor: text;
+    -fx-focus-color: transparent;
+    -fx-border-color: #90CC18;
+    -fx-border-width: 1px;
+    -fx-background-radius: 0px;
+}
+
+.custom-text-field .text-input {
+    -fx-focus-color: transparent;
+    -fx-background-color: -fx-text-box-border, -fx-control-inner-background;
+    -fx-background-insets: 0, 0;
+    -fx-background-radius: 0, 0;
+    -fx-padding: 0 0 0 0;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
+    -fx-cursor: text;
+    -fx-border-width: 0px;
+    -fx-background-radius: 0px;
+}
+
 /* ############ ICONS ############ */
 
 .icon-voorwerpen-beheren {
     -fx-font-family: "FontAwesome";
+
 }
 
 .icon-uitleningen-beheren {
@@ -308,4 +400,16 @@
 
 .icon-te-laat{
     -fx-font-family: "FontAwesome";
-} 
+}
+
+.icon-search {
+    -fx-font-family: "FontAwesome";
+}
+
+.icon-home {
+    -fx-font-family: "FontAwesome";
+}
+
+.hand {
+    -fx-cursor: hand;
+}

@@ -3,7 +3,6 @@ package gui;
 import domain.IconConfig;
 import domain.Item;
 import domain.ItemCopy;
-import domain.controllers.BaseController;
 import domain.controllers.ItemManagementController;
 import domain.controllers.LoanManagementController;
 import domain.controllers.MainMenuController;

@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import persistence.UserRepository;
 
@@ -84,6 +86,13 @@ public class LoginPanel extends GridPane {
     @FXML
     public void onLogin(ActionEvent evt) {
 	action.handle(evt);
+    }
+
+    @FXML
+    public void onLoginEnter(KeyEvent evt) {
+	if (evt.getCode() == KeyCode.ENTER) {
+	    onLogin(null);
+	}
     }
 
     public void resetPanel(boolean showNotification) {

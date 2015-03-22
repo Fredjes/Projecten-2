@@ -28,9 +28,9 @@ import javax.persistence.OneToMany;
  * @author Frederik
  */
 @Entity
-@Access(AccessType.PROPERTY)
-@NamedQueries({
-    @NamedQuery(name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
+@Access (AccessType.PROPERTY)
+@NamedQueries ({
+    @NamedQuery (name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
 })
 public class ItemCopy implements Serializable, Searchable {
 
@@ -61,7 +61,7 @@ public class ItemCopy implements Serializable, Searchable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     public int getId() {
 	return this.id;
     }
@@ -94,7 +94,7 @@ public class ItemCopy implements Serializable, Searchable {
 	this.location.set(location);
     }
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated (EnumType.STRING)
     public Damage getDamage() {
 	return damage.get();
     }

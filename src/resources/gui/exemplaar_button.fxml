@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="24.0" minWidth="22.0" type="StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" minHeight="24.0" minWidth="22.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="icon">
          <font>
             <Font size="20.0" />
          </font>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
       </Label>
-      <HBox alignment="CENTER" StackPane.alignment="CENTER">
-         <children>
-            <Label fx:id="copyId" graphicTextGap="0.0" textFill="WHITE" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0">
-               <font>
-                  <Font name="System Bold" size="22.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
+      <Label fx:id="copyId" graphicTextGap="0.0" textFill="#3c3c3c">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
    </children>
+   <styleClass>
+      <String fx:value="hand" />
+      <String fx:value="icon-nb" />
+   </styleClass>
 </fx:root>

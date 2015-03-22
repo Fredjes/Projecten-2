@@ -10,20 +10,14 @@ import domain.ItemCopy;
 import domain.StoryBag;
 import gui.FXUtil;
 import gui.dialogs.PopupUtil;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
 
@@ -31,7 +25,7 @@ import org.controlsfx.control.PopOver;
  *
  * @author Frederik
  */
-public class CopyButton extends StackPane {
+public class CopyButton extends HBox {
 
     @FXML
     private Label copyId;
@@ -47,15 +41,14 @@ public class CopyButton extends StackPane {
     public CopyButton(ItemCopy copy) {
 	FXUtil.loadFXML(this, "exemplaar_button");
 
-	DropShadow ds = new DropShadow();
-	ds.setOffsetX(1f);
-	ds.setOffsetY(1f);
-	copyId.setEffect(ds);
-
+//	DropShadow ds = new DropShadow();
+//	ds.setOffsetX(1f);
+//	ds.setOffsetY(1f);
+//	copyId.setEffect(ds);
 	this.copy = copy;
 	popOverContent = new CopyPopOver(copy);
 	super.setOnMouseClicked(e -> showDetails());
-	copyId.setText(copy.getCopyNumber().substring(1));
+	copyId.setText("#" + copy.getCopyNumber().substring(1));
 	createIcon();
 
 	initCopyButtonDrag();

@@ -19,6 +19,8 @@ public class IconConfig {
 	    put("icon-gebruikers-beheren", new Icon("\uf0c0", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-excel-importeren", new Icon("\uf0ce", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-te-laat", new Icon("\uf071", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-search", new Icon("\uf002", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-home", new Icon("\uf015", IconType.TEXT, IconPosition.OVERWRITE));
 	}
     };
 
@@ -30,6 +32,10 @@ public class IconConfig {
     public enum IconPosition {
 
 	PREPEND, APPEND, OVERWRITE
+    }
+
+    public static Icon getIconFor(String cssClass) {
+	return iconMapping.get(cssClass);
     }
 
     public static void identify(Node node, String cssClass) {
@@ -59,7 +65,7 @@ public class IconConfig {
 
     }
 
-    private static void setIcon(Text text, Icon icon) {
+    public static void setIcon(Text text, Icon icon) {
 	switch (icon.getType()) {
 	    case GRAPHIC:
 	    case TEXT:
@@ -78,7 +84,7 @@ public class IconConfig {
 	}
     }
 
-    private static void setIcon(Labeled text, Icon icon) {
+    public static void setIcon(Labeled text, Icon icon) {
 	switch (icon.getType()) {
 	    case GRAPHIC:
 		Text t = new Text(icon.getIcon());

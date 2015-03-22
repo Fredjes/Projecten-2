@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 
 /**
@@ -14,7 +15,7 @@ import javafx.scene.text.Text;
 public class Titlebar extends GridPane {
 
     @FXML
-    private GridPane navigationGrid;
+    private TilePane navigationGrid;
 
     @FXML
     private Button loginButton;
@@ -58,6 +59,11 @@ public class Titlebar extends GridPane {
     @FXML
     public void onLogin() {
 	this.switcher.processLoginRequest(loginButton, authenicatedUserLabel);
+    }
+
+    @FXML
+    public void onHome() {
+	switcher.openMainMenu();
     }
 
     @FXML

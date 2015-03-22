@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -38,6 +39,13 @@ public class MainMenu extends BorderPane {
 
     @FXML
     private Label lblVoorwerpen;
+
+    @FXML
+    private Text voorwerpenBeherenIcon;
+
+    public Text getVoorwerpenBeherenIcon() {
+	return voorwerpenBeherenIcon;
+    }
 
     public Label getLblGebruikers() {
 	return lblGebruikers;
