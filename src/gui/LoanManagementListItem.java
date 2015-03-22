@@ -6,8 +6,8 @@ import domain.Loan;
 import domain.LocaleConfig;
 import domain.User;
 import java.util.Calendar;
+import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,6 +45,7 @@ public class LoanManagementListItem extends AnchorPane {
 	FXUtil.loadFXML(this, "listview_loan");
 
 	this.loan = loan;
+	
 	loan.itemCopyProperty().addListener(this::updateCopy);
 	loan.userProperty().addListener(this::updateUser);
 	loan.dateProperty().addListener(this::updateDate);
@@ -52,7 +53,7 @@ public class LoanManagementListItem extends AnchorPane {
 	updateCopy(null, null, loan.getItemCopy());
 	updateUser(null, null, loan.getUser());
 	updateDate(null, null, loan.getDate());
-
+	
 	loan.dateProperty().addListener((Observable o) -> updateDate());
 	updateDate();
     }
@@ -62,9 +63,9 @@ public class LoanManagementListItem extends AnchorPane {
     }
 
     private void updateCopy(Observable obs, ItemCopy oldCopy, ItemCopy newCopy) {
-	System.out.println("update 1");
 	final ChangeListener<Item> updateItemListener = (o, oi, ni) -> {
-	    System.out.println("update2");
+	    itemImage.imageProperty().unbind();
+	    itemName.textProperty().unbind();
 	    itemImage.imageProperty().bind(loan.getItemCopy().getItem().imageProperty());
 	    itemName.textProperty().bind(loan.getItemCopy().getItem().nameProperty());
 	};
