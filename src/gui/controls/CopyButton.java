@@ -20,6 +20,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
+import persistence.LoanRepository;
 
 /**
  *
@@ -53,7 +54,6 @@ public class CopyButton extends HBox {
 
 	initCopyButtonDrag();
 	updateIconAvailability();
-
 	copy.damageProperty().addListener(i -> updateIconAvailability());
     }
 
@@ -62,10 +62,12 @@ public class CopyButton extends HBox {
     }
 
     private void updateIconAvailability() {
-	if (copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
+	if (copy.damageProperty().get() == Damage.MODERATE_DAMAGE || copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
 	    icon.setTextFill(Color.GRAY);
+	} else if (LoanRepository.getInstance().getLoans().stream().anyMatch(l -> l.getItemCopy().equals(copy) && l.getReturned() == false)) {
+	    icon.setTextFill(Color.RED);
 	} else {
-	    icon.setTextFill(Color.BLACK);
+	    icon.setTextFill(Color.GREEN);
 	}
     }
 
