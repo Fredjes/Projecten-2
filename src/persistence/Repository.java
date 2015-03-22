@@ -21,5 +21,6 @@ public class Repository {
 
     protected void triggerListeners() {
 	listeners.forEach(Runnable::run);
+	listeners.clear();
     }
 }

@@ -42,11 +42,13 @@ public class LoanRepository extends Repository {
 
     public void sync() {
 	Thread t = new Thread(() -> {
-	    loans.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Loan.findAll", Loan.class).getResultList());
-	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized loan repository with database");
-	    super.triggerListeners();
+	    synchronized (this) {
+		loans.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Loan.findAll", Loan.class).getResultList());
+		Logger.getLogger("Notification").log(Level.INFO, "Synchronized loan repository with database");
+		super.triggerListeners();
+	    }
 	});
-	
+
 	t.setName("Loan repository sync thread");
 	t.start();
     }
@@ -62,28 +64,30 @@ public class LoanRepository extends Repository {
 
     public void saveChanges() {
 	Thread t = new Thread(() -> {
-	    EntityManager manager = JPAUtil.getInstance().getEntityManager();
-	    // Make sure no deleted loans will be persisted
-	    loans.removeAll(removedLoans);
-	    try {
-		manager.getTransaction().begin();
+	    synchronized (this) {
+		EntityManager manager = JPAUtil.getInstance().getEntityManager();
+		// Make sure no deleted loans will be persisted
+		loans.removeAll(removedLoans);
+		try {
+		    manager.getTransaction().begin();
 
-		removedLoans.forEach(manager::remove);
-		loans.forEach(l -> {
-		    if (l.getId() == 0) {
-			manager.persist(l);
-		    } else {
-			manager.merge(l);
-		    }
-		});
+		    removedLoans.forEach(manager::remove);
+		    loans.forEach(l -> {
+			if (l.getId() == 0) {
+			    manager.persist(l);
+			} else {
+			    manager.merge(l);
+			}
+		    });
 
-		manager.getTransaction().commit();
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-		manager.getTransaction().rollback();
+		    manager.getTransaction().commit();
+		} catch (Exception ex) {
+		    ex.printStackTrace();
+		    manager.getTransaction().rollback();
+		}
 	    }
 	});
-	
+
 	t.setName("Save loans thread");
 	t.start();
     }

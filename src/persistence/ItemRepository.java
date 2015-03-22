@@ -52,12 +52,14 @@ public class ItemRepository extends Repository {
      */
     public void sync() {
 	Thread t = new Thread(() -> {
-	    items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
-	    itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
-	    Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
-	    super.triggerListeners();
+	    synchronized (this) {
+		items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
+		itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
+		Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
+		super.triggerListeners();
+	    }
 	});
-	
+
 	t.setName("Item repository sync thread");
 	t.start();
     }
@@ -128,37 +130,39 @@ public class ItemRepository extends Repository {
      */
     public void saveChanges() {
 	Thread t = new Thread(() -> {
-	    EntityManager manager = JPAUtil.getInstance().getEntityManager();
-	    manager.getTransaction().begin();
+	    synchronized (this) {
+		EntityManager manager = JPAUtil.getInstance().getEntityManager();
+		manager.getTransaction().begin();
 
-	    items.forEach(item -> {
-		if (item.getName() == null || item.getName().isEmpty()) {
-		    return;
-		}
+		items.forEach(item -> {
+		    if (item.getName() == null || item.getName().isEmpty()) {
+			return;
+		    }
 
-		if (item.getId() == 0) {
-		    manager.persist(item);
-		} else {
-		    manager.merge(item);
-		}
-	    });
+		    if (item.getId() == 0) {
+			manager.persist(item);
+		    } else {
+			manager.merge(item);
+		    }
 
-	    itemCopies.forEach(ic -> {
-		if (ic.getId() == 0) {
-		    manager.persist(ic);
-		} else {
-		    manager.merge(ic);
-		}
-	    });
+		    item.getItemCopies().forEach(i -> {
+			if (i.getId() == 0) {
+			    manager.persist(i);
+			} else {
+			    manager.merge(i);
+			}
+		    });
+		});
 
-	    deletedElements.forEach((el) -> {
-		Object o = manager.merge(el);
-		manager.remove(o);
-	    });
+		deletedElements.forEach((el) -> {
+		    Object o = manager.merge(el);
+		    manager.remove(o);
+		});
 
-	    manager.getTransaction().commit();
-	    ItemRepository.getInstance().sync();
-	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen."));
+		manager.getTransaction().commit();
+		ItemRepository.getInstance().sync();
+		Platform.runLater(() -> PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen."));
+	    }
 	});
 
 	t.setName("DB save thread");

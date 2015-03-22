@@ -24,6 +24,7 @@ public class MainApp extends Application {
 	    });
 	    UserRepository.getInstance().sync();
 	});
+	
 	ItemRepository.getInstance().sync();
 
 	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
