@@ -40,10 +40,10 @@ public class TitleBarController extends BaseController<Titlebar> {
 		break;
 
 	    case TEACHER:
-		showNode("excel");
-		showNode("gebruikersBeheren");
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
+		showNode("gebruikersBeheren");
+		showNode("excel");
 		getView().getVoorwerpenBeheren().getStyleClass().add("icon-voorwerpen-beheren");
 		getView().getVoorwerpenBeheren().getStyleClass().remove("icon-search");
 		break;
