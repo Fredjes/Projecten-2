@@ -6,8 +6,6 @@ import domain.LocaleConfig;
 import domain.User;
 import java.util.Calendar;
 import javafx.beans.Observable;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -50,9 +48,9 @@ public class LoanManagementListItem extends AnchorPane {
 	loan.itemCopyProperty().addListener((Observable o) -> updateItem());
 	loan.userProperty().addListener(this::updateUser);
 	loan.dateProperty().addListener(this::updateDate);
-	updateItem();
 	ItemRepository.getInstance().getItems().addListener((Observable o) -> updateItem());
-
+	updateItem();
+	
 	loan.dateProperty().addListener((Observable o) -> updateDate());
 	updateDate();
     }
@@ -61,7 +59,7 @@ public class LoanManagementListItem extends AnchorPane {
 	if (item == null) {
 	    return;
 	}
-	
+
 	updateCopy();
 	updateUser(null, null, loan.getUser());
 	updateDate(null, null, loan.getDate());
@@ -73,6 +71,8 @@ public class LoanManagementListItem extends AnchorPane {
 		this.item = item;
 		updateAll();
 	    });
+	} else {
+	    ItemRepository.getInstance().saveItem(item); // Method will be called automatically
 	}
     }
 

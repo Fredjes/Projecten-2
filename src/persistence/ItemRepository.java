@@ -169,6 +169,14 @@ public class ItemRepository extends Repository {
 	t.start();
     }
 
+    public void saveItem(Item item) {
+	EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	manager.getTransaction().begin();
+	manager.persist(item);
+	manager.getTransaction().commit();
+	add(item);
+    }
+
     /**
      * Clear the internal list.
      */
