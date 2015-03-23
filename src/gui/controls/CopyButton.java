@@ -10,6 +10,7 @@ import domain.ItemCopy;
 import domain.StoryBag;
 import gui.FXUtil;
 import gui.dialogs.PopupUtil;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -55,6 +56,7 @@ public class CopyButton extends HBox {
 	initCopyButtonDrag();
 	updateIconAvailability();
 	copy.damageProperty().addListener(i -> updateIconAvailability());
+	copy.getObservableLoans().addListener((Observable observable) -> updateIconAvailability());
     }
 
     public ItemCopy getCopy() {
@@ -64,7 +66,7 @@ public class CopyButton extends HBox {
     private void updateIconAvailability() {
 	if (copy.damageProperty().get() == Damage.MODERATE_DAMAGE || copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
 	    icon.setTextFill(Color.GRAY);
-	} else if (LoanRepository.getInstance().getLoans().stream().anyMatch(l -> l.getItemCopy().equals(copy) && l.getReturned() == false)) {
+	} else if (copy.getLoans().stream().anyMatch(l -> !l.getReturned())) {
 	    icon.setTextFill(Color.RED);
 	} else {
 	    icon.setTextFill(Color.GREEN);
