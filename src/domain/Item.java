@@ -69,9 +69,9 @@ public abstract class Item implements Serializable, Searchable {
     public ObservableList<String> getThemeFX() {
 	return theme;
     }
-    
+
     @Transient
-    public ObservableList<ItemCopy> getObservableItemCopies(){
+    public ObservableList<ItemCopy> getObservableItemCopies() {
 	return itemCopies;
     }
 
@@ -200,7 +200,7 @@ public abstract class Item implements Serializable, Searchable {
 	if (getClass() != obj.getClass()) {
 	    return false;
 	}
-	if(this != obj){
+	if (this != obj) {
 	    return false;
 	}
 	final Item other = (Item) obj;
@@ -217,8 +217,19 @@ public abstract class Item implements Serializable, Searchable {
 		    || SearchPredicate.containsIgnoreCase(getDescription(), t)
 		    || SearchPredicate.containsIgnoreCase(getName(), t);
 
-	    if (temp == false) {
-		return false;
+	    if (!temp) {
+		boolean found = false;
+
+		for (ItemCopy copy : getItemCopies()) {
+		    if (SearchPredicate.containsIgnoreCase(copy.getCopyNumber(), t)) {
+			found = true;
+			break;
+		    }
+		}
+
+		if (!found) {
+		    return false;
+		}
 	    }
 	}
 
