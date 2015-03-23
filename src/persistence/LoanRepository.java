@@ -92,6 +92,27 @@ public class LoanRepository extends Repository {
 	t.start();
     }
 
+    public void saveLoan(Loan loan) {
+	Thread t = new Thread(() -> {
+	    synchronized (this) {
+		EntityManager manager = JPAUtil.getInstance().getEntityManager();
+		manager.getTransaction().begin();
+
+		if (loan.getId() != 0) {
+		    manager.merge(loan);
+		} else {
+		    manager.persist(loan);
+		}
+
+		manager.getTransaction().commit();
+		super.triggerListeners();
+	    }
+	});
+
+	t.setName("Loan save thread: " + loan.getId());
+	t.start();
+    }
+
     public static void main(String[] args) {
 	ItemRepository.getInstance().sync();
 	UserRepository.getInstance().sync();
