@@ -7,6 +7,7 @@ import domain.Dvd;
 import domain.FontCache;
 import domain.Game;
 import domain.ItemCopy;
+import domain.Loan;
 import domain.StoryBag;
 import gui.FXUtil;
 import gui.dialogs.PopupUtil;
@@ -21,7 +22,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
-import persistence.LoanRepository;
 
 /**
  *
@@ -56,6 +56,7 @@ public class CopyButton extends HBox {
 	initCopyButtonDrag();
 	updateIconAvailability();
 	copy.damageProperty().addListener(i -> updateIconAvailability());
+	copy.getLoans().stream().forEach((Loan l) -> l.returnedProperty().addListener(i -> updateIconAvailability()));
 	copy.getObservableLoans().addListener((Observable observable) -> updateIconAvailability());
     }
 

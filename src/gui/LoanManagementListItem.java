@@ -4,6 +4,7 @@ import domain.Item;
 import domain.Loan;
 import domain.LocaleConfig;
 import domain.User;
+import domain.controllers.LoanManagementListItemController;
 import java.util.Calendar;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
@@ -44,7 +45,8 @@ public class LoanManagementListItem extends AnchorPane {
 	FXUtil.loadFXML(this, "listview_loan");
 
 	this.loan = loan;
-
+	new LoanManagementListItemController(this, null);
+	
 	loan.itemCopyProperty().addListener((Observable o) -> updateItem());
 	loan.userProperty().addListener(this::updateUser);
 	loan.dateProperty().addListener(this::updateDate);
@@ -102,5 +104,9 @@ public class LoanManagementListItem extends AnchorPane {
     @FXML
     public void editAdvanced() {
 	throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public Button getEditLoanButton() {
+	return editLoanButton;
     }
 }

@@ -4,7 +4,7 @@ import domain.IconConfig;
 import domain.Item;
 import domain.ItemCopy;
 import domain.controllers.ItemManagementController;
-import domain.controllers.LoanManagementController;
+import domain.controllers.LoanManagementListItemController;
 import domain.controllers.MainMenuController;
 import domain.controllers.TitleBarController;
 import gui.dialogs.LoginPanel;
@@ -39,7 +39,7 @@ public class ScreenSwitcher extends BorderPane {
 
     private MainMenuController mainMenuController;
     private ItemManagementController itemManagementController;
-    private LoanManagementController loanManagementController;
+    private LoanManagementListItemController loanManagementController;
 
     public ScreenSwitcher() {
 	initialize();
@@ -66,7 +66,6 @@ public class ScreenSwitcher extends BorderPane {
 
 	mainMenuController = new MainMenuController(menu, this);
 	itemManagementController = new ItemManagementController(itemManagement, this);
-	loanManagementController = new LoanManagementController(loanManagement, this);
 
 	itemManagement.setController(itemManagementController);
     }

@@ -172,9 +172,27 @@ public class ItemRepository extends Repository {
     public void saveItem(Item item) {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
-	manager.persist(item);
+	if (item.getId() != 0 && getItems().stream().anyMatch(i -> i.getId() == item.getId())) {
+	    manager.merge(item);
+	} else {
+	    manager.persist(item);
+	}
 	manager.getTransaction().commit();
 	add(item);
+	super.triggerListeners();
+    }
+
+    public void saveItemCopy(ItemCopy copy) {
+	EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	manager.getTransaction().begin();
+	if (copy.getId() != 0 && getItemCopies().stream().anyMatch(i -> i.getId() == copy.getId())) {
+	    manager.merge(copy);
+	} else {
+	    manager.persist(copy);
+	}
+	manager.getTransaction().commit();
+	add(copy);
+	super.triggerListeners();
     }
 
     /**

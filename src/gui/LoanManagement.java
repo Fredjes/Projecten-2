@@ -3,12 +3,13 @@ package gui;
 import domain.Loan;
 import domain.LocaleConfig;
 import domain.SearchPredicate;
-import domain.controllers.LoanManagementController;
+import domain.controllers.LoanManagementListItemController;
 import gui.dialogs.PopupUtil;
 import java.util.Calendar;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -24,16 +25,19 @@ public class LoanManagement extends BorderPane {
     private ListView<Loan> loanList;
 
     @FXML
+    private Button returnButton;
+
+    @FXML
     private TextField searchBar;
 
     private boolean displayAll = false;
 
-    private LoanManagementController controller;
+    private LoanManagementListItemController controller;
 
     private FilteredList<Loan> filteredList;
     private SearchPredicate predicate;
 
-    public LoanManagement(LoanManagementController controller) {
+    public LoanManagement(LoanManagementListItemController controller) {
 	FXUtil.loadFXML(this, "loan_management");
 	this.controller = controller;
 	predicate = new SearchPredicate(Loan.class, "");
@@ -64,10 +68,10 @@ public class LoanManagement extends BorderPane {
 	if (!loanList.getSelectionModel().isEmpty()) {
 	    Loan selectedLoan = loanList.getSelectionModel().getSelectedItem();
 	    if (!selectedLoan.getReturned()) {
-		selectedLoan.setReturned(true);
-		onSearchQuery();
-		LoanRepository.getInstance().addSyncListener(() -> Platform.runLater(() -> PopupUtil.showNotification("Uitlening teruggebracht", "De uitlening van " + selectedLoan.getUser().getName() + " is terug gebracht.")));
-		LoanRepository.getInstance().saveLoan(selectedLoan);
+		PopupUtil.showDamageQuestionPopOver(selectedLoan, returnButton, () -> Platform.runLater(() -> {
+		    PopupUtil.showNotification("Uitlening teruggebracht", "De uitlening van " + selectedLoan.getUser().getName() + " is terug gebracht.");
+		    onSearchQuery();
+		}));
 	    }
 	}
     }

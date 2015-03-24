@@ -1,9 +1,22 @@
 package gui.dialogs;
 
+import domain.Damage;
+import domain.ItemCopy;
+import domain.Loan;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
+import persistence.ItemRepository;
+import persistence.LoanRepository;
 
 /**
  *
@@ -28,6 +41,34 @@ public class PopupUtil {
 	logPop.show(parent);
 	logPop.setAutoFix(true);
 	return logPop;
+    }
+
+    public static void showDamageQuestionPopOver(Loan loan, Node parent, Runnable completionCallback) {
+	ChoiceBox<Damage> box = new ChoiceBox<>(FXCollections.observableArrayList(Damage.values()));
+	box.getSelectionModel().select(loan.getItemCopy().getDamage());
+	box.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+	    if (ov != nv) {
+		loan.getItemCopy().damageProperty().set(nv);
+	    }
+	});
+
+	PopOver popOver = new PopOver();
+	Button ok = new Button("OK");
+	ok.setOnAction(e -> {
+	    LoanRepository.getInstance().addSyncListener(completionCallback);
+	    loan.setReturned(true);
+	    LoanRepository.getInstance().saveLoan(loan);
+	    ItemRepository.getInstance().saveItemCopy(loan.getItemCopy());
+	    ItemRepository.getInstance().sync();
+	    popOver.hide();
+	});
+
+	popOver.setAutoHide(true);
+	popOver.setAutoFix(true);
+	VBox content = new VBox(new Label("Hoeveel schade is er?"), box, ok);
+	content.setPadding(new Insets(10));
+	popOver.setContentNode(content);
+	popOver.show(parent);
     }
 
     public static void showNotification(String title, String message) {
