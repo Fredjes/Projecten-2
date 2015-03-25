@@ -2,6 +2,7 @@ package gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import persistence.ItemRepository;
@@ -24,7 +25,7 @@ public class MainApp extends Application {
 	    });
 	    UserRepository.getInstance().sync();
 	});
-	
+
 	ItemRepository.getInstance().sync();
 
 	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -37,7 +38,8 @@ public class MainApp extends Application {
 	Font.loadFont(getClass().getResourceAsStream("/resources/fonts/FontAwesome.otf"), 14);
 	ScreenSwitcher switcher = new ScreenSwitcher();
 	switcher.openMainMenu();
-	primaryStage.setTitle("Mediatheek Applicatie");
+	primaryStage.setTitle("De Lettertuin");
+	primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/resources/gui/img/logo_krekel.png")));
 	Scene scene = new Scene(switcher);
 	primaryStage.setScene(scene);
 	primaryStage.show();
