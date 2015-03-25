@@ -59,6 +59,10 @@
     -fx-font-size: 16px;
 }
 
+.normal {
+    -fx-text-fill: #333;
+}
+
 #item-title{
     -fx-font-size: 18px;
 }
@@ -350,8 +354,12 @@
 }
 
 .list-cell:selected {
-    -fx-text-fill: -fx-text-inner-color;
-    -fx-background-color: rgb(153,201,56);
+    -fx-text-fill: #333;
+    -fx-background-color: derive(rgb(153,201,56), 80%);
+}
+
+.list-item-selected,.list-item-selected Text, .list-item-selected text, .list-item-selected label {
+    -fx-text-fill: #333;
 }
 
 .custom-text-field {

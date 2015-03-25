@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxWidth="1.7976931348623157E308" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxWidth="1.7976931348623157E308" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -28,12 +28,16 @@
           <RowConstraints vgrow="NEVER" />
         </rowConstraints>
          <children>
-            <Label id="item-title" fx:id="title" styleClass="bold">
+            <Label id="item-title" fx:id="title">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
+               <styleClass>
+                  <String fx:value="bold" />
+                  <String fx:value="normal" />
+               </styleClass>
             </Label>
-            <Label fx:id="description" alignment="TOP_LEFT" GridPane.rowIndex="1">
+            <Label fx:id="description" alignment="TOP_LEFT" styleClass="normal" GridPane.rowIndex="1">
                <font>
                   <Font size="16.0" />
                </font></Label>
