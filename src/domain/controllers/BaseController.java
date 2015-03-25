@@ -2,11 +2,13 @@ package domain.controllers;
 
 import gui.ScreenSwitcher;
 import java.util.HashMap;
+import javafx.animation.FadeTransition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import persistence.UserRepository;
 
 /**
@@ -46,7 +48,6 @@ public abstract class BaseController<E extends Node> {
 
     private void removeNode(Node node, String identifier) {
 	Parent parentNode = node.getParent();
-
 	if (parentNode == null) {
 	    return;
 	}
@@ -56,10 +57,12 @@ public abstract class BaseController<E extends Node> {
 	    if (!pane.getChildren().isEmpty()) {
 		nodeCache.put(identifier, node);
 		nodeMapping.put(node, parentNode);
-		pane.getChildren().remove(node);
+		FadeTransition transition = new FadeTransition(Duration.seconds(0.5), node);
+		transition.setToValue(0);
+		transition.play();
+		transition.setOnFinished(e -> pane.getChildren().remove(node));
 	    }
 	} else {
-
 	    System.err.println("Parent is not a pane --> " + parentNode.getClass().getSimpleName());
 	}
 
@@ -73,8 +76,12 @@ public abstract class BaseController<E extends Node> {
 		System.err.println("Could not restore node " + node + " --> " + identifier);
 	    }
 	    if (parentNode instanceof Pane) {
+		node.setOpacity(0);
+		FadeTransition transition = new FadeTransition(Duration.seconds(0.5), node);
+		transition.toValueProperty().set(1);
 		Pane pane = (Pane) parentNode;
 		pane.getChildren().add(node);
+		transition.play();
 		nodeCache.remove(identifier);
 		nodeMapping.remove(node);
 	    }

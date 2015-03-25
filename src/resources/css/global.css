@@ -20,6 +20,12 @@
     -fx-background-color: #F89406;
 }
 
+.choice-box{
+    -fx-background-color: white;
+    -fx-border-color: #90CC18;
+    -fx-border-width: 1px;
+}
+
 .item-management-tile:hover {
     -fx-background-color: derive(#5687f0, 15%);
     -fx-effect: dropshadow(gaussian, derive(#5687f0, 15%), 10, 0.001, 0, 0);

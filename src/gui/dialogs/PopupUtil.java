@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -54,6 +55,8 @@ public class PopupUtil {
 
 	PopOver popOver = new PopOver();
 	Button ok = new Button("OK");
+	ok.setAlignment(Pos.CENTER_RIGHT);
+	ok.getStyleClass().addAll("btn", "btn-lime");
 	ok.setOnAction(e -> {
 	    LoanRepository.getInstance().addSyncListener(completionCallback);
 	    loan.setReturned(true);
@@ -66,6 +69,7 @@ public class PopupUtil {
 	popOver.setAutoHide(true);
 	popOver.setAutoFix(true);
 	VBox content = new VBox(new Label("Hoeveel schade is er?"), box, ok);
+	content.setSpacing(10);
 	content.setPadding(new Insets(10));
 	popOver.setContentNode(content);
 	popOver.show(parent);
