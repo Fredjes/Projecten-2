@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class ThemeConverter implements PropertyListConverter<String, String> {
 

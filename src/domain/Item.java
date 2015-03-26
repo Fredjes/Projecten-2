@@ -34,7 +34,7 @@ import javax.persistence.Transient;
  * Represents the definition of every item stored, containing all shared
  * properties of every item.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 @Entity
 @Access(AccessType.PROPERTY)

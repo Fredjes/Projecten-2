@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class SearchPredicateTest {
 

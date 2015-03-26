@@ -19,7 +19,7 @@ import persistence.UserRepository;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class CopyPopOver extends BorderPane {
 

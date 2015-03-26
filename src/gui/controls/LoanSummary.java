@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class LoanSummary extends AnchorPane {
 

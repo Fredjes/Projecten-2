@@ -10,7 +10,7 @@ import java.util.function.Predicate;
  * domain classes, meaning this interface is mainly used as a "convenience
  * interface" though it also has a semantic meaning.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public interface Searchable extends Predicate<String> {
 }

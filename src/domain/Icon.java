@@ -4,8 +4,10 @@ import domain.IconConfig.IconPosition;
 import domain.IconConfig.IconType;
 
 /**
+ * Representation of an icon, holding all settings ({@link IconPosition} and
+ * {@link IconType}).
  *
- * @author Brent
+ * @author Brent Couck
  */
 public class Icon {
 

@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class MainMenu extends BorderPane {
 

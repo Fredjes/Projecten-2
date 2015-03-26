@@ -17,7 +17,7 @@ import persistence.LoanRepository;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class LoanManagement extends BorderPane {
 

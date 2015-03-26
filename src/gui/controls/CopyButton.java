@@ -25,7 +25,7 @@ import org.controlsfx.control.PopOver;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class CopyButton extends HBox {
 

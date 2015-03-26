@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class LocaleConfig {
 

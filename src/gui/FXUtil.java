@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class FXUtil {
 

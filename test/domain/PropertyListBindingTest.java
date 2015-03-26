@@ -10,7 +10,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class PropertyListBindingTest {
 

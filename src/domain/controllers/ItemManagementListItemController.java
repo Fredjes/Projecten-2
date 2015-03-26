@@ -9,7 +9,7 @@ import persistence.UserRepository;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class ItemManagementListItemController extends BaseController<ItemManagementListItem> {
 

@@ -1,8 +1,10 @@
 package domain;
 
 /**
+ * An enumerator to specify on what should be filtered, to allow full support
+ * each enum holds the class of what it represents.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public enum FilterOption {
 

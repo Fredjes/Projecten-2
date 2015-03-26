@@ -6,7 +6,7 @@ import javafx.scene.layout.BorderPane;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class UserManagement extends BorderPane {
 

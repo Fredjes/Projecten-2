@@ -7,8 +7,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
+ * Configurations to manage icons.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class IconConfig {
 
@@ -24,20 +25,41 @@ public class IconConfig {
 	}
     };
 
+    /**
+     * IconType enumeration to specify how the icon should be placed, as part of
+     * a {@link Labeled} or as a separate graphic.
+     */
     public enum IconType {
 
 	GRAPHIC, TEXT
     }
 
+    /**
+     * IconPosition enumeration that secifies the position of the icon in the
+     * node: before, after, or as a replacement of the node content.
+     */
     public enum IconPosition {
 
 	PREPEND, APPEND, OVERWRITE
     }
 
+    /**
+     * Returns an icon for the CSS class flag.
+     *
+     * @param cssClass The CSS flag
+     * @return The icon
+     */
     public static Icon getIconFor(String cssClass) {
 	return iconMapping.get(cssClass);
     }
 
+    /**
+     * Checks whether the node - class combination is a legal combination,
+     * meaning whether an icon placement is supported.
+     *
+     * @param node
+     * @param cssClass
+     */
     public static void identify(Node node, String cssClass) {
 	if (!iconMapping.containsKey(cssClass)) {
 	    return;
@@ -62,9 +84,14 @@ public class IconConfig {
 		setIcon(target, icon);
 	    }
 	}
-
     }
 
+    /**
+     * Put the icon in the text, based on the IconType and IconPosition.
+     *
+     * @param text The {@link Text} in which the icon should be placed
+     * @param icon The {@link Icon} that should be used
+     */
     public static void setIcon(Text text, Icon icon) {
 	switch (icon.getType()) {
 	    case GRAPHIC:
@@ -84,6 +111,12 @@ public class IconConfig {
 	}
     }
 
+    /**
+     * Put the icon in the text, based on the IconType and IconPosition.
+     *
+     * @param text The {@link Labeled} in which the icon should be placed
+     * @param icon The {@link Icon} that should be used
+     */
     public static void setIcon(Labeled text, Icon icon) {
 	switch (icon.getType()) {
 	    case GRAPHIC:

@@ -10,7 +10,7 @@ import javafx.collections.transformation.FilteredList;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class SearchPredicate implements Predicate<Searchable> {
 

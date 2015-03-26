@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class ObservableListUtil {
 

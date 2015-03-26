@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javafx.concurrent.Service;
@@ -7,7 +9,7 @@ import javafx.concurrent.Task;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class AsyncLoader<E> extends Service<E> {
 
@@ -39,6 +41,10 @@ public class AsyncLoader<E> extends Service<E> {
     
     @Override
     protected Task<E> createTask() {
+	List<Object> jsonValues = new ArrayList<>();
+	jsonValues.stream().map(Object::toString).reduce("", (s1, s2) -> s1 + " " + s2);
+	jsonValues.stream().reduce("", (s, u) -> u.toString(), (s1, s2) -> s1 + " " + s2);
+	
 	Task<E> t = new Task<E>() {
 
 	    @Override

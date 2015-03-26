@@ -9,7 +9,7 @@ import javafx.util.Callback;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class ItemManagementListItemCell extends ListCell<Item> {
 

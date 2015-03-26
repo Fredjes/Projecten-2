@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class Titlebar extends GridPane {
 

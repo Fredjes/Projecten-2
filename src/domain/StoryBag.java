@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 /**
  * An item storing other items.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 @Entity
 @Access(AccessType.PROPERTY)

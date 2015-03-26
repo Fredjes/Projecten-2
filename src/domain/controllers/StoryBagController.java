@@ -4,7 +4,7 @@ import javafx.scene.control.ListView;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class StoryBagController {
 

@@ -13,7 +13,7 @@ import persistence.JPAUtil;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class StoryBagTest {
 

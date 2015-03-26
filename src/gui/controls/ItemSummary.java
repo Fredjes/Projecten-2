@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class ItemSummary extends AnchorPane {
 

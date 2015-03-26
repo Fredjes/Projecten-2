@@ -13,7 +13,7 @@ import persistence.UserRepository;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  * @param <E>
  */
 public abstract class BaseController<E extends Node> {

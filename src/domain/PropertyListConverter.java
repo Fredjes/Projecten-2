@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public interface PropertyListConverter<EProp, EList> {
 

@@ -1,7 +1,6 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,7 +11,7 @@ import javax.persistence.Entity;
 /**
  * Item-subclass representing a book.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 @Entity
 @Access(AccessType.PROPERTY)

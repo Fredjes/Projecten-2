@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class LoanRepository extends Repository {
 

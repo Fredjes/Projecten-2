@@ -7,7 +7,7 @@ import persistence.UserRepository;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class MainMenuController extends BaseController<MainMenu> {
 

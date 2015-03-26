@@ -21,7 +21,7 @@ import persistence.ItemRepository;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class ItemManagementListItem extends AnchorPane {
 

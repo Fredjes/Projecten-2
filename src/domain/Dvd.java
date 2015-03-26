@@ -1,7 +1,6 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -9,6 +8,11 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 
+/**
+ * An entity-class representing a dvd.
+ *
+ * @author Frederik
+ */
 @Entity
 @Access(AccessType.PROPERTY)
 public class Dvd extends Item implements Serializable {

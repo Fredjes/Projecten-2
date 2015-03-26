@@ -4,7 +4,7 @@ package domain;
  * Used to determine how much damage is inflicted on an {@link ItemCopy} and
  * holds a textual representation of how the damage will be shown in the GUI.
  *
- * @author Frederik
+ * @author Pieter-Jan Geeroms
  */
 public enum Damage {
 

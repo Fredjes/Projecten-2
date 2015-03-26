@@ -13,7 +13,7 @@ import persistence.UserRepository;
 /**
  * Application of the project.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 public class MainApp extends Application {
 

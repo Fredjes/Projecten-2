@@ -12,6 +12,11 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+/**
+ * Entity representing a cd.
+ *
+ * @author Frederik De Smedt
+ */
 @Entity
 @Access(AccessType.PROPERTY)
 public class Cd extends Item implements Serializable {
@@ -69,13 +74,13 @@ public class Cd extends Item implements Serializable {
 		if (super.test(t)) {
 		    continue;
 		}
-		
+
 		for (String s : getSongList()) {
 		    if (SearchPredicate.containsIgnoreCase(s, t)) {
 			continue outer;
 		    }
 		}
-		
+
 		return false;
 	    }
 	}

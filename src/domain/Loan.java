@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 @Entity
 @Access(AccessType.PROPERTY)

@@ -27,8 +27,19 @@ import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import persistence.UserRepository;
 
+/**
+ * A Util-class for DetailView management.
+ *
+ * @author Pieter-Jan Geeroms
+ */
 public class DetailViewUtil {
 
+    /**
+     * Get a detailpane based on the filter options.
+     *
+     * @param o The filter option
+     * @return The detailpane based on the filter option.
+     */
     public static Object getDetailPane(FilterOption o) {
 	if (o == FilterOption.BOOK) {
 	    return new DetailViewBook();
@@ -46,6 +57,13 @@ public class DetailViewUtil {
 	return null;
     }
 
+    /**
+     * Will initialize drag and drop support for images. It will allow the image
+     * in the imageview to update by a drag and drop of an image in a certain
+     * directory.
+     *
+     * @param image The {@link ImageView} that requires drag and drop support.
+     */
     public static void initImageDragAndDrop(ImageView image) {
 
 	User u = UserRepository.getInstance().getAuthenticatedUser();
@@ -91,6 +109,13 @@ public class DetailViewUtil {
 	});
     }
 
+    /**
+     * Open an image selection wizard (based on the operating system), when an
+     * image is selected, the ImageView will automatically update to the newly
+     * selected image.
+     *
+     * @param image The ImageView in which the selected image should be shown
+     */
     public static void selectImage(ImageView image) {
 	FileChooser chooser = new FileChooser();
 	chooser.setTitle("Kies een afbeelding");
@@ -118,10 +143,22 @@ public class DetailViewUtil {
 	}
     }
 
+    /**
+     * Convenience method that checks whether a certain directory referres to a
+     * supported image format.
+     *
+     * @param directory The directory to a file
+     * @return true if the directory is an image directory, false otherwise
+     */
     private static boolean isImageDirectory(String directory) {
 	return directory.matches(".*(png|gif|jpg|jps|mpo)$");
     }
 
+    /**
+     * Convenience method to allow a uniform detailview height.
+     *
+     * @param binding The detailview that should adapt to the new height
+     */
     public static void setBounds(Binding binding) {
 	try {
 	    TabPane pane = ((TabPane) binding);

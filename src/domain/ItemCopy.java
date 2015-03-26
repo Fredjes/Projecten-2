@@ -26,7 +26,7 @@ import javax.persistence.Transient;
  * Representation of a real-life object containing the location, number for
  * real-life identification, damage and definition of an item.
  *
- * @author Frederik
+ * @author Frederik De Smedt
  */
 @Entity
 @Access(AccessType.PROPERTY)
