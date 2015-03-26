@@ -4,7 +4,6 @@ import domain.Damage;
 import domain.ItemCopy;
 import domain.User;
 import gui.FXUtil;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,6 +43,9 @@ public class CopyPopOver extends BorderPane {
 
     @FXML
     private HBox buttonGroup;
+    
+    @FXML
+    private Label exemplaarTitle;
 
     private ItemCopy backedCopy;
     private EventHandler<ActionEvent> onDelete;
@@ -60,6 +62,7 @@ public class CopyPopOver extends BorderPane {
 	copyNumber.textProperty().bindBidirectional(copy.copyNumberProperty());
 	locationLabel.setTextFill(Color.BLACK);
 	damageLabel.setTextFill(Color.BLACK);
+	exemplaarTitle.setTextFill(Color.rgb(108, 122, 137));
     }
 
     public void update() {
