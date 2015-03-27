@@ -1,26 +1,28 @@
 package gui.dialogs;
 
 import domain.Damage;
-import domain.ItemCopy;
 import domain.Loan;
-import domain.User;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
-import persistence.UserRepository;
 
 /**
  *
@@ -103,9 +105,50 @@ public class PopupUtil {
 	}
     }
 
-    public static User showSelectionQuestion(ObservableList<User> users) {
-	// TODO: Allow selection of user
-	return UserRepository.getInstance().getAuthenticatedUser();
+    public static <E> E showSelectionQuestion(ObservableList<E> list) {
+	Dialog<E> dialog = new Dialog<>();
+	ButtonType selectButton = new ButtonType("Selecteren", ButtonBar.ButtonData.OK_DONE);
+	dialog.getDialogPane().getButtonTypes().addAll(selectButton, ButtonType.CANCEL);
+	
+	
+	VBox box = new VBox();
+	ListView<E> listView = new ListView(list);
+	Label title = new Label("Wie leent het voorwerp uit?");
+	title.setTextAlignment(TextAlignment.CENTER);
+
+	box.getChildren().addAll(title, listView);
+	
+	dialog.setTitle("Gebruiker selecteren");
+	dialog.initStyle(StageStyle.UTILITY);
+	dialog.setResultConverter(dialogButton -> {
+	    if (dialogButton == selectButton) {
+		return listView.getSelectionModel().getSelectedItem();
+	    }
+
+	    return null;
+	});
+
+	Node selectButtonBtn = dialog.getDialogPane().lookupButton(selectButton);
+	selectButtonBtn.setDisable(true);
+	selectButtonBtn.getStyleClass().addAll("btn", "btn-lime");
+	listView.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+	    if (nv != null) {
+		selectButtonBtn.setDisable(false);
+	    } else {
+		selectButtonBtn.setDisable(true);
+	    }
+	});
+	
+	dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().addAll("btn", "btn-red");
+
+	dialog.getDialogPane().setContent(box);
+	
+	Optional<E> selected = dialog.showAndWait();
+	if (selected.isPresent()) {
+	    return selected.get();
+	}
+
+	return null;
     }
 
     public enum Notification {

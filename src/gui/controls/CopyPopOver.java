@@ -7,6 +7,7 @@ import domain.User;
 import gui.FXUtil;
 import gui.LoanEvent;
 import gui.dialogs.PopupUtil;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -43,11 +44,14 @@ public class CopyPopOver extends BorderPane {
     private Button btnDelete;
 
     @FXML
+    private Button startLoanButton;
+
+    @FXML
     private Label damageLabel;
 
     @FXML
     private HBox buttonGroup;
-    
+
     @FXML
     private Label exemplaarTitle;
 
@@ -67,6 +71,10 @@ public class CopyPopOver extends BorderPane {
 	locationLabel.setTextFill(Color.BLACK);
 	damageLabel.setTextFill(Color.BLACK);
 	exemplaarTitle.setTextFill(Color.rgb(108, 122, 137));
+	startLoanButton.setDisable(copy.getLoans().stream().anyMatch(i -> !i.getReturned()));
+	copy.getObservableLoans().addListener((Observable obs) -> {
+	    startLoanButton.setDisable(copy.getLoans().stream().anyMatch(i -> !i.getReturned()));
+	});
     }
 
     public void update() {
@@ -88,16 +96,20 @@ public class CopyPopOver extends BorderPane {
     @FXML
     public void onStartLoan(ActionEvent event) {
 	User selectedUser = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsers());
+	if (selectedUser == null) {
+	    return;
+	}
+
 	Loan loan = new Loan(backedCopy, selectedUser);
-	
+
 	LoanRepository.getInstance().addLoan(loan);
 	LoanRepository.getInstance().saveChanges();
-	
+
 	if (onStartLoan != null) {
 	    LoanEvent evt = new LoanEvent(loan);
 	    onStartLoan.handle(evt);
 	}
-	
+
 	PopupUtil.showNotification("Uitlening", String.format("%s, %s is uitgeleend aan %s.", backedCopy.getItem().getName(), backedCopy.getCopyNumber(), selectedUser.getName()));
     }
 

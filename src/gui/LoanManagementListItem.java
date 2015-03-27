@@ -7,6 +7,7 @@ import domain.User;
 import domain.controllers.LoanManagementListItemController;
 import java.util.Calendar;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -86,7 +87,7 @@ public class LoanManagementListItem extends AnchorPane {
 	itemImage.imageProperty().unbind();
 	itemName.textProperty().unbind();
 	itemImage.imageProperty().bind(item.imageProperty());
-	itemName.textProperty().bind(item.nameProperty());
+	itemName.textProperty().bind(Bindings.concat(item.nameProperty(), ", ", loan.getItemCopy().copyNumberProperty()));
     }
 
     private void updateUser(Observable user, User oldUser, User newUser) {

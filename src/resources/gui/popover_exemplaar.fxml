@@ -53,7 +53,7 @@
             <TextField fx:id="locationTxt" GridPane.columnIndex="1" GridPane.columnSpan="2" />
             <HBox fx:id="buttonGroup" alignment="CENTER_RIGHT" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onStartLoan" text="Uitlenen">
+                  <Button fx:id="startLoanButton" mnemonicParsing="false" onAction="#onStartLoan" text="Uitlenen">
                      <styleClass>
                         <String fx:value="btn" />
                         <String fx:value="btn-green" />

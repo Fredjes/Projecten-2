@@ -142,6 +142,11 @@ public class User implements Serializable, Searchable {
     }
 
     @Override
+    public String toString() {
+	return this.getName();
+    }
+    
+    @Override
     public boolean test(String query) {
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getClassRoom(), t)
