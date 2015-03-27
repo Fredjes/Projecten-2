@@ -95,7 +95,7 @@ public class CopyPopOver extends BorderPane {
 
     @FXML
     public void onStartLoan(ActionEvent event) {
-	User selectedUser = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsers());
+	User selectedUser = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsers(), "Wie leent het voorwerp uit?");
 	if (selectedUser == null) {
 	    return;
 	}

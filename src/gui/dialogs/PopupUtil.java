@@ -105,7 +105,7 @@ public class PopupUtil {
 	}
     }
 
-    public static <E> E showSelectionQuestion(ObservableList<E> list) {
+    public static <E> E showSelectionQuestion(ObservableList<E> list, String text) {
 	Dialog<E> dialog = new Dialog<>();
 	ButtonType selectButton = new ButtonType("Selecteren", ButtonBar.ButtonData.OK_DONE);
 	dialog.getDialogPane().getButtonTypes().addAll(selectButton, ButtonType.CANCEL);
@@ -113,7 +113,7 @@ public class PopupUtil {
 	
 	VBox box = new VBox();
 	ListView<E> listView = new ListView(list);
-	Label title = new Label("Wie leent het voorwerp uit?");
+	Label title = new Label(text);
 	title.setTextAlignment(TextAlignment.CENTER);
 
 	box.getChildren().addAll(title, listView);
