@@ -3,9 +3,11 @@ package gui.dialogs;
 import domain.Damage;
 import domain.ItemCopy;
 import domain.Loan;
+import domain.User;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -18,6 +20,7 @@ import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
+import persistence.UserRepository;
 
 /**
  *
@@ -98,6 +101,11 @@ public class PopupUtil {
 	} else {
 	    defaultTemplate.showInformation();
 	}
+    }
+
+    public static User showSelectionQuestion(ObservableList<User> users) {
+	// TODO: Allow selection of user
+	return UserRepository.getInstance().getAuthenticatedUser();
     }
 
     public enum Notification {

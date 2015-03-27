@@ -10,9 +10,9 @@ import domain.ItemCopy;
 import domain.Loan;
 import domain.StoryBag;
 import gui.FXUtil;
+import gui.LoanEvent;
 import gui.dialogs.PopupUtil;
 import javafx.beans.Observable;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -65,10 +65,10 @@ public class CopyButton extends HBox {
     }
 
     private void updateIconAvailability() {
-	if (copy.damageProperty().get() == Damage.MODERATE_DAMAGE || copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
-	    icon.setTextFill(Color.GRAY);
-	} else if (copy.getLoans().stream().anyMatch(l -> !l.getReturned())) {
+	if (copy.getLoans().stream().anyMatch(l -> !l.getReturned())) {
 	    icon.setTextFill(Color.RED);
+	} else if (copy.damageProperty().get() == Damage.MODERATE_DAMAGE || copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
+	    icon.setTextFill(Color.GREY);
 	} else {
 	    icon.setTextFill(Color.GREEN);
 	}
@@ -105,15 +105,15 @@ public class CopyButton extends HBox {
 	popOver = PopupUtil.showPopOver(this, popOverContent);
     }
 
-    public void setOnDelete(EventHandler<ActionEvent> handler) {
+    public void setOnDelete(EventHandler<LoanEvent> handler) {
 	popOverContent.setOnDelete(addPopUpCloseHandle(handler));
     }
 
-    public void setOnStartLoan(EventHandler<ActionEvent> handler) {
+    public void setOnStartLoan(EventHandler<LoanEvent> handler) {
 	popOverContent.setOnStartLoan(addPopUpCloseHandle(handler));
     }
 
-    private EventHandler<ActionEvent> addPopUpCloseHandle(EventHandler<ActionEvent> handler) {
+    private EventHandler<LoanEvent> addPopUpCloseHandle(EventHandler<LoanEvent> handler) {
 	return evt -> {
 	    if (popOver != null) {
 		popOver.hide();

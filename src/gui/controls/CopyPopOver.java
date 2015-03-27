@@ -2,8 +2,11 @@ package gui.controls;
 
 import domain.Damage;
 import domain.ItemCopy;
+import domain.Loan;
 import domain.User;
 import gui.FXUtil;
+import gui.LoanEvent;
+import gui.dialogs.PopupUtil;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import persistence.LoanRepository;
 import persistence.UserRepository;
 
 /**
@@ -48,8 +52,8 @@ public class CopyPopOver extends BorderPane {
     private Label exemplaarTitle;
 
     private ItemCopy backedCopy;
-    private EventHandler<ActionEvent> onDelete;
-    private EventHandler<ActionEvent> onStartLoan;
+    private EventHandler<LoanEvent> onDelete;
+    private EventHandler<LoanEvent> onStartLoan;
 
     public CopyPopOver(ItemCopy copy) {
 	FXUtil.loadFXML(this, "popover_exemplaar");
@@ -76,22 +80,32 @@ public class CopyPopOver extends BorderPane {
     @FXML
     public void onDelete(ActionEvent event) {
 	if (onDelete != null) {
-	    onDelete.handle(event);
+	    LoanEvent evt = new LoanEvent(null);
+	    onDelete.handle(evt);
 	}
     }
 
     @FXML
     public void onStartLoan(ActionEvent event) {
+	User selectedUser = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsers());
+	Loan loan = new Loan(backedCopy, selectedUser);
+	
+	LoanRepository.getInstance().addLoan(loan);
+	LoanRepository.getInstance().saveChanges();
+	
 	if (onStartLoan != null) {
-	    onStartLoan.handle(event);
+	    LoanEvent evt = new LoanEvent(loan);
+	    onStartLoan.handle(evt);
 	}
+	
+	PopupUtil.showNotification("Uitlening", String.format("%s, %s is uitgeleend aan %s.", backedCopy.getItem().getName(), backedCopy.getCopyNumber(), selectedUser.getName()));
     }
 
-    public void setOnDelete(EventHandler<ActionEvent> handler) {
+    public void setOnDelete(EventHandler<LoanEvent> handler) {
 	this.onDelete = handler;
     }
 
-    public void setOnStartLoan(EventHandler<ActionEvent> handler) {
+    public void setOnStartLoan(EventHandler<LoanEvent> handler) {
 	this.onStartLoan = handler;
     }
 }

@@ -236,6 +236,20 @@ public abstract class Item implements Serializable, Searchable {
 	return true;
     }
 
+    public boolean testNoCopies(String query) {
+	for (String t : query.split("\\s+")) {
+	    boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
+		    || SearchPredicate.containsIgnoreCase(getDescription(), t)
+		    || SearchPredicate.containsIgnoreCase(getName(), t);
+
+	    if (!temp) {
+		return false;
+	    }
+	}
+
+	return true;
+    }
+
     public static String getCodePrefixFor(Item item) {
 	if (item instanceof Book) {
 	    return "B";

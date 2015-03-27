@@ -70,7 +70,7 @@ public class ItemManagementListItem extends AnchorPane {
 
     private void addCopyButtonFor(ItemCopy copy) {
 	CopyButton button = new CopyButton(copy);
-	initOnDelete(button, copy);
+	initEvents(button, copy);
 	copyList.getChildren().add(button);
     }
 
@@ -104,15 +104,22 @@ public class ItemManagementListItem extends AnchorPane {
 	copyList.getChildren().clear();
 	ItemRepository.getInstance().getItemCopiesByPredicate((ItemCopy ic) -> ic.getItem() == item.get() || ic.getItem().equals(item.get())).forEach(ic -> {
 	    CopyButton button = new CopyButton(ic);
-	    initOnDelete(button, ic);
+	    initEvents(button, ic);
 	    copyList.getChildren().add(button);
 	});
     }
 
-    private void initOnDelete(CopyButton button, ItemCopy backedCopy) {
+    private void initEvents(CopyButton button, ItemCopy backedCopy) {
 	button.setOnDelete(e -> {
 	    ItemRepository.getInstance().remove(backedCopy);
 	    item.get().getItemCopies().removeIf(ic -> ic.getCopyNumber().equals(backedCopy.getCopyNumber()));
+	});
+	
+	button.setOnStartLoan(e -> {
+	    backedCopy.getLoans().add(e.getLoan());
+	    CopyButton newButton = new CopyButton(backedCopy);
+	    initEvents(newButton, backedCopy);
+	    copyList.getChildren().set(copyList.getChildren().indexOf(button), newButton);
 	});
     }
 
@@ -123,7 +130,7 @@ public class ItemManagementListItem extends AnchorPane {
 	copy.setItem(item.get());
 	item.get().getItemCopies().add(copy);
 	CopyButton button = new CopyButton(copy);
-	initOnDelete(button, copy);
+	initEvents(button, copy);
     }
 
     private ObservableList<ItemCopy> getCopiesOfItem(Item item) {
