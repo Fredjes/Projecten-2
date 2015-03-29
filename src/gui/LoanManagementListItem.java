@@ -5,6 +5,8 @@ import domain.Loan;
 import domain.LocaleConfig;
 import domain.User;
 import domain.controllers.LoanManagementListItemController;
+import gui.controls.AdvancedLoanSettings;
+import gui.dialogs.PopupUtil;
 import java.util.Calendar;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -104,7 +106,7 @@ public class LoanManagementListItem extends AnchorPane {
 
     @FXML
     public void editAdvanced() {
-	throw new UnsupportedOperationException("not implemented yet");
+	PopupUtil.showPopOver(editLoanButton, new AdvancedLoanSettings(loan));
     }
 
     public Button getEditLoanButton() {

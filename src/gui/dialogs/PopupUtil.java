@@ -2,9 +2,11 @@ package gui.dialogs;
 
 import domain.Damage;
 import domain.Loan;
+import domain.Searchable;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -14,10 +16,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
@@ -105,20 +112,37 @@ public class PopupUtil {
 	}
     }
 
-    public static <E> E showSelectionQuestion(ObservableList<E> list, String text) {
+    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text) {
+	FilteredList<? extends Searchable> filteredList = new FilteredList<>(list);
 	Dialog<E> dialog = new Dialog<>();
 	ButtonType selectButton = new ButtonType("Selecteren", ButtonBar.ButtonData.OK_DONE);
 	dialog.getDialogPane().getButtonTypes().addAll(selectButton, ButtonType.CANCEL);
-	
-	
-	VBox box = new VBox();
-	ListView<E> listView = new ListView(list);
-	Label title = new Label(text);
-	title.setTextAlignment(TextAlignment.CENTER);
 
-	box.getChildren().addAll(title, listView);
-	
-	dialog.setTitle("Gebruiker selecteren");
+	VBox box = new VBox();
+	TextField searchBar = new TextField();
+	searchBar.textProperty().addListener((obs, ov, nv) -> {
+	    if (nv != null) {
+		filteredList.setPredicate(i -> i.test(nv));
+	    } else {
+		filteredList.setPredicate(i -> true);
+	    }
+	});
+
+	ListView<E> listView = new ListView(filteredList);
+
+	listView.setMinWidth(Region.USE_PREF_SIZE);
+	Label lblTitle = new Label(text);
+	lblTitle.setTextAlignment(TextAlignment.CENTER);
+
+	ScrollPane scrollPane = new ScrollPane(listView);
+	scrollPane.setMinWidth(Region.USE_PREF_SIZE);
+	scrollPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+	scrollPane.setMaxWidth(Integer.MAX_VALUE);
+	scrollPane.setMaxHeight(400);
+
+	box.getChildren().addAll(lblTitle, searchBar, scrollPane);
+
+	dialog.setTitle(title);
 	dialog.initStyle(StageStyle.UTILITY);
 	dialog.setResultConverter(dialogButton -> {
 	    if (dialogButton == selectButton) {
@@ -138,11 +162,11 @@ public class PopupUtil {
 		selectButtonBtn.setDisable(true);
 	    }
 	});
-	
+
 	dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().addAll("btn", "btn-red");
 
 	dialog.getDialogPane().setContent(box);
-	
+
 	Optional<E> selected = dialog.showAndWait();
 	if (selected.isPresent()) {
 	    return selected.get();
