@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.input.DataFormat;
 import javax.imageio.ImageIO;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -43,7 +44,7 @@ import javax.persistence.Transient;
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Item implements Serializable, Searchable {
-
+    
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
     private final ObservableList<String> theme = FXCollections.observableArrayList();

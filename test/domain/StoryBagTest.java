@@ -18,9 +18,9 @@ import persistence.JPAUtil;
 public class StoryBagTest {
 
     private EntityManager manager = JPAUtil.getInstance().getEntityManager();
-    private List<ItemCopy> items = new ArrayList<>(Arrays.asList(new ItemCopy[]{
-	new ItemCopy("11", "Gang 11", new Book(Arrays.asList("Het thema"), "8+", "De titel", "De uitleg", "De autheur", "De uitgeverij"), Damage.NO_DAMAGE),
-	new ItemCopy("89", "Klas 2A", new Game(Arrays.asList("Actie"), "6-8", "Pacman", "Het beroemde Pacman-spel", "Atari"), Damage.HIGH_DAMAGE)
+    private List<Item> items = new ArrayList<>(Arrays.asList(new Item[]{
+	new Book(Arrays.asList("Het thema"), "8+", "De titel", "De uitleg", "De autheur", "De uitgeverij"),
+	new Game(Arrays.asList("Actie"), "6-8", "Pacman", "Het beroemde Pacman-spel", "Atari")
     }));
 
     private StoryBag bag;

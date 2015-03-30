@@ -1,21 +1,29 @@
 package gui;
 
 import domain.DetailViewUtil;
+import domain.DragUtil;
+import domain.Item;
 import domain.PropertyListBinding;
 import domain.StoryBag;
 import domain.ThemeConverter;
 import domain.controllers.StoryBagController;
+import gui.controls.ItemTile;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ListChangeListener;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ListView;
+import javafx.scene.Node;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.TilePane;
 
 public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 
@@ -28,13 +36,13 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
     @FXML
     private TextField ageCategory;
     @FXML
-    private ListView lstItems;
+    private TilePane lstItems;
     @FXML
     private ImageView image;
 
     private PropertyListBinding themesBinding;
 
-    private StoryBag boundedStoryBag;
+    private StoryBag boundStoryBag;
 
     private StoryBagController controller;
 
@@ -56,22 +64,31 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 	}
     }
 
+    private void createItemRemoveHandler(ItemTile item) {
+	item.setOnSuccessfullDrag(e -> boundStoryBag.removeItem(item.getItem()));
+    }
+
     private void initListItemDrag() {
-	final String copyDragText = "COPY_DRAG:";
-	lstItems.setOnDragEntered(de -> {
-	    System.out.println(de.getDragboard().getString());
-	    Dragboard board = de.getDragboard();
-	    if (board.hasString() && board.getString().startsWith(copyDragText)) {
-		System.out.println("accepted");
-		de.acceptTransferModes(TransferMode.LINK);
+	lstItems.setOnDragOver(de -> {
+	    if (DragUtil.isItemDrag(de.getDragboard().getString())) {
+		de.acceptTransferModes(TransferMode.ANY);
 	    }
 	});
 
 	lstItems.setOnDragDropped(de -> {
-	    Dragboard board = de.getDragboard();
-	    if (board.hasString() && board.getString().startsWith(copyDragText)) {
-		controller.addItemCopyToStoryBagByCopyId(board.getString().substring(copyDragText.length()), lstItems);
-		de.setDropCompleted(true);
+	    if (DragUtil.isItemDrag(de.getDragboard().getString())) {
+		Item item = DragUtil.getItem(de.getDragboard().getString());
+		if (!boundStoryBag.getItems().contains(item)) {
+		    boundStoryBag.addItem(item);
+		}
+	    }
+	});
+
+	lstItems.getChildren().addListener((ListChangeListener.Change<? extends Node> c) -> {
+	    while (c.next()) {
+		if (c.wasAdded()) {
+		    c.getAddedSubList().stream().filter(n -> n instanceof ItemTile).map(n -> (ItemTile) n).forEach(this::createItemRemoveHandler);
+		}
 	    }
 	});
     }
@@ -81,27 +98,49 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 	DetailViewUtil.selectImage(image);
     }
 
-    public ListView getStoredItems() {
+    public TilePane getStoredItems() {
 	return lstItems;
     }
 
+    private ListChangeListener<Item> listChangeListener = (ListChangeListener.Change<? extends Item> c) -> {
+	while (c.next()) {
+	    if (c.wasAdded()) {
+		c.getAddedSubList().forEach(i -> lstItems.getChildren().add(new ItemTile(i)));
+	    } else if (c.wasRemoved()) {
+		List<Node> shouldRemove = lstItems.getChildren().stream().filter(node -> {
+		    if (!(node instanceof ItemTile)) {
+			return false;
+		    }
+
+		    return c.getRemoved().contains(((ItemTile) node).getItem());
+		}).collect(Collectors.toList());
+
+		lstItems.getChildren().removeAll(shouldRemove);
+	    }
+	}
+    };
+
     @Override
     public void bind(StoryBag t) {
-	if (boundedStoryBag != null) {
-	    Bindings.unbindBidirectional(name.textProperty(), boundedStoryBag.nameProperty());
-	    Bindings.unbindBidirectional(description.textProperty(), boundedStoryBag.descriptionProperty());
+	if (boundStoryBag != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundStoryBag.nameProperty());
+	    Bindings.unbindBidirectional(description.textProperty(), boundStoryBag.descriptionProperty());
 	    themesBinding.unbind();
-	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundedStoryBag.ageCategoryProperty());
-	    Bindings.unbindBidirectional(image.imageProperty(), boundedStoryBag.imageProperty());
+	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundStoryBag.ageCategoryProperty());
+	    Bindings.unbindBidirectional(image.imageProperty(), boundStoryBag.imageProperty());
+	    boundStoryBag.getObservableItems().removeListener(listChangeListener);
 	}
 
 	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
 	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
 	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
 	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
-	lstItems.setItems(t.getObservableItems());
+
+	lstItems.getChildren().clear();
+	t.getObservableItems().stream().map(ItemTile::new).forEach(lstItems.getChildren()::add);
+	t.getObservableItems().addListener(listChangeListener);
 	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
-	this.boundedStoryBag = t;
+	this.boundStoryBag = t;
     }
 
 }

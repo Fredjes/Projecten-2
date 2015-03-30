@@ -53,7 +53,6 @@ public class CopyButton extends HBox {
 	copyId.setText("#" + copy.getCopyNumber().substring(1));
 	createIcon();
 
-	initCopyButtonDrag();
 	updateIconAvailability();
 	copy.damageProperty().addListener(i -> updateIconAvailability());
 	copy.getLoans().stream().forEach((Loan l) -> l.returnedProperty().addListener(i -> updateIconAvailability()));
@@ -88,16 +87,6 @@ public class CopyButton extends HBox {
 	} else if (copy.getItem() instanceof StoryBag) {
 	    icon.setText("\uf0b1");
 	}
-    }
-
-    private void initCopyButtonDrag() {
-	super.setOnDragDetected(me -> {
-	    Dragboard board = this.startDragAndDrop(TransferMode.ANY);
-	    ClipboardContent content = new ClipboardContent();
-	    content.putString("COPY_DRAG:" + copy.getCopyNumber());
-	    board.setContent(content);
-	    me.consume();
-	});
     }
 
     public void showDetails() {

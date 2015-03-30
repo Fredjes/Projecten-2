@@ -1,8 +1,10 @@
 package gui;
 
 import domain.Book;
+import domain.Cache;
 import domain.Cd;
 import domain.DetailViewUtil;
+import domain.DragUtil;
 import domain.Dvd;
 import domain.FilterOption;
 import domain.Game;
@@ -21,6 +23,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -78,50 +83,82 @@ public class ItemManagement extends BorderPane {
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
 	itemList.setCellFactory(ItemManagementListItemCell.forListView());
 	itemList.setItems(filteredList);
+
+	itemList.setOnDragDetected(e -> {
+	    Dragboard db = itemList.startDragAndDrop(TransferMode.LINK);
+	    db.setDragView(Cache.getItemCache().get(itemList.getSelectionModel().getSelectedItem()).snapshot(null, null));
+	    ClipboardContent content = new ClipboardContent();
+	    Item selectedItem = itemList.getSelectionModel().getSelectedItem();
+	    content.putString(DragUtil.createItemString(selectedItem));
+	    db.setContent(content);
+	    e.consume();
+	});
+
+	itemList.setOnDragOver(e -> {
+	    Dragboard board = e.getDragboard();
+	    if (board.hasString() && DragUtil.isRemoveItemDrag(board.getString())) {
+		e.acceptTransferModes(TransferMode.MOVE);
+	    }
+	});
+	
+	itemList.setOnDragDropped(e -> {
+	    Dragboard board = e.getDragboard();
+	    if (board.hasString() && DragUtil.isRemoveItemDrag(board.getString())) {
+		e.setDropCompleted(true);
+		e.consume();
+	    }
+	});
+
+	itemList.setOnMouseReleased(e -> updateDetailView());
+	itemList.setOnKeyReleased(e -> updateDetailView());
+
 	searchbar.setOnKeyReleased((e) -> {
 	    updateList();
 	});
+
 	updateList();
-	itemList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-	    try {
-		if (newValue == null) {
-		    return;
-		}
+    }
 
-		User u = UserRepository.getInstance().getAuthenticatedUser();
-
-		if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT || u.getUserType() == User.UserType.VOLUNTEER) {
-		    return;
-		}
-
-		if (newValue instanceof Book) {
-		    Object temp = DetailViewUtil.getDetailPane(FilterOption.BOOK);
-		    detailView = (Binding<Book>) temp;
-		    this.setBottom((Node) temp);
-		} else if (newValue instanceof Cd) {
-		    Object temp = DetailViewUtil.getDetailPane(FilterOption.CD);
-		    detailView = (Binding<Cd>) temp;
-		    this.setBottom((Node) temp);
-		} else if (newValue instanceof Dvd) {
-		    Object temp = DetailViewUtil.getDetailPane(FilterOption.DVD);
-		    detailView = (Binding<Dvd>) temp;
-		    this.setBottom((Node) temp);
-		} else if (newValue instanceof Game) {
-		    Object temp = DetailViewUtil.getDetailPane(FilterOption.GAME);
-		    detailView = (Binding<Game>) temp;
-		    this.setBottom((Node) temp);
-		} else if (newValue instanceof StoryBag) {
-		    Object temp = DetailViewUtil.getDetailPane(FilterOption.STORYBAG);
-		    detailView = (Binding<StoryBag>) temp;
-		    this.setBottom((Node) temp);
-		}
-
-		detailView.bind(newValue);
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-//		System.err.println("Couldn't bind item: " + ex.getMessage());
+    private void updateDetailView() {
+	try {
+	    Item newValue = itemList.getSelectionModel().getSelectedItem();
+	    if (newValue == null) {
+		return;
 	    }
-	});
+
+	    User u = UserRepository.getInstance().getAuthenticatedUser();
+
+	    if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT || u.getUserType() == User.UserType.VOLUNTEER) {
+		return;
+	    }
+
+	    if (newValue instanceof Book) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.BOOK);
+		detailView = (Binding<Book>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof Cd) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.CD);
+		detailView = (Binding<Cd>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof Dvd) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.DVD);
+		detailView = (Binding<Dvd>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof Game) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.GAME);
+		detailView = (Binding<Game>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof StoryBag) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.STORYBAG);
+		detailView = (Binding<StoryBag>) temp;
+		this.setBottom((Node) temp);
+	    }
+
+	    detailView.bind(newValue);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+//		System.err.println("Couldn't bind item: " + ex.getMessage());
+	}
     }
 
     public void updateList() {
@@ -204,7 +241,7 @@ public class ItemManagement extends BorderPane {
 
 		searchbar.setText("");
 		Item added = (Item) searchPredicate.getSelectedClass().getConstructor().newInstance();
-		ItemRepository.getInstance().add(added);
+		ItemRepository.getInstance().saveItem(added);
 		added.setName(" ");
 		updateList();
 		added.setName("");

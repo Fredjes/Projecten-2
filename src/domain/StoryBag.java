@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 })
 public class StoryBag extends Item implements Serializable {
 
-    private ObservableList<ItemCopy> items = FXCollections.observableArrayList();
+    private ObservableList<Item> items = FXCollections.observableArrayList();
 
     public StoryBag() {
     }
@@ -35,26 +35,26 @@ public class StoryBag extends Item implements Serializable {
 	super(name, description, theme, ageCategory);
     }
 
-    public void addItem(ItemCopy item) {
+    public void addItem(Item item) {
 	items.add(item);
     }
 
-    public void removeItem(ItemCopy item) {
+    public void removeItem(Item item) {
 	items.remove(item);
     }
 
     @Transient
-    public ObservableList<ItemCopy> getObservableItems() {
+    public ObservableList<Item> getObservableItems() {
 	return items;
     }
 
     @Access(AccessType.PROPERTY)
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    public List<ItemCopy> getItems() {
+    public List<Item> getItems() {
 	return items;
     }
 
-    public void setItems(List<ItemCopy> items) {
+    public void setItems(List<Item> items) {
 	this.items = FXCollections.observableArrayList(items);
     }
 
@@ -69,7 +69,7 @@ public class StoryBag extends Item implements Serializable {
 	    return true;
 	}
 
-	for (ItemCopy item : getItems()) {
+	for (Item item : getItems()) {
 	    if (item.test(query)) {
 		return true;
 	    }
