@@ -14,15 +14,8 @@ public class DragUtil {
 
     public static final String ITEM_REMOVE = "REMOVE ITEM ";
 
-    public static boolean isItemDrag(String board) {
-	return board != null && board.startsWith(ITEM);
-    }
-
-    public static boolean isRemoveItemDrag(String board) {
-	return board != null && board.startsWith(ITEM_REMOVE);
-    }
-
-    public static Item getItem(String item) {
+    public static Item getItem(DragCommand itemCommand) {
+	String item = itemCommand.getCommand();
 	if (item == null) {
 	    return null;
 	}

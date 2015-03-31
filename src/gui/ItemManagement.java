@@ -4,6 +4,7 @@ import domain.Book;
 import domain.Cache;
 import domain.Cd;
 import domain.DetailViewUtil;
+import domain.DragCommand;
 import domain.DragUtil;
 import domain.Dvd;
 import domain.FilterOption;
@@ -89,21 +90,21 @@ public class ItemManagement extends BorderPane {
 	    db.setDragView(Cache.getItemCache().get(itemList.getSelectionModel().getSelectedItem()).snapshot(null, null));
 	    ClipboardContent content = new ClipboardContent();
 	    Item selectedItem = itemList.getSelectionModel().getSelectedItem();
-	    content.putString(DragUtil.createItemString(selectedItem));
+	    content.put(DragCommand.DRAG_COMMAND_DATA_FORMAT, new DragCommand(selectedItem));
 	    db.setContent(content);
 	    e.consume();
 	});
 
 	itemList.setOnDragOver(e -> {
 	    Dragboard board = e.getDragboard();
-	    if (board.hasString() && DragUtil.isRemoveItemDrag(board.getString())) {
+	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand)board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
 		e.acceptTransferModes(TransferMode.MOVE);
 	    }
 	});
 	
 	itemList.setOnDragDropped(e -> {
 	    Dragboard board = e.getDragboard();
-	    if (board.hasString() && DragUtil.isRemoveItemDrag(board.getString())) {
+	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand)board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
 		e.setDropCompleted(true);
 		e.consume();
 	    }

@@ -1,6 +1,7 @@
 package gui;
 
 import domain.DetailViewUtil;
+import domain.DragCommand;
 import domain.DragUtil;
 import domain.Item;
 import domain.PropertyListBinding;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,7 +21,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.TilePane;
 
@@ -70,14 +69,14 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 
     private void initListItemDrag() {
 	lstItems.setOnDragOver(de -> {
-	    if (DragUtil.isItemDrag(de.getDragboard().getString())) {
+	    if (de.getDragboard().hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isItemDrag((DragCommand)de.getDragboard().getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
 		de.acceptTransferModes(TransferMode.ANY);
 	    }
 	});
 
 	lstItems.setOnDragDropped(de -> {
-	    if (DragUtil.isItemDrag(de.getDragboard().getString())) {
-		Item item = DragUtil.getItem(de.getDragboard().getString());
+	    if (de.getDragboard().hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isItemDrag((DragCommand)de.getDragboard().getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
+		Item item = DragUtil.getItem((DragCommand) de.getDragboard().getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT));
 		if (!boundStoryBag.getItems().contains(item)) {
 		    boundStoryBag.addItem(item);
 		}

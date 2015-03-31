@@ -1,5 +1,6 @@
 package gui.controls;
 
+import domain.DragCommand;
 import domain.DragUtil;
 import domain.Item;
 import gui.FXUtil;
@@ -38,7 +39,7 @@ public class ItemTile extends VBox {
 	    Dragboard board = this.startDragAndDrop(TransferMode.MOVE);
 	    board.setDragView(image.snapshot(null, null));
 	    ClipboardContent content = new ClipboardContent();
-	    content.putString(DragUtil.createItemString(item, DragUtil.ITEM_REMOVE));
+	    content.put(DragCommand.DRAG_COMMAND_DATA_FORMAT, new DragCommand(item, DragUtil.ITEM_REMOVE));
 	    board.setContent(content);
 	});
 
