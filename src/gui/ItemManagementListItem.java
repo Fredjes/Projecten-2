@@ -7,17 +7,16 @@ import domain.controllers.ItemManagementListItemController;
 import gui.controls.CopyButton;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
@@ -67,14 +66,19 @@ public class ItemManagementListItem extends AnchorPane {
 		}
 	    }
 	});
-	
-	item.getItemCopies().forEach(this::addCopyButtonFor);
+
+	SortedList<ItemCopy> copies = FXCollections.observableArrayList(item.getItemCopies()).sorted((i1, i2) -> {
+	    return i1.getCopyNumber().compareTo(i2.getCopyNumber());
+	});
+	copies.forEach(this::addCopyButtonFor);
+
     }
 
     private void addCopyButtonFor(ItemCopy copy) {
 	CopyButton button = new CopyButton(copy);
 	initEvents(button, copy);
 	copyList.getChildren().add(button);
+
     }
 
     private ItemManagementListItem() {
@@ -117,7 +121,7 @@ public class ItemManagementListItem extends AnchorPane {
 	    ItemRepository.getInstance().remove(backedCopy);
 	    item.get().getItemCopies().removeIf(ic -> ic.getCopyNumber().equals(backedCopy.getCopyNumber()));
 	});
-	
+
 	button.setOnStartLoan(e -> {
 	    backedCopy.getLoans().add(e.getLoan());
 	    CopyButton newButton = new CopyButton(backedCopy);

@@ -12,13 +12,11 @@ import domain.StoryBag;
 import gui.FXUtil;
 import gui.LoanEvent;
 import gui.dialogs.PopupUtil;
+import java.util.Comparator;
 import javafx.beans.Observable;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
@@ -27,7 +25,7 @@ import org.controlsfx.control.PopOver;
  *
  * @author Frederik De Smedt
  */
-public class CopyButton extends HBox {
+public class CopyButton extends HBox implements Comparator<CopyButton> {
 
     @FXML
     private Label copyId;
@@ -110,5 +108,10 @@ public class CopyButton extends HBox {
 
 	    handler.handle(evt);
 	};
+    }
+
+    @Override
+    public int compare(CopyButton o1, CopyButton o2) {
+	return getCopy().getCopyNumber().compareTo(o2.getCopy().getCopyNumber());
     }
 }
