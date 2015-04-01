@@ -13,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.scene.input.DataFormat;
 import javax.imageio.ImageIO;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -50,7 +49,7 @@ public abstract class Item implements Serializable, Searchable {
     private final ObservableList<String> theme = FXCollections.observableArrayList();
     private final StringProperty ageCategory = new SimpleStringProperty();
 
-    private final ObservableList<ItemCopy> itemCopies = FXCollections.observableArrayList();
+    private final ObservableList<ItemCopy> itemCopies = FXCollections.<ItemCopy>observableArrayList();
 
     private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
 
