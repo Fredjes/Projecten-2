@@ -1,9 +1,15 @@
 package domain;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -59,196 +65,207 @@ public abstract class Item implements Serializable, Searchable {
     }
 
     public Item(String name, String description, List<String> theme, String ageCategory) {
-	setThemes(theme);
-	setAgeCategory(ageCategory);
-	setName(name);
-	setDescription(description);
+        setThemes(theme);
+        setAgeCategory(ageCategory);
+        setName(name);
+        setDescription(description);
     }
 
     @Transient
     public ObservableList<String> getThemeFX() {
-	return theme;
+        return theme;
     }
 
     @Transient
     public ObservableList<ItemCopy> getObservableItemCopies() {
-	return itemCopies;
+        return itemCopies;
     }
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     public List<ItemCopy> getItemCopies() {
-	return itemCopies;
+        return itemCopies;
     }
 
     public void setItemCopies(List<ItemCopy> itemCopies) {
-	this.itemCopies.setAll(itemCopies);
+        this.itemCopies.setAll(itemCopies);
     }
 
     public StringProperty nameProperty() {
-	return name;
+        return name;
     }
 
     public StringProperty descriptionProperty() {
-	return description;
+        return description;
     }
 
     public StringProperty ageCategoryProperty() {
-	return ageCategory;
+        return ageCategory;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
-	return id;
+        return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+        this.id = id;
     }
 
     @ElementCollection
     public List<String> getThemes() {
-	return theme;
+        return theme;
     }
 
     public void setThemes(List<String> theme) {
-	this.theme.setAll(theme);
+        this.theme.setAll(theme);
     }
 
     public String getAgeCategory() {
-	return ageCategory.get();
+        return ageCategory.get();
     }
 
     public void setAgeCategory(String ageCategory) {
-	this.ageCategory.set(ageCategory);
+        this.ageCategory.set(ageCategory);
     }
 
     public String getName() {
-	return name.get();
+        return name.get();
     }
 
     public void setName(String name) {
-	this.name.set(name);
+        this.name.set(name);
     }
 
     public String getDescription() {
-	return description.get();
+        return description.get();
     }
 
     public void setDescription(String description) {
-	this.description.set(description);
+        this.description.set(description);
+    }
+
+    public byte[] convertImageToByte(String url) throws URISyntaxException, IOException {
+        File imgPath = new File(new URI(url));
+        BufferedImage bufferedImage = ImageIO.read(imgPath);
+
+        // get DataBufferBytes from Raster
+        WritableRaster raster = bufferedImage.getRaster();
+        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+
+        return (data.getData());
     }
 
     @Lob
     public byte[] getImage() {
-	if (image.get() == null) {
-	    return new byte[0];
-	}
+        if (image.get() == null) {
+            return new byte[0];
+        }
 
-	try {
-	    ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    ImageIO.write(SwingFXUtils.fromFXImage(image.get(), null), "png", out);
-	    return out.toByteArray();
-	} catch (IOException ex) {
-	    System.err.println("Could not save image-data: " + ex.getMessage());
-	    return null;
-	}
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ImageIO.write(SwingFXUtils.fromFXImage(image.get(), null), "png", out);
+            return out.toByteArray();
+        } catch (IOException ex) {
+            System.err.println("Could not save image-data: " + ex.getMessage());
+            return null;
+        }
     }
 
     public void setImage(byte[] bytes) {
-	if (bytes.length == 0) {
-	    return;
-	}
+        if (bytes.length == 0) {
+            return;
+        }
 
-	try {
-	    image.set(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(bytes)), null));
-	} catch (IOException ex) {
-	    System.err.println("Could not load image-data: " + ex.getMessage());
-	}
+        try {
+            image.set(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(bytes)), null));
+        } catch (IOException ex) {
+            System.err.println("Could not load image-data: " + ex.getMessage());
+        }
     }
 
     @Transient
     public Image getFXImage() {
-	return image.get();
+        return image.get();
     }
 
     public void setFXImage(Image i) {
-	this.image.set(i);
+        this.image.set(i);
     }
 
     public ObjectProperty<Image> imageProperty() {
-	return image;
+        return image;
     }
 
     @Override
     public int hashCode() {
-	int hash = 5;
-	hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
-	return hash;
+        int hash = 5;
+        hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
     }
 
     @Override
     public String toString() {
-	return getName();
+        return getName();
     }
 
     @Override
     public boolean equals(Object obj) {
-	if (obj == null) {
-	    return false;
-	}
-	if (getClass() != obj.getClass()) {
-	    return false;
-	}
-	if (this != obj) {
-	    return false;
-	}
-	final Item other = (Item) obj;
-	if (this.id != other.id) {
-	    return false;
-	}
-	return true;
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (this != obj) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean test(String query) {
-	for (String t : query.split("\\s+")) {
-	    boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
-		    || SearchPredicate.containsIgnoreCase(getDescription(), t)
-		    || SearchPredicate.containsIgnoreCase(getName(), t);
+        for (String t : query.split("\\s+")) {
+            boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
+                    || SearchPredicate.containsIgnoreCase(getDescription(), t)
+                    || SearchPredicate.containsIgnoreCase(getName(), t);
 
-	    if (!temp) {
-		boolean found = false;
+            if (!temp) {
+                boolean found = false;
 
-		for (ItemCopy copy : getItemCopies()) {
-		    if (SearchPredicate.containsIgnoreCase(copy.getCopyNumber(), t)) {
-			found = true;
-			break;
-		    }
-		}
+                for (ItemCopy copy : getItemCopies()) {
+                    if (SearchPredicate.containsIgnoreCase(copy.getCopyNumber(), t)) {
+                        found = true;
+                        break;
+                    }
+                }
 
-		if (!found) {
-		    return false;
-		}
-	    }
-	}
+                if (!found) {
+                    return false;
+                }
+            }
+        }
 
-	return true;
+        return true;
     }
 
     public static String getCodePrefixFor(Item item) {
-	if (item instanceof Book) {
-	    return "B";
-	} else if (item instanceof Dvd) {
-	    return "D";
-	} else if (item instanceof Cd) {
-	    return "C";
-	} else if (item instanceof Game) {
-	    return "S";
-	} else if (item instanceof StoryBag) {
-	    return "V";
-	}
+        if (item instanceof Book) {
+            return "B";
+        } else if (item instanceof Dvd) {
+            return "D";
+        } else if (item instanceof Cd) {
+            return "C";
+        } else if (item instanceof Game) {
+            return "S";
+        } else if (item instanceof StoryBag) {
+            return "V";
+        }
 
-	throw new IllegalStateException("unknown item-type");
+        throw new IllegalStateException("unknown item-type");
     }
 }
