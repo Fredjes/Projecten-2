@@ -35,6 +35,10 @@
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="bold" />
+                        <String fx:value="normal" />
+                     </styleClass>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
                   <Label fx:id="toLateWarningLabel" styleClass="warning" text="Te laat!" textFill="RED" />
@@ -48,14 +52,14 @@
             </HBox>
             <HBox spacing="5.0" GridPane.rowIndex="1">
                <children>
-                  <Label alignment="TOP_LEFT" text="Gebruiker:" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <Label fx:id="username" />
+                  <Label alignment="TOP_LEFT" styleClass="normal" text="Gebruiker:" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Label fx:id="username" styleClass="normal" />
                </children>
             </HBox>
             <HBox spacing="5.0" GridPane.rowIndex="2">
                <children>
-                  <Label text="Datum: " GridPane.rowIndex="2" />
-                  <Label fx:id="loanPeriod" />
+                  <Label styleClass="normal" text="Datum: " GridPane.rowIndex="2" />
+                  <Label fx:id="loanPeriod" styleClass="normal" />
                </children>
             </HBox>
          </children>
