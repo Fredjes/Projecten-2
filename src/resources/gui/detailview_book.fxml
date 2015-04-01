@@ -42,7 +42,7 @@
                         <TextField fx:id="author" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="publisher" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Uitgeverij:" GridPane.rowIndex="2" />
-                        <Label text="Isbn:" GridPane.rowIndex="3" />
+                        <Label text="Zoeken naar boek:" GridPane.rowIndex="3" />
                         <TextField fx:id="isbn" onInputMethodTextChanged="#onTyping" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Button fx:id="zoeken" mnemonicParsing="false" onAction="#onSearch" text="Zoeken" GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <styleClass>
@@ -50,7 +50,12 @@
                               <String fx:value="btn-lime" />
                            </styleClass>
                         </Button>
-                        <Pagination fx:id="bookSelector" maxPageIndicatorCount="3" onMouseClicked="#paginationOnClick" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <StackPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Pagination fx:id="bookSelector" maxPageIndicatorCount="3" onMouseClicked="#paginationOnClick" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ProgressIndicator fx:id="loadingIcon" visible="false" />
+                           </children>
+                        </StackPane>
                      </children>
                      <columnConstraints>
                         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" />

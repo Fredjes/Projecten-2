@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -137,6 +138,7 @@ public abstract class Item implements Serializable, Searchable {
         this.name.set(name);
     }
 
+    @Column(length = Integer.MAX_VALUE)
     public String getDescription() {
         return description.get();
     }
