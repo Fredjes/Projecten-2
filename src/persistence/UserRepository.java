@@ -1,6 +1,7 @@
 package persistence;
 
 import domain.User;
+import gui.MainApp;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,7 +11,6 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -77,7 +77,7 @@ public class UserRepository extends Repository {
 	return authenticatedUser.get();
     }
 
-    public ReadOnlyObjectProperty<User> authenticatedUserProperty() {
+    public ObjectProperty<User> authenticatedUserProperty() {
 	return authenticatedUser;
     }
 
@@ -86,6 +86,10 @@ public class UserRepository extends Repository {
     }
 
     public boolean authenticate(String username, String password) {
+	if (MainApp.DEVELOPMENT_MODE) {
+	    authenticatedUser.set(new User("Development Mode", "", "", User.UserType.TEACHER, ""));
+	    return true;
+	}
 	List<User> found = getUsersByPredicate((u) -> {
 	    return u.getName().equalsIgnoreCase(username.trim()) && u.getPasswordHash().equals(generatePasswordHash(password.trim()));
 	});

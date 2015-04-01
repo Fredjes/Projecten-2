@@ -17,6 +17,8 @@ import persistence.UserRepository;
  */
 public class MainApp extends Application {
 
+    public static boolean DEVELOPMENT_MODE = false;
+
     @Override
     public void start(Stage primaryStage) {
 	ItemRepository.getInstance().addSyncListener(() -> {
@@ -43,6 +45,7 @@ public class MainApp extends Application {
 	Scene scene = new Scene(switcher);
 	primaryStage.setScene(scene);
 	primaryStage.show();
+
 	//ScenicView.show(scene);
     }
 
@@ -50,6 +53,10 @@ public class MainApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+	DEVELOPMENT_MODE = args.length > 0 && args[0].equals("development");
+	if (DEVELOPMENT_MODE) {
+	    System.out.println("DEV MODE!");
+	}
 	launch(args);
     }
 
