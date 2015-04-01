@@ -97,15 +97,18 @@
 }
 
 /* ############ BUTTON STYLING ############ */
-.btn {
+
+.btn, .date-picker:editable .arrow-button {
     -fx-background: none;
-    -fx-border: none;
+    //-fx-border: none;
     -fx-font-weight: bold;
     -fx-border-radius: none;
     -fx-background-radius: none;
     -fx-font-size: 14px;
     -fx-text-fill: #FFFFFF;
     -fx-cursor: hand;
+    -fx-background-insets: 0, 0, 0, 0;
+    -fx-border-color: transparent;
 }
 
 .btn-small {
@@ -162,6 +165,11 @@
     -fx-border-color: #236CCA
 }
 
+.btn-blue:hover {
+    -fx-background-color: derive(#0A5BC4, 15%);
+    -fx-border-color: derive(#0A5BC4, 15%);
+}
+
 .btn-orange {
     -fx-background-color: #DB562D;
     -fx-border-style: solid;
@@ -180,15 +188,16 @@
     -fx-background-color: derive(#339933, 15%);
 }
 
-.btn-lime {
-    -fx-background-color: #90CC18;
+.btn-lime, .date-picker:editable .arrow-button {
+    -fx-background-color: derive(#99C938, -5%);
     -fx-border-style: solid;
     -fx-border-width: 1px;
-    -fx-border-color: #ABCE14;
+    -fx-border-color: derive(#99C938, 5%);
 }
 
-.btn-lime:hover {
-    -fx-background-color: derive(#90CC18, 15%);
+.btn-lime:hover, .date-picker:editable .arrow-button:hover {
+    -fx-background-color: derive(#99C938, 15%);
+    -fx-border-color: derive(#99C938, 15%);
 }
 
 .btn-red {
@@ -196,6 +205,11 @@
     -fx-border-style: solid;
     -fx-border-width: 1px;
     -fx-border-color: #D11402;
+}
+
+.btn-red:hover {
+    -fx-background-color: derive(#E51400, 15%);
+    -fx-border-color: derive(#E51400, 15%);
 }
 
 .btn-default {
@@ -242,18 +256,46 @@
 }
 
 /* ############ TEXTFIELD STYLING ############ */
-.text-input {
+.text-input, .date-picker:editable {
     -fx-focus-color: transparent;
     -fx-border-color: #90CC18;
     -fx-border-width: 1px;
 }
 
-.text-input:focused {
+.text-input:focused:not(.date-picker:editable > .text-field) {
     -fx-border-width: 2px;
     -fx-focus-color: -fx-control-inner-background ;
     -fx-faint-focus-color: -fx-control-inner-background ;
 }
 
+.date-picker:editable:focused, .date-picker:editable:contains-focus {
+    -fx-background-insets: 0,0,0,0;
+    -fx-background-radius: 0,0,0,0;
+    -fx-border-width: 1px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+}
+
+/* ############ DATE PICKER STYLING ############ */
+/*.date-picker-popup > .calendar-grid {
+    -fx-background-color: #99C938;
+    -fx-background-insets: 1 0 0 0;
+    -fx-padding: 0;
+}*/
+
+.date-picker-popup > * > .today {
+    -fx-background-color: #99C938;
+}
+.date-picker-popup > * > .day-cell:hover,
+.date-picker-popup > * > .selected,
+.date-picker-popup > * > .previous-month.selected,
+.date-picker-popup > * > .next-month.selected {
+    -fx-background: #99C938;
+}
+
+.date-picker-popup {
+     -fx-background-color: #99C938;
+}
 
 /* ############ TAB STYLING ############ */
 

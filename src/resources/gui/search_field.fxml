@@ -6,10 +6,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="custom-text-field" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="custom-text-field" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField HBox.hgrow="ALWAYS" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="icon-search" text="Text" HBox.hgrow="NEVER" />
+      <TextField fx:id="textfield" HBox.hgrow="ALWAYS" />
+      <Text fx:id="label" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="icon-search" text="Text" HBox.hgrow="NEVER" />
    </children>
-</HBox>
+</fx:root>

@@ -156,6 +156,13 @@ public class ScreenSwitcher extends BorderPane {
 	    authenticatedUserLabel.setText("");
 	    openMainMenu();
 	} else {
+	    if (MainApp.DEVELOPMENT_MODE) {
+		login("", "");
+		authenticatedUserLabel.setText("Welkom " + USER_REPO_INSTANCE.getAuthenticatedUser().getName());
+		loginButton.setText("Afmelden");
+		PopupUtil.showNotification("Development Mode", "Aangemeld met maximale rechten!", PopupUtil.Notification.INFORMATION);
+		return;
+	    }
 	    LoginPanel loginPanel = new LoginPanel();
 	    PopOver pop = PopupUtil.showPopOver(loginButton, loginPanel);
 	    loginPanel.setOnLogin(e -> {

@@ -3,6 +3,7 @@ package gui.dialogs;
 import domain.Damage;
 import domain.Loan;
 import domain.Searchable;
+import gui.controls.SearchTextField;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,15 +17,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
@@ -40,7 +37,7 @@ public class PopupUtil {
     /**
      * Shows the popOver with content & parent of your choice
      *
-     * @param parent Node to show popOver at.
+     * @param parent  Node to show popOver at.
      * @param content Content to place in the popOver
      */
     public static PopOver showPopOver(Node parent, Node content) {
@@ -119,7 +116,7 @@ public class PopupUtil {
 	dialog.getDialogPane().getButtonTypes().addAll(selectButton, ButtonType.CANCEL);
 
 	VBox box = new VBox();
-	TextField searchBar = new TextField();
+	SearchTextField searchBar = new SearchTextField();
 	searchBar.textProperty().addListener((obs, ov, nv) -> {
 	    if (nv != null) {
 		filteredList.setPredicate(i -> i.test(nv));
@@ -127,20 +124,26 @@ public class PopupUtil {
 		filteredList.setPredicate(i -> true);
 	    }
 	});
-
+	box.setFillWidth(true);
+	searchBar.setIcon("icon-search");
+	searchBar.setMinWidth(Region.USE_PREF_SIZE);
+	searchBar.setMaxWidth(Integer.MAX_VALUE);
 	ListView<E> listView = new ListView(filteredList);
-
+	listView.setFocusTraversable(false);
 	listView.setMinWidth(Region.USE_PREF_SIZE);
+	listView.setPrefWidth(350);
 	Label lblTitle = new Label(text);
 	lblTitle.setTextAlignment(TextAlignment.CENTER);
 
-	ScrollPane scrollPane = new ScrollPane(listView);
-	scrollPane.setMinWidth(Region.USE_PREF_SIZE);
-	scrollPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-	scrollPane.setMaxWidth(Integer.MAX_VALUE);
-	scrollPane.setMaxHeight(400);
-
-	box.getChildren().addAll(lblTitle, searchBar, scrollPane);
+//	ScrollPane scrollPane = new ScrollPane(listView);
+//	scrollPane.setMinWidth(Region.USE_PREF_SIZE);
+//	scrollPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+//	scrollPane.setMaxWidth(Integer.MAX_VALUE);
+//	scrollPane.setMaxHeight(400);
+//	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+	box.getChildren().addAll(lblTitle, searchBar, listView);
+	box.setSpacing(10);
 
 	dialog.setTitle(title);
 	dialog.initStyle(StageStyle.UTILITY);
@@ -164,7 +167,7 @@ public class PopupUtil {
 	});
 
 	dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().addAll("btn", "btn-red");
-
+	dialog.getDialogPane().getStylesheets().add("/resources/css/global.css");
 	dialog.getDialogPane().setContent(box);
 
 	Optional<E> selected = dialog.showAndWait();
