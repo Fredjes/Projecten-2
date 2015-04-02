@@ -147,17 +147,6 @@ public abstract class Item implements Serializable, Searchable {
         this.description.set(description);
     }
 
-    public byte[] convertImageToByte(String url) throws URISyntaxException, IOException {
-        File imgPath = new File(new URI(url));
-        BufferedImage bufferedImage = ImageIO.read(imgPath);
-
-        // get DataBufferBytes from Raster
-        WritableRaster raster = bufferedImage.getRaster();
-        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-
-        return (data.getData());
-    }
-
     @Lob
     public byte[] getImage() {
         if (image.get() == null) {
