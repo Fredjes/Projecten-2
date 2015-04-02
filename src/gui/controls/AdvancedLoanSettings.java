@@ -70,7 +70,7 @@ public class AdvancedLoanSettings extends GridPane {
 
     @FXML
     public void onChangeItemCopy() {
-	ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(ItemRepository.getInstance().getItemCopies().stream().filter(ic -> !ic.getLoans().stream().anyMatch(Loan::getReturned)).collect(Collectors.toList())), "Exemplaar selecteren", "Welk exemplaar wordt uigeleend?");
+	ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(ItemRepository.getInstance().getItemCopies().stream().filter(ic -> !ic.getLoans().stream().anyMatch(l -> !l.getReturned())).collect(Collectors.toList())), "Exemplaar selecteren", "Welk exemplaar wordt uigeleend?");
 	//ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(ItemRepository.getInstance().getItemCopies()), "Exemplaar selecteren", "Welk exemplaar wordt uigeleend?");
 
 	if (copy != null) {

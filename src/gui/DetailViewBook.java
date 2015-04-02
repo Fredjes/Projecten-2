@@ -55,6 +55,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 
     private Runnable bookSearch = () -> {
 	Platform.runLater(() -> {
+	    bookSelector.setCurrentPageIndex(0);
 	    loadingIcon.setVisible(true);
 	    bookSelector.setVisible(false);
 	});
