@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -64,7 +65,10 @@ public class BookUtil {
 
 		    Book b = new Book(genres, "", info.getString("title", ""), info.getString("description", ""), authors, info.getString("publisher", ""));
 		    if (info.getJsonObject("imageLinks") != null) {
-			b.setFXImage(new Image(info.getJsonObject("imageLinks").getString("thumbnail", "")));
+			String img = info.getJsonObject("imageLinks").getString("thumbnail", "");
+			Image ii = new Image(img);
+			WritableImage img2 = new WritableImage(ii.getPixelReader(), (int) ii.getWidth(), (int) ii.getHeight());
+			b.setFXImage(img2);
 		    }
 		    books.add(b);
 		});
