@@ -58,6 +58,9 @@ public class BookUtil {
 
 		    if (info.getJsonArray("categories") != null) {
 			genres = info.getJsonArray("categories").stream().map(JsonValue::toString).collect(Collectors.toList());
+			for (int j = 0; j < genres.size(); j++) {
+			    genres.set(j, genres.get(j).replaceAll("\"", "").trim());
+			}
 
 		    } else if (info.getJsonArray("authors") != null) {
 			authors = info.getJsonArray("authors").stream().map(JsonValue::toString).reduce("", (e1, e2) -> e1 + " " + e2).trim().replace("\"", "");
