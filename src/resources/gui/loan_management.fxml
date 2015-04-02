@@ -19,11 +19,12 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #F7F7F7; -fx-border-color: #F0E6E7;">
                                  <children>
-                                    <TextField fx:id="searchBar" onKeyReleased="#onSearchQuery" promptText="Zoeken..." HBox.hgrow="ALWAYS">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </VBox.margin>
-                                    </TextField>
+                                    <HBox alignment="CENTER_LEFT" styleClass="custom-text-field" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <TextField fx:id="searchBar" HBox.hgrow="ALWAYS" />
+                                          <Text fx:id="label" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="icon-search" text="Text" HBox.hgrow="NEVER" />
+                                       </children>
+                                    </HBox>
                                     <CheckBox mnemonicParsing="false" onAction="#onDisplayAllLoans" text="Teruggebrachtte uitleningen tonen?" />
                                  </children>
                                  <VBox.margin>
