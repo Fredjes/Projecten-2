@@ -162,7 +162,7 @@ public class DetailViewUtil {
     public static void setBounds(Binding binding) {
 	try {
 	    TabPane pane = ((TabPane) binding);
-	    pane.setPrefHeight(300);
+	    pane.setPrefHeight(250);
 	    pane.setMinHeight(Region.USE_PREF_SIZE);
 	    pane.setMaxHeight(Region.USE_PREF_SIZE);
 	} catch (Exception ex) {
