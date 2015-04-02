@@ -37,22 +37,38 @@
                   <GridPane hgap="10.0" vgap="8.0">
                      <children>
                         <Label text="Leeftijdcategorie:" />
-                        <TextField fx:id="ageCategory" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="ageCategory" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" />
                         <Label text="Auteur:" GridPane.rowIndex="1" />
                         <TextField fx:id="author" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="publisher" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Uitgeverij:" GridPane.rowIndex="2" />
+                        <Label text="Zoeken naar boek:" GridPane.rowIndex="3" />
+                        <TextField fx:id="isbn" onInputMethodTextChanged="#onTyping" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button fx:id="zoeken" mnemonicParsing="false" onAction="#onSearch" text="Zoeken" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="btn-lime" />
+                           </styleClass>
+                        </Button>
+                        <StackPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Pagination fx:id="bookSelector" maxPageIndicatorCount="3" onMouseClicked="#paginationOnClick" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ProgressIndicator fx:id="loadingIcon" visible="false" />
+                           </children>
+                        </StackPane>
                      </children>
                      <columnConstraints>
                         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="17.0" valignment="TOP" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
+                        <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="17.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <HBox.margin>
                         <Insets top="7.0" />
