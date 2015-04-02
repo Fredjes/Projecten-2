@@ -30,13 +30,6 @@ public class MainApp extends Application {
 
 	ItemRepository.getInstance().sync();
 
-	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-	    if (JPAUtil.getInstance().getEntityManagerFactory().isOpen()) {
-		ItemRepository.getInstance().saveChanges();
-		JPAUtil.getInstance().getEntityManagerFactory().close();
-	    }
-	}));
-
 	Font.loadFont(getClass().getResourceAsStream("/resources/fonts/FontAwesome.otf"), 14);
 	ScreenSwitcher switcher = new ScreenSwitcher();
 	switcher.openMainMenu();

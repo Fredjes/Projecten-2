@@ -17,11 +17,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
@@ -108,8 +110,12 @@ public class PopupUtil {
 	    defaultTemplate.showInformation();
 	}
     }
+    
+    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text){
+	return showSelectionQuestion(list, title, text, null);
+    }
 
-    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text) {
+    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text, Callback<ListView<E>, ListCell<E>> cellFactory) {
 	FilteredList<? extends Searchable> filteredList = new FilteredList<>(list);
 	Dialog<E> dialog = new Dialog<>();
 	ButtonType selectButton = new ButtonType("Selecteren", ButtonBar.ButtonData.OK_DONE);
@@ -129,6 +135,7 @@ public class PopupUtil {
 	searchBar.setMinWidth(Region.USE_PREF_SIZE);
 	searchBar.setMaxWidth(Integer.MAX_VALUE);
 	ListView<E> listView = new ListView(filteredList);
+	listView.setCellFactory(cellFactory);
 	listView.setFocusTraversable(false);
 	listView.setMinWidth(Region.USE_PREF_SIZE);
 	listView.setPrefWidth(350);
