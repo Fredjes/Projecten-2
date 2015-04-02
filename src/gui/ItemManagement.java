@@ -5,7 +5,6 @@ import domain.Cache;
 import domain.Cd;
 import domain.DetailViewUtil;
 import domain.DragCommand;
-import domain.DragUtil;
 import domain.Dvd;
 import domain.FilterOption;
 import domain.Game;
@@ -97,14 +96,14 @@ public class ItemManagement extends BorderPane {
 
 	itemList.setOnDragOver(e -> {
 	    Dragboard board = e.getDragboard();
-	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand)board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
+	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand) board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
 		e.acceptTransferModes(TransferMode.MOVE);
 	    }
 	});
-	
+
 	itemList.setOnDragDropped(e -> {
 	    Dragboard board = e.getDragboard();
-	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand)board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
+	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand) board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
 		e.setDropCompleted(true);
 		e.consume();
 	    }
@@ -250,14 +249,23 @@ public class ItemManagement extends BorderPane {
 	    } catch (Exception ex) {
 		ex.printStackTrace();
 	    }
+
+	    updateDetailView();
 	}
     }
 
     @FXML
     public void onRemove() {
 	if (!itemList.getSelectionModel().isEmpty()) {
+	    int selected = itemList.getSelectionModel().getSelectedIndex();
 	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
 	    updateList();
+	    
+	    if (!itemList.getItems().isEmpty()) {
+		itemList.getSelectionModel().select(Math.max(0, selected - 1));
+	    }
+	    
+	    updateDetailView();
 	}
     }
 
