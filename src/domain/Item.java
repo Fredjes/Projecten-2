@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -148,6 +149,7 @@ public abstract class Item implements Serializable, Searchable {
 	try {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    ImageIO.write(SwingFXUtils.fromFXImage(image.get(), null), "png", out);
+	    System.out.println(getName() + ": " + Arrays.toString(out.toByteArray()));
 	    return out.toByteArray();
 	} catch (IOException ex) {
 	    System.err.println("Could not save image-data: " + ex.getMessage());

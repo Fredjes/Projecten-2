@@ -31,7 +31,9 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	} else {
 	    listItem = Cache.getItemCache().get(item);
 	    try {
-		Platform.runLater(() -> super.setGraphic(listItem));
+		if (listItem != null) {
+		    Platform.runLater(() -> super.setGraphic(listItem));
+		}
 	    } catch (Exception e) {
 		System.out.println("oops");
 	    }
