@@ -137,7 +137,7 @@ public abstract class Item implements Serializable, Searchable {
         this.name.set(name);
     }
 
-    @Column(length = Integer.MAX_VALUE)
+    @Column(length = 15000)
     public String getDescription() {
         return description.get();
     }

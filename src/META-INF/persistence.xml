@@ -2,8 +2,6 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="Projecten_2PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>domain.Book</class>
-    <class>domain.Game</class>
     <class>domain.Item</class>
     <class>domain.ItemCopy</class>
     <class>domain.StoryBag</class>
@@ -11,6 +9,9 @@
     <class>domain.Dvd</class>
     <class>domain.User</class>
     <class>domain.Loan</class>
+    <class>domain.Book</class>
+    <class>domain.Game</class>
+    <class>domain.Change</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://bitcode.io:3306/krekelschool?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="projecten"/>

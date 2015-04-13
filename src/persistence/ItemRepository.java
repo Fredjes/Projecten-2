@@ -4,14 +4,12 @@ import domain.Book;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
-import gui.dialogs.PopupUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -161,7 +159,6 @@ public class ItemRepository extends Repository {
 
 		manager.getTransaction().commit();
 		ItemRepository.getInstance().sync();
-		Platform.runLater(() -> PopupUtil.showNotification("Opgeslagen", "De wijzigingen zijn succesvol opgeslagen."));
 	    }
 	});
 

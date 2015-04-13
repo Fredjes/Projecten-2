@@ -18,16 +18,18 @@ public class UserManagementListItemCell extends ListCell<User> {
     }
 
     private UserManagementListItem listItem;
-    
+
     @Override
     protected void updateItem(User item, boolean empty) {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
-	    super.setGraphic(null);
+	    Platform.runLater(() -> super.setGraphic(null));
 	} else {
-	    listItem = Cache.getUserCache().get(item);
-	    Platform.runLater(() -> super.setGraphic(listItem));
+	    if (item != null) {
+		listItem = Cache.getUserCache().get(item);
+		Platform.runLater(() -> super.setGraphic(listItem));
+	    }
 	}
     }
 }

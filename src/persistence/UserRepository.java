@@ -147,11 +147,12 @@ public class UserRepository extends Repository {
 
 		    manager.getTransaction().commit();
 		    deletedUsers.clear();
+		    
+		    sync();
 		} catch (RollbackException ex) {
 		    System.err.println("Could not save changes for Users to the database. " + ex.getMessage());
 		    manager.getTransaction().rollback();
 		}
-		manager.close();
 	    }
 	};
 
