@@ -145,7 +145,7 @@ public class User implements Serializable, Searchable {
     public String toString() {
 	return this.getName();
     }
-    
+
     @Override
     public boolean test(String query) {
 	for (String t : query.split("\\s+")) {

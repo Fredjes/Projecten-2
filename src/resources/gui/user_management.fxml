@@ -33,7 +33,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <ListView fx:id="userList" fixedCellSize="105.0" focusTraversable="false" VBox.vgrow="ALWAYS" />
+                              <ListView fx:id="userList" fixedCellSize="0.0" focusTraversable="false" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>

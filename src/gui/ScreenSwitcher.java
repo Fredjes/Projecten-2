@@ -60,7 +60,7 @@ public class ScreenSwitcher extends BorderPane {
 	titlebar = new Titlebar(this);
 	titlebar.setController(new TitleBarController(titlebar, this));
 	this.menu = new MainMenu(this, mainMenuController);
-	userManagement = new UserManagement();
+	this.userManagement = new UserManagement();
 	this.itemManagement = new ItemManagement(itemManagementController);
 	this.loanManagement = new LoanManagement(loanManagementController);
 
@@ -93,7 +93,8 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openUserManagement() {
-	throw new UnsupportedOperationException();
+	titlebar.setTitle("Gebruikers beheren");
+	setCenter(userManagement);
     }
 
     public void openLoanManagement() {
