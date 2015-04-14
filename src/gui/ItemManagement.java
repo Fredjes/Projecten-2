@@ -225,9 +225,13 @@ public class ItemManagement extends BorderPane {
     @FXML
     public void onSave() {
 	saveButton.setDisable(true);
-	ItemRepository.getInstance().addSyncListener(() -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan.")));
+	
+	ItemRepository.getInstance().addSyncListener(() -> {
+	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
+	    updateList();
+	});
+	
 	ItemRepository.getInstance().saveChanges();
-	updateList();
 	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
 	saveButton.setDisable(false);
     }
@@ -262,11 +266,11 @@ public class ItemManagement extends BorderPane {
 	    int selected = itemList.getSelectionModel().getSelectedIndex();
 	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
 	    updateList();
-	    
+
 	    if (!itemList.getItems().isEmpty()) {
 		itemList.getSelectionModel().select(Math.max(0, selected - 1));
 	    }
-	    
+
 	    updateDetailView();
 	}
     }

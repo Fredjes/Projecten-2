@@ -19,16 +19,27 @@ public class UserManagementListItemCell extends ListCell<User> {
 
     private UserManagementListItem listItem;
 
+    public UserManagementListItemCell() {
+    }
+
     @Override
     protected void updateItem(User item, boolean empty) {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
-	    Platform.runLater(() -> super.setGraphic(null));
+	    if (Platform.isFxApplicationThread()) {
+		super.setGraphic(null);
+	    } else {
+		Platform.runLater(() -> super.setGraphic(null));
+	    }
 	} else {
-	    if (item != null) {
-		listItem = Cache.getUserCache().get(item);
-		Platform.runLater(() -> super.setGraphic(listItem));
+	    listItem = Cache.getUserCache().get(item);
+	    if (listItem != null) {
+		if (Platform.isFxApplicationThread()) {
+		    super.setGraphic(listItem);
+		} else {
+		    Platform.runLater(() -> super.setGraphic(listItem));
+		}
 	    }
 	}
     }

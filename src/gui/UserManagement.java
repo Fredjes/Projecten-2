@@ -27,6 +27,7 @@ public class UserManagement extends BorderPane {
 
     private SearchPredicate predicate;
     private FilteredList<User> filteredList;
+    private boolean saved = true;
 
     @FXML
     public void onSearchQuery() {
@@ -57,13 +58,14 @@ public class UserManagement extends BorderPane {
 
     @FXML
     public void onSave() {
+	final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
 	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
-	UserRepository.getInstance().addSyncListener(() -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan.")));
-	UserRepository.getInstance().saveChanges();
-	User user = userList.getSelectionModel().getSelectedItem();
-	onSearchQuery();
-	if (user != null && userList.getItems().contains(user)) {
-	    userList.getSelectionModel().select(user);
+	if (!saved) {
+	    saved = true;
+	    UserRepository.getInstance().addSyncListener(r);
+	    UserRepository.getInstance().saveChanges();
+	} else {
+	    r.run();
 	}
     }
 
@@ -76,7 +78,9 @@ public class UserManagement extends BorderPane {
 	detailViewUser = new DetailViewUser();
 	onSearchQuery();
 	userList.setItems(filteredList);
-	userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+	userList.setOnMouseClicked(e -> {
+	    saved = false;
+	    User nv = userList.getSelectionModel().isEmpty() ? null : userList.getSelectionModel().getSelectedItem();
 	    if (nv == null) {
 		Platform.runLater(() -> super.setBottom(null));
 	    } else {

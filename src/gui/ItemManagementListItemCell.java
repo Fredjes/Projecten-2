@@ -31,7 +31,11 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	} else {
 	    listItem = Cache.getItemCache().get(item);
 	    if (listItem != null) {
-		Platform.runLater(() -> super.setGraphic(listItem));
+		if (Platform.isFxApplicationThread()) {
+		    super.setGraphic(listItem);
+		} else {
+		    Platform.runLater(() -> super.setGraphic(listItem));
+		}
 	    }
 	}
     }
