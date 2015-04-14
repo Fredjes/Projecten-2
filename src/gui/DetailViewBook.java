@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -71,6 +72,12 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 		bookSelector.setMaxPageIndicatorCount(1);
 		bookSelector.setPageCount(books.size());
 		setDetailFields(0);
+		if (books.size() > 1) {
+		    Book selectedBook = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(books), "Meerdere boeken gevonden", "Kies het gewenste boek uit de lijst van gevonden boeken");
+		    if (selectedBook != null) {
+			setDetailFields(books.indexOf(selectedBook));
+		    }
+		}
 	    } else {
 		bookSelector.setVisible(false);
 		PopupUtil.showPopOver(zoeken, new Label(" Er werd geen boek gevonden! "), PopOver.ArrowLocation.LEFT_TOP);
