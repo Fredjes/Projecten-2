@@ -1,9 +1,10 @@
 package domain;
 
-import static domain.DragUtil.ITEM;
-import static domain.DragUtil.ITEM_REMOVE;
 import java.io.Serializable;
 import javafx.scene.input.DataFormat;
+
+import static domain.DragUtil.ITEM;
+import static domain.DragUtil.ITEM_REMOVE;
 
 /**
  *

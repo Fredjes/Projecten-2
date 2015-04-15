@@ -3,8 +3,6 @@ package domain.controllers;
 import gui.ScreenSwitcher;
 import java.util.HashMap;
 import javafx.animation.FadeTransition;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;

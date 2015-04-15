@@ -45,8 +45,8 @@ public class ScreenSwitcher extends BorderPane {
 	initialize();
 	setPrefSize(1024, 768);
 	setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
-	getStylesheets().add("/resources/css/global.css");
+	PopupUtil.switcher = this;
+	getStylesheets().add(getClass().getResource("/resources/css/global.css").toExternalForm());
 	setTop(titlebar);
 
 	loadIcons(menu);
@@ -161,7 +161,7 @@ public class ScreenSwitcher extends BorderPane {
 		login("", "");
 		authenticatedUserLabel.setText("Welkom " + USER_REPO_INSTANCE.getAuthenticatedUser().getName());
 		loginButton.setText("Afmelden");
-		PopupUtil.showNotification("Development Mode", "Aangemeld met maximale rechten!", PopupUtil.Notification.INFORMATION);
+		//PopupUtil.showNotification("Development Mode", "Aangemeld met maximale rechten!", PopupUtil.Notification.INFORMATION);
 		return;
 	    }
 	    LoginPanel loginPanel = new LoginPanel();

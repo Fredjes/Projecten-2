@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import persistence.ItemRepository;
-import persistence.JPAUtil;
 import persistence.LoanRepository;
 import persistence.UserRepository;
 

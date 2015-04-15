@@ -1,11 +1,12 @@
 package domain.controllers;
 
 import domain.User;
-import static domain.User.UserType.TEACHER;
-import static domain.User.UserType.VOLUNTEER;
 import gui.ItemManagementListItem;
 import gui.ScreenSwitcher;
 import persistence.UserRepository;
+
+import static domain.User.UserType.TEACHER;
+import static domain.User.UserType.VOLUNTEER;
 
 /**
  *

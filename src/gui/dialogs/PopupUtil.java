@@ -3,6 +3,7 @@ package gui.dialogs;
 import domain.Damage;
 import domain.Loan;
 import domain.Searchable;
+import gui.ScreenSwitcher;
 import gui.controls.SearchTextField;
 import java.util.Optional;
 import javafx.collections.FXCollections;
@@ -46,8 +47,11 @@ public class PopupUtil {
 	return showPopOver(parent, content, PopOver.ArrowLocation.TOP_RIGHT);
     }
 
+    public static ScreenSwitcher switcher;
+
     public static PopOver showPopOver(Node parent, Node content, PopOver.ArrowLocation location) {
 	PopOver logPop = new PopOver(content);
+	logPop.setDetachable(false);
 	logPop.setArrowLocation(location);
 	logPop.setAutoHide(true);
 	logPop.show(parent);
@@ -110,8 +114,8 @@ public class PopupUtil {
 	    defaultTemplate.showInformation();
 	}
     }
-    
-    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text){
+
+    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text) {
 	return showSelectionQuestion(list, title, text, null);
     }
 
@@ -142,13 +146,6 @@ public class PopupUtil {
 	Label lblTitle = new Label(text);
 	lblTitle.setTextAlignment(TextAlignment.CENTER);
 
-//	ScrollPane scrollPane = new ScrollPane(listView);
-//	scrollPane.setMinWidth(Region.USE_PREF_SIZE);
-//	scrollPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-//	scrollPane.setMaxWidth(Integer.MAX_VALUE);
-//	scrollPane.setMaxHeight(400);
-//	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-//	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 	box.getChildren().addAll(lblTitle, searchBar, listView);
 	box.setSpacing(10);
 
@@ -174,7 +171,7 @@ public class PopupUtil {
 	});
 
 	dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().addAll("btn", "btn-red");
-	dialog.getDialogPane().getStylesheets().add("/resources/css/global.css");
+	dialog.getDialogPane().getStylesheets().add(PopupUtil.class.getResource("/resources/css/global.css").toExternalForm());
 	dialog.getDialogPane().setContent(box);
 
 	Optional<E> selected = dialog.showAndWait();

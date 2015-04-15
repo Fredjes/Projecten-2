@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -44,8 +43,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
     private Button zoeken;
     @FXML
     private ImageView image;
-    @FXML
-    private Pagination bookSelector;
 
     @FXML
     private ProgressIndicator loadingIcon;
@@ -56,9 +53,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 
     private Runnable bookSearch = () -> {
 	Platform.runLater(() -> {
-	    bookSelector.setCurrentPageIndex(0);
 	    loadingIcon.setVisible(true);
-	    bookSelector.setVisible(false);
 	});
 	if (isbn.getText().matches("^[0-9 -]*$")) {
 	    books = BookUtil.searchIsbn(isbn.getText());
@@ -68,9 +63,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	Platform.runLater(() -> {
 	    loadingIcon.setVisible(false);
 	    if (books.size() > 0) {
-		bookSelector.setVisible(true);
-		bookSelector.setMaxPageIndicatorCount(1);
-		bookSelector.setPageCount(books.size());
 		setDetailFields(0);
 		if (books.size() > 1) {
 		    Book selectedBook = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(books), "Meerdere boeken gevonden", "Kies het gewenste boek uit de lijst van gevonden boeken");
@@ -79,7 +71,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 		    }
 		}
 	    } else {
-		bookSelector.setVisible(false);
 		PopupUtil.showPopOver(zoeken, new Label(" Er werd geen boek gevonden! "), PopOver.ArrowLocation.LEFT_TOP);
 	    }
 	});
@@ -96,7 +87,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	    description.setWrapText(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
 	    DetailViewUtil.setBounds(this);
-	    bookSelector.setVisible(false);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
@@ -116,11 +106,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	Thread t = new Thread(bookSearch);
 	t.setName("Book search thread");
 	t.start();
-    }
-
-    @FXML
-    public void paginationOnClick() {
-	setDetailFields(bookSelector.currentPageIndexProperty().get());
     }
 
     private void setDetailFields(int i) {

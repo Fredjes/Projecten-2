@@ -4,11 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
-import static junit.framework.Assert.assertEquals;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import persistence.JPAUtil;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  *

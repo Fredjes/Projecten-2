@@ -14,7 +14,7 @@ import javax.persistence.Entity;
  * @author Frederik De Smedt
  */
 @Entity
-@Access(AccessType.PROPERTY)
+@Access (AccessType.PROPERTY)
 public class Book extends Item implements Serializable {
 
     private StringProperty author = new SimpleStringProperty();
@@ -56,7 +56,7 @@ public class Book extends Item implements Serializable {
 
     @Override
     public String toString() {
-	return getName() + " (" + getAuthor() + ")";
+	return getName() + (getAuthor().isEmpty() ? "" : " (" + getAuthor() + ")");
     }
 
     @Override
