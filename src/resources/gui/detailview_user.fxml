@@ -24,7 +24,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
                               <ChoiceBox fx:id="userType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Button mnemonicParsing="false" text="Wachtwoord wijzigen">
+                              <Button fx:id="changePasswordButton" mnemonicParsing="false" onAction="#onChangePassword" text="Wachtwoord wijzigen">
                                  <styleClass>
                                     <String fx:value="btn" />
                                     <String fx:value="btn-lime" />

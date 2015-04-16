@@ -5,6 +5,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -19,6 +20,9 @@ public class DetailViewUser extends TabPane {
 
     @FXML
     private ChoiceBox<User.UserType> userType;
+    
+    @FXML
+    private Button changePasswordButton;
 
     @FXML
     private TextField registerNumber;
@@ -27,6 +31,7 @@ public class DetailViewUser extends TabPane {
     private TextField email;
 
     private User boundUser;
+    private PasswordChanger passwordChanger = new PasswordChanger();
 
     public DetailViewUser() {
 	this(null);
@@ -61,5 +66,10 @@ public class DetailViewUser extends TabPane {
 	    user.userTypeProperty().addListener(userTypeChangeListener);
 	    user.userTypeProperty().bind(userType.getSelectionModel().selectedItemProperty());
 	}
+    }
+
+    @FXML
+    public void onChangePassword() {
+	passwordChanger.show(changePasswordButton, boundUser);
     }
 }

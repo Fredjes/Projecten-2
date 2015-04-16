@@ -73,6 +73,31 @@ public class UserRepository extends Repository {
 	throw new IllegalStateException();
     }
 
+    public boolean validatePassword(String password) throws IllegalArgumentException {
+	if (password.length() < 7) {
+	    throw new IllegalArgumentException("Het wachtwoord moet minstens 7 tekens lang zijn.");
+	}
+
+	boolean[] characters = {
+	    password.matches(".*[a-z]+.*"), // must contain at least one lower case character
+	    password.matches(".*[A-Z]+.*"), // must contain at least one upper case character
+	    password.matches(".*\\d+.*"), // must contain at least one digit
+	    !password.matches("\\w*") // must contain at least one special character
+	};
+
+	if (!characters[0]) {
+	    throw new IllegalArgumentException("Het wachtwoord moet een kleine letter bevatten.");
+	} else if (!characters[1]) {
+	    throw new IllegalArgumentException("Het wachtwoord moet een hoofdletter bevatten.");
+	} else if (!characters[2]) {
+	    throw new IllegalArgumentException("Het wachtwoord moet een cijfer bevatten.");
+	} else if (!characters[3]) {
+	    throw new IllegalArgumentException("Het wachtwoord moet een speciaal teken bevatten.");
+	}
+
+	return true;
+    }
+
     public User getAuthenticatedUser() {
 	return authenticatedUser.get();
     }
@@ -90,8 +115,12 @@ public class UserRepository extends Repository {
 	    authenticatedUser.set(new User("Development Mode", "", "", User.UserType.TEACHER, ""));
 	    return true;
 	}
+
+	final String fUsername = username == null ? "" : username;
+	final String fPassword = password == null ? "" : password;
+
 	List<User> found = getUsersByPredicate((u) -> {
-	    return u.getName().equalsIgnoreCase(username.trim()) && u.getPasswordHash().equals(generatePasswordHash(password.trim()));
+	    return u.getName() != null && u.getName().equalsIgnoreCase(fUsername.trim()) && u.getPasswordHash() != null && u.getPasswordHash().equals(generatePasswordHash(fPassword.trim()));
 	});
 
 	if (!found.isEmpty()) {
@@ -105,7 +134,6 @@ public class UserRepository extends Repository {
     public void sync() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
-		users.clear();
 		users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
 		super.triggerListeners();
@@ -147,8 +175,8 @@ public class UserRepository extends Repository {
 
 		    manager.getTransaction().commit();
 		    deletedUsers.clear();
-		    
-		    sync();
+
+		    UserRepository.getInstance().sync();
 		} catch (RollbackException ex) {
 		    System.err.println("Could not save changes for Users to the database. " + ex.getMessage());
 		    manager.getTransaction().rollback();
@@ -159,6 +187,23 @@ public class UserRepository extends Repository {
 	Thread t = new Thread(r);
 	t.setName("User repository change thread");
 	t.start();
+    }
+
+    public void saveUser(User user) {
+	if (!getUsers().contains(user)) {
+	    getUsers().add(user);
+	}
+
+	EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	manager.getTransaction().begin();
+	
+	if (user.getId() == 0) {
+	    manager.persist(user);
+	} else {
+	    manager.merge(user);
+	}
+	
+	manager.getTransaction().commit();
     }
 
     public static void main(String[] args) {

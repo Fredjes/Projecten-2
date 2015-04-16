@@ -78,9 +78,8 @@ public class UserManagement extends BorderPane {
 	detailViewUser = new DetailViewUser();
 	onSearchQuery();
 	userList.setItems(filteredList);
-	userList.setOnMouseClicked(e -> {
+	userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
 	    saved = false;
-	    User nv = userList.getSelectionModel().isEmpty() ? null : userList.getSelectionModel().getSelectedItem();
 	    if (nv == null) {
 		Platform.runLater(() -> super.setBottom(null));
 	    } else {
