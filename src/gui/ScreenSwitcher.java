@@ -9,6 +9,7 @@ import domain.controllers.MainMenuController;
 import domain.controllers.TitleBarController;
 import gui.dialogs.LoginPanel;
 import gui.dialogs.PopupUtil;
+import gui.excelwizard.ExcelWizardS1;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.Node;
@@ -34,6 +35,7 @@ public class ScreenSwitcher extends BorderPane {
     private LoanManagement loanManagement;
     private UserManagement userManagement;
     private Titlebar titlebar;
+    private ExcelWizardS1 excelWizard;
 
     private UserRepository USER_REPO_INSTANCE = UserRepository.getInstance();
 
@@ -53,6 +55,7 @@ public class ScreenSwitcher extends BorderPane {
 	loadIcons(itemManagement);
 	loadIcons(loanManagement);
 	loadIcons(userManagement);
+	loadIcons(excelWizard);
 	loadIcons(titlebar);
     }
 
@@ -68,6 +71,7 @@ public class ScreenSwitcher extends BorderPane {
 	itemManagementController = new ItemManagementController(itemManagement, this);
 
 	itemManagement.setController(itemManagementController);
+	excelWizard = new ExcelWizardS1();
     }
 
     public void loadIcons(Node node) {
@@ -103,7 +107,8 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openExcelImport() {
-	throw new UnsupportedOperationException();
+	titlebar.setTitle("Excel importeren");
+	setCenter(excelWizard);
     }
 
     public boolean openDeletePopup(Object o) {

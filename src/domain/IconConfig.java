@@ -22,6 +22,7 @@ public class IconConfig {
 	    put("icon-te-laat", new Icon("\uf071", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-search", new Icon("\uf002", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-home", new Icon("\uf015", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-close", new Icon("\uf00d", IconType.TEXT, IconPosition.OVERWRITE));
 	}
     };
 

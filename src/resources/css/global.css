@@ -466,22 +466,32 @@
     -fx-font-family: "FontAwesome";
 }
 
+.icon-close {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-font-family: "FontAwesome";
+    -fx-text-fill: #FA3E48;
+    -fx-background-color: transparent;
+    -fx-border-style: null;
+    -fx-border-width: 0px;
+    -fx-padding: 0 0 0 0;
+}
+
+.icon-close:hover {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-font-family: "FontAwesome";
+    -fx-text-fill: derive(#FA3E48, 30%);
+    -fx-background-color: transparent;
+    -fx-border-style: null;
+    -fx-border-width: 0px;
+}
+
 .hand {
     -fx-cursor: hand;
 }
 
-/* ############ PAGINATION ############ */
-
-.pagination{
-	-fx-base: #90CC18;
-}
-.pagination .toggle-button , .mypage .button{
-	-fx-background-radius:15px;
-	-fx-padding: 0px;
-}
-.pagination .button{
-	-fx-padding: 5 15 5 16px;
-}
-.pagination .label {
-	-fx-text-fill:white;
+.excel-entry {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-effect: dropshadow(gaussian, #666, 10, 0.001, 0, 0);
 }
