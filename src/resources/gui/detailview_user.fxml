@@ -7,13 +7,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root styleClass="white" tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="225.0" styleClass="white" tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
       <Tab closable="false" text="Details gebruiker">
          <content>
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
                <children>
-                  <GridPane hgap="10.0" vgap="8.0">
+                  <GridPane hgap="10.0" maxWidth="1.7976931348623157E308" vgap="8.0">
                      <children>
                         <Label text="Naam:" />
                         <Label text="Klas:" GridPane.rowIndex="1" />
@@ -24,7 +24,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
                               <ChoiceBox fx:id="userType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Button mnemonicParsing="false" text="Wachtwoord wijzigen">
+                              <Button fx:id="changePasswordButton" mnemonicParsing="false" onAction="#onChangePassword" text="Wachtwoord wijzigen">
                                  <styleClass>
                                     <String fx:value="btn" />
                                     <String fx:value="btn-lime" />
@@ -34,7 +34,7 @@
                         </HBox>
                         <Label text="Gebruiker:" GridPane.rowIndex="4" />
                         <Label text="Stamboeknummer:" GridPane.rowIndex="3" />
-                        <TextField fx:id="regNumber" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="registerNumber" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                      <columnConstraints>
                         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" />
@@ -49,7 +49,6 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <VBox alignment="CENTER" spacing="10.0" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -3,6 +3,7 @@ package gui;
 import domain.Cache;
 import domain.User;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -17,17 +18,28 @@ public class UserManagementListItemCell extends ListCell<User> {
 	return l -> new UserManagementListItemCell();
     }
 
-    private UserManagementListItem listItem;
-    
+    public UserManagementListItemCell() {
+    }
+
     @Override
     protected void updateItem(User item, boolean empty) {
 	super.updateItem(item, empty);
-	if (super.isEmpty()) {
-	    listItem = null;
-	    super.setGraphic(null);
+	if (super.isEmpty() || item == null) {
+	    setGraphics(null);
 	} else {
-	    listItem = Cache.getUserCache().get(item);
-	    Platform.runLater(() -> super.setGraphic(listItem));
+	    setGraphics(Cache.getUserCache().get(item));
+	}
+    }
+
+    private void setGraphics(Node n) {
+	if (Platform.isFxApplicationThread()) {
+	    super.setGraphic(n);
+	    super.setText(null);
+	} else {
+	    Platform.runLater(() -> {
+		super.setGraphic(n);
+		super.setText(null);
+	    });
 	}
     }
 }

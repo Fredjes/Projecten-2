@@ -51,8 +51,6 @@ public class DetailViewUtil {
 	    return new DetailViewGame();
 	} else if (o == FilterOption.STORYBAG) {
 	    return new DetailViewStoryBag(new StoryBagController());
-	} else if (o == FilterOption.USER) {
-	    return new DetailViewUser();
 	}
 	return null;
     }

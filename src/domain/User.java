@@ -32,6 +32,7 @@ public class User implements Serializable, Searchable {
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty classRoom = new SimpleStringProperty();
     private final StringProperty email = new SimpleStringProperty();
+    private final StringProperty registerNumber = new SimpleStringProperty();
     private final ObjectProperty<UserType> userType = new SimpleObjectProperty<>();
     private final ObservableList<Loan> loans = FXCollections.observableArrayList();
     private String passwordHash;
@@ -122,6 +123,14 @@ public class User implements Serializable, Searchable {
 	this.email.set(email);
     }
 
+    public String getRegisterNumber() {
+	return registerNumber.get();
+    }
+
+    public void setRegisterNumber(String number) {
+	this.registerNumber.set(number);
+    }
+
     /*
      * Property
      */
@@ -141,6 +150,10 @@ public class User implements Serializable, Searchable {
 	return email;
     }
 
+    public StringProperty registerNumberProperty() {
+	return registerNumber;
+    }
+
     @Override
     public String toString() {
 	return this.getName();
@@ -152,7 +165,7 @@ public class User implements Serializable, Searchable {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getClassRoom(), t)
 		    || SearchPredicate.containsIgnoreCase(getEmail(), t)
 		    || SearchPredicate.containsIgnoreCase(getName(), t)
-		    || SearchPredicate.containsIgnoreCase(getUserType().toString(), t);
+		    || (getUserType() != null && SearchPredicate.containsIgnoreCase(getUserType().toString(), t));
 
 	    if (!temp) {
 		return false;

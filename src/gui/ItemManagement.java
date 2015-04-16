@@ -14,6 +14,7 @@ import domain.StoryBag;
 import domain.User;
 import domain.controllers.ItemManagementController;
 import gui.dialogs.PopupUtil;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -224,9 +225,14 @@ public class ItemManagement extends BorderPane {
     @FXML
     public void onSave() {
 	saveButton.setDisable(true);
+	
+	ItemRepository.getInstance().addSyncListener(() -> {
+	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
+	    updateList();
+	});
+	
 	ItemRepository.getInstance().saveChanges();
-	updateList();
-	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslagen...");
+	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
 	saveButton.setDisable(false);
     }
 
@@ -260,11 +266,11 @@ public class ItemManagement extends BorderPane {
 	    int selected = itemList.getSelectionModel().getSelectedIndex();
 	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
 	    updateList();
-	    
+
 	    if (!itemList.getItems().isEmpty()) {
 		itemList.getSelectionModel().select(Math.max(0, selected - 1));
 	    }
-	    
+
 	    updateDetailView();
 	}
     }

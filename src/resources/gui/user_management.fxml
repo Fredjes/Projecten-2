@@ -9,7 +9,7 @@
 
 <fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.0" prefWidth="1000.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox spacing="10.0" styleClass="white" BorderPane.alignment="CENTER">
+      <VBox styleClass="white" BorderPane.alignment="CENTER">
          <children>
             <HBox spacing="30.0" VBox.vgrow="ALWAYS">
                <children>
@@ -40,7 +40,33 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox fx:id="detailView" alignment="CENTER" spacing="15.0" />
+            <HBox fx:id="listCommands" alignment="CENTER_LEFT" minHeight="50.0" minWidth="0.0" spacing="10.0" style="-fx-border-color: #C8C8C8; -fx-border-width: 1px;">
+               <children>
+                  <Button fx:id="addButton" focusTraversable="false" mnemonicParsing="false" onAction="#onAdd" prefHeight="0.0" prefWidth="30.0" text="+">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-toolIcon" />
+                        <String fx:value="text-green" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="removeButton" focusTraversable="false" mnemonicParsing="false" onAction="#onRemove" text="-">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-toolIcon" />
+                        <String fx:value="text-red" />
+                     </styleClass>
+                  </Button>
+                  <Button focusTraversable="false" maxWidth="118.0" mnemonicParsing="false" onAction="#onSave" prefHeight="40.0" prefWidth="118.0" text="Opslaan">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-lime" />
+                     </styleClass>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

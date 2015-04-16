@@ -38,7 +38,7 @@ public class MainApp extends Application {
 	primaryStage.setScene(scene);
 	primaryStage.show();
 
-	//ScenicView.show(scene);
+//	ScenicView.show(scene);
     }
 
     /**

@@ -2,14 +2,14 @@ package gui;
 
 import domain.User;
 import javafx.fxml.FXML;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 /**
  *
  * @author Frederik
  */
-public class UserManagementListItem extends GridPane {
+public class UserManagementListItem extends HBox {
 
     @FXML
     private Text name;

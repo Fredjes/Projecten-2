@@ -1,68 +1,75 @@
 package gui;
 
-import domain.DetailViewUtil;
-import domain.FilterOption;
 import domain.User;
-import java.io.IOException;
+import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 
-public class DetailViewUser extends TabPane implements Binding<User> {
+public class DetailViewUser extends TabPane {
 
     @FXML
     private TextField name;
+
     @FXML
-    private TextArea classRoom;
+    private TextField classRoom;
+
+    @FXML
+    private ChoiceBox<User.UserType> userType;
+    
+    @FXML
+    private Button changePasswordButton;
+
+    @FXML
+    private TextField registerNumber;
+
     @FXML
     private TextField email;
-    @FXML
-    private ChoiceBox<FilterOption> userType;
-    @FXML
-    private ImageView image;
 
-    private User boundedUser;
+    private User boundUser;
+    private PasswordChanger passwordChanger = new PasswordChanger();
 
     public DetailViewUser() {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_user.fxml"));
+	this(null);
+    }
 
-	try {
-	    loader.setRoot(this);
-	    loader.setController(this);
-	    loader.load();
-	    DetailViewUtil.initImageDragAndDrop(image);
-	} catch (IOException ex) {
-	    throw new RuntimeException(ex);
+    public DetailViewUser(User user) {
+	FXUtil.loadFXML(this, "detailview_user");
+	userType.setItems(FXCollections.observableArrayList(User.UserType.values()));
+	bind(user);
+    }
+
+    public void bind(User user) {
+	InvalidationListener userTypeChangeListener = o -> userType.getSelectionModel().select(boundUser.getUserType());
+
+	if (boundUser != null) {
+	    Bindings.unbindBidirectional(name.textProperty(), boundUser.nameProperty());
+	    Bindings.unbindBidirectional(email.textProperty(), boundUser.emailProperty());
+	    Bindings.unbindBidirectional(classRoom.textProperty(), boundUser.classRoomProperty());
+	    Bindings.unbindBidirectional(registerNumber.textProperty(), boundUser.registerNumberProperty());
+	    boundUser.userTypeProperty().removeListener(userTypeChangeListener);;
+	    boundUser.userTypeProperty().unbind();
+	}
+
+	boundUser = user;
+
+	if (user != null) {
+	    Bindings.bindBidirectional(name.textProperty(), user.nameProperty());
+	    Bindings.bindBidirectional(email.textProperty(), user.emailProperty());
+	    Bindings.bindBidirectional(classRoom.textProperty(), user.classRoomProperty());
+	    Bindings.bindBidirectional(registerNumber.textProperty(), user.registerNumberProperty());
+	    userType.getSelectionModel().select(user.getUserType());
+	    user.userTypeProperty().addListener(userTypeChangeListener);
+	    user.userTypeProperty().bind(userType.getSelectionModel().selectedItemProperty());
 	}
     }
 
     @FXML
-    public void onSaveImage() {
-	DetailViewUtil.selectImage(image);
+    public void onChangePassword() {
+	passwordChanger.show(changePasswordButton, boundUser);
     }
-
-    @Override
-    public void bind(User t) {
-	if (boundedUser != null) {
-	    Bindings.unbindBidirectional(name.textProperty(), boundedUser.nameProperty());
-	    Bindings.unbindBidirectional(classRoom.textProperty(), boundedUser.classRoomProperty());
-	    Bindings.unbindBidirectional(email.textProperty(), boundedUser.emailProperty());
-//	    Bindings.unbindBidirectional(image.imageProperty(), boundedUser.imageProperty());
-	}
-
-	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
-	Bindings.bindBidirectional(classRoom.textProperty(), t.classRoomProperty());
-	Bindings.bindBidirectional(email.textProperty(), t.emailProperty());
-	userType.setItems(FXCollections.observableArrayList(FilterOption.values()));
-	// TODO: Add image-property for user
-//	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
-	this.boundedUser = t;
-    }
-
 }

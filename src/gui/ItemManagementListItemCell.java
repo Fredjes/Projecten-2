@@ -30,12 +30,12 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	    super.setGraphic(null);
 	} else {
 	    listItem = Cache.getItemCache().get(item);
-	    try {
-		if (listItem != null) {
+	    if (listItem != null) {
+		if (Platform.isFxApplicationThread()) {
+		    super.setGraphic(listItem);
+		} else {
 		    Platform.runLater(() -> super.setGraphic(listItem));
 		}
-	    } catch (Exception e) {
-		System.out.println("oops");
 	    }
 	}
     }
