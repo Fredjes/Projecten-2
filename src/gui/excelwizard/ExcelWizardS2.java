@@ -3,6 +3,7 @@ package gui.excelwizard;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
@@ -27,6 +28,9 @@ public class ExcelWizardS2 extends BorderPane {
 
     private ScreenSwitcher switcher;
 
+    @FXML
+    private Button btnNext;
+
     private final int id;
 
     public ExcelWizardS2(ExcelWizardS1 step1, ScreenSwitcher switcher, int id) {
@@ -46,6 +50,10 @@ public class ExcelWizardS2 extends BorderPane {
     @FXML
     public void onPrevious() {
 	step1.onPrevious();
+    }
+
+    public void setNextButtonText(String txt) {
+	btnNext.setText(txt);
     }
 
 }

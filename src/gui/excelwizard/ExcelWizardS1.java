@@ -33,13 +33,15 @@ public class ExcelWizardS1 extends BorderPane {
     @FXML
     private FlowPane entryContainer;
 
-    private ObservableList<ExcelEntry> entries = FXCollections.observableArrayList();
+    private final ObservableList<ExcelEntry> entries = FXCollections.observableArrayList();
 
-    private int currentPosition = -1;
+    private int currentBarPosition = -1;
 
-    private ScreenSwitcher switcher;
+    private final ScreenSwitcher switcher;
 
-    private List<ExcelWizardS2> contentEditScreens = new ArrayList<>();
+    private final List<ExcelWizardS2> contentScreens = new ArrayList<>();
+
+    private final ExcelWizardS3 loadingScreen;
 
     private int currentIndex = -1;
 
@@ -65,14 +67,14 @@ public class ExcelWizardS1 extends BorderPane {
 		switchBarPosition(0);
 	    }
 	});
-
+	loadingScreen = new ExcelWizardS3(switcher);
     }
 
-    public void switchBarPosition(int flag) {
-	if (currentPosition == flag) {
+    public final void switchBarPosition(int flag) {
+	if (currentBarPosition == flag) {
 	    return;
 	}
-	currentPosition = flag;
+	currentBarPosition = flag;
 	if (flag == 1) {
 	    infoBox.setVisible(false);
 	    topBox.setVisible(true);
@@ -101,14 +103,23 @@ public class ExcelWizardS1 extends BorderPane {
 	    return;
 	}
 
-	if (contentEditScreens.isEmpty()) {
+	if (contentScreens.isEmpty()) {
 	    buildContentList();
 	}
 
 	if (hasNext()) {
-	    switcher.setScreen(next());
+	    ExcelWizardS2 n = next();
+	    if (isLastBeforeLoad()) {
+		n.setNextButtonText("Importeren");
+	    } else {
+		n.setNextButtonText("Volgende");
+	    }
+	    switcher.setScreen(n);
 	} else {
-	    //show progress screen
+	    switcher.setScreen(loadingScreen);
+	    switcher.setNavigationAllowed(false);
+
+	    //TODO: re-enable navigation when import is finished!
 	}
     }
 
@@ -124,13 +135,17 @@ public class ExcelWizardS1 extends BorderPane {
     private void buildContentList() {
 	int id = 0;
 	for (ExcelEntry e : entries) {
-	    contentEditScreens.add(new ExcelWizardS2(this, switcher, id++));
+	    contentScreens.add(new ExcelWizardS2(this, switcher, id++));
 	}
 
     }
 
     private boolean hasNext() {
-	return currentIndex < contentEditScreens.size() - 1;
+	return currentIndex < contentScreens.size() - 1;
+    }
+
+    private boolean isLastBeforeLoad() {
+	return currentIndex == contentScreens.size() - 1;
     }
 
     private boolean hasPrevious() {
@@ -139,12 +154,12 @@ public class ExcelWizardS1 extends BorderPane {
 
     private ExcelWizardS2 next() {
 	currentIndex++;
-	return contentEditScreens.get(currentIndex);
+	return contentScreens.get(currentIndex);
     }
 
     private ExcelWizardS2 previous() {
 	currentIndex--;
-	return contentEditScreens.get(currentIndex);
+	return contentScreens.get(currentIndex);
     }
 
 }
