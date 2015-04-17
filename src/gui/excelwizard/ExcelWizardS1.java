@@ -3,6 +3,7 @@ package gui.excelwizard;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
 import gui.controls.ExcelEntry;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -10,6 +11,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -35,13 +38,10 @@ public class ExcelWizardS1 extends BorderPane {
     private FlowPane entryContainer;
 
     private ObservableList<ExcelEntry> entries = FXCollections.observableArrayList();
-
     private int currentPosition = -1;
 
     private ScreenSwitcher switcher;
-
     private List<ExcelWizardS2> contentEditScreens = new ArrayList<>();
-
     private ListIterator<ExcelWizardS2> iterator;
 
     public ExcelWizardS1(ScreenSwitcher switcher) {
@@ -67,6 +67,19 @@ public class ExcelWizardS1 extends BorderPane {
 	    }
 	});
 
+	dragBox.setOnDragOver(e -> {
+	    Dragboard board = e.getDragboard();
+	    if (board.hasFiles() && board.getFiles().stream().anyMatch(f -> f.getPath().toLowerCase().endsWith(".xlsx"))) {
+		e.acceptTransferModes(TransferMode.MOVE);
+	    }
+	});
+
+	dragBox.setOnDragDropped(e -> {
+	    Dragboard board = e.getDragboard();
+	    if (board.hasFiles()) {
+		board.getFiles().stream().filter(f -> f.getPath().toLowerCase().endsWith(".xlsx")).forEach(this::onFileDropped);
+	    }
+	});
     }
 
     public void switchBarPosition(int flag) {
@@ -90,6 +103,17 @@ public class ExcelWizardS1 extends BorderPane {
 
     @FXML
     public void onFileSelect() {
+	entries.add(new ExcelEntry(this));
+    }
+
+    /**
+     * Convenience method to handle a file when dropped, checking whether the
+     * file is a correct Excel-file (*.xlsx) is already done.
+     *
+     * @param file The excel-file
+     */
+    private void onFileDropped(File file) {
+	// Here goes the code for reading and handling the file
 	entries.add(new ExcelEntry(this));
     }
 
@@ -124,7 +148,6 @@ public class ExcelWizardS1 extends BorderPane {
 	}
 
 	iterator = contentEditScreens.listIterator();
-
     }
 
 }
