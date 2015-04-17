@@ -9,6 +9,7 @@ import domain.controllers.MainMenuController;
 import domain.controllers.TitleBarController;
 import gui.dialogs.LoginPanel;
 import gui.dialogs.PopupUtil;
+import gui.excelwizard.ExcelWizardS1;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.Node;
@@ -20,6 +21,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.controlsfx.control.PopOver;
 import persistence.UserRepository;
 
@@ -34,12 +36,15 @@ public class ScreenSwitcher extends BorderPane {
     private LoanManagement loanManagement;
     private UserManagement userManagement;
     private Titlebar titlebar;
+    private ExcelWizardS1 excelWizard;
 
     private UserRepository USER_REPO_INSTANCE = UserRepository.getInstance();
 
     private MainMenuController mainMenuController;
     private ItemManagementController itemManagementController;
     private LoanManagementListItemController loanManagementController;
+
+    private boolean navigationAllowed = true;
 
     public ScreenSwitcher() {
 	initialize();
@@ -53,7 +58,16 @@ public class ScreenSwitcher extends BorderPane {
 	loadIcons(itemManagement);
 	loadIcons(loanManagement);
 	loadIcons(userManagement);
+	loadIcons(excelWizard);
 	loadIcons(titlebar);
+    }
+
+    public boolean isNavigationAllowed() {
+	return navigationAllowed;
+    }
+
+    public void setNavigationAllowed(boolean navigationAllowed) {
+	this.navigationAllowed = navigationAllowed;
     }
 
     private void initialize() {
@@ -68,6 +82,7 @@ public class ScreenSwitcher extends BorderPane {
 	itemManagementController = new ItemManagementController(itemManagement, this);
 
 	itemManagement.setController(itemManagementController);
+	excelWizard = new ExcelWizardS1(this);
     }
 
     public void loadIcons(Node node) {
@@ -83,27 +98,43 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openMainMenu() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Hoofdmenu");
 	setCenter(menu);
     }
 
     public void openItemManagement() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Voorwerpen beheren");
 	setCenter(itemManagement);
     }
 
     public void openUserManagement() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Gebruikers beheren");
 	setCenter(userManagement);
     }
 
     public void openLoanManagement() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Uitleningen beheren");
 	setCenter(loanManagement);
     }
 
     public void openExcelImport() {
-	throw new UnsupportedOperationException();
+	if (!isNavigationAllowed()) {
+	    return;
+	}
+	titlebar.setTitle("Excel importeren");
+	setCenter(excelWizard);
     }
 
     public boolean openDeletePopup(Object o) {
@@ -178,5 +209,14 @@ public class ScreenSwitcher extends BorderPane {
 	    });
 	}
 
+    }
+
+    public void setScreen(Pane p) {
+	setCenter(p);
+    }
+
+    public void setScreen(Pane p, String title) {
+	titlebar.setTitle(title);
+	setCenter(p);
     }
 }
