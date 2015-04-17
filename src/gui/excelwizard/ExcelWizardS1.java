@@ -153,13 +153,11 @@ public class ExcelWizardS1 extends BorderPane {
     }
 
     private ExcelWizardS2 next() {
-	currentIndex++;
-	return contentScreens.get(currentIndex);
+	return contentScreens.get(++currentIndex);
     }
 
     private ExcelWizardS2 previous() {
-	currentIndex--;
-	return contentScreens.get(currentIndex);
+	return contentScreens.get(--currentIndex);
     }
 
 }

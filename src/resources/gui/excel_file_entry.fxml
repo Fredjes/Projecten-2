@@ -53,11 +53,11 @@
         </rowConstraints>
          <children>
             <Label text="Bestand:" />
-            <Label text="..." GridPane.columnIndex="1" />
+            <Label fx:id="lblBestand" text="..." GridPane.columnIndex="1" />
             <Label text="Blad:" GridPane.rowIndex="1" />
-            <Label text="..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="lblBlad" text="..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Bestemming:" GridPane.rowIndex="2" />
-            <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ChoiceBox fx:id="bestemmingBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
