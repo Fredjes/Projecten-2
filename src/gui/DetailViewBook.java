@@ -3,8 +3,7 @@ package gui;
 import domain.Book;
 import domain.BookUtil;
 import domain.DetailViewUtil;
-import domain.PropertyListBinding;
-import domain.ThemeConverter;
+import gui.controls.ThemeItem;
 import gui.dialogs.PopupUtil;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import org.controlsfx.control.PopOver;
 
 public class DetailViewBook extends TabPane implements Binding<Book> {
@@ -30,7 +30,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
     @FXML
     private TextArea description;
     @FXML
-    private TextField themes;
+    private HBox themes;
     @FXML
     private TextField ageCategory;
     @FXML
@@ -47,9 +47,9 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
     @FXML
     private ProgressIndicator loadingIcon;
 
-    private PropertyListBinding themesBinding;
     private List<Book> books = new ArrayList<>();
     private Book boundBook;
+    private ThemeManager themeManager;
 
     private Runnable bookSearch = () -> {
 	Platform.runLater(() -> {
@@ -78,7 +78,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 
     public DetailViewBook() {
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_book.fxml"));
-	themesBinding = new PropertyListBinding();
 
 	try {
 	    loader.setRoot(this);
@@ -87,6 +86,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	    description.setWrapText(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
 	    DetailViewUtil.setBounds(this);
+	    themeManager = new ThemeManager(themes);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
@@ -112,7 +112,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	Book book = books.get(i);
 	name.setText(book.getName());
 	description.setText(book.getDescription());
-	themes.setText(book.getThemes().stream().reduce("", (e1, e2) -> e1 + " " + e2));
 	ageCategory.setText(book.getAgeCategory());
 	author.setText(book.getAuthor());
 	publisher.setText(book.getPublisher());
@@ -129,7 +128,6 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 	if (boundBook != null) {
 	    Bindings.unbindBidirectional(name.textProperty(), boundBook.nameProperty());
 	    Bindings.unbindBidirectional(description.textProperty(), boundBook.descriptionProperty());
-	    themesBinding.unbind();
 	    Bindings.unbindBidirectional(ageCategory.textProperty(), boundBook.ageCategoryProperty());
 	    Bindings.unbindBidirectional(author.textProperty(), boundBook.authorProperty());
 	    Bindings.unbindBidirectional(publisher.textProperty(), boundBook.publisherProperty());
@@ -138,11 +136,11 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
 
 	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
 	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
 	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
 	Bindings.bindBidirectional(author.textProperty(), t.authorProperty());
 	Bindings.bindBidirectional(publisher.textProperty(), t.publisherProperty());
 	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());
+	themeManager.bind(t.getThemeFX());
 	this.boundBook = t;
     }
 

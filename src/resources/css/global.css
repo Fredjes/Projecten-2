@@ -256,7 +256,7 @@
 }
 
 /* ############ TEXTFIELD STYLING ############ */
-.text-input, .date-picker:editable {
+.text-input, .date-picker:editable, .text-field {
     -fx-focus-color: transparent;
     -fx-border-color: #90CC18;
     -fx-border-width: 1px;
@@ -294,7 +294,7 @@
 }
 
 .date-picker-popup {
-     -fx-background-color: #99C938;
+    -fx-background-color: #99C938;
 }
 
 /* ############ TAB STYLING ############ */
@@ -473,15 +473,15 @@
 /* ############ PAGINATION ############ */
 
 .pagination{
-	-fx-base: #90CC18;
+    -fx-base: #90CC18;
 }
 .pagination .toggle-button , .mypage .button{
-	-fx-background-radius:15px;
-	-fx-padding: 0px;
+    -fx-background-radius:15px;
+    -fx-padding: 0px;
 }
 .pagination .button{
-	-fx-padding: 5 15 5 16px;
+    -fx-padding: 5 15 5 16px;
 }
 .pagination .label {
-	-fx-text-fill:white;
+    -fx-text-fill:white;
 }

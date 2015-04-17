@@ -7,7 +7,6 @@ import gui.DetailViewCd;
 import gui.DetailViewDvd;
 import gui.DetailViewGame;
 import gui.DetailViewStoryBag;
-import gui.DetailViewUser;
 import gui.dialogs.PopupUtil;
 import java.io.File;
 import java.io.FileInputStream;
@@ -166,4 +165,6 @@ public class DetailViewUtil {
 	} catch (Exception ex) {
 	}
     }
+    
+    
 }
