@@ -78,7 +78,7 @@ public class ExcelWizardS1 extends BorderPane {
 	dragBox.setOnDragOver(e -> {
 	    Dragboard board = e.getDragboard();
 	    if (board.hasFiles() && board.getFiles().stream().anyMatch(f -> f.getPath().toLowerCase().endsWith(".xlsx"))) {
-		e.acceptTransferModes(TransferMode.MOVE);
+		e.acceptTransferModes(TransferMode.LINK);
 	    }
 	});
 
