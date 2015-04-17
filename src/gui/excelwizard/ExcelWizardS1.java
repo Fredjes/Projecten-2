@@ -5,7 +5,6 @@ import gui.ScreenSwitcher;
 import gui.controls.ExcelEntry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -42,7 +41,7 @@ public class ExcelWizardS1 extends BorderPane {
 
     private List<ExcelWizardS2> contentEditScreens = new ArrayList<>();
 
-    private ListIterator<ExcelWizardS2> iterator;
+    private int currentIndex = -1;
 
     public ExcelWizardS1(ScreenSwitcher switcher) {
 	this.switcher = switcher;
@@ -90,7 +89,11 @@ public class ExcelWizardS1 extends BorderPane {
 
     @FXML
     public void onFileSelect() {
-	entries.add(new ExcelEntry(this));
+	addEntry(new ExcelEntry(this));
+    }
+
+    public void addEntry(ExcelEntry e) {
+	entries.add(e);
     }
 
     public void onNext() {
@@ -102,18 +105,19 @@ public class ExcelWizardS1 extends BorderPane {
 	    buildContentList();
 	}
 
-	if (iterator.hasNext()) {
-	    switcher.setScreen(iterator.next());
+	if (hasNext()) {
+	    switcher.setScreen(next());
 	} else {
 	    //show progress screen
 	}
     }
 
     public void onPrevious() {
-	if (iterator.hasPrevious()) {
-	    switcher.setScreen(iterator.previous());
+	if (hasPrevious()) {
+	    switcher.setScreen(previous());
 	} else {
 	    switcher.setScreen(this);
+	    currentIndex = -1;
 	}
     }
 
@@ -123,8 +127,24 @@ public class ExcelWizardS1 extends BorderPane {
 	    contentEditScreens.add(new ExcelWizardS2(this, switcher, id++));
 	}
 
-	iterator = contentEditScreens.listIterator();
+    }
 
+    private boolean hasNext() {
+	return currentIndex < contentEditScreens.size() - 1;
+    }
+
+    private boolean hasPrevious() {
+	return currentIndex > 0;
+    }
+
+    private ExcelWizardS2 next() {
+	currentIndex++;
+	return contentEditScreens.get(currentIndex);
+    }
+
+    private ExcelWizardS2 previous() {
+	currentIndex--;
+	return contentEditScreens.get(currentIndex);
     }
 
 }
