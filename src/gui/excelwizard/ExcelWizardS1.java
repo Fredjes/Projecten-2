@@ -37,12 +37,20 @@ public class ExcelWizardS1 extends BorderPane {
     @FXML
     private FlowPane entryContainer;
 
-    private ObservableList<ExcelEntry> entries = FXCollections.observableArrayList();
     private int currentPosition = -1;
+    private final ObservableList<ExcelEntry> entries = FXCollections.observableArrayList();
+
+    private int currentBarPosition = -1;
 
     private ScreenSwitcher switcher;
     private List<ExcelWizardS2> contentEditScreens = new ArrayList<>();
     private ListIterator<ExcelWizardS2> iterator;
+
+    private final List<ExcelWizardS2> contentScreens = new ArrayList<>();
+
+    private final ExcelWizardS3 loadingScreen;
+
+    private int currentIndex = -1;
 
     public ExcelWizardS1(ScreenSwitcher switcher) {
 	this.switcher = switcher;
@@ -80,13 +88,15 @@ public class ExcelWizardS1 extends BorderPane {
 		board.getFiles().stream().filter(f -> f.getPath().toLowerCase().endsWith(".xlsx")).forEach(this::onFileDropped);
 	    }
 	});
+
+	loadingScreen = new ExcelWizardS3(switcher);
     }
 
-    public void switchBarPosition(int flag) {
-	if (currentPosition == flag) {
+    public final void switchBarPosition(int flag) {
+	if (currentBarPosition == flag) {
 	    return;
 	}
-	currentPosition = flag;
+	currentBarPosition = flag;
 	if (flag == 1) {
 	    infoBox.setVisible(false);
 	    topBox.setVisible(true);
@@ -103,6 +113,48 @@ public class ExcelWizardS1 extends BorderPane {
 
     @FXML
     public void onFileSelect() {
+    }
+
+    public void onNext() {
+	if (entries.size() == 0) {
+	    return;
+	}
+
+	if (contentScreens.isEmpty()) {
+	    buildContentList();
+	}
+
+	if (hasNext()) {
+	    ExcelWizardS2 n = next();
+	    if (isLastBeforeLoad()) {
+		n.setNextButtonText("Importeren");
+	    } else {
+		n.setNextButtonText("Volgende");
+	    }
+	    switcher.setScreen(n);
+	} else {
+	    switcher.setScreen(loadingScreen);
+	    switcher.setNavigationAllowed(false);
+
+	    //TODO: re-enable navigation when import is finished!
+	}
+    }
+
+    public void onPrevious() {
+	if (hasPrevious()) {
+	    switcher.setScreen(previous());
+	} else {
+	    switcher.setScreen(this);
+	    currentIndex = -1;
+	}
+    }
+
+    private void buildContentList() {
+	int id = 0;
+	for (ExcelEntry e : entries) {
+	    contentScreens.add(new ExcelWizardS2(this, switcher, id++));
+	}
+
 	entries.add(new ExcelEntry(this));
     }
 
@@ -114,40 +166,30 @@ public class ExcelWizardS1 extends BorderPane {
      */
     private void onFileDropped(File file) {
 	// Here goes the code for reading and handling the file
-	entries.add(new ExcelEntry(this));
+	addEntry(new ExcelEntry(this));
     }
 
-    public void onNext() {
-	if (entries.size() == 0) {
-	    return;
-	}
-
-	if (contentEditScreens.isEmpty()) {
-	    buildContentList();
-	}
-
-	if (iterator.hasNext()) {
-	    switcher.setScreen(iterator.next());
-	} else {
-	    //show progress screen
-	}
+    public void addEntry(ExcelEntry e) {
+	entries.add(e);
     }
 
-    public void onPrevious() {
-	if (iterator.hasPrevious()) {
-	    switcher.setScreen(iterator.previous());
-	} else {
-	    switcher.setScreen(this);
-	}
+    private boolean hasNext() {
+	return currentIndex < contentScreens.size() - 1;
     }
 
-    private void buildContentList() {
-	int id = 0;
-	for (ExcelEntry e : entries) {
-	    contentEditScreens.add(new ExcelWizardS2(this, switcher, id++));
-	}
-
-	iterator = contentEditScreens.listIterator();
+    private boolean isLastBeforeLoad() {
+	return currentIndex == contentScreens.size() - 1;
     }
 
+    private boolean hasPrevious() {
+	return currentIndex > 0;
+    }
+
+    private ExcelWizardS2 next() {
+	return contentScreens.get(++currentIndex);
+    }
+
+    private ExcelWizardS2 previous() {
+	return contentScreens.get(--currentIndex);
+    }
 }

@@ -44,6 +44,8 @@ public class ScreenSwitcher extends BorderPane {
     private ItemManagementController itemManagementController;
     private LoanManagementListItemController loanManagementController;
 
+    private boolean navigationAllowed = true;
+
     public ScreenSwitcher() {
 	initialize();
 	setPrefSize(1024, 768);
@@ -58,6 +60,14 @@ public class ScreenSwitcher extends BorderPane {
 	loadIcons(userManagement);
 	loadIcons(excelWizard);
 	loadIcons(titlebar);
+    }
+
+    public boolean isNavigationAllowed() {
+	return navigationAllowed;
+    }
+
+    public void setNavigationAllowed(boolean navigationAllowed) {
+	this.navigationAllowed = navigationAllowed;
     }
 
     private void initialize() {
@@ -88,26 +98,41 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openMainMenu() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Hoofdmenu");
 	setCenter(menu);
     }
 
     public void openItemManagement() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Voorwerpen beheren");
 	setCenter(itemManagement);
     }
 
     public void openUserManagement() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Gebruikers beheren");
 	setCenter(userManagement);
     }
 
     public void openLoanManagement() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Uitleningen beheren");
 	setCenter(loanManagement);
     }
 
     public void openExcelImport() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
 	titlebar.setTitle("Excel importeren");
 	setCenter(excelWizard);
     }

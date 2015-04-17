@@ -41,7 +41,7 @@
                   <String fx:value="btn-default" />
                </styleClass>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onNext" text="Volgende">
+            <Button fx:id="btnNext" mnemonicParsing="false" onAction="#onNext" text="Volgende">
                <styleClass>
                   <String fx:value="btn" />
                   <String fx:value="btn-lime" />
