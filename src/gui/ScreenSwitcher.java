@@ -21,6 +21,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.controlsfx.control.PopOver;
 import persistence.UserRepository;
 
@@ -71,7 +72,7 @@ public class ScreenSwitcher extends BorderPane {
 	itemManagementController = new ItemManagementController(itemManagement, this);
 
 	itemManagement.setController(itemManagementController);
-	excelWizard = new ExcelWizardS1();
+	excelWizard = new ExcelWizardS1(this);
     }
 
     public void loadIcons(Node node) {
@@ -183,5 +184,14 @@ public class ScreenSwitcher extends BorderPane {
 	    });
 	}
 
+    }
+
+    public void setScreen(Pane p) {
+	setCenter(p);
+    }
+
+    public void setScreen(Pane p, String title) {
+	titlebar.setTitle(title);
+	setCenter(p);
     }
 }

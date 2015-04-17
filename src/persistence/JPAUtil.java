@@ -1,5 +1,7 @@
 package persistence;
 
+import gui.dialogs.PopupUtil;
+import javafx.application.Platform;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -11,7 +13,7 @@ import javax.persistence.Persistence;
  */
 public class JPAUtil {
 
-    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU");
+    private EntityManagerFactory entityManagerFactory;
     private static JPAUtil INSTANCE;
 
     private JPAUtil() {
@@ -35,6 +37,15 @@ public class JPAUtil {
     }
 
     public EntityManagerFactory getEntityManagerFactory() {
+	if (entityManagerFactory == null) {
+	    try {
+		entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU");
+	    } catch (Exception e) {
+		Platform.runLater(() -> {
+		    PopupUtil.showNotification("Geen database gevonden!", "Er kon geen verbinding worden gemaakt met de database.", PopupUtil.Notification.ERROR);
+		});
+	    }
+	}
 	return entityManagerFactory;
     }
 }

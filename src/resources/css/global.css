@@ -495,3 +495,8 @@
     -fx-background-color: -fx-control-inner-background;
     -fx-effect: dropshadow(gaussian, #666, 10, 0.001, 0, 0);
 }
+
+.transparent-scrollpane, .transparent-scrollpane .viewport {
+    -fx-focus-traversable: false;
+    -fx-background-color: transparent;
+}

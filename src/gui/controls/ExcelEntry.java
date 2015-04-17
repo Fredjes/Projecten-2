@@ -1,6 +1,8 @@
 package gui.controls;
 
 import gui.FXUtil;
+import gui.excelwizard.ExcelWizardS1;
+import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -9,8 +11,16 @@ import javafx.scene.layout.BorderPane;
  */
 public class ExcelEntry extends BorderPane {
 
-    public ExcelEntry() {
+    private ExcelWizardS1 wizard;
+
+    public ExcelEntry(ExcelWizardS1 wizard) {
+	this.wizard = wizard;
 	FXUtil.loadFXML(this, "excel_file_entry");
+    }
+
+    @FXML
+    public void onClose() {
+	wizard.onEntryRemoved(this);
     }
 
 }
