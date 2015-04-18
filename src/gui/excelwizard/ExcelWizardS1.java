@@ -169,20 +169,17 @@ public class ExcelWizardS1 extends BorderPane {
      * @param file The excel-file
      */
     private void onFileDropped(File file) {
+
 	XSSFWorkbook workbook = null;
 	try {
 	    workbook = new XSSFWorkbook(file);
-	    final XSSFWorkbook book = workbook;
-	    workbook.iterator().forEachRemaining((sheet) -> {
+	    for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+		System.out.println("excel sheet " + workbook.getSheetAt(i).getSheetName() + " " + workbook.getNumberOfSheets());
 
-		ExcelEntry entry = new ExcelEntry(this, book, sheet, file.getName());
-		try {
-		    entry.loadMetadata();
-		    addEntry(entry);
-		} catch (IOException | InvalidFormatException e) {
-		    e.printStackTrace();
-		}
-	    });
+		ExcelEntry entry = new ExcelEntry(this, workbook, workbook.getSheetAt(i), file.getName());
+		entry.loadMetadata();
+		addEntry(entry);
+	    }
 	} catch (IOException | InvalidFormatException ex) {
 	    ex.printStackTrace();
 	} finally {
