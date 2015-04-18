@@ -3,6 +3,7 @@ package gui;
 import domain.IconConfig;
 import domain.Item;
 import domain.ItemCopy;
+import domain.User;
 import domain.controllers.ItemManagementController;
 import domain.controllers.LoanManagementListItemController;
 import domain.controllers.MainMenuController;
@@ -83,6 +84,12 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openMainMenu() {
+	User authenticatedUser = UserRepository.getInstance().getAuthenticatedUser();
+	if (authenticatedUser == null || authenticatedUser.getUserType() == User.UserType.STUDENT) {
+	    openItemManagement();
+	    return;
+	}
+
 	titlebar.setTitle("Hoofdmenu");
 	setCenter(menu);
     }
@@ -142,7 +149,7 @@ public class ScreenSwitcher extends BorderPane {
     /**
      * Log in using the email of the user and a non-encrypted password.
      *
-     * @param email    the email of the user
+     * @param email the email of the user
      * @param password the password of the user
      * @return true if the email and password are correct
      */

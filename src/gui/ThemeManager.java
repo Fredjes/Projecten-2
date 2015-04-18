@@ -4,7 +4,6 @@ import domain.Item;
 import domain.SearchPredicate;
 import gui.controls.ThemeItem;
 import gui.dialogs.PopupUtil;
-import java.util.Iterator;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -33,9 +32,8 @@ public class ThemeManager {
     private TextField textField = new TextField();
     private final EventHandler<ActionEvent> onRemoveHandler = e -> {
 	box.getChildren().remove(e.getTarget());
-	Platform.runLater(() -> refreshPopOver());
     };
-    
+
     private FilteredList<String> filteredList = new FilteredList<>(allThemesList);
     private PopOver popOver;
     private static ListView<String> filteredThemeList;
@@ -95,11 +93,6 @@ public class ThemeManager {
 	box.setMaxHeight(22);
 	textField.setBorder(Border.EMPTY);
 	box.getChildren().add(textField);
-	textField.focusedProperty().addListener(e -> {
-	    if (textField.isFocused()) {
-		refreshPopOver();
-	    }
-	});
     }
 
     private void add(String theme) {
@@ -112,18 +105,22 @@ public class ThemeManager {
 	ThemeItem themeItem = new ThemeItem(themes, theme);
 	themeItem.setOnRemove(onRemoveHandler);
 	box.getChildren().add(box.getChildren().size() - 1, themeItem);
-	refreshPopOver();
+	refreshPopOver(true);
     }
 
-    private void refreshPopOver() {
+    private void refreshPopOver(boolean hide) {
 	if (popOver == null) {
-	    popOver = PopupUtil.showPopOver(textField, filteredThemeList, PopOver.ArrowLocation.LEFT_BOTTOM);
-	} else {
-	    if (popOver.isShowing()) {
-		popOver.hide();
-	    }
+	    final int maxHeight = 100;
+	    filteredThemeList.setMaxHeight(maxHeight);
+	    popOver = PopupUtil.showPopOver(textField, filteredThemeList, PopOver.ArrowLocation.BOTTOM_CENTER);
+	    popOver.setMaxHeight(maxHeight);
 
-	    popOver.show(textField);
+	} else {
+	    if (popOver.isShowing() && hide) {
+		popOver.hide();
+	    } else if (!popOver.isShowing() && !hide) {
+		popOver.show(textField);
+	    }
 	}
     }
 
@@ -139,11 +136,12 @@ public class ThemeManager {
 	box.getChildren().add(textField);
 	textField.setOnKeyReleased(e -> {
 	    String theme = textField.getText().trim();
-	    if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.ENTER) {
+	    if (e.getCode() == KeyCode.ENTER) {
 		add(theme);
 		filteredList.setPredicate(t -> SearchPredicate.containsIgnoreCase(t, ""));
 	    } else {
 		filteredList.setPredicate(t -> SearchPredicate.containsIgnoreCase(t, theme));
+		refreshPopOver(false);
 	    }
 	});
     }
