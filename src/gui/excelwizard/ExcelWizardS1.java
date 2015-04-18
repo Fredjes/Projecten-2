@@ -4,9 +4,12 @@ import gui.FXUtil;
 import gui.ScreenSwitcher;
 import gui.controls.ExcelEntry;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -18,6 +21,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -113,6 +118,7 @@ public class ExcelWizardS1 extends BorderPane {
 
     @FXML
     public void onFileSelect() {
+
     }
 
     public void onNext() {
@@ -154,8 +160,6 @@ public class ExcelWizardS1 extends BorderPane {
 	for (ExcelEntry e : entries) {
 	    contentScreens.add(new ExcelWizardS2(this, switcher, id++));
 	}
-
-	entries.add(new ExcelEntry(this));
     }
 
     /**
@@ -165,8 +169,29 @@ public class ExcelWizardS1 extends BorderPane {
      * @param file The excel-file
      */
     private void onFileDropped(File file) {
-	// Here goes the code for reading and handling the file
-	addEntry(new ExcelEntry(this));
+	XSSFWorkbook workbook = null;
+	try {
+	    workbook = new XSSFWorkbook(file);
+	    final XSSFWorkbook book = workbook;
+	    workbook.iterator().forEachRemaining((sheet) -> {
+
+		ExcelEntry entry = new ExcelEntry(this, book, sheet, file.getName());
+		try {
+		    entry.loadMetadata();
+		    addEntry(entry);
+		} catch (IOException | InvalidFormatException e) {
+		    e.printStackTrace();
+		}
+	    });
+	} catch (IOException | InvalidFormatException ex) {
+	    ex.printStackTrace();
+	} finally {
+	    try {
+		workbook.close();
+	    } catch (IOException ex) {
+		Logger.getLogger(ExcelWizardS1.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	}
     }
 
     public void addEntry(ExcelEntry e) {
