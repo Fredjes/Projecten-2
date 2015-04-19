@@ -4,8 +4,6 @@ import domain.excel.ExcelManager;
 import domain.excel.ExcelManager.Destination;
 import gui.FXUtil;
 import gui.excelwizard.ExcelWizardS1;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -30,8 +28,6 @@ public class ExcelEntry extends BorderPane {
     @FXML
     private ChoiceBox<Destination> bestemmingBox;
 
-    private List<String> columnHeaders = new ArrayList<>();
-
     private XSSFWorkbook workbook;
 
     private XSSFSheet sheet;
@@ -43,6 +39,14 @@ public class ExcelEntry extends BorderPane {
 	this.sheet = excelSheet;
 	lblBestand.setText(fileName.substring(0, fileName.length() - 5));
 	bestemmingBox.getItems().addAll(Destination.values());
+    }
+
+    public XSSFWorkbook getWorkbook() {
+	return workbook;
+    }
+
+    public XSSFSheet getSheet() {
+	return sheet;
     }
 
     public void loadMetadata() {

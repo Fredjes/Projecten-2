@@ -24,4 +24,10 @@ public class ExcelData {
     public int getSize() {
 	return this.data.size();
     }
+
+    @Override
+    public String toString() {
+	return "ExcelData{" + "data=" + data + "}\n";
+    }
+
 }

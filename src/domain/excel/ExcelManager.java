@@ -1,5 +1,6 @@
 package domain.excel;
 
+import domain.ExcelData;
 import gui.controls.ExcelEntry;
 import gui.excelwizard.ExcelWizardS1;
 import java.io.File;
@@ -29,6 +30,8 @@ public class ExcelManager {
     private final ObservableList<ExcelEntry> entries = FXCollections.observableArrayList();
 
     private Map<XSSFSheet, List<String>> columnHeaders = new HashMap<>();
+
+    private HashMap<XSSFSheet, List<ExcelData>> excelDataPerSheet = new HashMap<>();
 
     private Runnable importFinished;
 
@@ -102,6 +105,8 @@ public class ExcelManager {
 		ExcelEntry entry = new ExcelEntry(wizard, workbook, workbook.getSheetAt(i), file.getName());
 		entry.loadMetadata();
 		addEntry(entry);
+		getExcelData(workbook.getSheetAt(i)); //so it loads data into cache
+
 	    }
 	} catch (IOException | InvalidFormatException ex) {
 	    ex.printStackTrace();
@@ -133,7 +138,7 @@ public class ExcelManager {
 		dest = e.getKey();
 	    }
 	}
-	System.out.println(dest + " won with " + highest + " for " + sheet.getSheetName());
+	//System.out.println(dest + " won with " + highest + " for " + sheet.getSheetName());
 	if (highest > 0.0f) {
 	    return dest;
 	} else {
@@ -168,6 +173,44 @@ public class ExcelManager {
 	    }
 	}
 	return null;
+    }
+
+    public List<ExcelData> getExcelData(XSSFSheet sheet) {
+	if (excelDataPerSheet.containsKey(sheet)) {
+	    return excelDataPerSheet.get(sheet);
+	}
+	List<ExcelData> out = new ArrayList<>();
+	for (int row = 0; row < sheet.getLastRowNum(); row++) {
+	    Row r = sheet.getRow(row);
+	    if (r == null) {
+		continue;
+	    }
+	    for (int column = 0; column < r.getLastCellNum(); column++) {
+		Cell c = r.getCell(column);
+		if (c == null) {
+		    continue;
+		}
+		ExcelData data = new ExcelData();
+		switch (c.getCellType()) {
+		    case Cell.CELL_TYPE_STRING:
+			data.setData(column, c.getStringCellValue());
+			break;
+		    case Cell.CELL_TYPE_NUMERIC:
+			data.setData(column, String.valueOf(c.getNumericCellValue()));
+			break;
+		}
+		out.add(data);
+	    }
+	}
+	excelDataPerSheet.put(sheet, out);
+	return out;
+    }
+
+    public XSSFSheet getSheetById(int id) {
+	if (id >= entries.size() || id < 0) {
+	    return null;
+	}
+	return entries.get(id).getSheet();
     }
 
     public File selectExcel() {
