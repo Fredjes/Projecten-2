@@ -32,6 +32,8 @@ public class ExcelManager {
 
     private Map<XSSFSheet, List<String>> columnHeaders = new HashMap<>();
 
+    private Runnable importFinished;
+
     public enum Destination {
 
 	USERS("Leerlingen", new ExcelConstraintBuilder().needsStrict("voornaam").needsStrict("achternaam").needsTolerant("adres").needsTolerant("mail").allowTolerance(0.35f).build()),
@@ -178,6 +180,15 @@ public class ExcelManager {
 	    return null;
 	}
 	return selectedFile;
+    }
+
+    public void beginImport() {
+
+	importFinished.run();
+    }
+
+    public void setOnImportFinished(Runnable r) {
+	importFinished = r;
     }
 
 }

@@ -9,8 +9,6 @@ import java.util.List;
  */
 public class ExcelConstraintBuilder {
 
-    private ConstraintCollection collection;
-
     private final List<ExcelConstraint> constraints = new ArrayList<>();
 
     private float tolerance;
@@ -18,12 +16,7 @@ public class ExcelConstraintBuilder {
     public ExcelConstraintBuilder needsStrict(String text) {
 	ExcelConstraint c = new ExcelConstraint(true, true, (sheet) -> {
 	    List<String> headers = ExcelManager.getInstance().getColumnHeaders(sheet);
-	    for (String s : headers) {
-		if (s.toLowerCase().equals(text.toLowerCase())) {
-		    return true;
-		}
-	    }
-	    return false;
+	    return headers.stream().anyMatch((s) -> (s.toLowerCase().equals(text.toLowerCase())));
 	});
 	constraints.add(c);
 	return this;
@@ -32,12 +25,7 @@ public class ExcelConstraintBuilder {
     public ExcelConstraintBuilder needsTolerant(String text) {
 	ExcelConstraint c = new ExcelConstraint(false, true, (sheet) -> {
 	    List<String> headers = ExcelManager.getInstance().getColumnHeaders(sheet);
-	    for (String s : headers) {
-		if (s.toLowerCase().contains(text.toLowerCase())) {
-		    return true;
-		}
-	    }
-	    return false;
+	    return headers.stream().anyMatch((s) -> (s.toLowerCase().contains(text.toLowerCase())));
 	});
 	constraints.add(c);
 	return this;

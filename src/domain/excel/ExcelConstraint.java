@@ -9,10 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
  */
 public class ExcelConstraint {
 
-    private boolean strict;
-    private boolean required;
+    private final boolean strict;
+    private final boolean required;
 
-    private Function<XSSFSheet, Boolean> requirement;
+    private final Function<XSSFSheet, Boolean> requirement;
 
     public ExcelConstraint(boolean strict, boolean required, Function<XSSFSheet, Boolean> requirement) {
 	this.strict = strict;

@@ -22,11 +22,7 @@ public class ConstraintCollection {
 
     public float test(XSSFSheet sheet) {
 	result = 0.0f;
-	for (ExcelConstraint c : constraints) {
-	    if (c.getRequirement().apply(sheet)) {
-		result += 1f / constraints.size();
-	    }
-	}
+	constraints.stream().filter((c) -> (c.getRequirement().apply(sheet))).forEach(item -> result += 1f / constraints.size());
 	return (1f - tolerance) <= result ? result : 0.0f;
     }
 }

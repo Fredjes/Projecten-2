@@ -54,30 +54,6 @@ public class ExcelEntry extends BorderPane {
 	bestemmingBox.getSelectionModel().select(ExcelManager.getInstance().determineDestination(sheet));
     }
 
-    private boolean match(int margin, String[] args, boolean[] strict) {
-	int found = 0;
-	boolean match = false;
-	for (int i = 0; i < args.length; i++) {
-	    String constraint = args[i];
-	    boolean isStrict = strict[i];
-	    for (String header : columnHeaders) {
-		if (isStrict) {
-		    if (header.toLowerCase().equals(constraint)) {
-			found++;
-			match = true;
-		    }
-		} else {
-		    if (header.toLowerCase().contains(constraint)) {
-			found++;
-			match = true;
-		    }
-		}
-	    }
-
-	}
-	return found >= margin && match;
-    }
-
     @FXML
     public void onClose() {
 	wizard.onEntryRemoved(this);

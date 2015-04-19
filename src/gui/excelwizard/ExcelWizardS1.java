@@ -131,8 +131,8 @@ public class ExcelWizardS1 extends BorderPane {
 	} else {
 	    switcher.setScreen(loadingScreen);
 	    switcher.setNavigationAllowed(false);
-
-	    //TODO: re-enable navigation when import is finished!
+	    ExcelManager.getInstance().setOnImportFinished(() -> switcher.setNavigationAllowed(true));
+	    ExcelManager.getInstance().beginImport();
 	}
     }
 
