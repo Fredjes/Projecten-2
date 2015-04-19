@@ -1,18 +1,13 @@
 package gui.excelwizard;
 
+import domain.excel.ExcelManager;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
 import gui.controls.ExcelEntry;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -21,8 +16,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -42,14 +35,11 @@ public class ExcelWizardS1 extends BorderPane {
     @FXML
     private FlowPane entryContainer;
 
-    private int currentPosition = -1;
-    private final ObservableList<ExcelEntry> entries = FXCollections.observableArrayList();
-
     private int currentBarPosition = -1;
 
     private ScreenSwitcher switcher;
+
     private List<ExcelWizardS2> contentEditScreens = new ArrayList<>();
-    private ListIterator<ExcelWizardS2> iterator;
 
     private final List<ExcelWizardS2> contentScreens = new ArrayList<>();
 
@@ -61,7 +51,7 @@ public class ExcelWizardS1 extends BorderPane {
 	this.switcher = switcher;
 	FXUtil.loadFXML(this, "excel_management_s1");
 	switchBarPosition(0);
-	entries.addListener((ListChangeListener<ExcelEntry>) (e) -> {
+	ExcelManager.getInstance().getEntries().addListener((ListChangeListener<ExcelEntry>) (e) -> {
 	    e.next();
 
 	    if (e.wasAdded()) {
@@ -113,16 +103,16 @@ public class ExcelWizardS1 extends BorderPane {
     }
 
     public void onEntryRemoved(ExcelEntry entry) {
-	entries.remove(entry);
+	ExcelManager.getInstance().removeEntry(entry);
     }
 
     @FXML
     public void onFileSelect() {
-
+	onFileDropped(ExcelManager.getInstance().selectExcel());
     }
 
     public void onNext() {
-	if (entries.size() == 0) {
+	if (ExcelManager.getInstance().getEntries().size() == 0) {
 	    return;
 	}
 
@@ -157,7 +147,7 @@ public class ExcelWizardS1 extends BorderPane {
 
     private void buildContentList() {
 	int id = 0;
-	for (ExcelEntry e : entries) {
+	for (ExcelEntry e : ExcelManager.getInstance().getEntries()) {
 	    contentScreens.add(new ExcelWizardS2(this, switcher, id++));
 	}
     }
@@ -169,30 +159,7 @@ public class ExcelWizardS1 extends BorderPane {
      * @param file The excel-file
      */
     private void onFileDropped(File file) {
-
-	XSSFWorkbook workbook = null;
-	try {
-	    workbook = new XSSFWorkbook(file);
-	    for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-		System.out.println("excel sheet " + workbook.getSheetAt(i).getSheetName() + " " + workbook.getNumberOfSheets());
-
-		ExcelEntry entry = new ExcelEntry(this, workbook, workbook.getSheetAt(i), file.getName());
-		entry.loadMetadata();
-		addEntry(entry);
-	    }
-	} catch (IOException | InvalidFormatException ex) {
-	    ex.printStackTrace();
-	} finally {
-	    try {
-		workbook.close();
-	    } catch (IOException ex) {
-		Logger.getLogger(ExcelWizardS1.class.getName()).log(Level.SEVERE, null, ex);
-	    }
-	}
-    }
-
-    public void addEntry(ExcelEntry e) {
-	entries.add(e);
+	ExcelManager.getInstance().readExcelFile(this, file);
     }
 
     private boolean hasNext() {

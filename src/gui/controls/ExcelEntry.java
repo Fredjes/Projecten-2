@@ -1,5 +1,7 @@
 package gui.controls;
 
+import domain.excel.ExcelManager;
+import domain.excel.ExcelManager.Destination;
 import gui.FXUtil;
 import gui.excelwizard.ExcelWizardS1;
 import java.util.ArrayList;
@@ -8,8 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -36,63 +36,22 @@ public class ExcelEntry extends BorderPane {
 
     private XSSFSheet sheet;
 
-    public enum Destination {
-
-	USERS("Leerlingen"), BOOKS("Boeken"), UNKNOWN("Niet gevonden");
-
-	private String prettyName;
-
-	Destination(String name) {
-	    prettyName = name;
-	}
-
-	@Override
-	public String toString() {
-	    return prettyName;
-	}
-
-    }
-
     public ExcelEntry(ExcelWizardS1 wizard, XSSFWorkbook workbook, XSSFSheet excelSheet, String fileName) {
 	FXUtil.loadFXML(this, "excel_file_entry");
 	this.wizard = wizard;
 	this.workbook = workbook;
 	this.sheet = excelSheet;
-	lblBestand.setText(fileName);
+	lblBestand.setText(fileName.substring(0, fileName.length() - 5));
 	bestemmingBox.getItems().addAll(Destination.values());
     }
 
     public void loadMetadata() {
-	Row columnHeader = getFirstNonEmptyRow(sheet);
-	columnHeader.cellIterator().forEachRemaining((Cell c) -> {
-	    if (c != null && !c.getStringCellValue().isEmpty()) {
-		columnHeaders.add(c.getStringCellValue());
-	    }
-	});
-
 	lblBlad.setText(sheet.getSheetName());
 	determineDestination();
     }
 
-    private Row getFirstNonEmptyRow(XSSFSheet sheet) {
-	for (int row = 0; row < sheet.getLastRowNum(); row++) {
-	    Row r = sheet.getRow(row);
-	    if (r == null) {
-		continue;
-	    }
-	    if (!r.getCell(r.getFirstCellNum()).getStringCellValue().isEmpty()) {
-		return r;
-	    }
-	}
-	return null;
-    }
-
     private void determineDestination() {
-	if (match(4, new String[] {"voornaam", "achternaam", "naam", "mail", "klas", "adres"}, new boolean[] {true, true, true, false, true, false})) {
-	    bestemmingBox.getSelectionModel().select(Destination.USERS);
-	} else {
-	    bestemmingBox.getSelectionModel().select(Destination.UNKNOWN);
-	}
+	bestemmingBox.getSelectionModel().select(ExcelManager.getInstance().determineDestination(sheet));
     }
 
     private boolean match(int margin, String[] args, boolean[] strict) {

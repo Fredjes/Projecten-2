@@ -10,9 +10,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.0" prefWidth="1000.0" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.0" prefWidth="1000.0" styleClass="white" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="10.0" styleClass="white" vgap="10.0" BorderPane.alignment="CENTER">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="10.0" styleClass="centerGlow" vgap="10.0" BorderPane.alignment="CENTER">
          <children>
             <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
                <columnConstraints>

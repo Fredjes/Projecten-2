@@ -90,6 +90,19 @@
 
 .white{
     -fx-background-color: white;
+    //-fx-background-image: url(/resources/gui/img/bg.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
+    -fx-background-position: center;
+}
+
+.centerGlow {
+    //-fx-background-size: cover;
+    //-fx-background-position: center;
+    //-fx-background-color: radial-gradient(center 50% 50%, radius 300px, gray, transparent);
+    
+    //-fx-padding: 40;
+    //-fx-background-color:  radial-gradient(center 50% 50%, radius 50%, rgba(255,255,255,100) 25%,transparent 10%);
 }
 
 .tile:hover, .clickable:hover{
