@@ -36,6 +36,15 @@ public class ExcelConstraintBuilder {
 	return this;
     }
 
+    public ExcelConstraintBuilder containsRegex(String regex) {
+	ExcelConstraint c = new ExcelConstraint(true, true, (sheet) -> {
+	    List<String> headers = ExcelManager.getInstance().getColumnHeaders(sheet);
+	    return headers.stream().anyMatch((s) -> (s.toLowerCase().matches(regex)));
+	});
+	constraints.add(c);
+	return this;
+    }
+
     public ConstraintCollection build() {
 	return new ConstraintCollection(constraints, tolerance);
     }

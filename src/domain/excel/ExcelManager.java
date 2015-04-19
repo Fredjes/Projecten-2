@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
@@ -36,9 +34,11 @@ public class ExcelManager {
 
     public enum Destination {
 
-	USERS("Leerlingen", new ExcelConstraintBuilder().needsStrict("voornaam").needsStrict("achternaam").needsTolerant("adres").needsTolerant("mail").allowTolerance(0.35f).build()),
-	BOOKS("Boeken", new ExcelConstraintBuilder().needsStrict("titel").needsStrict("auteur").needsStrict("uitgeverij").needsStrict("thema").needsTolerant("inhoud").needsStrict("leeftijd").allowTolerance(0.3f).build()),
-	GAMES("Spelletjes"),
+	USERS("Leerlingen", new ExcelConstraintBuilder().needsStrict("voornaam").needsStrict("achternaam").needsTolerant("adres").needsTolerant("mail").allowTolerance(1 / 4).build()),
+	BOOKS("Boeken", new ExcelConstraintBuilder().needsStrict("titel").needsStrict("auteur").needsStrict("uitgeverij").needsStrict("thema").needsTolerant("inhoud").needsStrict("leeftijd").allowTolerance(1 / 6).build()),
+	GAMES("Spelletjes", new ExcelConstraintBuilder().needsStrict("thema").needsStrict("leeftijd").needsStrict("uitgeverij").needsTolerant("spel").build()),
+	CD_DVD("Cd/Dvd", new ExcelConstraintBuilder().needsStrict("soort").build()),
+	STORYBAGS("Verteltassen", new ExcelConstraintBuilder().needsStrict("auteur").needsTolerant("verteltas").needsStrict("thema").allowTolerance(1 / 3).build()),
 	UNKNOWN("Niet gevonden");
 
 	private String prettyName;
@@ -109,7 +109,7 @@ public class ExcelManager {
 	    try {
 		workbook.close();
 	    } catch (IOException ex) {
-		Logger.getLogger(ExcelWizardS1.class.getName()).log(Level.SEVERE, null, ex);
+		//unable to clean up temporary files
 	    }
 	}
     }
