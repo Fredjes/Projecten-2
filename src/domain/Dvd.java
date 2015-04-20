@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -61,4 +63,17 @@ public class Dvd extends Item implements Serializable {
 
 	return true;
     }
+
+    @Override
+    public Map<String, BiConsumer<String, Dvd>> createHeaderList() {
+	Map<String, BiConsumer<String, Dvd>> map = super.createHeaderList();
+	map.put("Regisseur", new BiConsumer<String, Dvd>() {
+
+	    public void accept(String da, Dvd dv) {
+		dv.setDirector(da);
+	    }
+	});
+	return map;
+    }
+
 }

@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.Access;
@@ -76,5 +78,10 @@ public class StoryBag extends Item implements Serializable {
 	}
 
 	return false;
+    }
+
+    @Override
+    public Map<String, BiConsumer<String, StoryBag>> createHeaderList() {
+	return super.createHeaderList();
     }
 }

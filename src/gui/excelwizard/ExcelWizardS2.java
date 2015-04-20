@@ -2,13 +2,14 @@ package gui.excelwizard;
 
 import domain.AssignableTableColumn;
 import domain.ExcelData;
+import domain.excel.ExcelManager;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 /**
  *
@@ -50,7 +52,7 @@ public class ExcelWizardS2 extends BorderPane {
 
 	this.id = id;
 	FXUtil.loadFXML(this, "excel_management_s2");
-	title.setText("Blad " + id + " koppelen");
+	title.setText(ExcelManager.getInstance().getSheetById(id).getSheetName() + " koppelen - " + ExcelManager.getInstance().getEntry(id).getDestination().toString());
     }
 
     @FXML
@@ -90,8 +92,28 @@ public class ExcelWizardS2 extends BorderPane {
     public void addRows(ExcelData... data) {
 	addRows(Arrays.asList(data));
     }
+
     public void setNextButtonText(String txt) {
 	btnNext.setText(txt);
     }
 
+    public Map<Integer, String> getHeaders() {
+	Map<Integer, String> map = new HashMap<>();
+	columns.forEach((k, v) -> map.put(k, v.getSelectedItem()));
+	return map;
+    }
+    
+    public List<ExcelData> getRows(){
+	return content.getItems();
+    }
+
+    public void loadData() {
+	XSSFSheet sheet = ExcelManager.getInstance().getSheetById(id);
+	addRows(ExcelManager.getInstance().getExcelData(sheet));
+	setHeaderList(ExcelManager.getInstance().getEntry(id).getDestination().getHeaderList());
+    }
+
+    public int getExcelId(){
+	return this.id;
+    }
 }

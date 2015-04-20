@@ -12,6 +12,7 @@
     <class>domain.Book</class>
     <class>domain.Game</class>
     <class>domain.Change</class>
+    <validation-mode>NONE</validation-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://bitcode.io:3306/krekelschool?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="projecten"/>

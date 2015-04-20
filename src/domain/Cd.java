@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -87,4 +89,17 @@ public class Cd extends Item implements Serializable {
 
 	return true;
     }
+
+    @Override
+    public Map<String, BiConsumer<String, Cd>> createHeaderList() {
+	Map<String, BiConsumer<String, Cd>> map = super.createHeaderList();
+	map.put("Artiest", new BiConsumer<String, Cd>() {
+
+	    public void accept(String d, Cd c) {
+		c.setArtist(d);
+	    }
+	});
+	return map;
+    }
+
 }

@@ -1,11 +1,9 @@
 package domain;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
-import javafx.util.Callback;
 
 /**
  *
@@ -16,6 +14,7 @@ public class AssignableTableColumn extends TableColumn<ExcelData, String> {
     private ChoiceBox<String> selection = new ChoiceBox<>();
 
     public AssignableTableColumn(int index, ObservableList<String> headerSelectionList) {
+	selection.setMaxWidth(Integer.MAX_VALUE);
 	setGraphic(selection);
 	setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getData(index)));
 	bindHeaderSelectionList(headerSelectionList);

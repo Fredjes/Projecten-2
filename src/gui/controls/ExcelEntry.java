@@ -58,6 +58,10 @@ public class ExcelEntry extends BorderPane {
 	bestemmingBox.getSelectionModel().select(ExcelManager.getInstance().determineDestination(sheet));
     }
 
+    public Destination getDestination() {
+	return bestemmingBox.getSelectionModel().isEmpty() ? null : bestemmingBox.getSelectionModel().getSelectedItem();
+    }
+
     @FXML
     public void onClose() {
 	wizard.onEntryRemoved(this);

@@ -2,6 +2,7 @@ package persistence;
 
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
+import javafx.util.Duration;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -42,7 +43,7 @@ public class JPAUtil {
 		entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU");
 	    } catch (Exception e) {
 		Platform.runLater(() -> {
-		    PopupUtil.showNotification("Geen database gevonden!", "Er kon geen verbinding worden gemaakt met de database.", PopupUtil.Notification.ERROR);
+		    PopupUtil.showNotification("Geen database gevonden!", "Er kon geen verbinding worden gemaakt met de database.", PopupUtil.Notification.ERROR, Duration.INDEFINITE);
 		});
 	    }
 	}

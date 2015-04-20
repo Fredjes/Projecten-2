@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -14,7 +16,7 @@ import javax.persistence.Entity;
  * @author Frederik De Smedt
  */
 @Entity
-@Access (AccessType.PROPERTY)
+@Access(AccessType.PROPERTY)
 public class Book extends Item implements Serializable {
 
     private StringProperty author = new SimpleStringProperty();
@@ -73,5 +75,26 @@ public class Book extends Item implements Serializable {
 	}
 
 	return true;
+    }
+
+    @Override
+    public Map<String, BiConsumer<String, Book>> createHeaderList() {
+	Map<String, BiConsumer<String, Book>> temp = super.createHeaderList();
+	
+	temp.put("Auteur", new BiConsumer<String, Book>() {
+
+	    public void accept(String d, Book b) {
+		b.setAuthor(d);
+	    }
+	});
+	
+	temp.put("Uitgeverij", new BiConsumer<String, Book>() {
+
+	    public void accept(String d, Book b) {
+		b.setPublisher(d);
+	    }
+	});
+	
+	return temp;
     }
 }

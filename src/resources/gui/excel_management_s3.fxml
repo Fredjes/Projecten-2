@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <VBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
@@ -40,12 +40,12 @@
                   <Insets />
                </VBox.margin>
                <children>
-                  <Label text="Blad 1 van 1 importeren..." />
+                  <Label fx:id="notifications" />
                </children>
             </HBox>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="400.0">
                <children>
-                  <ProgressBar maxWidth="1.7976931348623157E308" progress="0.0" HBox.hgrow="ALWAYS" />
+                  <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" progress="0.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>

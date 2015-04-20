@@ -21,6 +21,10 @@ public class ExcelData {
 	return this.data.get(columnIndex);
     }
 
+    public boolean hasData(int columnIndex) {
+	return this.data.containsKey(columnIndex);
+    }
+
     public int getSize() {
 	return this.data.size();
     }

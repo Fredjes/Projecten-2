@@ -39,8 +39,6 @@ public class ExcelWizardS1 extends BorderPane {
 
     private ScreenSwitcher switcher;
 
-    private List<ExcelWizardS2> contentEditScreens = new ArrayList<>();
-
     private final List<ExcelWizardS2> contentScreens = new ArrayList<>();
 
     private final ExcelWizardS3 loadingScreen;
@@ -84,7 +82,7 @@ public class ExcelWizardS1 extends BorderPane {
 	    }
 	});
 
-	loadingScreen = new ExcelWizardS3(switcher);
+	loadingScreen = new ExcelWizardS3(this, switcher);
     }
 
     public final void switchBarPosition(int flag) {
@@ -99,7 +97,6 @@ public class ExcelWizardS1 extends BorderPane {
 	    topBox.setVisible(false);
 	    infoBox.setVisible(true);
 	}
-
     }
 
     public void onEntryRemoved(ExcelEntry entry) {
@@ -122,17 +119,21 @@ public class ExcelWizardS1 extends BorderPane {
 
 	if (hasNext()) {
 	    ExcelWizardS2 n = next();
+	    
 	    if (isLastBeforeLoad()) {
 		n.setNextButtonText("Importeren");
 	    } else {
 		n.setNextButtonText("Volgende");
 	    }
+	    
+	    n.loadData();
 	    switcher.setScreen(n);
 	} else {
+	    
 	    switcher.setScreen(loadingScreen);
 	    switcher.setNavigationAllowed(false);
 	    ExcelManager.getInstance().setOnImportFinished(() -> switcher.setNavigationAllowed(true));
-	    ExcelManager.getInstance().beginImport();
+	    loadingScreen.startImport();
 	}
     }
 
@@ -150,6 +151,10 @@ public class ExcelWizardS1 extends BorderPane {
 	for (ExcelEntry e : ExcelManager.getInstance().getEntries()) {
 	    contentScreens.add(new ExcelWizardS2(this, switcher, id++));
 	}
+    }
+    
+    public List<ExcelWizardS2> getContentScreens(){
+	return contentScreens;
     }
 
     /**
