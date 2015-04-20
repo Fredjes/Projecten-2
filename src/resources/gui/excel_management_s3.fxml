@@ -13,8 +13,8 @@
    <top>
       <VBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="Bezig met importeren" />
-            <Label text="Alle gegevens worden momenteel geïmporteerd naar de databank. Gelieve te wachten en dit venster niet te sluiten." wrapText="true" />
+            <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="Geïmporteerd" />
+            <Label text="Alle Excel-bladen zijn geïmporteerd en zijn toegankelijk over heel de applicatie. U kan terugkeren naar het hoofdmenu of de applicatie afsluiten." wrapText="true" />
             <Separator maxWidth="1.7976931348623157E308" />
          </children>
          <padding>
@@ -33,21 +33,19 @@
       </HBox>
    </bottom>
    <center>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefWidth="400.0">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <children>
-                  <Label fx:id="notifications" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="400.0">
-               <children>
-                  <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" progress="0.0" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Proficiat, alles is geïmporteerd!">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Button mnemonicParsing="false" onAction="#onMainScreen" text="Terugkeren naar het hoofdmenu">
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="btn-lime" />
+               </styleClass>
+            </Button>
          </children>
       </VBox>
    </center>

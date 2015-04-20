@@ -42,6 +42,7 @@ public class JPAUtil {
 	    try {
 		entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU");
 	    } catch (Exception e) {
+		e.printStackTrace();
 		Platform.runLater(() -> {
 		    PopupUtil.showNotification("Geen database gevonden!", "Er kon geen verbinding worden gemaakt met de database.", PopupUtil.Notification.ERROR, Duration.INDEFINITE);
 		});

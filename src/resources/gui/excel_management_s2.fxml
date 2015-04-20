@@ -14,15 +14,10 @@
       <VBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="Blad 'XXXX' koppelen" />
-            <Label text="Een Excel blad koppelen wordt gedaan door hieronder voor elke kolom telkens een &quot;bestemming&quot; te kiezen. U kan kiezen om een voorbeeld te tonen van hoe de gekoppelde gegevens opgenomen worden in het systeem en kan eventuele aanpassingen maken waar nodig." wrapText="true" />
+            <Label text="Een Excel blad koppelen wordt gedaan door hieronder voor elke kolom telkens een &quot;bestemming&quot; te kiezen. Ik heb reeds geprobeerd om al de kolommen te koppelen alhoewel je deze het best nog eens controleert." wrapText="true" />
             <HBox alignment="CENTER" spacing="10.0">
                <children>
                   <Separator maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="info" text="Label">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
                </children>
             </HBox>
          </children>

@@ -135,7 +135,7 @@ public class ItemRepository extends Repository<Item> {
 		manager.getTransaction().begin();
 
 		items.forEach(item -> {
-		    if (item.getName() == null || item.getName().isEmpty()) {
+		    if ((item.getName() == null || item.getName().isEmpty()) && (item.getDescription() == null || item.getDescription().isEmpty()) && item.getThemes().isEmpty() && (item.getAgeCategory() == null || item.getAgeCategory().isEmpty())) {
 			return;
 		    }
 

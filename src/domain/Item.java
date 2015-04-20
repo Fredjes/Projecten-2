@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -220,6 +221,7 @@ public abstract class Item implements Serializable, Searchable, Importable<Item>
 
     @Override
     public boolean test(String query) {
+	outer:
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
 		    || SearchPredicate.containsIgnoreCase(getDescription(), t)
@@ -227,6 +229,12 @@ public abstract class Item implements Serializable, Searchable, Importable<Item>
 
 	    if (!temp) {
 		boolean found = false;
+
+		for (String theme : getThemes()) {
+		    if (SearchPredicate.containsIgnoreCase(theme, t)) {
+			continue outer;
+		    }
+		}
 
 		for (ItemCopy copy : getItemCopies()) {
 		    if (SearchPredicate.containsIgnoreCase(copy.getCopyNumber(), t)) {
@@ -284,23 +292,27 @@ public abstract class Item implements Serializable, Searchable, Importable<Item>
 		u.setAgeCategory(t);
 	    }
 	});
-	
+
 	map.put("Omschrijving", new BiConsumer<String, E>() {
 
 	    @Override
 	    public void accept(String t, E u) {
-		u.setDescription(t);
+		if (u.getDescription() == null || u.getDescription().isEmpty()) {
+		    u.setDescription(t);
+		} else {
+		    u.setDescription(u.getDescription() + (u.getDescription().matches("\\.$") ? " " : ". ") + t);
+		}
 	    }
 	});
-	
-	map.put("Naam", new BiConsumer<String, E>() {
+
+	map.put("Titel", new BiConsumer<String, E>() {
 
 	    @Override
 	    public void accept(String t, E u) {
 		u.setName(t);
 	    }
 	});
-	
+
 	map.put("Thema's", new BiConsumer<String, E>() {
 
 	    @Override
@@ -308,12 +320,46 @@ public abstract class Item implements Serializable, Searchable, Importable<Item>
 		u.setThemes(Arrays.asList(t.split(".,:+-")));
 	    }
 	});
-	
+
 	return map;
     }
 
     @Override
     public Repository getRepository() {
 	return ItemRepository.getInstance();
+    }
+
+    @Override
+    public Map<String, Predicate<String>> createHeaderAssignmentList() {
+	Map<String, Predicate<String>> headerAssignmentList = new HashMap<>();
+	headerAssignmentList.put("Leeftijd", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "leeftijd", "ouderdom");
+	    }
+	});
+	headerAssignmentList.put("Omschrijving", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "omschrijving", "uitleg", "inhoud");
+	    }
+	});
+	headerAssignmentList.put("Titel", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "titel", "naam");
+	    }
+	});
+	headerAssignmentList.put("Thema's", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "thema", "genre");
+	    }
+	});
+	return headerAssignmentList;
     }
 }

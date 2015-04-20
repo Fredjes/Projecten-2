@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -85,7 +87,9 @@ public class ExcelManager {
 
 	public Set<String> getHeaderList() {
 	    if (supplier != null) {
-		return supplier.get().createHeaderList().keySet();
+		// Create a copy so that modification operations (add and remove) are supported
+		Set<String> setCopy = new HashSet<>(supplier.get().createHeaderList().keySet());
+		return setCopy;
 	    } else {
 		return Collections.EMPTY_SET;
 	    }
@@ -177,8 +181,13 @@ public class ExcelManager {
 	}
 
 	Row columnHeader = getFirstNonEmptyRow(sheet);
-	columnHeader.cellIterator().forEachRemaining((Cell c) -> {
-	    if (c != null && !c.getStringCellValue().isEmpty()) {
+	Iterator<Cell> iterator = columnHeader.cellIterator();
+	for (int i = 0; i < columnHeader.getFirstCellNum(); i++) {
+	    iterator.next();
+	}
+
+	iterator.forEachRemaining((Cell c) -> {
+	    if (c != null) {
 		columnHeaders.get(sheet).add(c.getStringCellValue());
 	    }
 	});
@@ -191,7 +200,7 @@ public class ExcelManager {
 	    if (r == null) {
 		continue;
 	    }
-	    if (!r.getCell(r.getFirstCellNum()).getStringCellValue().isEmpty()) {
+	    if (!r.getCell(r.getFirstCellNum()).getStringCellValue().isEmpty() || !r.getCell(r.getFirstCellNum() + 1).getStringCellValue().isEmpty()) {
 		return r;
 	    }
 	}
@@ -213,7 +222,12 @@ public class ExcelManager {
 
 	    ExcelData data = new ExcelData();
 
-	    for (int column = 0; column < r.getLastCellNum(); column++) {
+	    int first = r.getFirstCellNum();
+	    while (r.getCell(first).getCellType() == Cell.CELL_TYPE_STRING && (r.getCell(first).getStringCellValue() == null || r.getCell(first).getStringCellValue().isEmpty())) {
+		first++;
+	    }
+
+	    for (int column = first; column < r.getLastCellNum(); column++) {
 		Cell c = r.getCell(column);
 
 		if (c == null) {
@@ -222,10 +236,10 @@ public class ExcelManager {
 
 		switch (c.getCellType()) {
 		    case Cell.CELL_TYPE_STRING:
-			data.setData(column, c.getStringCellValue());
+			data.setData(column - first, c.getStringCellValue());
 			break;
 		    case Cell.CELL_TYPE_NUMERIC:
-			data.setData(column, String.valueOf(c.getNumericCellValue()));
+			data.setData(column - first, String.valueOf(c.getNumericCellValue()));
 			break;
 		}
 	    }

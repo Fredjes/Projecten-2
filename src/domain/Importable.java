@@ -2,6 +2,7 @@ package domain;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import persistence.Repository;
 
 /**
@@ -22,6 +23,8 @@ public interface Importable<E> {
      * @return
      */
     <P extends E> Map<String, BiConsumer<String, P>> createHeaderList();
+    
+    Map<String, Predicate<String>> createHeaderAssignmentList();
 
     /**
      * Something that can be imported must be able to be saved, this method
@@ -29,5 +32,5 @@ public interface Importable<E> {
      *
      * @return
      */
-    Repository<E> getRepository();
+    Repository getRepository();
 }

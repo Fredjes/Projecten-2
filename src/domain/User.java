@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -235,5 +236,53 @@ public class User implements Serializable, Searchable, Importable<User> {
     @Override
     public Repository getRepository() {
 	return UserRepository.getInstance();
+    }
+    
+    @Override
+    public Map<String, Predicate<String>> createHeaderAssignmentList() {
+	Map<String, Predicate<String>> map = new HashMap<>();
+	map.put("Klas", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "klas", "lokaal");
+	    }
+	});
+	map.put("E-mail", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsIgnoreCase(t, "mail");
+	    }
+	});
+	map.put("Voornaam/Naam", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsIgnoreCase(t, "voornaam") || t.equalsIgnoreCase("naam");
+	    }
+	});
+	map.put("Achternaam", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsIgnoreCase(t, "achternaam");
+	    }
+	});
+	map.put("Wachtwoord", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "wachtwoord", "paswoord", "passwoord", "password");
+	    }
+	});
+	map.put("Stamboeknummer", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "stamboeknummer", "register");
+	    }
+	});
+	return map;
     }
 }

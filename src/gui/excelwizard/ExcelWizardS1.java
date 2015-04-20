@@ -1,6 +1,7 @@
 package gui.excelwizard;
 
 import domain.excel.ExcelManager;
+import domain.excel.ExcelManager.Destination;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
 import gui.controls.ExcelEntry;
@@ -119,17 +120,17 @@ public class ExcelWizardS1 extends BorderPane {
 
 	if (hasNext()) {
 	    ExcelWizardS2 n = next();
-	    
+
 	    if (isLastBeforeLoad()) {
 		n.setNextButtonText("Importeren");
 	    } else {
 		n.setNextButtonText("Volgende");
 	    }
-	    
+
 	    n.loadData();
 	    switcher.setScreen(n);
 	} else {
-	    
+
 	    switcher.setScreen(loadingScreen);
 	    switcher.setNavigationAllowed(false);
 	    ExcelManager.getInstance().setOnImportFinished(() -> switcher.setNavigationAllowed(true));
@@ -152,8 +153,8 @@ public class ExcelWizardS1 extends BorderPane {
 	    contentScreens.add(new ExcelWizardS2(this, switcher, id++));
 	}
     }
-    
-    public List<ExcelWizardS2> getContentScreens(){
+
+    public List<ExcelWizardS2> getContentScreens() {
 	return contentScreens;
     }
 
@@ -180,7 +181,13 @@ public class ExcelWizardS1 extends BorderPane {
     }
 
     private ExcelWizardS2 next() {
-	return contentScreens.get(++currentIndex);
+	ExcelWizardS2 next = contentScreens.get(++currentIndex);
+
+	while (currentIndex < contentScreens.size() - 1 && ExcelManager.getInstance().getEntry(contentScreens.get(currentIndex + 1).getExcelId()).getDestination() == Destination.UNKNOWN) {
+	    currentIndex++;
+	}
+
+	return next;
     }
 
     private ExcelWizardS2 previous() {

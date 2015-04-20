@@ -3,6 +3,7 @@ package gui.excelwizard;
 import domain.AssignableTableColumn;
 import domain.ExcelData;
 import domain.excel.ExcelManager;
+import domain.excel.ExcelManager.Destination;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -73,6 +75,14 @@ public class ExcelWizardS2 extends BorderPane {
      * selected
      */
     public void setHeaderList(Collection<String> properties) {
+	if (!properties.contains("")) {
+	    try {
+		properties.add("");
+	    } catch (UnsupportedOperationException uoex) {
+		// in case of Collections.EMPTY_SET, in which a blank field isn't necessary
+	    }
+	}
+
 	headers.setAll(properties);
     }
 
@@ -82,6 +92,28 @@ public class ExcelWizardS2 extends BorderPane {
 	    IntStream.range(0, columnCount).forEach(i -> columns.put(i, new AssignableTableColumn(i, headers)));
 	    content.getColumns().setAll(columns.values());
 	}
+
+	predictColumnNames();
+    }
+
+    private void predictColumnNames() {
+	if (ExcelManager.getInstance().getEntry(id).getDestination() == Destination.UNKNOWN) {
+	    return;
+	}
+
+	final Map<String, Predicate<String>> predictionPredicates = ExcelManager.getInstance().getEntry(id).getDestination().getEntityCreator().get().createHeaderAssignmentList();
+	List<String> excelHeaders = ExcelManager.getInstance().getColumnHeaders(ExcelManager.getInstance().getSheetById(id));
+
+	columns.forEach((i, c) -> {
+	    if (excelHeaders.size() > i) {
+		String excelHeader = excelHeaders.get(i);
+		predictionPredicates.forEach((s, p) -> {
+		    if (p.test(excelHeader)) {
+			c.select(s);
+		    }
+		});
+	    }
+	});
     }
 
     public void addRows(Collection<ExcelData> data) {
@@ -102,18 +134,23 @@ public class ExcelWizardS2 extends BorderPane {
 	columns.forEach((k, v) -> map.put(k, v.getSelectedItem()));
 	return map;
     }
-    
-    public List<ExcelData> getRows(){
+
+    public List<ExcelData> getRows() {
 	return content.getItems();
     }
 
+    private boolean loaded = false;
+
     public void loadData() {
-	XSSFSheet sheet = ExcelManager.getInstance().getSheetById(id);
-	addRows(ExcelManager.getInstance().getExcelData(sheet));
-	setHeaderList(ExcelManager.getInstance().getEntry(id).getDestination().getHeaderList());
+	if (!loaded) {
+	    XSSFSheet sheet = ExcelManager.getInstance().getSheetById(id);
+	    setHeaderList(ExcelManager.getInstance().getEntry(id).getDestination().getHeaderList());
+	    addRows(ExcelManager.getInstance().getExcelData(sheet));
+	    loaded = true;
+	}
     }
 
-    public int getExcelId(){
+    public int getExcelId() {
 	return this.id;
     }
 }
