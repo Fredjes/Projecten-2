@@ -102,6 +102,7 @@ public class ExcelWizardS1 extends BorderPane {
 
     public void onEntryRemoved(ExcelEntry entry) {
 	ExcelManager.getInstance().removeEntry(entry);
+	contentScreens.removeIf(cs -> ExcelManager.getInstance().getEntry(cs.getExcelId()) == entry);
     }
 
     @FXML
@@ -130,10 +131,14 @@ public class ExcelWizardS1 extends BorderPane {
 	    n.loadData();
 	    switcher.setScreen(n);
 	} else {
-
 	    switcher.setScreen(loadingScreen);
 	    switcher.setNavigationAllowed(false);
-	    ExcelManager.getInstance().setOnImportFinished(() -> switcher.setNavigationAllowed(true));
+	    ExcelManager.getInstance().setOnImportFinished(() -> {
+		switcher.setNavigationAllowed(true);
+		contentScreens.clear();
+		currentIndex = -1;
+	    });
+	    
 	    loadingScreen.startImport();
 	}
     }

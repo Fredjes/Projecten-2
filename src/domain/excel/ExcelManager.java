@@ -271,6 +271,9 @@ public class ExcelManager {
     }
 
     public void importComplete() {
+	entries.clear();
+	excelDataPerSheet.clear();
+	columnHeaders.clear();
 	importFinished.run();
     }
 
