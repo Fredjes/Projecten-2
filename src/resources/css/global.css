@@ -368,16 +368,6 @@
 
 }
 
-.icon-book {
-    -fx-text-fill: #333;
-    -fx-font-size: 14px;
-}
-
-.icon-book-text {
-    -fx-text-fill: #333;
-    -fx-font-size: 12px;
-}
-
 .icon:hover {
     -fx-border-style: solid;
     -fx-border-width: 1px;

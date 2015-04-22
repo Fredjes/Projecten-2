@@ -42,7 +42,7 @@ public class UserManagement extends BorderPane {
     private Label iconSave;
 
     @FXML
-    private Button saveButton, addButton, removeButton;
+    private Button addButton, removeButton;
 
     private DetailViewUser detailViewUser;
 
@@ -97,7 +97,6 @@ public class UserManagement extends BorderPane {
         filteredList = new FilteredList<>(UserRepository.getInstance().getUsers());
         userList.setCellFactory(UserManagementListItemCell.forListView());
         detailViewUser = new DetailViewUser();
-        setIcons();
         onSearchQuery();
         userList.setItems(filteredList);
         userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
@@ -109,25 +108,5 @@ public class UserManagement extends BorderPane {
                 Platform.runLater(() -> super.setBottom(detailViewUser));
             }
         });
-    }
-
-    private void setIcons() {
-        // Mouse events for triggering button hover when hovering over the icon
-        iconSave.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
-            saveButton.fireEvent(event);
-        });
-        iconSave.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
-            saveButton.fireEvent(event);
-        });
-
-        // Setting icons for the buttons
-        Icon i = IconConfig.getIconFor("icon-save");
-        iconSave.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-add");
-        addButton.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-delete");
-        removeButton.setText(i.getIcon());
     }
 }

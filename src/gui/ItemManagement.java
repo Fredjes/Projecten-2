@@ -8,14 +8,13 @@ import domain.DragCommand;
 import domain.Dvd;
 import domain.FilterOption;
 import domain.Game;
-import domain.Icon;
-import domain.IconConfig;
 import domain.Item;
 import domain.SearchPredicate;
 import domain.StoryBag;
 import domain.User;
 import domain.controllers.ItemManagementController;
 import gui.dialogs.PopupUtil;
+import java.util.function.Consumer;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
@@ -24,17 +23,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -60,12 +58,6 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     private StackPane contentStackPane;
-
-    @FXML
-    private Label iconAll, iconBook, iconGame, iconCd, iconDvd, iconStory, iconSave;
-
-    @FXML
-    private Button bookButton, gameButton, cdButton, dvdButton, storyButton;
 
     @FXML
     private Button saveButton;
@@ -100,7 +92,6 @@ public class ItemManagement extends BorderPane {
         searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
         itemList.setCellFactory(ItemManagementListItemCell.forListView());
         itemList.setItems(filteredList);
-        setIcons();
 	this.controller = controller;
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
@@ -108,6 +99,13 @@ public class ItemManagement extends BorderPane {
 	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
 	itemList.setCellFactory(ItemManagementListItemCell.forListView());
 	itemList.setItems(filteredList);
+	Consumer<Button> buttonLayout = b -> {
+	    b.setPadding(new Insets(7, 0, 7, 15));
+	    b.setGraphicTextGap(20);
+	};
+	
+	buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
+	buttonLayout.accept(saveButton);
 
 	// Show temporary loading indicator
 	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
@@ -161,76 +159,6 @@ public class ItemManagement extends BorderPane {
         });
 
         updateList();
-    }
-
-    /**
-     * Sets all icons for the buttons
-     */
-    private void setIcons() {
-
-        // Mouse events for triggering button hover when hovering over the icon
-        iconBook.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
-            bookButton.fireEvent(event);
-        });
-        iconBook.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
-            bookButton.fireEvent(event);
-        });
-
-        iconGame.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
-            gameButton.fireEvent(event);
-        });
-        iconGame.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
-            gameButton.fireEvent(event);
-        });
-
-        iconCd.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
-            cdButton.fireEvent(event);
-        });
-        iconCd.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
-            cdButton.fireEvent(event);
-        });
-
-        iconDvd.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
-            dvdButton.fireEvent(event);
-        });
-        iconDvd.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
-            dvdButton.fireEvent(event);
-        });
-
-        iconStory.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
-            storyButton.fireEvent(event);
-        });
-        iconStory.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
-            storyButton.fireEvent(event);
-        });
-
-        // Setting icons for the buttons
-        Icon i = IconConfig.getIconFor("icon-all");
-        iconAll.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-book");
-        iconBook.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-game");
-        iconGame.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-cd");
-        iconCd.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-dvd");
-        iconDvd.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-story");
-        iconStory.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-save");
-        iconSave.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-delete");
-        removeButton.setText(i.getIcon());
-
-        i = IconConfig.getIconFor("icon-add");
-        addButton.setText(i.getIcon());
     }
 
     private void updateDetailView() {
