@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox spacing="10.0" styleClass="white" BorderPane.alignment="CENTER">
          <children>
@@ -71,11 +71,15 @@
                   </VBox>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <ScrollPane fx:id="listScroller" fitToHeight="true" fitToWidth="true" focusTraversable="false" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-                           <content>
-                              <ListView fx:id="itemList" fixedCellSize="105.0" focusTraversable="false" />
-                           </content>
-                        </ScrollPane>
+                        <StackPane fx:id="contentStackPane" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                           <children>
+                              <ScrollPane fx:id="listScroller" fitToHeight="true" fitToWidth="true" focusTraversable="false" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <ListView fx:id="itemList" fixedCellSize="105.0" focusTraversable="false" />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </StackPane>
                         <HBox fx:id="listCommands" alignment="CENTER_LEFT" minHeight="50.0" minWidth="0.0" spacing="10.0" style="-fx-border-color: #C8C8C8; -fx-border-width: 1px;" VBox.vgrow="NEVER">
                            <padding>
                               <Insets left="5.0" />

@@ -4,11 +4,18 @@ import domain.SearchPredicate;
 import domain.User;
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import persistence.ItemRepository;
 import persistence.UserRepository;
 
 /**
@@ -22,6 +29,9 @@ public class UserManagement extends BorderPane {
 
     @FXML
     private TextField searchBar;
+    
+    @FXML
+    private StackPane contentStackPane;
 
     private DetailViewUser detailViewUser;
 
@@ -87,5 +97,24 @@ public class UserManagement extends BorderPane {
 		Platform.runLater(() -> super.setBottom(detailViewUser));
 	    }
 	});
+	
+	// Show temporary loading indicator
+	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
+	loadingIndicator.setMaxWidth(50);
+	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
+	contentStackPane.getChildren().add(loadingIndicator);
+	if (filteredList.size() == 0) {
+	    Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
+	    final BooleanProperty prop = new SimpleBooleanProperty(false);
+	    filteredList.addListener((Observable obs) -> {
+		if (!prop.get()) {
+		    prop.set(true);
+		} else {
+		    removeIndicator.run();
+		}
+	    });
+	    UserRepository.getInstance().addSyncListener(removeIndicator);
+	}
+	// End code loading indicator
     }
 }
