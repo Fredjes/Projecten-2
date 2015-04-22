@@ -2,6 +2,9 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.Access;
@@ -76,5 +79,24 @@ public class StoryBag extends Item implements Serializable {
 	}
 
 	return false;
+    }
+
+    @Override
+    public Map<String, BiConsumer<String, StoryBag>> createHeaderList() {
+	return super.createHeaderList();
+    }
+    
+    @Override
+    public Map<String, Predicate<String>> createHeaderAssignmentList() {
+	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
+	final Predicate<String> original = map.get("Titel");
+	map.put("Titel", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return original.test(t) || SearchPredicate.containsAnyIgnoreCase(t, "verteltas", "tas");
+	    }
+	});
+	return map;
     }
 }

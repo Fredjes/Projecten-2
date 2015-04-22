@@ -90,6 +90,19 @@
 
 .white{
     -fx-background-color: white;
+    //-fx-background-image: url(/resources/gui/img/bg.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
+    -fx-background-position: center;
+}
+
+.centerGlow {
+    //-fx-background-size: cover;
+    //-fx-background-position: center;
+    //-fx-background-color: radial-gradient(center 50% 50%, radius 300px, gray, transparent);
+    
+    //-fx-padding: 40;
+    //-fx-background-color:  radial-gradient(center 50% 50%, radius 50%, rgba(255,255,255,100) 25%,transparent 10%);
 }
 
 .tile:hover, .clickable:hover{
@@ -477,11 +490,35 @@
     -fx-font-family: "FontAwesome";
 }
 
+.icon-close {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-font-family: "FontAwesome";
+    -fx-text-fill: #FA3E48;
+    -fx-background-color: transparent;
+    -fx-border-style: null;
+    -fx-border-width: 0px;
+    -fx-padding: 0 0 0 0;
+}
+
+.icon-close:hover {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-font-family: "FontAwesome";
+    -fx-text-fill: derive(#FA3E48, 30%);
+    -fx-background-color: transparent;
+    -fx-border-style: null;
+    -fx-border-width: 0px;
+}
+
 .hand {
     -fx-cursor: hand;
 }
 
-/* ############ PAGINATION ############ */
+.excel-entry {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-effect: dropshadow(gaussian, #666, 10, 0.001, 0, 0);
+}
 
 .pagination{
     -fx-base: #90CC18;
@@ -495,4 +532,8 @@
 }
 .pagination .label {
     -fx-text-fill:white;
+}
+.transparent-scrollpane, .transparent-scrollpane .viewport {
+    -fx-focus-traversable: false;
+    -fx-background-color: transparent;
 }

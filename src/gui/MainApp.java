@@ -31,7 +31,7 @@ public class MainApp extends Application {
 
 	Font.loadFont(getClass().getResourceAsStream("/resources/fonts/FontAwesome.otf"), 14);
 	ScreenSwitcher switcher = new ScreenSwitcher();
-	switcher.openMainMenu();
+	switcher.openItemManagement();
 	primaryStage.setTitle("De Lettertuin");
 	primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/resources/gui/img/logo_krekel.png")));
 	Scene scene = new Scene(switcher);

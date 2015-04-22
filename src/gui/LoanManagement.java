@@ -9,14 +9,21 @@ import domain.controllers.LoanManagementListItemController;
 import gui.dialogs.PopupUtil;
 import java.util.Calendar;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import persistence.ItemRepository;
 import persistence.LoanRepository;
 
 /**
@@ -36,6 +43,9 @@ public class LoanManagement extends BorderPane {
 
     @FXML
     private TextField searchBar;
+
+    @FXML
+    private StackPane contentStackPane;
 
     private boolean displayAll = false;
 
@@ -78,6 +88,33 @@ public class LoanManagement extends BorderPane {
 
         i = IconConfig.getIconFor("icon-return");
         iconReturn.setText(i.getIcon());
+	FXUtil.loadFXML(this, "loan_management");
+	this.controller = controller;
+	predicate = new SearchPredicate(Loan.class, "");
+	predicate.searchQueryProperty().bind(searchBar.textProperty());
+	filteredList = new FilteredList<>(LoanRepository.getInstance().getLoans());
+	loanList.setCellFactory(LoanManagementListItemCell.forListView());
+	onSearchQuery();
+	loanList.setItems(filteredList);
+
+	// Show temporary loading indicator
+	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
+	loadingIndicator.setMaxWidth(50);
+	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
+	contentStackPane.getChildren().add(loadingIndicator);
+	if (filteredList.size() == 0) {
+	    Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
+	    final BooleanProperty prop = new SimpleBooleanProperty(false);
+	    filteredList.addListener((Observable obs) -> {
+		if (!prop.get()) {
+		    prop.set(true);
+		} else {
+		    removeIndicator.run();
+		}
+	    });
+	    LoanRepository.getInstance().addSyncListener(removeIndicator);
+	}
+	// End code loading indicator
     }
 
     @FXML

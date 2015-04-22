@@ -21,7 +21,7 @@ import javax.persistence.RollbackException;
  *
  * @author Brent
  */
-public class UserRepository extends Repository {
+public class UserRepository extends Repository<User> {
 
     private static UserRepository INSTANCE;
 

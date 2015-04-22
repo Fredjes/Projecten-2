@@ -2,6 +2,9 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -86,5 +89,38 @@ public class Cd extends Item implements Serializable {
 	}
 
 	return true;
+    }
+
+    @Override
+    public Map<String, BiConsumer<String, Cd>> createHeaderList() {
+	Map<String, BiConsumer<String, Cd>> map = super.createHeaderList();
+	map.put("Artiest", new BiConsumer<String, Cd>() {
+
+	    public void accept(String d, Cd c) {
+		c.setArtist(d);
+	    }
+	});
+	return map;
+    }
+
+    @Override
+    public Map<String, Predicate<String>> createHeaderAssignmentList() {
+	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
+	map.put("Artiest", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "artiest", "zanger", "zangeres", "persoon");
+	    }
+	});
+	final Predicate<String> original = map.get("Titel");
+	map.put("Titel", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return original.test(t) || SearchPredicate.containsIgnoreCase(t, "cd");
+	    }
+	});
+	return map;
     }
 }

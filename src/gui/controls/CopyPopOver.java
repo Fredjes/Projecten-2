@@ -102,7 +102,7 @@ public class CopyPopOver extends BorderPane {
 
 	Loan loan = new Loan(backedCopy, selectedUser);
 
-	LoanRepository.getInstance().addLoan(loan);
+	LoanRepository.getInstance().add(loan);
 	LoanRepository.getInstance().saveChanges();
 
 	if (onStartLoan != null) {

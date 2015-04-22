@@ -23,7 +23,7 @@ import javax.persistence.EntityManager;
  *
  * @author Brent
  */
-public class ItemRepository extends Repository {
+public class ItemRepository extends Repository<Item> {
 
     private static ItemRepository INSTANCE;
 
@@ -69,13 +69,15 @@ public class ItemRepository extends Repository {
 	return INSTANCE;
     }
 
+    @Override
     public void add(Item item) {
 	items.add(item);
     }
 
-    public boolean remove(Item item) {
+    @Override
+    public void remove(Item item) {
 	deletedElements.add(item);
-	return items.remove(item);
+	items.remove(item);
     }
 
     public void add(ItemCopy itemCopy) {
@@ -133,7 +135,7 @@ public class ItemRepository extends Repository {
 		manager.getTransaction().begin();
 
 		items.forEach(item -> {
-		    if (item.getName() == null || item.getName().isEmpty()) {
+		    if ((item.getName() == null || item.getName().isEmpty()) && (item.getDescription() == null || item.getDescription().isEmpty()) && item.getThemes().isEmpty() && (item.getAgeCategory() == null || item.getAgeCategory().isEmpty())) {
 			return;
 		    }
 

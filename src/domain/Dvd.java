@@ -2,6 +2,9 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -60,5 +63,38 @@ public class Dvd extends Item implements Serializable {
 	}
 
 	return true;
+    }
+
+    @Override
+    public Map<String, BiConsumer<String, Dvd>> createHeaderList() {
+	Map<String, BiConsumer<String, Dvd>> map = super.createHeaderList();
+	map.put("Regisseur", new BiConsumer<String, Dvd>() {
+
+	    public void accept(String da, Dvd dv) {
+		dv.setDirector(da);
+	    }
+	});
+	return map;
+    }
+
+    @Override
+    public Map<String, Predicate<String>> createHeaderAssignmentList() {
+	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
+	map.put("Regisseur", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "regisseur", "producer", "ontwikkelaar");
+	    }
+	});
+	final Predicate<String> original = map.get("Titel");
+	map.put("Titel", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return original.test(t) || SearchPredicate.containsIgnoreCase(t, "dvd");
+	    }
+	});
+	return map;
     }
 }

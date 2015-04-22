@@ -4,7 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,6 +35,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import persistence.ItemRepository;
+import persistence.Repository;
 
 /**
  * Represents the definition of every item stored, containing all shared
@@ -43,8 +50,8 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Item implements Serializable, Searchable {
-    
+public abstract class Item implements Serializable, Searchable, Importable<Item> {
+
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
     private final ObservableList<String> theme = FXCollections.observableArrayList();
@@ -60,92 +67,92 @@ public abstract class Item implements Serializable, Searchable {
     }
 
     public Item(String name, String description, List<String> theme, String ageCategory) {
-        setThemes(theme);
-        setAgeCategory(ageCategory);
-        setName(name);
-        setDescription(description);
+	setThemes(theme);
+	setAgeCategory(ageCategory);
+	setName(name);
+	setDescription(description);
     }
 
     @Transient
     public ObservableList<String> getThemeFX() {
-        return theme;
+	return theme;
     }
 
     @Transient
     public ObservableList<ItemCopy> getObservableItemCopies() {
-        return itemCopies;
+	return itemCopies;
     }
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     public List<ItemCopy> getItemCopies() {
-        return itemCopies;
+	return itemCopies;
     }
 
     public void setItemCopies(List<ItemCopy> itemCopies) {
-        this.itemCopies.setAll(itemCopies);
+	this.itemCopies.setAll(itemCopies);
     }
 
     public StringProperty nameProperty() {
-        return name;
+	return name;
     }
 
     public StringProperty descriptionProperty() {
-        return description;
+	return description;
     }
 
     public StringProperty ageCategoryProperty() {
-        return ageCategory;
+	return ageCategory;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
-        return id;
+	return id;
     }
 
     public void setId(int id) {
-        this.id = id;
+	this.id = id;
     }
 
     @ElementCollection
     public List<String> getThemes() {
-        return theme;
+	return theme;
     }
 
     public void setThemes(List<String> theme) {
-        this.theme.setAll(theme);
+	this.theme.setAll(theme);
     }
 
     public String getAgeCategory() {
-        return ageCategory.get();
+	return ageCategory.get();
     }
 
     public void setAgeCategory(String ageCategory) {
-        this.ageCategory.set(ageCategory);
+	this.ageCategory.set(ageCategory);
     }
 
     public String getName() {
-        return name.get();
+	return name.get();
     }
 
     public void setName(String name) {
-        this.name.set(name);
+	this.name.set(name);
     }
 
     @Column(length = 15000)
     public String getDescription() {
-        return description.get();
+	return description.get();
     }
 
     public void setDescription(String description) {
-        this.description.set(description);
+	this.description.set(description);
     }
 
     @Lob
     public byte[] getImage() {
-        if (image.get() == null) {
-            return new byte[0];
-        }
+	if (image.get() == null) {
+	    return new byte[0];
+	}
 
 	try {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -158,84 +165,91 @@ public abstract class Item implements Serializable, Searchable {
     }
 
     public void setImage(byte[] bytes) {
-        if (bytes.length == 0) {
-            return;
-        }
+	if (bytes.length == 0) {
+	    return;
+	}
 
-        try {
-            image.set(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(bytes)), null));
-        } catch (IOException ex) {
-            System.err.println("Could not load image-data: " + ex.getMessage());
-        }
+	try {
+	    image.set(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(bytes)), null));
+	} catch (IOException ex) {
+	    System.err.println("Could not load image-data: " + ex.getMessage());
+	}
     }
 
     @Transient
     public Image getFXImage() {
-        return image.get();
+	return image.get();
     }
 
     public void setFXImage(Image i) {
-        this.image.set(i);
+	this.image.set(i);
     }
 
     public ObjectProperty<Image> imageProperty() {
-        return image;
+	return image;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
-        return hash;
+	int hash = 5;
+	hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
+	return hash;
     }
 
     @Override
     public String toString() {
-        return getName();
+	return getName();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        if (this != obj) {
-            return false;
-        }
-        final Item other = (Item) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	if (this != obj) {
+	    return false;
+	}
+	final Item other = (Item) obj;
+	if (this.id != other.id) {
+	    return false;
+	}
+	return true;
     }
 
     @Override
     public boolean test(String query) {
-        for (String t : query.split("\\s+")) {
-            boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
-                    || SearchPredicate.containsIgnoreCase(getDescription(), t)
-                    || SearchPredicate.containsIgnoreCase(getName(), t);
+	outer:
+	for (String t : query.split("\\s+")) {
+	    boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)
+		    || SearchPredicate.containsIgnoreCase(getDescription(), t)
+		    || SearchPredicate.containsIgnoreCase(getName(), t);
 
-            if (!temp) {
-                boolean found = false;
+	    if (!temp) {
+		boolean found = false;
 
-                for (ItemCopy copy : getItemCopies()) {
-                    if (SearchPredicate.containsIgnoreCase(copy.getCopyNumber(), t)) {
-                        found = true;
-                        break;
-                    }
-                }
+		for (String theme : getThemes()) {
+		    if (SearchPredicate.containsIgnoreCase(theme, t)) {
+			continue outer;
+		    }
+		}
 
-                if (!found) {
-                    return false;
-                }
-            }
-        }
+		for (ItemCopy copy : getItemCopies()) {
+		    if (SearchPredicate.containsIgnoreCase(copy.getCopyNumber(), t)) {
+			found = true;
+			break;
+		    }
+		}
 
-        return true;
+		if (!found) {
+		    return false;
+		}
+	    }
+	}
+
+	return true;
     }
 
     public boolean testNoCopies(String query) {
@@ -253,18 +267,99 @@ public abstract class Item implements Serializable, Searchable {
     }
 
     public static String getCodePrefixFor(Item item) {
-        if (item instanceof Book) {
-            return "B";
-        } else if (item instanceof Dvd) {
-            return "D";
-        } else if (item instanceof Cd) {
-            return "C";
-        } else if (item instanceof Game) {
-            return "S";
-        } else if (item instanceof StoryBag) {
-            return "V";
-        }
+	if (item instanceof Book) {
+	    return "B";
+	} else if (item instanceof Dvd) {
+	    return "D";
+	} else if (item instanceof Cd) {
+	    return "C";
+	} else if (item instanceof Game) {
+	    return "S";
+	} else if (item instanceof StoryBag) {
+	    return "V";
+	}
 
-        throw new IllegalStateException("unknown item-type");
+	throw new IllegalStateException("unknown item-type");
+    }
+
+    @Override
+    public <E extends Item> Map<String, BiConsumer<String, E>> createHeaderList() {
+	HashMap<String, BiConsumer<String, E>> map = new HashMap<>();
+	map.put("Leeftijd", new BiConsumer<String, E>() {
+
+	    @Override
+	    public void accept(String t, E u) {
+		u.setAgeCategory(t);
+	    }
+	});
+
+	map.put("Omschrijving", new BiConsumer<String, E>() {
+
+	    @Override
+	    public void accept(String t, E u) {
+		if (u.getDescription() == null || u.getDescription().isEmpty()) {
+		    u.setDescription(t);
+		} else {
+		    u.setDescription(u.getDescription() + (u.getDescription().matches("\\.$") ? " " : ". ") + t);
+		}
+	    }
+	});
+
+	map.put("Titel", new BiConsumer<String, E>() {
+
+	    @Override
+	    public void accept(String t, E u) {
+		u.setName(t);
+	    }
+	});
+
+	map.put("Thema's", new BiConsumer<String, E>() {
+
+	    @Override
+	    public void accept(String t, E u) {
+		u.setThemes(Arrays.asList(t.split(".,:+-")));
+	    }
+	});
+
+	return map;
+    }
+
+    @Override
+    public Repository getRepository() {
+	return ItemRepository.getInstance();
+    }
+
+    @Override
+    public Map<String, Predicate<String>> createHeaderAssignmentList() {
+	Map<String, Predicate<String>> headerAssignmentList = new HashMap<>();
+	headerAssignmentList.put("Leeftijd", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "leeftijd", "ouderdom");
+	    }
+	});
+	headerAssignmentList.put("Omschrijving", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "omschrijving", "uitleg", "inhoud");
+	    }
+	});
+	headerAssignmentList.put("Titel", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "titel", "naam");
+	    }
+	});
+	headerAssignmentList.put("Thema's", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "thema", "genre");
+	    }
+	});
+	return headerAssignmentList;
     }
 }

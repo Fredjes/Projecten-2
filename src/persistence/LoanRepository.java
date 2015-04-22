@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
  *
  * @author Frederik De Smedt
  */
-public class LoanRepository extends Repository {
+public class LoanRepository extends Repository<Loan> {
 
     private final ObservableList<Loan> loans = FXCollections.observableArrayList();
     private List<Loan> removedLoans = new ArrayList<>();
@@ -53,12 +53,12 @@ public class LoanRepository extends Repository {
 	t.start();
     }
 
-    public void removeLoan(Loan l) {
+    public void remove(Loan l) {
 	loans.remove(l);
 	removedLoans.add(l);
     }
 
-    public void addLoan(Loan l) {
+    public void add(Loan l) {
 	loans.add(l);
     }
 
@@ -127,10 +127,10 @@ public class LoanRepository extends Repository {
 	Loan loan3 = new Loan(ItemRepository.getInstance().getItemCopies().get(2), UserRepository.getInstance().getUsers().get(2));
 	Loan loan4 = new Loan(ItemRepository.getInstance().getItemCopies().get(3), UserRepository.getInstance().getUsers().get(2));
 
-	LoanRepository.getInstance().addLoan(loan);
-	LoanRepository.getInstance().addLoan(loan2);
-	LoanRepository.getInstance().addLoan(loan3);
-	LoanRepository.getInstance().addLoan(loan4);
+	LoanRepository.getInstance().add(loan);
+	LoanRepository.getInstance().add(loan2);
+	LoanRepository.getInstance().add(loan3);
+	LoanRepository.getInstance().add(loan4);
 
 	LoanRepository.getInstance().saveChanges();
     }

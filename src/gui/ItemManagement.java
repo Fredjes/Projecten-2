@@ -17,14 +17,19 @@ import domain.User;
 import domain.controllers.ItemManagementController;
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
@@ -33,6 +38,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import persistence.ItemRepository;
 import persistence.UserRepository;
@@ -51,6 +57,9 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     private ListView<Item> itemList;
+
+    @FXML
+    private StackPane contentStackPane;
 
     @FXML
     private Label iconAll, iconBook, iconGame, iconCd, iconDvd, iconStory, iconSave;
@@ -92,6 +101,32 @@ public class ItemManagement extends BorderPane {
         itemList.setCellFactory(ItemManagementListItemCell.forListView());
         itemList.setItems(filteredList);
         setIcons();
+	this.controller = controller;
+	searchPredicate = new SearchPredicate();
+	FXUtil.loadFXML(this, "item_management");
+	filteredList = new FilteredList<>((ObservableList<Item>) ItemRepository.getInstance().getItems());
+	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
+	itemList.setCellFactory(ItemManagementListItemCell.forListView());
+	itemList.setItems(filteredList);
+
+	// Show temporary loading indicator
+	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
+	loadingIndicator.setMaxWidth(50);
+	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
+	contentStackPane.getChildren().add(loadingIndicator);
+	if (filteredList.size() == 0) {
+	    Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
+	    final BooleanProperty prop = new SimpleBooleanProperty(false);
+	    filteredList.addListener((Observable obs) -> {
+		if (!prop.get()) {
+		    prop.set(true);
+		} else {
+		    removeIndicator.run();
+		}
+	    });
+	    ItemRepository.getInstance().addSyncListener(removeIndicator);
+	}
+	// End code loading indicator
 
         itemList.setOnDragDetected(e -> {
             Dragboard db = itemList.startDragAndDrop(TransferMode.LINK);
@@ -302,16 +337,16 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     public void onSave() {
-        saveButton.setDisable(true);
+	saveButton.setDisable(true);
 
-        ItemRepository.getInstance().addSyncListener(() -> {
-            Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
-            updateList();
-        });
+	ItemRepository.getInstance().addSyncListener(() -> {
+	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
+	    updateList();
+	});
 
-        ItemRepository.getInstance().saveChanges();
-        PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
-        saveButton.setDisable(false);
+	ItemRepository.getInstance().saveChanges();
+	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
+	saveButton.setDisable(false);
     }
 
     @FXML

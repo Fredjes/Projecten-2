@@ -34,7 +34,11 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <ListView fx:id="loanList" fixedCellSize="105.0" focusTraversable="false" VBox.vgrow="ALWAYS" />
+                              <StackPane fx:id="contentStackPane" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <ListView fx:id="loanList" fixedCellSize="105.0" focusTraversable="false" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </StackPane>
                            </children>
                         </VBox>
                      </children>

@@ -2,6 +2,9 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -14,7 +17,7 @@ import javax.persistence.Entity;
  * @author Frederik De Smedt
  */
 @Entity
-@Access (AccessType.PROPERTY)
+@Access(AccessType.PROPERTY)
 public class Book extends Item implements Serializable {
 
     private StringProperty author = new SimpleStringProperty();
@@ -74,4 +77,58 @@ public class Book extends Item implements Serializable {
 
 	return true;
     }
+
+    @Override
+    public Map<String, BiConsumer<String, Book>> createHeaderList() {
+	Map<String, BiConsumer<String, Book>> temp = super.createHeaderList();
+
+	temp.put("Auteur", new BiConsumer<String, Book>() {
+
+	    public void accept(String d, Book b) {
+		b.setAuthor(d);
+	    }
+	});
+
+	temp.put("Uitgeverij", new BiConsumer<String, Book>() {
+
+	    public void accept(String d, Book b) {
+		b.setPublisher(d);
+	    }
+	});
+
+	return temp;
+    }
+
+    @Override
+    public Map<String, Predicate<String>> createHeaderAssignmentList() {
+	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
+	
+	map.put("Auteur", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "auteur", "schrijver", "maker");
+	    }
+	});
+	
+	final Predicate<String> original = map.get("Titel");
+	map.put("Titel", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return original.test(t) || SearchPredicate.containsIgnoreCase(t, "boek");
+	    }
+	});
+	
+	map.put("Uitgeverij", new Predicate<String>() {
+
+	    @Override
+	    public boolean test(String t) {
+		return SearchPredicate.containsAnyIgnoreCase(t, "uitgeverij", "bedrijf", "firma");
+	    }
+	});
+	
+	return map;
+    }
+
 }

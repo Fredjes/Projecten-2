@@ -6,14 +6,21 @@ import domain.SearchPredicate;
 import domain.User;
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import persistence.ItemRepository;
 import persistence.UserRepository;
 
 /**
@@ -27,6 +34,9 @@ public class UserManagement extends BorderPane {
 
     @FXML
     private TextField searchBar;
+    
+    @FXML
+    private StackPane contentStackPane;
 
     @FXML
     private Label iconSave;
