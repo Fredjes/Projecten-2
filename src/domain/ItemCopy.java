@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -52,7 +53,7 @@ public class ItemCopy implements Serializable, Searchable {
 	setDamage(d);
     }
 
-    @OneToMany(mappedBy = "itemCopy")
+    @OneToMany(mappedBy = "itemCopy", cascade = CascadeType.ALL)
     public List<Loan> getLoans() {
 	return this.loans;
     }
@@ -121,7 +122,7 @@ public class ItemCopy implements Serializable, Searchable {
 	this.item.set(i);
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     public Item getItem() {
 	return this.item.get();
     }

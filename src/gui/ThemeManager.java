@@ -156,7 +156,6 @@ public class ThemeManager {
     private static void addThemes(List<? extends String> themes) {
 	themes.forEach(t -> {
 	    if (!allThemesList.contains(t)) {
-		System.out.println("Adding " + t);
 		allThemesList.add(t);
 	    }
 	});
