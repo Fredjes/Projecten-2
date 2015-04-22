@@ -1,13 +1,18 @@
 package gui;
 
+import domain.Icon;
+import domain.IconConfig;
 import domain.SearchPredicate;
 import domain.User;
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import persistence.UserRepository;
 
@@ -23,6 +28,12 @@ public class UserManagement extends BorderPane {
     @FXML
     private TextField searchBar;
 
+    @FXML
+    private Label iconSave;
+
+    @FXML
+    private Button saveButton, addButton, removeButton;
+
     private DetailViewUser detailViewUser;
 
     private SearchPredicate predicate;
@@ -31,61 +42,82 @@ public class UserManagement extends BorderPane {
 
     @FXML
     public void onSearchQuery() {
-	filteredList.setPredicate(predicate::test);
+        filteredList.setPredicate(predicate::test);
     }
 
     @FXML
     public void onAdd() {
-	User user = new User();
-	UserRepository.getInstance().add(user);
-	searchBar.setText("");
-	user.setName(" ");
-	onSearchQuery();
-	user.setName("");
-	userList.getSelectionModel().select(user);
+        User user = new User();
+        UserRepository.getInstance().add(user);
+        searchBar.setText("");
+        user.setName(" ");
+        onSearchQuery();
+        user.setName("");
+        userList.getSelectionModel().select(user);
     }
 
     @FXML
     public void onRemove() {
-	if (!userList.getSelectionModel().isEmpty()) {
-	    int index = userList.getSelectionModel().getSelectedIndex();
-	    UserRepository.getInstance().remove(userList.getSelectionModel().getSelectedItem());
-	    if (index > 0) {
-		userList.getSelectionModel().select(index - 1);
-	    }
-	}
+        if (!userList.getSelectionModel().isEmpty()) {
+            int index = userList.getSelectionModel().getSelectedIndex();
+            UserRepository.getInstance().remove(userList.getSelectionModel().getSelectedItem());
+            if (index > 0) {
+                userList.getSelectionModel().select(index - 1);
+            }
+        }
     }
 
     @FXML
     public void onSave() {
-	final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
-	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
-	if (!saved) {
-	    saved = true;
-	    UserRepository.getInstance().addSyncListener(r);
-	    UserRepository.getInstance().saveChanges();
-	} else {
-	    r.run();
-	}
+        final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
+        PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
+        if (!saved) {
+            saved = true;
+            UserRepository.getInstance().addSyncListener(r);
+            UserRepository.getInstance().saveChanges();
+        } else {
+            r.run();
+        }
     }
 
     public UserManagement() {
-	FXUtil.loadFXML(this, "user_management");
-	predicate = new SearchPredicate(User.class, "");
-	predicate.searchQueryProperty().bind(searchBar.textProperty());
-	filteredList = new FilteredList<>(UserRepository.getInstance().getUsers());
-	userList.setCellFactory(UserManagementListItemCell.forListView());
-	detailViewUser = new DetailViewUser();
-	onSearchQuery();
-	userList.setItems(filteredList);
-	userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
-	    saved = false;
-	    if (nv == null) {
-		Platform.runLater(() -> super.setBottom(null));
-	    } else {
-		detailViewUser.bind(nv);
-		Platform.runLater(() -> super.setBottom(detailViewUser));
-	    }
-	});
+        FXUtil.loadFXML(this, "user_management");
+        predicate = new SearchPredicate(User.class, "");
+        predicate.searchQueryProperty().bind(searchBar.textProperty());
+        filteredList = new FilteredList<>(UserRepository.getInstance().getUsers());
+        userList.setCellFactory(UserManagementListItemCell.forListView());
+        detailViewUser = new DetailViewUser();
+        setIcons();
+        onSearchQuery();
+        userList.setItems(filteredList);
+        userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+            saved = false;
+            if (nv == null) {
+                Platform.runLater(() -> super.setBottom(null));
+            } else {
+                detailViewUser.bind(nv);
+                Platform.runLater(() -> super.setBottom(detailViewUser));
+            }
+        });
+    }
+
+    private void setIcons() {
+        // Mouse events for triggering button hover when hovering over the icon
+        iconSave.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
+            saveButton.fireEvent(event);
+        });
+        iconSave.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
+            saveButton.fireEvent(event);
+        });
+
+        // Setting icons for the buttons
+        Icon i = IconConfig.getIconFor("icon-save");
+        iconSave.setText(i.getIcon());
+
+        i = IconConfig.getIconFor("icon-add");
+        addButton.setText(i.getIcon());
+
+        i = IconConfig.getIconFor("icon-delete");
+        removeButton.setText(i.getIcon());
     }
 }

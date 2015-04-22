@@ -121,6 +121,7 @@
 }
 
 .btn-toolIcon {
+    -fx-font-family: "FontAwesome";
     -fx-font-size: 27px;
     -fx-padding: 0px 0px 0px 0px;
     -fx-min-width: 40px;
@@ -433,9 +434,19 @@
 
 /* ############ ICONS ############ */
 
+.icon {
+     -fx-font-family: "FontAwesome"; 
+     -fx-text-fill: #FFFFFF;
+     -fx-padding: 0 0 0 15px;
+}
+
+.icon:hover {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+}
+
 .icon-voorwerpen-beheren {
     -fx-font-family: "FontAwesome";
-
 }
 
 .icon-uitleningen-beheren {

@@ -43,18 +43,38 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                <children>
-                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#onReturnLoan" prefWidth="150.0" text="Terugbrengen">
-                     <styleClass>
-                        <String fx:value="btn" />
-                        <String fx:value="btn-green" />
-                     </styleClass>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#onRenewLoanPeriod" prefWidth="150.0" text="Verlengen">
-                     <styleClass>
-                        <String fx:value="btn" />
-                        <String fx:value="btn-blue" />
-                     </styleClass>
-                  </Button>
+                  <StackPane maxHeight="-Infinity">
+                     <children>
+                        <Button fx:id="returnButton" mnemonicParsing="false" onAction="#onReturnLoan" prefWidth="200.0" text="Terugbrengen">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="btn-green" />
+                           </styleClass>
+                        </Button>
+                        <Label fx:id="iconReturn" text="i" StackPane.alignment="CENTER_LEFT">
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="hand" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <StackPane maxHeight="-Infinity">
+                     <children>
+                        <Button fx:id="extendButton" mnemonicParsing="false" onAction="#onRenewLoanPeriod" prefWidth="200.0" text="Verlengen">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="btn-blue" />
+                           </styleClass>
+                        </Button>
+                        <Label fx:id="iconExtend" text="i" StackPane.alignment="CENTER_LEFT">
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="hand" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                  </StackPane>
                </children>
             </HBox>
          </children>

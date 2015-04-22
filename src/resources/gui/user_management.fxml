@@ -56,12 +56,22 @@
                         <String fx:value="text-red" />
                      </styleClass>
                   </Button>
-                  <Button focusTraversable="false" maxWidth="118.0" mnemonicParsing="false" onAction="#onSave" prefHeight="40.0" prefWidth="118.0" text="Opslaan">
-                     <styleClass>
-                        <String fx:value="btn" />
-                        <String fx:value="btn-lime" />
-                     </styleClass>
-                  </Button>
+                  <StackPane>
+                     <children>
+                        <Button fx:id="saveButton" focusTraversable="false" maxWidth="118.0" mnemonicParsing="false" onAction="#onSave" prefHeight="40.0" prefWidth="118.0" text="Opslaan">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="btn-lime" />
+                           </styleClass>
+                        </Button>
+                        <Label fx:id="iconSave" text="i" StackPane.alignment="CENTER_LEFT">
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="hand" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                  </StackPane>
                </children>
                <padding>
                   <Insets left="5.0" />

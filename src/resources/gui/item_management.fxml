@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox spacing="10.0" styleClass="white" BorderPane.alignment="CENTER">
          <children>
@@ -21,50 +21,121 @@
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="icon-search" text="Text" HBox.hgrow="NEVER" />
                            </children>
                         </HBox>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAll" text="Allemaal">
-                           <styleClass>
-                              <String fx:value="item-btn-selected" />
-                              <String fx:value="btn" />
-                           </styleClass>
-                        </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBoek" text="Boek">
-                           <styleClass>
-                              <String fx:value="item-btn" />
-                              <String fx:value="btn" />
-                           </styleClass>
-                        </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSpelletje" text="Spelletje">
-                           <styleClass>
-                              <String fx:value="btn" />
-                              <String fx:value="item-btn" />
-                           </styleClass>
-                        </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCd" text="CD">
-                           <styleClass>
-                              <String fx:value="btn" />
-                              <String fx:value="item-btn" />
-                           </styleClass>
-                        </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDvd" text="DVD">
-                           <styleClass>
-                              <String fx:value="item-btn" />
-                              <String fx:value="btn" />
-                           </styleClass>
-                        </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onStoryBag" text="Verteltas">
-                           <styleClass>
-                              <String fx:value="btn" />
-                              <String fx:value="item-btn" />
-                           </styleClass>
-                        </Button>
-                        <VBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                        <StackPane>
                            <children>
-                              <Button fx:id="saveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSave" text="Opslaan">
+                              <Button fx:id="allButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAll" text="Allemaal">
                                  <styleClass>
+                                    <String fx:value="item-btn-selected" />
                                     <String fx:value="btn" />
-                                    <String fx:value="btn-lime" />
                                  </styleClass>
                               </Button>
+                              <Label fx:id="iconAll" maxHeight="-Infinity" maxWidth="-Infinity" text="Icon" StackPane.alignment="CENTER_LEFT">
+                                 <styleClass>
+                                    <String fx:value="icon" />
+                                    <String fx:value="hand" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                        <StackPane>
+                           <children>
+                              <Button fx:id="bookButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBoek" text="Boek">
+                                 <styleClass>
+                                    <String fx:value="item-btn" />
+                                    <String fx:value="btn" />
+                                 </styleClass>
+                              </Button>
+                              <Label fx:id="iconBook" text="Icon" StackPane.alignment="CENTER_LEFT">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <styleClass>
+                                    <String fx:value="icon" />
+                                    <String fx:value="hand" />
+                                 </styleClass>
+                              </Label>
+                           </children>
+                        </StackPane>
+                        <StackPane>
+                           <children>
+                              <Button fx:id="gameButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSpelletje" text="Spelletje">
+                                 <styleClass>
+                                    <String fx:value="btn" />
+                                    <String fx:value="item-btn" />
+                                 </styleClass>
+                              </Button>
+                              <Label fx:id="iconGame" text="Icon" StackPane.alignment="CENTER_LEFT">
+                                 <styleClass>
+                                    <String fx:value="icon" />
+                                    <String fx:value="hand" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                        <StackPane>
+                           <children>
+                              <Button fx:id="cdButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCd" text="CD">
+                                 <styleClass>
+                                    <String fx:value="btn" />
+                                    <String fx:value="item-btn" />
+                                 </styleClass>
+                              </Button>
+                              <Label fx:id="iconCd" text="Icon" StackPane.alignment="CENTER_LEFT">
+                                 <styleClass>
+                                    <String fx:value="icon" />
+                                    <String fx:value="hand" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                        <StackPane>
+                           <children>
+                              <Button fx:id="dvdButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDvd" text="DVD">
+                                 <styleClass>
+                                    <String fx:value="item-btn" />
+                                    <String fx:value="btn" />
+                                 </styleClass>
+                              </Button>
+                              <Label fx:id="iconDvd" text="Icon" StackPane.alignment="CENTER_LEFT">
+                                 <styleClass>
+                                    <String fx:value="icon" />
+                                    <String fx:value="hand" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                        <StackPane>
+                           <children>
+                              <Button fx:id="storyButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onStoryBag" text="Verteltas">
+                                 <styleClass>
+                                    <String fx:value="btn" />
+                                    <String fx:value="item-btn" />
+                                 </styleClass>
+                              </Button>
+                              <Label fx:id="iconStory" text="Icon" StackPane.alignment="CENTER_LEFT">
+                                 <styleClass>
+                                    <String fx:value="icon" />
+                                    <String fx:value="hand" />
+                                 </styleClass></Label>
+                           </children>
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="item-btn" />
+                           </styleClass>
+                        </StackPane>
+                        <VBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                           <children>
+                              <StackPane>
+                                 <children>
+                                    <Button fx:id="saveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSave" text="Opslaan">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="btn-lime" />
+                                       </styleClass>
+                                    </Button>
+                                    <Label fx:id="iconSave" text="Icon" StackPane.alignment="CENTER_LEFT">
+                                       <styleClass>
+                                          <String fx:value="icon" />
+                                          <String fx:value="hand" />
+                                       </styleClass></Label>
+                                 </children>
+                              </StackPane>
                            </children>
                         </VBox>
                      </children>
@@ -94,6 +165,9 @@
                                     <String fx:value="btn-toolIcon" />
                                     <String fx:value="text-red" />
                                  </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
                               </Button>
                            </children>
                         </HBox>
