@@ -90,7 +90,6 @@
 
 .white{
     -fx-background-color: white;
-    //-fx-background-image: url(/resources/gui/img/bg.png);
     -fx-background-repeat: no-repeat;
     -fx-background-size: stretch;
     -fx-background-position: center;
@@ -100,9 +99,15 @@
     //-fx-background-size: cover;
     //-fx-background-position: center;
     //-fx-background-color: radial-gradient(center 50% 50%, radius 300px, gray, transparent);
-    
+
     //-fx-padding: 40;
     //-fx-background-color:  radial-gradient(center 50% 50%, radius 50%, rgba(255,255,255,100) 25%,transparent 10%);
+}
+
+.lettertuinBg{
+    -fx-background-image: url(/resources/gui/img/lettertuin_bg.png);
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 100% 100%;
 }
 
 .tile:hover, .clickable:hover{
@@ -438,9 +443,9 @@
 /* ############ ICONS ############ */
 
 .icon {
-     -fx-font-family: "FontAwesome"; 
-     -fx-text-fill: #FFFFFF;
-     -fx-padding: 0 0 0 15px;
+    -fx-font-family: "FontAwesome"; 
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 0 0 0 15px;
 }
 
 .icon:hover {

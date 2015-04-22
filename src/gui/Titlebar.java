@@ -4,7 +4,9 @@ import domain.controllers.TitleBarController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 
@@ -27,16 +29,16 @@ public class Titlebar extends GridPane {
     private Label authenicatedUserLabel;
 
     @FXML
-    private Button voorwerpenBeheren;
+    private HBox voorwerpenBeheren;
 
     @FXML
-    private Button uitleningenBeheren;
+    private HBox uitleningenBeheren;
 
     @FXML
-    private Button gebruikersBeheren;
+    private HBox gebruikersBeheren;
 
     @FXML
-    private Button excelImporteren;
+    private HBox excelImporteren;
 
     private ScreenSwitcher switcher;
     private TitleBarController controller;
@@ -86,19 +88,19 @@ public class Titlebar extends GridPane {
 	switcher.openExcelImport();
     }
 
-    public Button getVoorwerpenBeheren() {
+    public HBox getVoorwerpenBeheren() {
 	return voorwerpenBeheren;
     }
 
-    public Button getUitleningenBeheren() {
+    public HBox getUitleningenBeheren() {
 	return uitleningenBeheren;
     }
 
-    public Button getGebruikersBeheren() {
+    public HBox getGebruikersBeheren() {
 	return gebruikersBeheren;
     }
 
-    public Button getExcelImporteren() {
+    public HBox getExcelImporteren() {
 	return excelImporteren;
     }
 

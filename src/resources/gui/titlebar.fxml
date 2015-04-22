@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" styleClass="title-bar" type="GridPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" styleClass="title-bar" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER_LEFT" spacing="10.0">
          <children>
@@ -49,46 +49,62 @@
             </HBox>
             <TilePane fx:id="navigationGrid" alignment="CENTER" hgap="5.0" prefColumns="2" prefRows="2" prefTileHeight="40.0" prefTileWidth="40.0" vgap="5.0" HBox.hgrow="NEVER">
                <children>
-                  <Button fx:id="voorwerpenBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageItems" prefHeight="40.0" prefWidth="40.0" text="V">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+                  <HBox fx:id="voorwerpenBeheren" alignment="CENTER" onMouseClicked="#onManageItems" prefHeight="100.0" prefWidth="200.0" TilePane.alignment="CENTER">
+                     <children>
+                        <ImageView fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/item_management_icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
                      <styleClass>
                         <String fx:value="item-management-tile" />
                         <String fx:value="icon-voorwerpen-beheren" />
                         <String fx:value="tile" />
                      </styleClass>
-                  </Button>
-                  <Button fx:id="uitleningenBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageLoans" prefHeight="40.0" prefWidth="40.0" text="U">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+                  </HBox>
+                  <HBox fx:id="uitleningenBeheren" alignment="CENTER" onMouseClicked="#onManageLoans" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/loan_management_icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
                      <styleClass>
                         <String fx:value="loan-management-tile" />
                         <String fx:value="icon-uitleningen-beheren" />
                         <String fx:value="tile" />
                      </styleClass>
-                  </Button>
-                  <Button fx:id="gebruikersBeheren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onManageUsers" prefHeight="40.0" prefWidth="40.0" text="G">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+                  </HBox>
+                  <HBox fx:id="gebruikersBeheren" alignment="CENTER" onMouseClicked="#onManageUsers" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/user_management_icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
                      <styleClass>
                         <String fx:value="user-management-tile" />
                         <String fx:value="icon-gebruikers-beheren" />
                         <String fx:value="tile" />
                      </styleClass>
-                  </Button>
-                  <Button fx:id="excelImporteren" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onImportExcel" prefHeight="40.0" prefWidth="40.0" text="I">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+                  </HBox>
+                  <HBox fx:id="excelImporteren" alignment="CENTER" onMouseClicked="#onImportExcel" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/excel_management_icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
                      <styleClass>
                         <String fx:value="import-excel-tile" />
                         <String fx:value="icon-excel-importeren" />
                         <String fx:value="tile" />
                      </styleClass>
-                  </Button>
+                  </HBox>
                </children>
             </TilePane>
          </children>
