@@ -14,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 public class DetailViewCd extends TabPane implements Binding<Cd> {
 
@@ -22,7 +23,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
     @FXML
     private TextArea description;
     @FXML
-    private TextField themes;
+    private HBox themes;
     @FXML
     private TextField ageCategory;
     @FXML
@@ -33,6 +34,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
     private ImageView image;
 
     private PropertyListBinding themesBinding;
+    private ThemeManager themeManager;
 
     private Cd boundedCd;
 
@@ -49,6 +51,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	    lstSongs.setEditable(true);
 	    DetailViewUtil.initImageDragAndDrop(image);
 	    DetailViewUtil.setBounds(this);
+	    themeManager = new ThemeManager(themes);
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
@@ -74,7 +77,7 @@ public class DetailViewCd extends TabPane implements Binding<Cd> {
 	Bindings.bindBidirectional(title.textProperty(), t.nameProperty());
 	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
 	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
-	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
+	themeManager.bind(t.getThemeFX());
 	Bindings.bindBidirectional(artist.textProperty(), t.artistProperty());
 	lstSongs.setItems(t.getObservableSongList());
 	Bindings.bindBidirectional(image.imageProperty(), t.imageProperty());

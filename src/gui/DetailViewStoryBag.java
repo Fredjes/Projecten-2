@@ -22,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 
 public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
@@ -31,7 +32,7 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
     @FXML
     private TextArea description;
     @FXML
-    private TextField themes;
+    private HBox themes;
     @FXML
     private TextField ageCategory;
     @FXML
@@ -40,6 +41,7 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
     private ImageView image;
 
     private PropertyListBinding themesBinding;
+    private ThemeManager themeManager;
 
     private StoryBag boundStoryBag;
 
@@ -61,6 +63,8 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 	} catch (IOException ex) {
 	    throw new RuntimeException(ex);
 	}
+	
+	themeManager = new ThemeManager(themes);
     }
 
     private void createItemRemoveHandler(ItemTile item) {
@@ -132,7 +136,7 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 
 	Bindings.bindBidirectional(name.textProperty(), t.nameProperty());
 	Bindings.bindBidirectional(description.textProperty(), t.descriptionProperty());
-	themesBinding.bind(themes.textProperty(), t.getThemeFX(), new ThemeConverter());
+	themeManager.bind(t.getThemeFX());
 	Bindings.bindBidirectional(ageCategory.textProperty(), t.ageCategoryProperty());
 
 	lstItems.getChildren().clear();

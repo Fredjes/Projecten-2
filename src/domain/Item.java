@@ -317,7 +317,7 @@ public abstract class Item implements Serializable, Searchable, Importable<Item>
 
 	    @Override
 	    public void accept(String t, E u) {
-		u.setThemes(Arrays.asList(t.split(".,:+-")));
+		u.setThemes(Arrays.asList(t.split("[.,:+-;/]")));
 	    }
 	});
 

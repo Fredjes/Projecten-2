@@ -33,7 +33,7 @@
                         <TextField fx:id="name" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" />
                         <TextField fx:id="ageCategory" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextArea fx:id="description" maxHeight="-Infinity" prefHeight="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="themes" maxWidth="-Infinity" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <HBox fx:id="themes" styleClass="custom-text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <Separator orientation="VERTICAL" prefHeight="200.0" />

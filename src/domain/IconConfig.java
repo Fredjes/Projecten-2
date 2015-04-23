@@ -135,7 +135,6 @@ public class IconConfig {
 	    case GRAPHIC:
 		Text t = new Text(icon.getIcon());
 		t.setFont(FontCache.getIconFont(12));
-		t.setFill(text.getTextFill());
 		t.fillProperty().bind(text.textFillProperty());
 		text.setGraphic(t);
 		break;
