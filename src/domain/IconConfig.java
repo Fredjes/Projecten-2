@@ -23,6 +23,8 @@ public class IconConfig {
 	    put("icon-search", new Icon("\uf002", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-home", new Icon("\uf015", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-add", new Icon("\uf0fe", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-close", new Icon("\uf00d", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-add", new Icon("\uf0fe", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-delete", new Icon("\uf014", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-save", new Icon("\uf0c7", IconType.GRAPHIC, IconPosition.PREPEND));
 	    put("icon-return", new Icon("\uf064", IconType.GRAPHIC, IconPosition.PREPEND));
@@ -39,8 +41,7 @@ public class IconConfig {
     };
 
     /**
-     * IconType enumeration to specify how the icon should be placed, as part of
-     * a {@link Labeled} or as a separate graphic.
+     * IconType enumeration to specify how the icon should be placed, as part of a {@link Labeled} or as a separate graphic.
      */
     public enum IconType {
 
@@ -48,8 +49,7 @@ public class IconConfig {
     }
 
     /**
-     * IconPosition enumeration that secifies the position of the icon in the
-     * node: before, after, or as a replacement of the node content.
+     * IconPosition enumeration that secifies the position of the icon in the node: before, after, or as a replacement of the node content.
      */
     public enum IconPosition {
 
@@ -67,8 +67,7 @@ public class IconConfig {
     }
 
     /**
-     * Checks whether the node - class combination is a legal combination,
-     * meaning whether an icon placement is supported.
+     * Checks whether the node - class combination is a legal combination, meaning whether an icon placement is supported.
      *
      * @param node
      * @param cssClass
