@@ -99,4 +99,9 @@ public class StoryBag extends Item implements Serializable {
 	});
 	return map;
     }
+    
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.STORY_BAG_VERSION_ID;
+    }
 }

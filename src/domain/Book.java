@@ -131,4 +131,9 @@ public class Book extends Item implements Serializable {
 	return map;
     }
 
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.BOOK_VERSION_ID;
+    }
+
 }

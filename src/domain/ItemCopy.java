@@ -34,7 +34,7 @@ import javax.persistence.Transient;
 @NamedQueries({
     @NamedQuery(name = "ItemCopy.findAll", query = "SELECT ic FROM ItemCopy ic")
 })
-public class ItemCopy implements Serializable, Searchable {
+public class ItemCopy implements Serializable, Searchable, Changeable {
 
     private int id;
     private final StringProperty location = new SimpleStringProperty();
@@ -173,5 +173,15 @@ public class ItemCopy implements Serializable, Searchable {
 	}
 
 	return true;
+    }
+
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.ITEM_COPY_VERSION_ID;
+    }
+
+    @Override
+    public int getID() {
+	return getId();
     }
 }

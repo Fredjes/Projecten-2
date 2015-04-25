@@ -98,4 +98,9 @@ public class Game extends Item implements Serializable {
 	});
 	return map;
     }
+    
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.GAME_VERSION_ID;
+    }
 }

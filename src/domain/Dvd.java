@@ -97,4 +97,9 @@ public class Dvd extends Item implements Serializable {
 	});
 	return map;
     }
+    
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.DVD_VERSION_ID;
+    }
 }

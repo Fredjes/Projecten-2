@@ -32,7 +32,7 @@ import persistence.UserRepository;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 })
-public class User implements Serializable, Searchable, Importable<User> {
+public class User implements Serializable, Searchable, Importable<User>, Changeable {
 
     private int id;
 
@@ -91,7 +91,7 @@ public class User implements Serializable, Searchable, Importable<User> {
 	return id;
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
 	this.id = id;
     }
 
@@ -285,5 +285,15 @@ public class User implements Serializable, Searchable, Importable<User> {
 	    }
 	});
 	return map;
+    }
+    
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.USER_VERSION_ID;
+    }
+
+    @Override
+    public int getID() {
+	return getId();
     }
 }

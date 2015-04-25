@@ -50,7 +50,7 @@ import persistence.Repository;
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Item implements Serializable, Searchable, Importable<Item> {
+public abstract class Item implements Serializable, Searchable, Importable<Item>, Changeable {
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -361,5 +361,10 @@ public abstract class Item implements Serializable, Searchable, Importable<Item>
 	    }
 	});
 	return headerAssignmentList;
+    }
+
+    @Override
+    public int getID() {
+	return getId();
     }
 }

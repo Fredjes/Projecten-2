@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Loan.findAll", query = "SELECT l FROM Loan l")
 })
-public class Loan implements Serializable, Searchable {
+public class Loan implements Serializable, Searchable, Changeable {
 
     private int id;
 
@@ -138,5 +138,15 @@ public class Loan implements Serializable, Searchable {
 
     public void setId(int id) {
 	this.id = id;
+    }
+
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.LOAN_VERSION_ID;
+    }
+
+    @Override
+    public int getID() {
+	return getId();
     }
 }

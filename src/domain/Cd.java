@@ -123,4 +123,9 @@ public class Cd extends Item implements Serializable {
 	});
 	return map;
     }
+    
+    @Override
+    public int getVersionID() {
+	return ChangeConfig.CD_VERSION_ID;
+    }
 }
