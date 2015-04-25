@@ -83,6 +83,12 @@ public class Cache<K, E> {
         return loanInstance;
     }
 
+    /**
+     * Get a specific Cache implementation that holds
+     * {@link BookLookupListItem}s for each registered {@link Book}.
+     *
+     * @return the cache implementation
+     */
     public static Cache<Book, BookLookupListItem> getBookCache() {
         if (bookInstance == null) {
             bookInstance = new Cache<>(BookLookupListItem::new);
@@ -99,7 +105,6 @@ public class Cache<K, E> {
      * @param key The entity that backs the returned component
      * @return The GUI-component backed by the entity
      */
-
     public E get(K key) {
         if (cache.containsKey(key)) {
             return cache.get(key);

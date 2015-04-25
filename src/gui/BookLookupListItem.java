@@ -27,6 +27,11 @@ public class BookLookupListItem extends AnchorPane {
 
     private final ObjectProperty<Item> item = new SimpleObjectProperty<>();
 
+    /**
+     * Creates a BookLookupListItem
+     *
+     * @param item Item to be set in the ListItem
+     */
     public BookLookupListItem(Item item) {
         this();
         setItem(item);
@@ -37,6 +42,11 @@ public class BookLookupListItem extends AnchorPane {
         FXUtil.loadFXML(this, "booklookupframe");
     }
 
+    /**
+     * Sets the {@link Item}
+     *
+     * @param item
+     */
     private void setItem(Item item) {
         if (this.item.get() == item) {
             return;
@@ -45,10 +55,18 @@ public class BookLookupListItem extends AnchorPane {
         this.item.set(item);
     }
 
+    /**
+     * Gets the {@link Item}
+     *
+     * @return The item
+     */
     public Item getItem() {
         return item.get();
     }
 
+    /**
+     * Sets the fields of the ListItem
+     */
     private void setValues() {
         bookTitle.textProperty().set(item.get().getName());
         bookDescription.textProperty().set(item.get().getDescription());

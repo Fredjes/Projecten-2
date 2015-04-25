@@ -22,6 +22,12 @@ public class BookLookupListItemCell extends ListCell<Book> {
     public BookLookupListItemCell() {
     }
 
+    /**
+     *
+     * @param item {@link Book} to add in the list
+     * @param empty Boolean that represents if the item has data or should be
+     * presented as an empty row.
+     */
     @Override
     protected void updateItem(Book item, boolean empty) {
         super.updateItem(item, empty);
