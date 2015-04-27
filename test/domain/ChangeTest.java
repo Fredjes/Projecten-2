@@ -1,12 +1,6 @@
+package domain;
 
-import domain.Book;
-import domain.Change;
-import domain.ChangeBuilder;
-import domain.ChangeConfig;
-import domain.Damage;
-import domain.Item;
-import domain.ItemCopy;
-import domain.User;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,8 +37,8 @@ public class ChangeTest {
 
     @Test
     public void builderBuildsChangeCorrectly() {
-	builder.addChange(item, item2, user);
-	builder.addDeletion(copy);
+	builder.addChange(item, user);
+	builder.addDeletion(copy, item2);
 	Change change = builder.build();
 
 	List<Integer> itemAdditions = change.getChangedEntities(ChangeConfig.BOOK_VERSION_ID);
@@ -53,16 +47,40 @@ public class ChangeTest {
 	List<Integer> itemDeletions = change.getRemovedEntities(ChangeConfig.BOOK_VERSION_ID);
 	List<Integer> userDeletions = change.getRemovedEntities(ChangeConfig.USER_VERSION_ID);
 	List<Integer> itemCopyDeletions = change.getRemovedEntities(ChangeConfig.ITEM_COPY_VERSION_ID);
-	
-	Assert.assertEquals(2, itemAdditions.size());
+
+	Assert.assertEquals(1, itemAdditions.size());
 	Assert.assertEquals(1, userAdditions.size());
 	Assert.assertEquals(0, itemCopyAdditions.size());
-	Assert.assertEquals(0, itemDeletions.size());
+	Assert.assertEquals(1, itemDeletions.size());
 	Assert.assertEquals(0, userDeletions.size());
 	Assert.assertEquals(1, itemCopyDeletions.size());
 	Assert.assertTrue(itemAdditions.contains(item.getID()));
-	Assert.assertTrue(itemAdditions.contains(item2.getID()));
+	Assert.assertTrue(itemDeletions.contains(item2.getID()));
 	Assert.assertTrue(userAdditions.contains(user.getID()));
 	Assert.assertTrue(itemCopyDeletions.contains(copy.getID()));
+    }
+
+    @Test
+    public void multiSelectSelectsAllFlags() {
+	builder.addChange(item, user);
+	builder.addDeletion(item2, copy);
+	Change change = builder.build();
+	try {
+	    Field f = Change.class.getDeclaredField("changeData");
+	    f.setAccessible(true);
+	    byte[] data = (byte[]) f.get(change);
+	    for (byte b : data) {
+		System.out.print(new Byte(b).intValue() + " ");
+	    }
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	}
+
+	List<Integer> additions = change.getChangedEntities(ChangeConfig.BOOK_VERSION_ID | ChangeConfig.ITEM_COPY_VERSION_ID);
+	List<Integer> deletions = change.getChangedEntities(ChangeConfig.BOOK_VERSION_ID | ChangeConfig.USER_VERSION_ID);
+	Assert.assertEquals(2, additions.size());
+	Assert.assertTrue(additions.containsAll(Arrays.asList(item.getID(), user.getID())));
+	Assert.assertEquals(2, deletions.size());
+	Assert.assertTrue(deletions.containsAll(Arrays.asList(item2.getID(), copy.getID())));
     }
 }

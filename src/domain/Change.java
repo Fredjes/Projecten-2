@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -136,20 +138,23 @@ public class Change implements Serializable {
 
     public List<Integer> getRemovedEntities(int versionID) {
 	ensureSegmentIndexInitialization();
-	if (!entitySegmentIndices.containsKey(versionID)) {
+	if (!entitySegmentIndices.keySet().stream().anyMatch(v -> (versionID & v) != 0)) {
 	    return Collections.EMPTY_LIST;
 	}
 
 	List<Integer> results = new ArrayList<>();
 
-	int index = entitySegmentIndices.get(versionID);
-	for (int length = changeData[index++] << 24 | changeData[index++] << 16 | changeData[index++] << 8 | changeData[index++]; length > 0; length--) {
-	    int id = readInt(index);
-	    index += 4;
-	    if (changeData[index++] == DELETION_CHANGE) {
-		results.add(id);
+	Set<Integer> versionIds = entitySegmentIndices.keySet().stream().filter(v -> (versionID & v) != 0).collect(Collectors.toSet());
+	versionIds.forEach(v -> {
+	    int index = entitySegmentIndices.get(v);
+	    for (int length = changeData[index++] << 24 | changeData[index++] << 16 | changeData[index++] << 8 | changeData[index++]; length > 0; length--) {
+		int id = readInt(index);
+		index += 4;
+		if (changeData[index++] == DELETION_CHANGE) {
+		    results.add(id);
+		}
 	    }
-	}
+	});
 
 	return results;
     }
@@ -165,24 +170,27 @@ public class Change implements Serializable {
      */
     public <E extends Changeable> List<E> getChangedEntities(int versionId, Class<E> clazz, EntityManager manager) {
 	ensureSegmentIndexInitialization();
-	if (!entitySegmentIndices.containsKey(versionId)) {
+	if (!entitySegmentIndices.keySet().stream().anyMatch(v -> (versionId & v) != 0)) {
 	    return Collections.EMPTY_LIST;
 	}
 
 	List<E> results = new ArrayList<>();
 
-	int index = entitySegmentIndices.get(versionId);
-	for (int length = changeData[index++] << 24 | changeData[index++] << 16 | changeData[index++] << 8 | changeData[index++]; length > 0; length--) {
-	    int id = readInt(index);
-	    index += 4;
-	    if (changeData[index++] == INSERTION_UPDATE_CHANGE) {
-		E foundData = manager.find(clazz, id);
+	Set<Integer> versionIds = entitySegmentIndices.keySet().stream().filter(v -> (versionId & v) != 0).collect(Collectors.toSet());
+	versionIds.forEach(v -> {
+	    int index = entitySegmentIndices.get(v);
+	    for (int length = changeData[index++] << 24 | changeData[index++] << 16 | changeData[index++] << 8 | changeData[index++]; length > 0; length--) {
+		int id = readInt(index);
+		index += 4;
+		if (changeData[index++] == INSERTION_UPDATE_CHANGE) {
+		    E foundData = manager.find(clazz, id);
 
-		if (foundData != null) {
-		    results.add(foundData);
+		    if (foundData != null) {
+			results.add(foundData);
+		    }
 		}
 	    }
-	}
+	});
 
 	return results;
     }
@@ -197,20 +205,23 @@ public class Change implements Serializable {
      */
     public List<Integer> getChangedEntities(int versionId) {
 	ensureSegmentIndexInitialization();
-	if (!entitySegmentIndices.containsKey(versionId)) {
+	if (!entitySegmentIndices.keySet().stream().anyMatch(v -> (versionId & v) != 0)) {
 	    return Collections.EMPTY_LIST;
 	}
 
 	List<Integer> results = new ArrayList<>();
 
-	int index = entitySegmentIndices.get(versionId);
-	for (int length = changeData[index++] << 24 | changeData[index++] << 16 | changeData[index++] << 8 | changeData[index++]; length > 0; length--) {
-	    int id = readInt(index);
-	    index += 4;
-	    if (changeData[index++] == INSERTION_UPDATE_CHANGE) {
-		results.add(id);
+	Set<Integer> versionIds = entitySegmentIndices.keySet().stream().filter(v -> (versionId & v) != 0).collect(Collectors.toSet());
+	versionIds.forEach(v -> {
+	    int index = entitySegmentIndices.get(v);
+	    for (int length = changeData[index++] << 24 | changeData[index++] << 16 | changeData[index++] << 8 | changeData[index++]; length > 0; length--) {
+		int id = readInt(index);
+		index += 4;
+		if (changeData[index++] == INSERTION_UPDATE_CHANGE) {
+		    results.add(id);
+		}
 	    }
-	}
+	});
 
 	return results;
     }
@@ -224,7 +235,7 @@ public class Change implements Serializable {
     private int readInt(int pointer) {
 	return changeData[pointer++] << 24 | changeData[pointer++] << 16 | changeData[pointer++] << 8 | changeData[pointer++];
     }
-    
+
     public static void main(String[] args) {
 	Change change = new Change();
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
