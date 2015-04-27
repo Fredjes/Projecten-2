@@ -35,7 +35,7 @@ public class BookLookupListItemCell extends ListCell<Book> {
             listItem = null;
             super.setGraphic(null);
         } else {
-            listItem = Cache.getBookCache().get(item);
+            listItem = new BookLookupListItem(item);
             if (listItem != null) {
                 if (Platform.isFxApplicationThread()) {
                     super.setGraphic(listItem);

@@ -84,19 +84,6 @@ public class Cache<K, E> {
     }
 
     /**
-     * Get a specific Cache implementation that holds
-     * {@link BookLookupListItem}s for each registered {@link Book}.
-     *
-     * @return the cache implementation
-     */
-    public static Cache<Book, BookLookupListItem> getBookCache() {
-        if (bookInstance == null) {
-            bookInstance = new Cache<>(BookLookupListItem::new);
-        }
-        return bookInstance;
-    }
-
-    /**
      * Will return a GUI-component for the specified entity. If it is the first
      * time that the entity is used, and thus there is no registered
      * GUI-component, it will automatically create a new GUI-component based on

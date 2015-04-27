@@ -64,7 +64,7 @@ public class DetailViewBook extends TabPane implements Binding<Book> {
             if (books.size() > 0) {
                 setDetailFields(0);
                 if (books.size() > 1) {
-                    Book selectedBook = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(books), "Gevonden boeken", "Kies het gewenste boek uit de lijst", BookLookupListItemCell.forListView());
+                    Book selectedBook = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(books), "Gevonden boeken", "Kies het gewenste boek uit de lijst", BookLookupListItemCell.forListView(), 600);
                     if (selectedBook != null) {
                         setDetailFields(books.indexOf(selectedBook));
                     }

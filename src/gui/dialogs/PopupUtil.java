@@ -118,8 +118,8 @@ public class PopupUtil {
     public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text) {
 	return showSelectionQuestion(list, title, text, null);
     }
-
-    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text, Callback<ListView<E>, ListCell<E>> cellFactory) {
+    
+    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text, Callback<ListView<E>, ListCell<E>> cellFactory, double width){
 	FilteredList<? extends Searchable> filteredList = new FilteredList<>(list);
 	Dialog<E> dialog = new Dialog<>();
 	ButtonType selectButton = new ButtonType("Selecteren", ButtonBar.ButtonData.OK_DONE);
@@ -142,7 +142,7 @@ public class PopupUtil {
 	listView.setCellFactory(cellFactory);
 	listView.setFocusTraversable(false);
 	listView.setMinWidth(Region.USE_PREF_SIZE);
-	listView.setPrefWidth(350);
+	listView.setPrefWidth(width);
 	Label lblTitle = new Label(text);
 	lblTitle.setTextAlignment(TextAlignment.CENTER);
 
@@ -180,6 +180,10 @@ public class PopupUtil {
 	}
 
 	return null;
+    }
+
+    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text, Callback<ListView<E>, ListCell<E>> cellFactory) {
+	return showSelectionQuestion(list, title, text, cellFactory, 350);
     }
 
     public enum Notification {
