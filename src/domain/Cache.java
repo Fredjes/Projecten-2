@@ -1,5 +1,6 @@
 package domain;
 
+import gui.BookLookupListItem;
 import gui.ItemManagementListItem;
 import gui.LoanManagementListItem;
 import gui.UserManagementListItem;
@@ -20,6 +21,7 @@ public class Cache<K, E> {
     private static Cache<Item, ItemManagementListItem> listItemInstance;
     private static Cache<Loan, LoanManagementListItem> loanInstance;
     private static Cache<User, UserManagementListItem> userInstance;
+    private static Cache<Book, BookLookupListItem> bookInstance;
 
     private WeakHashMap<K, E> cache = new WeakHashMap<>();
     private Function<K, E> supplier;
@@ -32,7 +34,7 @@ public class Cache<K, E> {
      * @param supplier
      */
     public Cache(Function<K, E> supplier) {
-	this.supplier = supplier;
+        this.supplier = supplier;
     }
 
     /**
@@ -42,7 +44,7 @@ public class Cache<K, E> {
      * @return A GUI-component based on the entity
      */
     private E createVal(K key) {
-	return supplier.apply(key);
+        return supplier.apply(key);
     }
 
     /**
@@ -52,19 +54,19 @@ public class Cache<K, E> {
      * @return The cache implementation
      */
     public static Cache<Item, ItemManagementListItem> getItemCache() {
-	if (listItemInstance == null) {
-	    listItemInstance = new Cache<>(ItemManagementListItem::new);
-	}
+        if (listItemInstance == null) {
+            listItemInstance = new Cache<>(ItemManagementListItem::new);
+        }
 
-	return listItemInstance;
+        return listItemInstance;
     }
 
     public static Cache<User, UserManagementListItem> getUserCache() {
-	if (userInstance == null) {
-	    userInstance = new Cache<>(UserManagementListItem::new);
-	}
-	
-	return userInstance;
+        if (userInstance == null) {
+            userInstance = new Cache<>(UserManagementListItem::new);
+        }
+
+        return userInstance;
     }
 
     /**
@@ -74,11 +76,11 @@ public class Cache<K, E> {
      * @return The cache implementation
      */
     public static Cache<Loan, LoanManagementListItem> getLoanCache() {
-	if (loanInstance == null) {
-	    loanInstance = new Cache<>(LoanManagementListItem::new);
-	}
+        if (loanInstance == null) {
+            loanInstance = new Cache<>(LoanManagementListItem::new);
+        }
 
-	return loanInstance;
+        return loanInstance;
     }
 
     /**
@@ -91,12 +93,12 @@ public class Cache<K, E> {
      * @return The GUI-component backed by the entity
      */
     public E get(K key) {
-	if (cache.containsKey(key)) {
-	    return cache.get(key);
-	} else {
-	    E val = createVal(key);
-	    cache.put(key, val);
-	    return val;
-	}
+        if (cache.containsKey(key)) {
+            return cache.get(key);
+        } else {
+            E val = createVal(key);
+            cache.put(key, val);
+            return val;
+        }
     }
 }
