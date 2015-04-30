@@ -1,26 +1,19 @@
 package gui;
 
-import domain.Icon;
-import domain.IconConfig;
+import domain.FontCache;
 import domain.SearchPredicate;
 import domain.User;
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import persistence.ItemRepository;
+import javafx.scene.text.Text;
 import persistence.UserRepository;
 
 /**
@@ -34,7 +27,7 @@ public class UserManagement extends BorderPane {
 
     @FXML
     private TextField searchBar;
-    
+
     @FXML
     private StackPane contentStackPane;
 
@@ -42,7 +35,7 @@ public class UserManagement extends BorderPane {
     private Label iconSave;
 
     @FXML
-    private Button addButton, removeButton;
+    private Button addButton, removeButton, saveButton;
 
     private DetailViewUser detailViewUser;
 
@@ -99,6 +92,11 @@ public class UserManagement extends BorderPane {
         detailViewUser = new DetailViewUser();
         onSearchQuery();
         userList.setItems(filteredList);
+        saveButton.graphicProperty().addListener((obs, ov, nv) -> {
+            if (nv != null) {
+                ((Text) nv).setFont(FontCache.getIconFont(16));
+            }
+        });
         userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
             saved = false;
             if (nv == null) {
