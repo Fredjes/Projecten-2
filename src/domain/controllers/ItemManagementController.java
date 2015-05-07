@@ -26,6 +26,7 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {
 	    hideNode(getView().getListCommands(), "listTools");
 	    hideNode(getView().getSaveButton(), "save");
+	    getView().hideDetailView();
 	    return;
 	}
 
@@ -34,6 +35,7 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 		hideNode(getView().getListCommands(), "listTools");
 		hideNode(getView().getSaveButton(), "save");
 		getView().getChildren().remove(getView().getDetailView());
+		getView().hideDetailView();
 		break;
 
 	    case TEACHER:

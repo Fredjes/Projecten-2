@@ -101,8 +101,8 @@ public class ExcelWizardS1 extends BorderPane {
     }
 
     public void onEntryRemoved(ExcelEntry entry) {
-	ExcelManager.getInstance().removeEntry(entry);
 	contentScreens.removeIf(cs -> ExcelManager.getInstance().getEntry(cs.getExcelId()) == entry);
+	ExcelManager.getInstance().removeEntry(entry);
     }
 
     @FXML

@@ -80,7 +80,7 @@
                   </VBox>
                   <VBox fx:id="voorwerpenBeheren" alignment="CENTER" onMouseClicked="#onManageItems" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="voorwerpenBeherenIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/item_management_icon.png" />
                            </image>
