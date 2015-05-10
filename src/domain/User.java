@@ -286,4 +286,26 @@ public class User implements Serializable, Searchable, Importable<User> {
 	});
 	return map;
     }
+
+    @Override
+    public int hashCode() {
+	int hash = 5;
+	hash = 89 * hash + this.id;
+	return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	final User other = (User) obj;
+	if (this.id != other.id) {
+	    return false;
+	}
+	return true;
+    }
 }

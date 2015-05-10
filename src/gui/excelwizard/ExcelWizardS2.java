@@ -46,7 +46,7 @@ public class ExcelWizardS2 extends BorderPane {
     @FXML
     private Button btnNext;
 
-    private final int id;
+    private int id;
 
     public ExcelWizardS2(ExcelWizardS1 step1, ScreenSwitcher switcher, int id) {
 	this.step1 = step1;
@@ -152,5 +152,9 @@ public class ExcelWizardS2 extends BorderPane {
 
     public int getExcelId() {
 	return this.id;
+    }
+
+    public void setExcelId(int id) {
+	this.id = id;
     }
 }

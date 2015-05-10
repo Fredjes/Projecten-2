@@ -8,6 +8,8 @@ import gui.controls.ExcelEntry;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.locks.ReentrantLock;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.input.Dragboard;
@@ -101,8 +103,12 @@ public class ExcelWizardS1 extends BorderPane {
     }
 
     public void onEntryRemoved(ExcelEntry entry) {
-	contentScreens.removeIf(cs -> ExcelManager.getInstance().getEntry(cs.getExcelId()) == entry);
-	ExcelManager.getInstance().removeEntry(entry);
+	Optional<ExcelWizardS2> contentScreen = contentScreens.stream().filter(cs -> ExcelManager.getInstance().getEntry(cs.getExcelId()) == entry).findAny();
+	if(contentScreen.isPresent()){
+	    contentScreens.remove(contentScreen.get());
+	    contentScreens.stream().filter(cs -> cs.getExcelId() > contentScreen.get().getExcelId()).forEach(cs -> cs.setExcelId(cs.getExcelId() - 1));
+	    ExcelManager.getInstance().removeEntry(entry);
+	}
     }
 
     @FXML

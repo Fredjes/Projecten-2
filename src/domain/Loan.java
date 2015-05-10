@@ -74,7 +74,7 @@ public class Loan implements Serializable, Searchable {
 	return itemCopy;
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public User getUser() {
 	return user.get();
     }
@@ -138,5 +138,27 @@ public class Loan implements Serializable, Searchable {
 
     public void setId(int id) {
 	this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+	int hash = 7;
+	hash = 53 * hash + this.id;
+	return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	final Loan other = (Loan) obj;
+	if (this.id != other.id) {
+	    return false;
+	}
+	return true;
     }
 }

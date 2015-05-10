@@ -130,11 +130,13 @@ public class ExcelManager {
 	try {
 	    workbook = new XSSFWorkbook(file);
 	    for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-		ExcelEntry entry = new ExcelEntry(wizard, workbook, workbook.getSheetAt(i), file.getName());
-		entry.loadMetadata();
-		addEntry(entry);
-		getExcelData(workbook.getSheetAt(i)); //so it loads data into cache
-
+		XSSFSheet sheet = workbook.getSheetAt(i);
+		if (!getColumnHeaders(sheet).isEmpty()) {
+		    ExcelEntry entry = new ExcelEntry(wizard, workbook, sheet, file.getName());
+		    entry.loadMetadata();
+		    addEntry(entry);
+		    getExcelData(workbook.getSheetAt(i)); //so it loads data into cache
+		}
 	    }
 	} catch (IOException | InvalidFormatException ex) {
 	    ex.printStackTrace();
@@ -181,6 +183,11 @@ public class ExcelManager {
 	}
 
 	Row columnHeader = getFirstNonEmptyRow(sheet);
+
+	if (columnHeader == null) {
+	    return new ArrayList<>();
+	}
+
 	Iterator<Cell> iterator = columnHeader.cellIterator();
 	for (int i = 0; i < columnHeader.getFirstCellNum(); i++) {
 	    iterator.next();
