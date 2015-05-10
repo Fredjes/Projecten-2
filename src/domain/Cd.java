@@ -1,8 +1,10 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import javafx.beans.property.SimpleStringProperty;
@@ -92,35 +94,43 @@ public class Cd extends Item implements Serializable {
     }
 
     @Override
-    public Map<String, BiConsumer<String, Cd>> createHeaderList() {
-	Map<String, BiConsumer<String, Cd>> map = super.createHeaderList();
-	map.put("Artiest", new BiConsumer<String, Cd>() {
-
-	    public void accept(String d, Cd c) {
-		c.setArtist(d);
-	    }
-	});
-	return map;
+    public Importer createImporter() {
+	return new CdImporter();
     }
 
-    @Override
-    public Map<String, Predicate<String>> createHeaderAssignmentList() {
-	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
-	map.put("Artiest", new Predicate<String>() {
+    private class CdImporter extends ItemImporter<Cd> {
 
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "artiest", "zanger", "zangeres", "persoon");
-	    }
-	});
-	final Predicate<String> original = map.get("Titel");
-	map.put("Titel", new Predicate<String>() {
+	private final Set<String> fieldSet = super.getFields();
 
-	    @Override
-	    public boolean test(String t) {
-		return original.test(t) || SearchPredicate.containsIgnoreCase(t, "cd");
+	public CdImporter() {
+	    super(Cd::new);
+	    fieldSet.add("Artiest");
+	}
+
+	@Override
+	public Set<String> getFields() {
+	    return Collections.unmodifiableSet(fieldSet);
+	}
+
+	@Override
+	public String predictField(String columnName) {
+	    if (SearchPredicate.containsAnyIgnoreCase(columnName, "artiest", "zanger", "zangeres", "persoon")) {
+		return "Artiest";
+	    } else if (SearchPredicate.containsIgnoreCase(columnName, "cd")) {
+		return "Titel";
+	    } else {
+		return super.predictField(columnName);
 	    }
-	});
-	return map;
+	}
+
+	@Override
+	public void setField(String field, String value) {
+	    if (field.equals("Artiest")) {
+		super.getCurrentEntity().setArtist(value);
+	    } else {
+		super.setField(field, value);
+	    }
+	}
+
     }
 }

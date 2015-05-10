@@ -32,6 +32,7 @@ public class UserRepository extends Repository<User> {
     private final List<User> deletedUsers = new ArrayList();
 
     private UserRepository() {
+	super();
     }
 
     public static UserRepository getInstance() {

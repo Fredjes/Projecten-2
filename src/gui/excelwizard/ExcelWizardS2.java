@@ -2,6 +2,7 @@ package gui.excelwizard;
 
 import domain.AssignableTableColumn;
 import domain.ExcelData;
+import domain.Importer;
 import domain.excel.ExcelManager;
 import domain.excel.ExcelManager.Destination;
 import gui.FXUtil;
@@ -11,7 +12,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -101,18 +101,12 @@ public class ExcelWizardS2 extends BorderPane {
 	    return;
 	}
 
-	final Map<String, Predicate<String>> predictionPredicates = ExcelManager.getInstance().getEntry(id).getDestination().getEntityCreator().get().createHeaderAssignmentList();
-	List<String> excelHeaders = ExcelManager.getInstance().getColumnHeaders(ExcelManager.getInstance().getSheetById(id));
+	Importer importer = ExcelManager.getInstance().getEntry(id).getDestination().getEntityCreator().get().createImporter();
+	List<String> columnHeaders = ExcelManager.getInstance().getColumnHeaders(ExcelManager.getInstance().getSheetById(id));
+	importer.initHeaders(columnHeaders);
 
 	columns.forEach((i, c) -> {
-	    if (excelHeaders.size() > i) {
-		String excelHeader = excelHeaders.get(i);
-		predictionPredicates.forEach((s, p) -> {
-		    if (p.test(excelHeader)) {
-			c.select(s);
-		    }
-		});
-	    }
+	    c.select(importer.predictField(columnHeaders.get(i)));
 	});
     }
 

@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Set;
  *
  * @author Frederik
  */
-public interface Importer<E> {
+public interface Importer {
 
     /**
      * Get a list of all possible fields that can be predicted. These might be
@@ -21,15 +22,24 @@ public interface Importer<E> {
     public Set<String> getFields();
 
     /**
+     * Give a list of all possible headers that will be asked to predict,
+     * invoking this method should be optional but will optimize field
+     * prediction.
+     *
+     * @param headers
+     */
+    public void initHeaders(List<String> headers);
+
+    /**
      * Try to predict a possible field based on a column name. If a field could
      * not be predicted either an empty String or a default value can be
      * returned (yet never null). The returned results will, however, always be
      * an element of the set returned by {@link Importer#getFields() }.
      *
-     * @param columnName The column name that shall be used for the prediction
+     * @param header The column name that shall be used for the prediction
      * @return The predicted field or default value
      */
-    public String predictField(String columnName);
+    public String predictField(String header);
 
     /**
      * Bind the value, linked to a certain field, to a backing entity. The field
@@ -58,4 +68,6 @@ public interface Importer<E> {
      * will be stored in the repository with their respective data.
      */
     public void persistEntities();
+    
+    
 }

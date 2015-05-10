@@ -1,11 +1,12 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
+import java.util.Set;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,7 +24,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import persistence.Repository;
 import persistence.UserRepository;
 
 @Entity
@@ -32,7 +32,7 @@ import persistence.UserRepository;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 })
-public class User implements Serializable, Searchable, Importable<User> {
+public class User implements Serializable, Searchable, Importable {
 
     private int id;
 
@@ -63,8 +63,8 @@ public class User implements Serializable, Searchable, Importable<User> {
 
     public User() {
     }
-    
-    public User(UserType userType){
+
+    public User(UserType userType) {
 	this.setUserType(userType);
     }
 
@@ -117,6 +117,15 @@ public class User implements Serializable, Searchable, Importable<User> {
 
     public void setName(String name) {
 	this.name.set(name);
+    }
+
+    public void setLastName(String name) {
+	lastName.set(name);
+    }
+
+    public User(int id, String passwordHash) {
+	this.id = id;
+	this.passwordHash = passwordHash;
     }
 
     public String getClassRoom() {
@@ -188,106 +197,6 @@ public class User implements Serializable, Searchable, Importable<User> {
     }
 
     @Override
-    public Map<String, BiConsumer<String, User>> createHeaderList() {
-	Map<String, BiConsumer<String, User>> map = new HashMap<>();
-	map.put("Klas", new BiConsumer<String, User>() {
-
-	    public void accept(String d, User u) {
-		u.setClassRoom(d);
-	    }
-	});
-	map.put("E-mail", new BiConsumer<String, User>() {
-
-	    public void accept(String d, User u) {
-		u.setEmail(d);
-	    }
-	});
-	map.put("Voornaam/Naam", new BiConsumer<String, User>() {
-
-	    public void accept(String d, User u) {
-		u.setName(d);
-	    }
-	});
-
-	map.put("Achternaam", new BiConsumer<String, User>() {
-
-	    public void accept(String d, User u) {
-		u.lastName.set(d);
-	    }
-	});
-
-	map.put("Wachtwoord", new BiConsumer<String, User>() {
-
-	    public void accept(String d, User u) {
-		u.setPasswordHash(UserRepository.getInstance().generatePasswordHash(d));
-	    }
-	});
-
-	map.put("Stamboeknummer", new BiConsumer<String, User>() {
-
-	    @Override
-	    public void accept(String t, User u) {
-		u.setRegisterNumber(t);
-	    }
-	});
-
-	return map;
-    }
-
-    @Override
-    public Repository getRepository() {
-	return UserRepository.getInstance();
-    }
-    
-    @Override
-    public Map<String, Predicate<String>> createHeaderAssignmentList() {
-	Map<String, Predicate<String>> map = new HashMap<>();
-	map.put("Klas", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "klas", "lokaal");
-	    }
-	});
-	map.put("E-mail", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsIgnoreCase(t, "mail");
-	    }
-	});
-	map.put("Voornaam/Naam", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsIgnoreCase(t, "voornaam") || t.equalsIgnoreCase("naam");
-	    }
-	});
-	map.put("Achternaam", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsIgnoreCase(t, "achternaam");
-	    }
-	});
-	map.put("Wachtwoord", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "wachtwoord", "paswoord", "passwoord", "password");
-	    }
-	});
-	map.put("Stamboeknummer", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "stamboeknummer", "register");
-	    }
-	});
-	return map;
-    }
-
-    @Override
     public int hashCode() {
 	int hash = 5;
 	hash = 89 * hash + this.id;
@@ -307,5 +216,98 @@ public class User implements Serializable, Searchable, Importable<User> {
 	    return false;
 	}
 	return true;
+    }
+
+    @Override
+    public Importer createImporter() {
+	return new UserImporter();
+    }
+
+    private class UserImporter implements Importer {
+
+	private final Set<String> fieldSet = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new String[]{
+	    "", "Klas", "E-mail", "Voornaam/Naam", "Achternaam", "Wachtwoord", "Stamboeknummer"
+	})));
+
+	private List<String> headerList = new ArrayList<>();
+	private List<User> entityList = new ArrayList<>();
+
+	public UserImporter() {
+	    nextEntity();
+	}
+
+	@Override
+	public Set<String> getFields() {
+	    return fieldSet;
+	}
+
+	@Override
+	public void initHeaders(List<String> headers) {
+	    headerList.clear();
+	    headerList.addAll(headers);
+	}
+
+	@Override
+	public String predictField(String t) {
+	    if (SearchPredicate.containsAnyIgnoreCase(t, "klas", "lokaal")) {
+		return "Klas";
+	    } else if (SearchPredicate.containsIgnoreCase(t, "mail")) {
+		return "E-mail";
+	    } else if (SearchPredicate.containsIgnoreCase(t, "voornaam")) {
+		return "Voornaam/Naam";
+	    } else if (SearchPredicate.containsIgnoreCase(t, "achternaam")) {
+		return "Achternaam";
+	    } else if (SearchPredicate.containsIgnoreCase(t, "naam")) {
+		if (headerList.stream().anyMatch(v -> SearchPredicate.containsIgnoreCase(v, "voornaam"))) {
+		    return "Achternaam";
+		} else {
+		    return "Voornaam/Naam";
+		}
+	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "wachtwoord", "paswoord", "passwoord", "password")) {
+		return "Wachtwoord";
+	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "stamboeknummer", "register", "id")) {
+		return "Stamboeknummer";
+	    } else {
+		return "";
+	    }
+	}
+
+	@Override
+	public void setField(String field, String value) {
+	    switch (field) {
+		case "Klas":
+		    getCurrentEntity().setClassRoom(value);
+		    break;
+		case "E-mail":
+		    getCurrentEntity().setEmail(value);
+		    break;
+		case "Voornaam/Naam":
+		    getCurrentEntity().setName(value);
+		    break;
+		case "Achternaam":
+		    getCurrentEntity().setLastName(value);
+		    break;
+		case "Wachtwoord":
+		    getCurrentEntity().setPasswordHash(UserRepository.getInstance().generatePasswordHash(value));
+		    break;
+		case "Stamboeknummer":
+		    getCurrentEntity().setRegisterNumber(value);
+		    break;
+	    }
+	}
+
+	private User getCurrentEntity() {
+	    return entityList.get(entityList.size() - 1);
+	}
+
+	@Override
+	public void nextEntity() {
+	    entityList.add(new User(UserType.STUDENT));
+	}
+
+	@Override
+	public void persistEntities() {
+	    entityList.forEach(UserRepository.getInstance()::add);
+	}
     }
 }

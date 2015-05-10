@@ -88,7 +88,7 @@ public class ExcelManager {
 	public Set<String> getHeaderList() {
 	    if (supplier != null) {
 		// Create a copy so that modification operations (add and remove) are supported
-		Set<String> setCopy = new HashSet<>(supplier.get().createHeaderList().keySet());
+		Set<String> setCopy = new HashSet<>(supplier.get().createImporter().getFields());
 		return setCopy;
 	    } else {
 		return Collections.EMPTY_SET;

@@ -10,7 +10,16 @@ import java.util.List;
 public abstract class Repository<E> {
 
     private List<Runnable> listeners = new ArrayList<>();
+    private static List<Repository> repositories = new ArrayList<>();
 
+    public Repository() {
+	submitRepository(this);
+    }
+    
+    public static void submitRepository(Repository repository){
+	repositories.add(repository);
+    }
+    
     public void addSyncListener(Runnable r) {
 	listeners.add(r);
     }
@@ -22,6 +31,10 @@ public abstract class Repository<E> {
     protected void triggerListeners() {
 	listeners.forEach(Runnable::run);
 	listeners.clear();
+    }
+    
+    public static void saveAllChanges(){
+	repositories.forEach(Repository::saveChanges);
     }
     
     public abstract void add(E e);

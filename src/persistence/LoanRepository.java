@@ -23,6 +23,10 @@ public class LoanRepository extends Repository<Loan> {
 
     private static LoanRepository repositoryInstance;
 
+    private LoanRepository() {
+	super();
+    }
+    
     public static LoanRepository getInstance() {
 	if (repositoryInstance == null) {
 	    repositoryInstance = new LoanRepository();

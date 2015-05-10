@@ -33,6 +33,7 @@ public class ItemRepository extends Repository<Item> {
     private List<Object> deletedElements = new ArrayList();
 
     private ItemRepository() {
+	super();
 	ListChangeListener changeListener = c -> {
 	    while (c.next()) {
 		c.getAddedSubList().forEach(i -> JPAUtil.getInstance().getEntityManager().persist(i));

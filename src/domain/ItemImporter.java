@@ -18,7 +18,7 @@ import persistence.ItemRepository;
  */
 public class ItemImporter<E extends Item> implements Importer {
 
-    private final Set<String> fieldSet = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("Leeftijd", "Omschrijving", "Titel", "Thema's")));
+    private final Set<String> fieldSet = new HashSet<String>(Arrays.asList("", "Leeftijd", "Omschrijving", "Titel", "Thema's"));
     private final List<E> items = new ArrayList<>();
     private Supplier<? extends E> supplier;
 
@@ -30,6 +30,10 @@ public class ItemImporter<E extends Item> implements Importer {
     @Override
     public Set<String> getFields() {
 	return fieldSet;
+    }
+
+    @Override
+    public void initHeaders(List headers) {
     }
 
     @Override
@@ -57,7 +61,9 @@ public class ItemImporter<E extends Item> implements Importer {
 		    if (currentItem.getDescription() == null || currentItem.getDescription().isEmpty()) {
 			currentItem.setDescription(value);
 		    } else {
-			currentItem.setDescription(currentItem.getDescription() + (currentItem.getDescription().matches("\\.$") ? " " : ". ") + value);
+			if (value != null) {
+			    currentItem.setDescription(currentItem.getDescription() + (currentItem.getDescription().matches("\\.$") ? " " : ", ") + value);
+			}
 		    }
 
 		    break;
@@ -66,16 +72,16 @@ public class ItemImporter<E extends Item> implements Importer {
 		    currentItem.setName(value);
 		    break;
 		case "Thema's":
-		    currentItem.setThemes(Arrays.asList(value.split("[.,:+-;/]")));
+		    currentItem.setThemes(value == null ? new ArrayList<>() : Arrays.asList(value.split("[.,:+-;/]")));
 		    break;
 	    }
 	}
     }
-    
-    public E getCurrentEntity(){
+
+    public E getCurrentEntity() {
 	return items.get(items.size() - 1);
     }
-    
+
     @Override
     public void nextEntity() {
 	items.add(supplier.get());
