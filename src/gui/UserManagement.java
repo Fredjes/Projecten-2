@@ -1,5 +1,6 @@
 package gui;
 
+import domain.FontCache;
 import domain.SearchPredicate;
 import domain.User;
 import gui.dialogs.PopupUtil;
@@ -12,7 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import persistence.LoanRepository;
+import javafx.scene.text.Text;
 import persistence.UserRepository;
 
 /**
@@ -34,7 +35,7 @@ public class UserManagement extends BorderPane {
     private Label iconSave;
 
     @FXML
-    private Button addButton, removeButton;
+    private Button addButton, removeButton, saveButton;
 
     private DetailViewUser detailViewUser;
 
@@ -107,5 +108,28 @@ public class UserManagement extends BorderPane {
 		Platform.runLater(() -> super.setBottom(detailViewUser));
 	    }
 	});
+	
+        FXUtil.loadFXML(this, "user_management");
+        predicate = new SearchPredicate(User.class, "");
+        predicate.searchQueryProperty().bind(searchBar.textProperty());
+        filteredList = new FilteredList<>(UserRepository.getInstance().getUsers());
+        userList.setCellFactory(UserManagementListItemCell.forListView());
+        detailViewUser = new DetailViewUser();
+        onSearchQuery();
+        userList.setItems(filteredList);
+        saveButton.graphicProperty().addListener((obs, ov, nv) -> {
+            if (nv != null) {
+                ((Text) nv).setFont(FontCache.getIconFont(16));
+            }
+        });
+        userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+            saved = false;
+            if (nv == null) {
+                Platform.runLater(() -> super.setBottom(null));
+            } else {
+                detailViewUser.bind(nv);
+                Platform.runLater(() -> super.setBottom(detailViewUser));
+            }
+        });
     }
 }
