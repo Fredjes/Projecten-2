@@ -160,6 +160,8 @@ public class Loan implements Serializable, Searchable, Changeable {
 	    return false;
 	}
 	return true;
+    }
+    
     public int getVersionID() {
 	return ChangeConfig.LOAN_VERSION_ID;
     }

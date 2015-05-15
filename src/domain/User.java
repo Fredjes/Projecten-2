@@ -32,7 +32,7 @@ import persistence.UserRepository;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 })
-public class User implements Serializable, Searchable, Importable {
+public class User implements Serializable, Searchable, Importable, Changeable {
 
     private int id;
 
