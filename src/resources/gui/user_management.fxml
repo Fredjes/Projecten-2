@@ -51,6 +51,7 @@
                         <String fx:value="btn" />
                         <String fx:value="btn-toolIcon" />
                         <String fx:value="text-green" />
+                        <String fx:value="icon-add" />
                      </styleClass>
                   </Button>
                   <Button fx:id="removeButton" focusTraversable="false" mnemonicParsing="false" onAction="#onRemove" text="-">
@@ -58,6 +59,7 @@
                         <String fx:value="btn" />
                         <String fx:value="btn-toolIcon" />
                         <String fx:value="text-red" />
+                        <String fx:value="icon-delete" />
                      </styleClass>
                   </Button>
                   <Button fx:id="saveButton" focusTraversable="false" graphicTextGap="10.0" maxWidth="118.0" mnemonicParsing="false" onAction="#onSave" prefHeight="40.0" prefWidth="118.0" text="Opslaan">

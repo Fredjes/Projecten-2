@@ -4,12 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -35,8 +30,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import persistence.ItemRepository;
-import persistence.Repository;
 
 /**
  * Represents the definition of every item stored, containing all shared
@@ -50,7 +43,7 @@ import persistence.Repository;
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Item implements Serializable, Searchable, Importable<Item>, Changeable {
+public abstract class Item implements Serializable, Searchable, Importable, Changeable {
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -280,87 +273,6 @@ public abstract class Item implements Serializable, Searchable, Importable<Item>
 	}
 
 	throw new IllegalStateException("unknown item-type");
-    }
-
-    @Override
-    public <E extends Item> Map<String, BiConsumer<String, E>> createHeaderList() {
-	HashMap<String, BiConsumer<String, E>> map = new HashMap<>();
-	map.put("Leeftijd", new BiConsumer<String, E>() {
-
-	    @Override
-	    public void accept(String t, E u) {
-		u.setAgeCategory(t);
-	    }
-	});
-
-	map.put("Omschrijving", new BiConsumer<String, E>() {
-
-	    @Override
-	    public void accept(String t, E u) {
-		if (u.getDescription() == null || u.getDescription().isEmpty()) {
-		    u.setDescription(t);
-		} else {
-		    u.setDescription(u.getDescription() + (u.getDescription().matches("\\.$") ? " " : ". ") + t);
-		}
-	    }
-	});
-
-	map.put("Titel", new BiConsumer<String, E>() {
-
-	    @Override
-	    public void accept(String t, E u) {
-		u.setName(t);
-	    }
-	});
-
-	map.put("Thema's", new BiConsumer<String, E>() {
-
-	    @Override
-	    public void accept(String t, E u) {
-		u.setThemes(Arrays.asList(t.split("[.,:+-;/]")));
-	    }
-	});
-
-	return map;
-    }
-
-    @Override
-    public Repository getRepository() {
-	return ItemRepository.getInstance();
-    }
-
-    @Override
-    public Map<String, Predicate<String>> createHeaderAssignmentList() {
-	Map<String, Predicate<String>> headerAssignmentList = new HashMap<>();
-	headerAssignmentList.put("Leeftijd", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "leeftijd", "ouderdom");
-	    }
-	});
-	headerAssignmentList.put("Omschrijving", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "omschrijving", "uitleg", "inhoud");
-	    }
-	});
-	headerAssignmentList.put("Titel", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "titel", "naam");
-	    }
-	});
-	headerAssignmentList.put("Thema's", new Predicate<String>() {
-
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "thema", "genre");
-	    }
-	});
-	return headerAssignmentList;
     }
 
     @Override

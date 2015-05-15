@@ -1,6 +1,7 @@
 package gui.excelwizard;
 
 import domain.Importable;
+import domain.Importer;
 import domain.excel.ExcelManager;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
@@ -36,7 +37,6 @@ public class ExcelWizardS3 extends BorderPane {
     }
 
     public void startImport() {
-	final List<Repository> repos = new ArrayList<>();
 	contentScreens.forEach(w -> {
 	    Map<Integer, String> headers = w.getHeaders();
 
@@ -44,28 +44,23 @@ public class ExcelWizardS3 extends BorderPane {
 		Supplier<? extends Importable> supplier = ExcelManager.getInstance().getEntry(w.getExcelId()).getDestination().getEntityCreator();
 		final int size = w.getRows().size();
 		final FloatProperty current = new SimpleFloatProperty();
+		Importer importer = supplier.get().createImporter();
 
 		w.getRows().forEach(d -> {
 		    Importable i = supplier.get();
-		    Map<String, BiConsumer<String, Importable>> consumers = i.createHeaderList();
 		    headers.forEach((t, u) -> {
-			if (d.hasData(t)) {
-			    if (consumers.containsKey(u)) {
-				consumers.get(u).accept(d.getData(t), i);
-			    }
-			}
+			importer.setField(u, d.getData(t));
 		    });
 
-		    i.getRepository().add(i);
+		    importer.nextEntity();
 		    current.set(current.get() + 1);
 		});
-
-		repos.add(supplier.get().getRepository());
+		
+		importer.persistEntities();
 	    }
 	});
 
-	repos.forEach(Repository::saveChanges);
-
+	Repository.saveAllChanges();
 	ExcelManager.getInstance().importComplete();
     }
 }

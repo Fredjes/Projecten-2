@@ -1,10 +1,13 @@
 package persistence;
 
 import domain.Loan;
+import domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
@@ -20,6 +23,10 @@ public class LoanRepository extends Repository<Loan> {
 
     private static LoanRepository repositoryInstance;
 
+    private LoanRepository() {
+	super();
+    }
+    
     public static LoanRepository getInstance() {
 	if (repositoryInstance == null) {
 	    repositoryInstance = new LoanRepository();

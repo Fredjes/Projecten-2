@@ -1,5 +1,6 @@
 package gui;
 
+import domain.FontCache;
 import domain.Loan;
 import domain.LocaleConfig;
 import domain.SearchPredicate;
@@ -19,6 +20,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import persistence.LoanRepository;
 
 /**
@@ -31,7 +33,7 @@ public class LoanManagement extends BorderPane {
     private ListView<Loan> loanList;
 
     @FXML
-    private Button returnButton;
+    private Button returnButton, extendButton;
 
     @FXML
     private TextField searchBar;
@@ -47,77 +49,89 @@ public class LoanManagement extends BorderPane {
     private SearchPredicate predicate;
 
     public LoanManagement(LoanManagementListItemController controller) {
-	FXUtil.loadFXML(this, "loan_management");
-	this.controller = controller;
-	predicate = new SearchPredicate(Loan.class, "");
-	predicate.searchQueryProperty().bind(searchBar.textProperty());
-	filteredList = new FilteredList<>(LoanRepository.getInstance().getLoans());
-	loanList.setCellFactory(LoanManagementListItemCell.forListView());
-	onSearchQuery();
-	loanList.setItems(filteredList);
+        FXUtil.loadFXML(this, "loan_management");
+        this.controller = controller;
+        predicate = new SearchPredicate(Loan.class, "");
+        predicate.searchQueryProperty().bind(searchBar.textProperty());
+        filteredList = new FilteredList<>(LoanRepository.getInstance().getLoans());
+        loanList.setCellFactory(LoanManagementListItemCell.forListView());
+        onSearchQuery();
+        loanList.setItems(filteredList);
 
-	// Show temporary loading indicator
-	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
-	loadingIndicator.setMaxWidth(50);
-	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
-	contentStackPane.getChildren().add(loadingIndicator);
-	if (filteredList.size() == 0) {
-	    Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
-	    final BooleanProperty prop = new SimpleBooleanProperty(false);
-	    filteredList.addListener((Observable obs) -> {
-		if (!prop.get()) {
-		    prop.set(true);
-		} else {
-		    removeIndicator.run();
-		}
-	    });
-	    LoanRepository.getInstance().addSyncListener(removeIndicator);
-	}
-	// End code loading indicator
+        returnButton.graphicProperty().addListener((obs, ov, nv) -> {
+            if (nv != null) {
+                ((Text) nv).setFont(FontCache.getIconFont(16));
+            }
+        });
+
+        extendButton.graphicProperty().addListener((obs, ov, nv) -> {
+            if (nv != null) {
+                ((Text) nv).setFont(FontCache.getIconFont(16));
+            }
+        });
+
+        // Show temporary loading indicator
+        ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
+        loadingIndicator.setMaxWidth(50);
+        StackPane.setAlignment(loadingIndicator, Pos.CENTER);
+        contentStackPane.getChildren().add(loadingIndicator);
+        if (filteredList.size() == 0) {
+            Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
+            final BooleanProperty prop = new SimpleBooleanProperty(false);
+            filteredList.addListener((Observable obs) -> {
+                if (!prop.get()) {
+                    prop.set(true);
+                } else {
+                    removeIndicator.run();
+                }
+            });
+            LoanRepository.getInstance().addSyncListener(removeIndicator);
+        }
+        // End code loading indicator
     }
 
     @FXML
     public void onSearchQuery() {
-	if (displayAll) {
-	    filteredList.setPredicate(predicate::test);
-	} else {
-	    filteredList.setPredicate(p -> predicate.test(p) && !p.getReturned());
-	}
+        if (displayAll) {
+            filteredList.setPredicate(predicate::test);
+        } else {
+            filteredList.setPredicate(p -> predicate.test(p) && !p.getReturned());
+        }
     }
 
     @FXML
     public void onDisplayAllLoans() {
-	displayAll = !displayAll;
-	onSearchQuery();
+        displayAll = !displayAll;
+        onSearchQuery();
     }
 
     @FXML
     public void onReturnLoan() {
-	if (!loanList.getSelectionModel().isEmpty()) {
-	    Loan selectedLoan = loanList.getSelectionModel().getSelectedItem();
-	    if (!selectedLoan.getReturned()) {
-		PopupUtil.showDamageQuestionPopOver(selectedLoan, returnButton, () -> Platform.runLater(() -> {
-		    PopupUtil.showNotification("Uitlening teruggebracht", "De uitlening van " + selectedLoan.getUser().getName() + " is terug gebracht.");
-		    onSearchQuery();
-		}));
-	    }
-	}
+        if (!loanList.getSelectionModel().isEmpty()) {
+            Loan selectedLoan = loanList.getSelectionModel().getSelectedItem();
+            if (!selectedLoan.getReturned()) {
+                PopupUtil.showDamageQuestionPopOver(selectedLoan, returnButton, () -> Platform.runLater(() -> {
+                    PopupUtil.showNotification("Uitlening teruggebracht", "De uitlening van " + selectedLoan.getUser().getName() + " is terug gebracht.");
+                    onSearchQuery();
+                }));
+            }
+        }
     }
 
     @FXML
     public void onRenewLoanPeriod() {
-	if (!loanList.getSelectionModel().isEmpty()) {
-	    Loan selectedLoan = loanList.getSelectionModel().getSelectedItem();
-	    Calendar newDate = Calendar.getInstance();
-	    newDate.setTime(selectedLoan.getDate().getTime());
-	    newDate.add(Calendar.WEEK_OF_MONTH, 1);
-	    selectedLoan.setDate(newDate);
+        if (!loanList.getSelectionModel().isEmpty()) {
+            Loan selectedLoan = loanList.getSelectionModel().getSelectedItem();
+            Calendar newDate = Calendar.getInstance();
+            newDate.setTime(selectedLoan.getDate().getTime());
+            newDate.add(Calendar.WEEK_OF_MONTH, 1);
+            selectedLoan.setDate(newDate);
 
-	    LoanRepository.getInstance().addSyncListener(() -> {
-		Platform.runLater(() -> PopupUtil.showNotification("Verlengd", "De uitlening is verlengd tot " + LocaleConfig.DATE_FORMAT.format(newDate.getTime())));
-	    });
+            LoanRepository.getInstance().addSyncListener(() -> {
+                Platform.runLater(() -> PopupUtil.showNotification("Verlengd", "De uitlening is verlengd tot " + LocaleConfig.DATE_FORMAT.format(newDate.getTime())));
+            });
 
-	    LoanRepository.getInstance().saveLoan(selectedLoan);
-	}
+            LoanRepository.getInstance().saveLoan(selectedLoan);
+        }
     }
 }

@@ -7,6 +7,7 @@ import domain.DetailViewUtil;
 import domain.DragCommand;
 import domain.Dvd;
 import domain.FilterOption;
+import domain.FontCache;
 import domain.Game;
 import domain.Item;
 import domain.SearchPredicate;
@@ -38,6 +39,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import persistence.ItemRepository;
 import persistence.UserRepository;
 
@@ -77,21 +79,21 @@ public class ItemManagement extends BorderPane {
     private VBox buttonBox;
 
     public void setController(ItemManagementController cont) {
-        controller = cont;
+	controller = cont;
     }
 
     public ItemManagementController getController() {
-        return controller;
+	return controller;
     }
 
     public ItemManagement(ItemManagementController controller) {
-        this.controller = controller;
-        searchPredicate = new SearchPredicate();
-        FXUtil.loadFXML(this, "item_management");
-        filteredList = new FilteredList<>((ObservableList<Item>) ItemRepository.getInstance().getItems());
-        searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
-        itemList.setCellFactory(ItemManagementListItemCell.forListView());
-        itemList.setItems(filteredList);
+	this.controller = controller;
+	searchPredicate = new SearchPredicate();
+	FXUtil.loadFXML(this, "item_management");
+	filteredList = new FilteredList<>((ObservableList<Item>) ItemRepository.getInstance().getItems());
+	searchPredicate.searchQueryProperty().bind(searchbar.textProperty());
+	itemList.setCellFactory(ItemManagementListItemCell.forListView());
+	itemList.setItems(filteredList);
 	this.controller = controller;
 	searchPredicate = new SearchPredicate();
 	FXUtil.loadFXML(this, "item_management");
@@ -103,232 +105,244 @@ public class ItemManagement extends BorderPane {
 	    b.setPadding(new Insets(7, 0, 7, 15));
 	    b.setGraphicTextGap(20);
 	};
-	
+
 	buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
 	buttonLayout.accept(saveButton);
 
-	// Show temporary loading indicator
-	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
-	loadingIndicator.setMaxWidth(50);
-	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
-	contentStackPane.getChildren().add(loadingIndicator);
-	if (filteredList.size() == 0) {
-	    Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
-	    final BooleanProperty prop = new SimpleBooleanProperty(false);
-	    filteredList.addListener((Observable obs) -> {
-		if (!prop.get()) {
-		    prop.set(true);
-		} else {
-		    removeIndicator.run();
-		}
-	    });
-	    ItemRepository.getInstance().addSyncListener(removeIndicator);
-	}
-	// End code loading indicator
-
-        itemList.setOnDragDetected(e -> {
-            Dragboard db = itemList.startDragAndDrop(TransferMode.LINK);
-            db.setDragView(Cache.getItemCache().get(itemList.getSelectionModel().getSelectedItem()).snapshot(null, null));
-            ClipboardContent content = new ClipboardContent();
-            Item selectedItem = itemList.getSelectionModel().getSelectedItem();
-            content.put(DragCommand.DRAG_COMMAND_DATA_FORMAT, new DragCommand(selectedItem));
-            db.setContent(content);
-            e.consume();
-        });
-
-        itemList.setOnDragOver(e -> {
-            Dragboard board = e.getDragboard();
-            if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand) board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
-                e.acceptTransferModes(TransferMode.MOVE);
+        buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
+        buttonLayout.accept(saveButton);
+        saveButton.graphicProperty().addListener((obs, ov, nv) -> {
+            if (nv != null) {
+                ((Text) nv).setFont(FontCache.getIconFont(16));
             }
         });
 
-        itemList.setOnDragDropped(e -> {
-            Dragboard board = e.getDragboard();
-            if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand) board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
-                e.setDropCompleted(true);
-                e.consume();
-            }
-        });
+        // Show temporary loading indicator
+        ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
+        loadingIndicator.setMaxWidth(50);
+        StackPane.setAlignment(loadingIndicator, Pos.CENTER);
+        contentStackPane.getChildren().add(loadingIndicator);
+        if (filteredList.size() == 0) {
+            Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
+            final BooleanProperty prop = new SimpleBooleanProperty(false);
+            filteredList.addListener((Observable obs) -> {
+                if (!prop.get()) {
+                    prop.set(true);
+                } else {
+                    removeIndicator.run();
+                }
+            });
+            ItemRepository.getInstance().addSyncListener(removeIndicator);
+        }
+        // End code loading indicator
 
-        itemList.setOnMouseReleased(e -> updateDetailView());
-        itemList.setOnKeyReleased(e -> updateDetailView());
+	itemList.setOnDragDetected(e -> {
+	    Dragboard db = itemList.startDragAndDrop(TransferMode.LINK);
+	    db.setDragView(Cache.getItemCache().get(itemList.getSelectionModel().getSelectedItem()).snapshot(null, null));
+	    ClipboardContent content = new ClipboardContent();
+	    Item selectedItem = itemList.getSelectionModel().getSelectedItem();
+	    content.put(DragCommand.DRAG_COMMAND_DATA_FORMAT, new DragCommand(selectedItem));
+	    db.setContent(content);
+	    e.consume();
+	});
 
-        searchbar.setOnKeyReleased((e) -> {
-            updateList();
-        });
+	itemList.setOnDragOver(e -> {
+	    Dragboard board = e.getDragboard();
+	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand) board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
+		e.acceptTransferModes(TransferMode.MOVE);
+	    }
+	});
 
-        updateList();
+	itemList.setOnDragDropped(e -> {
+	    Dragboard board = e.getDragboard();
+	    if (board.hasContent(DragCommand.DRAG_COMMAND_DATA_FORMAT) && DragCommand.isRemoveItemDrag((DragCommand) board.getContent(DragCommand.DRAG_COMMAND_DATA_FORMAT))) {
+		e.setDropCompleted(true);
+		e.consume();
+	    }
+	});
+
+	itemList.setOnMouseReleased(e -> updateDetailView());
+	itemList.setOnKeyReleased(e -> updateDetailView());
+
+	searchbar.setOnKeyReleased((e) -> {
+	    updateList();
+	});
+
+	updateList();
     }
 
-    private void updateDetailView() {
-        try {
-            Item newValue = itemList.getSelectionModel().getSelectedItem();
-            if (newValue == null) {
-                return;
-            }
+    public void hideDetailView() {
+	this.setBottom(null);
+    }
 
-            User u = UserRepository.getInstance().getAuthenticatedUser();
+    public void updateDetailView() {
+	try {
+	    Item newValue = itemList.getSelectionModel().getSelectedItem();
+	    if (newValue == null) {
+		return;
+	    }
 
-            if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT || u.getUserType() == User.UserType.VOLUNTEER) {
-                return;
-            }
+	    User u = UserRepository.getInstance().getAuthenticatedUser();
 
-            if (newValue instanceof Book) {
-                Object temp = DetailViewUtil.getDetailPane(FilterOption.BOOK);
-                detailView = (Binding<Book>) temp;
-                this.setBottom((Node) temp);
-            } else if (newValue instanceof Cd) {
-                Object temp = DetailViewUtil.getDetailPane(FilterOption.CD);
-                detailView = (Binding<Cd>) temp;
-                this.setBottom((Node) temp);
-            } else if (newValue instanceof Dvd) {
-                Object temp = DetailViewUtil.getDetailPane(FilterOption.DVD);
-                detailView = (Binding<Dvd>) temp;
-                this.setBottom((Node) temp);
-            } else if (newValue instanceof Game) {
-                Object temp = DetailViewUtil.getDetailPane(FilterOption.GAME);
-                detailView = (Binding<Game>) temp;
-                this.setBottom((Node) temp);
-            } else if (newValue instanceof StoryBag) {
-                Object temp = DetailViewUtil.getDetailPane(FilterOption.STORYBAG);
-                detailView = (Binding<StoryBag>) temp;
-                this.setBottom((Node) temp);
-            }
+	    if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT || u.getUserType() == User.UserType.VOLUNTEER) {
+		return;
+	    }
 
-            detailView.bind(newValue);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+	    if (newValue instanceof Book) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.BOOK);
+		detailView = (Binding<Book>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof Cd) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.CD);
+		detailView = (Binding<Cd>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof Dvd) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.DVD);
+		detailView = (Binding<Dvd>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof Game) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.GAME);
+		detailView = (Binding<Game>) temp;
+		this.setBottom((Node) temp);
+	    } else if (newValue instanceof StoryBag) {
+		Object temp = DetailViewUtil.getDetailPane(FilterOption.STORYBAG);
+		detailView = (Binding<StoryBag>) temp;
+		this.setBottom((Node) temp);
+	    }
+
+	    detailView.bind(newValue);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
 //		System.err.println("Couldn't bind item: " + ex.getMessage());
-        }
+	}
     }
 
     public void updateList() {
-        filteredList.setPredicate(searchPredicate::test);
+	filteredList.setPredicate(searchPredicate::test);
     }
 
     private void refreshSelectedFilter(Object source) {
-        for (Node n : buttonBox.getChildren()) {
-            if (n instanceof Button) {
-                if (source == n) {
-                    n.getStyleClass().remove("item-btn");
-                    n.getStyleClass().add("item-btn-selected");
-                } else {
-                    n.getStyleClass().add("item-btn");
-                    n.getStyleClass().remove("item-btn-selected");
-                }
-            }
-        }
+	for (Node n : buttonBox.getChildren()) {
+	    if (n instanceof Button) {
+		if (source == n) {
+		    n.getStyleClass().remove("item-btn");
+		    n.getStyleClass().add("item-btn-selected");
+		} else {
+		    n.getStyleClass().add("item-btn");
+		    n.getStyleClass().remove("item-btn-selected");
+		}
+	    }
+	}
     }
 
     @FXML
     public void onBoek(ActionEvent evt) {
-        refreshSelectedFilter(evt.getSource());
-        searchPredicate.setSelectedClass(FilterOption.BOOK.getFilterClass());
-        updateList();
+	refreshSelectedFilter(evt.getSource());
+	searchPredicate.setSelectedClass(FilterOption.BOOK.getFilterClass());
+	updateList();
     }
 
     @FXML
     public void onSpelletje(ActionEvent evt) {
-        refreshSelectedFilter(evt.getSource());
-        searchPredicate.setSelectedClass(FilterOption.GAME.getFilterClass());
-        updateList();
+	refreshSelectedFilter(evt.getSource());
+	searchPredicate.setSelectedClass(FilterOption.GAME.getFilterClass());
+	updateList();
     }
 
     @FXML
     public void onCd(ActionEvent evt) {
-        refreshSelectedFilter(evt.getSource());
-        searchPredicate.setSelectedClass(FilterOption.CD.getFilterClass());
-        updateList();
+	refreshSelectedFilter(evt.getSource());
+	searchPredicate.setSelectedClass(FilterOption.CD.getFilterClass());
+	updateList();
     }
 
     @FXML
     public void onDvd(ActionEvent evt) {
-        refreshSelectedFilter(evt.getSource());
-        searchPredicate.setSelectedClass(FilterOption.DVD.getFilterClass());
-        updateList();
+	refreshSelectedFilter(evt.getSource());
+	searchPredicate.setSelectedClass(FilterOption.DVD.getFilterClass());
+	updateList();
     }
 
     @FXML
     public void onStoryBag(ActionEvent evt) {
-        refreshSelectedFilter(evt.getSource());
-        searchPredicate.setSelectedClass(FilterOption.STORYBAG.getFilterClass());
-        updateList();
+	refreshSelectedFilter(evt.getSource());
+	searchPredicate.setSelectedClass(FilterOption.STORYBAG.getFilterClass());
+	updateList();
     }
 
     @FXML
     public void onAll(ActionEvent evt) {
-        refreshSelectedFilter(evt.getSource());
-        searchPredicate.setSelectedClass(Object.class);
-        updateList();
+	refreshSelectedFilter(evt.getSource());
+	searchPredicate.setSelectedClass(Object.class);
+	updateList();
     }
 
     @FXML
     public void onSave() {
-	saveButton.setDisable(true);
+        saveButton.setDisable(true);
 
-	ItemRepository.getInstance().addSyncListener(() -> {
-	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
-	    updateList();
-	});
+        ItemRepository.getInstance().addSyncListener(() -> {
+            Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
+            updateList();
+        });
 
-	ItemRepository.getInstance().saveChanges();
-	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
-	saveButton.setDisable(false);
+        ItemRepository.getInstance().saveChanges();
+        PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
+        saveButton.setDisable(false);
     }
 
     @FXML
     public void onAdd() {
-        if (searchPredicate.getSelectedClass() != null) {
-            try {
-                if (searchPredicate.getSelectedClass().equals(Object.class)) {
-                    PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
-                    return;
-                }
+	if (searchPredicate.getSelectedClass() != null) {
+	    try {
+		if (searchPredicate.getSelectedClass().equals(Object.class)) {
+		    PopupUtil.showNotification("Geen type geselecteerd", "Gelieve een type (boek, dvd, verteltas, cd, of spelletje) te selecteren alvorens een voorwerp toe te voegen!", PopupUtil.Notification.WARNING);
+		    return;
+		}
 
-                searchbar.setText("");
-                Item added = (Item) searchPredicate.getSelectedClass().getConstructor().newInstance();
-                ItemRepository.getInstance().saveItem(added);
-                added.setName(" ");
-                updateList();
-                added.setName("");
-                itemList.getSelectionModel().select(added);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+		searchbar.setText("");
+		Item added = (Item) searchPredicate.getSelectedClass().getConstructor().newInstance();
+		ItemRepository.getInstance().saveItem(added);
+		added.setName(" ");
+		updateList();
+		added.setName("");
+		itemList.getSelectionModel().select(added);
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+	    }
 
-            updateDetailView();
-        }
+	    updateDetailView();
+	}
     }
 
     @FXML
     public void onRemove() {
-        if (!itemList.getSelectionModel().isEmpty()) {
-            int selected = itemList.getSelectionModel().getSelectedIndex();
-            ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
-            updateList();
+	if (!itemList.getSelectionModel().isEmpty()) {
+	    int selected = itemList.getSelectionModel().getSelectedIndex();
+	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
+	    updateList();
 
-            if (!itemList.getItems().isEmpty()) {
-                itemList.getSelectionModel().select(Math.max(0, selected - 1));
-            }
+	    if (!itemList.getItems().isEmpty()) {
+		itemList.getSelectionModel().select(Math.max(0, selected - 1));
+	    }
 
-            updateDetailView();
-        }
+	    updateDetailView();
+	}
     }
 
     public Button getSaveButton() {
-        return saveButton;
+	return saveButton;
     }
 
     public HBox getListCommands() {
-        return listCommands;
+	return listCommands;
     }
 
     public ObservableList<Item> getFilteredList() {
-        return filteredList;
+	return filteredList;
     }
 
     public Node getDetailView() {
-        return (Node) this.detailView;
+	return (Node) this.detailView;
     }
 }

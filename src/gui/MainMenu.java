@@ -3,9 +3,9 @@ package gui;
 import domain.controllers.MainMenuController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 /**
  *
@@ -41,9 +41,9 @@ public class MainMenu extends BorderPane {
     private Label lblVoorwerpen;
 
     @FXML
-    private Text voorwerpenBeherenIcon;
+    private ImageView voorwerpenBeherenIcon;
 
-    public Text getVoorwerpenBeherenIcon() {
+    public ImageView getVoorwerpenBeherenIcon() {
 	return voorwerpenBeherenIcon;
     }
 

@@ -82,23 +82,26 @@ public class StoryBag extends Item implements Serializable {
     }
 
     @Override
-    public Map<String, BiConsumer<String, StoryBag>> createHeaderList() {
-	return super.createHeaderList();
+    public Importer createImporter() {
+	return new StoryBagImporter();
     }
-    
-    @Override
-    public Map<String, Predicate<String>> createHeaderAssignmentList() {
-	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
-	final Predicate<String> original = map.get("Titel");
-	map.put("Titel", new Predicate<String>() {
 
-	    @Override
-	    public boolean test(String t) {
-		return original.test(t) || SearchPredicate.containsAnyIgnoreCase(t, "verteltas", "tas");
+    private class StoryBagImporter extends ItemImporter<StoryBag> {
+
+	public StoryBagImporter() {
+	    super(StoryBag::new);
+	}
+
+	@Override
+	public String predictField(String columnName) {
+	    if (SearchPredicate.containsAnyIgnoreCase(columnName, "verteltas", "tas")) {
+		return "Titel";
+	    } else {
+		return super.predictField(columnName);
 	    }
-	});
-	return map;
+	}
     }
+
     
     @Override
     public int getVersionID() {

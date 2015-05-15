@@ -75,6 +75,10 @@ public class CopyPopOver extends BorderPane {
 	copy.getObservableLoans().addListener((Observable obs) -> {
 	    startLoanButton.setDisable(copy.getLoans().stream().anyMatch(i -> !i.getReturned()));
 	});
+	
+	copy.damageProperty().addListener((obs, ov, nv) -> {
+	    startLoanButton.setDisable(nv == Damage.HIGH_DAMAGE);
+	});
     }
 
     public void update() {
@@ -104,6 +108,8 @@ public class CopyPopOver extends BorderPane {
 
 	LoanRepository.getInstance().add(loan);
 	LoanRepository.getInstance().saveChanges();
+	backedCopy.getLoans().add(loan);
+	loan.getUser().getLoans().add(loan);
 
 	if (onStartLoan != null) {
 	    LoanEvent evt = new LoanEvent(loan);
