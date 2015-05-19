@@ -51,7 +51,6 @@ public abstract class Item implements Serializable, Searchable, Importable {
     private final StringProperty ageCategory = new SimpleStringProperty();
 
     private final ObservableList<ItemCopy> itemCopies = FXCollections.<ItemCopy>observableArrayList();
-
     private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
 
     private int id;

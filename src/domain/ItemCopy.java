@@ -137,9 +137,9 @@ public class ItemCopy implements Serializable, Searchable {
     @Override
     public String toString() {
 	try {
-	    return this.getItem().getName() + " (Exemplaar #" + getCopyNumber() + ")";
+	    return this.getItem().getName() + " (" + getCopyNumber() + ")";
 	} catch (NullPointerException npex) {
-	    return "Exemplaar #" + getCopyNumber();
+	    return "Exemplaar " + getCopyNumber();
 	}
     }
 

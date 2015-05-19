@@ -1,10 +1,14 @@
 package gui;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.apache.pdfbox.exceptions.COSVisitorException;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
 import persistence.UserRepository;
@@ -23,6 +27,11 @@ public class MainApp extends Application {
 	ItemRepository.getInstance().addSyncListener(() -> {
 	    UserRepository.getInstance().addSyncListener(() -> {
 		LoanRepository.getInstance().sync();
+		try {
+		    PdfExporter.saveLoans();
+		} catch (IOException ex) {
+		    Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	    });
 	    UserRepository.getInstance().sync();
 	});

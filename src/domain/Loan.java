@@ -161,4 +161,9 @@ public class Loan implements Serializable, Searchable {
 	}
 	return true;
     }
+
+    @Override
+    public String toString() {
+	return getItemCopy().toString() + ", uitgeleend aan: " + getUser().toString();
+    }
 }
