@@ -1,10 +1,16 @@
 package persistence;
 
 import domain.Book;
+import domain.Change;
+import domain.ChangeConfig;
+import domain.Changeable;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -13,9 +19,12 @@ import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
+import javax.persistence.QueryHint;
+import javax.persistence.TypedQuery;
+import org.eclipse.persistence.config.CacheUsage;
+import org.eclipse.persistence.config.QueryHints;
 
 /**
  * The repository used to handle the storing of items, can synchronize save
@@ -30,18 +39,25 @@ public class ItemRepository extends Repository<Item> {
     private ObservableList<Item> items = FXCollections.observableArrayList();
     private ObservableList<ItemCopy> itemCopies = FXCollections.observableArrayList();
 
-    private List<Object> deletedElements = new ArrayList();
+    private List<Changeable> deletedElements = new ArrayList();
 
     private ItemRepository() {
-	super();
-	ListChangeListener changeListener = c -> {
-	    while (c.next()) {
-		c.getAddedSubList().forEach(i -> JPAUtil.getInstance().getEntityManager().persist(i));
-	    }
-	};
+	Repository.submitRepository(this, Arrays.asList(new Integer[]{
+	    ChangeConfig.BOOK_VERSION_ID,
+	    ChangeConfig.CD_VERSION_ID,
+	    ChangeConfig.DVD_VERSION_ID,
+	    ChangeConfig.GAME_VERSION_ID,
+	    ChangeConfig.STORY_BAG_VERSION_ID
+	}));
 
-	items.addListener(changeListener);
-	itemCopies.addListener(changeListener);
+//	ListChangeListener changeListener = c -> {
+//	    while (c.next()) {
+//		c.getAddedSubList().forEach(i -> JPAUtil.getInstance().getEntityManager().persist(i));
+//	    }
+//	};
+//
+//	items.addListener(changeListener);
+//	itemCopies.addListener(changeListener);
     }
 
     /**
@@ -72,6 +88,10 @@ public class ItemRepository extends Repository<Item> {
 
     @Override
     public void add(Item item) {
+	if (item.getId() != 0 && items.stream().anyMatch(i -> i.getId() == item.getId())) {
+	    return;
+	}
+
 	items.add(item);
     }
 
@@ -81,9 +101,34 @@ public class ItemRepository extends Repository<Item> {
 	items.remove(item);
     }
 
+    @Override
+    public void remove(Predicate<Item> predicate) {
+	getItems().stream().filter(predicate).forEach(this::remove);
+    }
+
     public void add(ItemCopy itemCopy) {
+	if (itemCopy.getId() != 0 && items.stream().anyMatch(i -> i.getId() == itemCopy.getId())) {
+	    return;
+	}
 
 	itemCopies.add(itemCopy);
+    }
+
+    @Override
+    public void update(int pk) {
+	EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	manager.getTransaction().begin();
+	Optional<Item> item = items.stream().filter(i -> i.getId() == pk).findAny();
+	Item updatedItem = manager.createNamedQuery("Item.findById", Item.class).setHint(QueryHints.CACHE_USAGE, CacheUsage.DoNotCheckCache).setParameter("id", pk).getSingleResult();
+	
+	if (item.isPresent()) {
+	    manager.detach(item.get());
+	    item.get().bind(updatedItem);
+	} else {
+	    add(updatedItem);
+	}
+	
+	manager.getTransaction().commit();
     }
 
     public void remove(ItemCopy itemCopy) {
@@ -136,6 +181,7 @@ public class ItemRepository extends Repository<Item> {
 		manager.getTransaction().begin();
 
 		items.forEach(item -> {
+		    ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), item, false));
 		    if ((item.getName() == null || item.getName().isEmpty()) && (item.getDescription() == null || item.getDescription().isEmpty()) && item.getThemes().isEmpty() && (item.getAgeCategory() == null || item.getAgeCategory().isEmpty())) {
 			return;
 		    }
@@ -156,8 +202,9 @@ public class ItemRepository extends Repository<Item> {
 		});
 
 		deletedElements.forEach((el) -> {
-		    Object o = manager.merge(el);
+		    Changeable o = manager.merge(el);
 		    manager.remove(o);
+		    ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), o, true));
 		});
 
 		manager.getTransaction().commit();
@@ -170,29 +217,35 @@ public class ItemRepository extends Repository<Item> {
     }
 
     public void saveItem(Item item) {
-	EntityManager manager = JPAUtil.getInstance().getEntityManager();
-	manager.getTransaction().begin();
-	if (item.getId() != 0 && getItems().stream().anyMatch(i -> i.getId() == item.getId())) {
-	    manager.merge(item);
-	} else {
-	    manager.persist(item);
+	synchronized (this) {
+	    EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	    manager.getTransaction().begin();
+	    if (item.getId() != 0 && getItems().stream().anyMatch(i -> i.getId() == item.getId())) {
+		manager.merge(item);
+	    } else {
+		manager.persist(item);
+	    }
+	    manager.getTransaction().commit();
+	    add(item);
+	    super.triggerListeners();
+	    ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), item, false));
 	}
-	manager.getTransaction().commit();
-	add(item);
-	super.triggerListeners();
     }
 
     public void saveItemCopy(ItemCopy copy) {
-	EntityManager manager = JPAUtil.getInstance().getEntityManager();
-	manager.getTransaction().begin();
-	if (copy.getId() != 0 && getItemCopies().stream().anyMatch(i -> i.getId() == copy.getId())) {
-	    manager.merge(copy);
-	} else {
-	    manager.persist(copy);
+	synchronized (this) {
+	    EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	    manager.getTransaction().begin();
+	    if (copy.getId() != 0 && getItemCopies().stream().anyMatch(i -> i.getId() == copy.getId())) {
+		manager.merge(copy);
+	    } else {
+		manager.persist(copy);
+	    }
+	    manager.getTransaction().commit();
+	    add(copy);
+	    super.triggerListeners();
+	    ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), copy, false));
 	}
-	manager.getTransaction().commit();
-	add(copy);
-	super.triggerListeners();
     }
 
     /**

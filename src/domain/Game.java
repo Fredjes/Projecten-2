@@ -30,6 +30,14 @@ public class Game extends Item implements Serializable {
 	setBrand(brand);
     }
 
+    @Override
+    public void bind(Item item) {
+	super.bind(item);
+	if (item instanceof Item) {
+	    brand.set(((Game) item).getBrand());
+	}
+    }
+
     public StringProperty brandProperty() {
 	return brand;
     }
@@ -104,7 +112,7 @@ public class Game extends Item implements Serializable {
 	    }
 	}
     }
-    
+
     @Override
     public int getVersionID() {
 	return ChangeConfig.GAME_VERSION_ID;

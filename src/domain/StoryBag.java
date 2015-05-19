@@ -38,6 +38,14 @@ public class StoryBag extends Item implements Serializable {
 	super(name, description, theme, ageCategory);
     }
 
+    @Override
+    public void bind(Item item) {
+	super.bind(item);
+	if (item instanceof StoryBag) {
+	    items.setAll(((StoryBag) item).getItems());
+	}
+    }
+
     public void addItem(Item item) {
 	items.add(item);
     }
@@ -102,7 +110,6 @@ public class StoryBag extends Item implements Serializable {
 	}
     }
 
-    
     @Override
     public int getVersionID() {
 	return ChangeConfig.STORY_BAG_VERSION_ID;

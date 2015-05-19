@@ -32,7 +32,7 @@ import persistence.UserRepository;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 })
-public class User implements Serializable, Searchable, Importable, Changeable {
+public class User implements Serializable, Searchable, Importable, Changeable, Bindable<User> {
 
     private int id;
 
@@ -74,6 +74,17 @@ public class User implements Serializable, Searchable, Importable, Changeable {
 	this.email.set(email);
 	this.userType.set(userType);
 	this.passwordHash = passwordHash;
+    }
+
+    @Override
+    public void bind(User e) {
+	setClassRoom(e.getClassRoom());
+	setEmail(e.getEmail());
+	setLastName("");
+	setName(e.getName());
+	setPasswordHash(e.getPasswordHash());
+	setRegisterNumber(e.getRegisterNumber());
+	setUserType(e.getUserType());
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -310,7 +321,7 @@ public class User implements Serializable, Searchable, Importable, Changeable {
 	    entityList.forEach(UserRepository.getInstance()::add);
 	}
     }
-    
+
     @Override
     public int getVersionID() {
 	return ChangeConfig.USER_VERSION_ID;

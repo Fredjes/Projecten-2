@@ -36,6 +36,16 @@ public class Book extends Item implements Serializable {
 	setPublisher(publisher);
     }
 
+    @Override
+    public void bind(Item item) {
+	super.bind(item);
+	if (item instanceof Book) {
+	    Book book = (Book) item;
+	    author.set(book.getAuthor());
+	    publisher.set(book.getPublisher());
+	}
+    }
+
     public StringProperty authorProperty() {
 	return author;
     }

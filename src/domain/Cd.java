@@ -3,10 +3,7 @@ package domain;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -36,6 +33,16 @@ public class Cd extends Item implements Serializable {
     public Cd(List<String> theme, String ageCategory, String title, String description, String artist) {
 	super(title, description, theme, ageCategory);
 	setArtist(artist);
+    }
+
+    @Override
+    public void bind(Item item) {
+	super.bind(item);
+	if (item instanceof Cd) {
+	    Cd cd = (Cd) item;
+	    artist.set(cd.getArtist());
+	    songs.setAll(cd.getSongList());
+	}
     }
 
     public StringProperty artistProperty() {
@@ -133,7 +140,7 @@ public class Cd extends Item implements Serializable {
 	}
 
     }
-    
+
     @Override
     public int getVersionID() {
 	return ChangeConfig.CD_VERSION_ID;

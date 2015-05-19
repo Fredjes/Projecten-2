@@ -1,13 +1,16 @@
 package persistence;
 
+import domain.Change;
+import domain.ChangeConfig;
 import domain.Loan;
-import domain.User;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
@@ -24,9 +27,9 @@ public class LoanRepository extends Repository<Loan> {
     private static LoanRepository repositoryInstance;
 
     private LoanRepository() {
-	super();
+	Repository.submitRepository(this, Arrays.asList(new Integer[]{ChangeConfig.LOAN_VERSION_ID}));
     }
-    
+
     public static LoanRepository getInstance() {
 	if (repositoryInstance == null) {
 	    repositoryInstance = new LoanRepository();
@@ -65,8 +68,24 @@ public class LoanRepository extends Repository<Loan> {
 	removedLoans.add(l);
     }
 
+    @Override
+    public void remove(Predicate<Loan> predicate) {
+	loans.stream().filter(predicate).forEach(this::remove);
+    }
+
     public void add(Loan l) {
+	if (l.getId() != 0 && loans.stream().anyMatch(i -> i.getId() == l.getId())) {
+	    return;
+	}
+
 	loans.add(l);
+    }
+
+    @Override
+    public void update(int pk) {
+//	if (loans.contains(e)) {
+//	    loans.stream().filter(l -> l.getId() == e.getId()).forEach(l -> l.bind(e));
+//	}
     }
 
     public void saveChanges() {
@@ -78,8 +97,12 @@ public class LoanRepository extends Repository<Loan> {
 		try {
 		    manager.getTransaction().begin();
 
-		    removedLoans.forEach(manager::remove);
+		    removedLoans.forEach(rl -> {
+			manager.remove(rl);
+			ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), rl, true));
+		    });
 		    loans.forEach(l -> {
+			ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), l, false));
 			if (l.getId() == 0) {
 			    manager.persist(l);
 			} else {
@@ -113,6 +136,7 @@ public class LoanRepository extends Repository<Loan> {
 
 		manager.getTransaction().commit();
 		super.triggerListeners();
+		ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), loan, false));
 	    }
 	});
 

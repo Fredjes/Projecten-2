@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Loan.findAll", query = "SELECT l FROM Loan l")
 })
-public class Loan implements Serializable, Searchable, Changeable {
+public class Loan implements Serializable, Searchable, Changeable, Bindable<Loan> {
 
     private int id;
 
@@ -161,7 +161,7 @@ public class Loan implements Serializable, Searchable, Changeable {
 	}
 	return true;
     }
-    
+
     public int getVersionID() {
 	return ChangeConfig.LOAN_VERSION_ID;
     }
@@ -169,5 +169,14 @@ public class Loan implements Serializable, Searchable, Changeable {
     @Override
     public int getID() {
 	return getId();
+    }
+
+    @Override
+    public void bind(Loan e) {
+	setDate(e.getDate());
+	setStartDate(e.getStartDate());
+	setItemCopy(e.getItemCopy());
+	setReturned(e.getReturned());
+	setUser(e.getUser());
     }
 }

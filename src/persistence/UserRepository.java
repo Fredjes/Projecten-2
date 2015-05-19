@@ -1,11 +1,17 @@
 package persistence;
 
+import domain.Change;
+import domain.ChangeConfig;
+import domain.Changeable;
 import domain.User;
 import gui.MainApp;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -32,7 +38,7 @@ public class UserRepository extends Repository<User> {
     private final List<User> deletedUsers = new ArrayList();
 
     private UserRepository() {
-	super();
+	Repository.submitRepository(this, Arrays.asList(new Integer[]{ChangeConfig.USER_VERSION_ID}));
     }
 
     public static UserRepository getInstance() {
@@ -43,15 +49,32 @@ public class UserRepository extends Repository<User> {
     }
 
     public void add(User u) {
+	if (u.getId() != 0 && users.stream().anyMatch(i -> i.getId() == u.getId())) {
+	    return;
+	}
+
 	if (users.stream().anyMatch(uu -> uu.getName().equalsIgnoreCase(u.getName()))) {
 	    return;
 	}
+
 	users.add(u);
+    }
+
+    @Override
+    public void update(int pk) {
+//	if (users.contains(e)) {
+//	    users.stream().filter(u -> u.getId() == e.getId()).forEach(u -> u.bind(e));
+//	}
     }
 
     public void remove(User u) {
 	users.remove(u);
 	deletedUsers.add(u);
+    }
+
+    @Override
+    public void remove(Predicate<User> predicate) {
+	users.stream().filter(predicate).forEach(this::remove);
     }
 
     public ObservableList<User> getUsers() {
@@ -162,6 +185,7 @@ public class UserRepository extends Repository<User> {
 			    return;
 			}
 
+			ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), user, false));
 			if (user.getId() == 0) {
 			    manager.persist(user);
 			} else {
@@ -170,7 +194,8 @@ public class UserRepository extends Repository<User> {
 		    });
 
 		    deletedUsers.forEach(u -> {
-			Object o = manager.merge(u);
+			Changeable o = manager.merge(u);
+			ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), o, true));
 			manager.remove(o);
 		    });
 
@@ -197,14 +222,15 @@ public class UserRepository extends Repository<User> {
 
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
-	
+
 	if (user.getId() == 0) {
 	    manager.persist(user);
 	} else {
 	    manager.merge(user);
 	}
-	
+
 	manager.getTransaction().commit();
+	ChangeRepository.getInstance().add(new Change(Date.from(Instant.now()), user, false));
     }
 
     public static void main(String[] args) {

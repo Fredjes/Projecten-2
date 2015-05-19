@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,10 +42,11 @@ import javax.persistence.Transient;
 @Entity
 @Access(AccessType.PROPERTY)
 @NamedQueries({
-    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
+    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
+    @NamedQuery(name = "Item.findById", query = "SELECT i FROM Item i WHERE i.id = :id") // To bypass JPA Cache
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Item implements Serializable, Searchable, Importable, Changeable {
+public abstract class Item implements Serializable, Searchable, Importable, Changeable, Bindable<Item> {
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -64,6 +67,32 @@ public abstract class Item implements Serializable, Searchable, Importable, Chan
 	setAgeCategory(ageCategory);
 	setName(name);
 	setDescription(description);
+    }
+
+    @Override
+    public void bind(Item item) {
+	final Runnable binding = new Runnable() {
+
+	    @Override
+	    public void run() {
+		name.bindBidirectional(item.nameProperty());
+		description.bindBidirectional(item.descriptionProperty());
+		ageCategory.bindBidirectional(item.ageCategoryProperty());
+
+		if (!item.getThemeFX().isEmpty()) {
+		    Bindings.bindContent(theme, item.getThemeFX());
+		}
+
+		Bindings.bindContent(itemCopies, item.getObservableItemCopies());
+		image.bindBidirectional(item.imageProperty());
+	    }
+	};
+
+	if (Platform.isFxApplicationThread()) {
+	    binding.run();
+	} else {
+	    Platform.runLater(binding);
+	}
     }
 
     @Transient

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import persistence.ChangeRepository;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
 import persistence.UserRepository;
@@ -20,6 +21,8 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+	ChangeRepository.getInstance(); // Trigger timing
+	
 	ItemRepository.getInstance().addSyncListener(() -> {
 	    UserRepository.getInstance().addSyncListener(() -> {
 		LoanRepository.getInstance().sync();
