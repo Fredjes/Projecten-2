@@ -5,7 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -52,6 +54,7 @@ public abstract class Item implements Serializable, Searchable, Importable {
 
     private final ObservableList<ItemCopy> itemCopies = FXCollections.<ItemCopy>observableArrayList();
     private final ObjectProperty<Image> image = new SimpleObjectProperty<>();
+    private final BooleanProperty visible = new SimpleBooleanProperty(true);
 
     private int id;
 
@@ -121,6 +124,18 @@ public abstract class Item implements Serializable, Searchable, Importable {
 
     public void setAgeCategory(String ageCategory) {
 	this.ageCategory.set(ageCategory);
+    }
+
+    public boolean getVisible() {
+	return visible.get();
+    }
+
+    public void setVisible(boolean visible) {
+	this.visible.set(visible);
+    }
+
+    public BooleanProperty visibleProperty() {
+	return visible;
     }
 
     public String getName() {

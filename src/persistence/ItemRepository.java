@@ -30,7 +30,7 @@ public class ItemRepository extends Repository<Item> {
     private ObservableList<Item> items = FXCollections.observableArrayList();
     private ObservableList<ItemCopy> itemCopies = FXCollections.observableArrayList();
 
-    private List<Object> deletedElements = new ArrayList();
+    private List<Item> deletedElements = new ArrayList();
 
     private ItemRepository() {
 	super();
@@ -77,12 +77,10 @@ public class ItemRepository extends Repository<Item> {
 
     @Override
     public void remove(Item item) {
-	deletedElements.add(item);
-	items.remove(item);
+	item.setVisible(false);
     }
 
     public void add(ItemCopy itemCopy) {
-
 	itemCopies.add(itemCopy);
     }
 
@@ -91,14 +89,12 @@ public class ItemRepository extends Repository<Item> {
     }
 
     public void remove(ItemCopy itemCopy, boolean removeList) {
-	if (removeList) {
-	    deletedElements.add(itemCopy);
-	}
 	itemCopies.remove(itemCopy);
+	items.stream().filter(i -> i.getItemCopies().contains(itemCopy)).forEach((Item i) -> i.getItemCopies().remove(itemCopy));
     }
 
     public ObservableList<? extends Item> getItems() {
-	return items;
+	return items.filtered(Item::getVisible);
     }
 
     public ObservableList<ItemCopy> getItemCopies() {
@@ -145,19 +141,22 @@ public class ItemRepository extends Repository<Item> {
 		    } else {
 			manager.merge(item);
 		    }
-
-		    item.getItemCopies().forEach(i -> {
-			if (i.getId() == 0) {
-			    manager.persist(i);
-			} else {
-			    manager.merge(i);
-			}
-		    });
 		});
 
-		deletedElements.forEach((el) -> {
-		    Object o = manager.merge(el);
-		    manager.remove(o);
+		deletedElements.stream().distinct().forEach((el) -> {
+		    if (!manager.contains(el)) {
+			if (manager.find(el.getClass(), el.getId()) != null) {
+			    if (manager.contains(el)) {
+				manager.remove(el);
+			    } else {
+				try {
+				    manager.remove(manager.merge(el));
+				} catch (Exception ex) {
+				    ex.printStackTrace();
+				}
+			    }
+			}
+		    }
 		});
 
 		manager.getTransaction().commit();
@@ -185,7 +184,7 @@ public class ItemRepository extends Repository<Item> {
     public void saveItemCopy(ItemCopy copy) {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
-	if (copy.getId() != 0 && getItemCopies().stream().anyMatch(i -> i.getId() == copy.getId())) {
+	if (copy.getId() != 0) {
 	    manager.merge(copy);
 	} else {
 	    manager.persist(copy);

@@ -122,7 +122,7 @@ public class ItemCopy implements Serializable, Searchable {
 	this.item.set(i);
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     public Item getItem() {
 	return this.item.get();
     }

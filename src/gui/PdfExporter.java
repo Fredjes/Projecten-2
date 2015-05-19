@@ -1,5 +1,6 @@
 package gui;
 
+import domain.Item;
 import domain.Loan;
 import domain.User;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import persistence.ItemRepository;
 import persistence.LoanRepository;
 import persistence.UserRepository;
 
@@ -71,7 +73,6 @@ public class PdfExporter {
 		y = 0;
 	    }
 
-	    System.out.println(rectangle.getHeight() - y);
 	    cos.beginText();
 	    cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
 	    cos.setFont(FONT, 13);
@@ -116,6 +117,60 @@ public class PdfExporter {
 	cos.endText();
 
 	for (Loan loan : loans) {
+	    if (rectangle.getHeight() - y <= 130) {
+		cos.close();
+		page = new PDPage(PDPage.PAGE_SIZE_A4);
+		document.addPage(page);
+		rectangle = page.getMediaBox();
+		cos = new PDPageContentStream(document, page);
+		y = 0;
+	    }
+
+	    cos.beginText();
+	    cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
+	    cos.setFont(FONT, 13);
+	    cos.drawString(loan.toString());
+	    cos.moveTextPositionByAmount(20, -15);
+	    String toLatetext = loan.getDate().before(Date.from(Instant.now())) && !loan.getReturned() ? "(te laat)" : "";
+	    cos.drawString("van " + DATE_FORMAT.format(Date.from(loan.getStartDate().toInstant())) + " tot " + DATE_FORMAT.format(Date.from(loan.getDate().toInstant())) + " " + toLatetext);
+	    
+	    y += stepY;
+	    cos.endText();
+	}
+
+	cos.close();
+
+	try {
+	    document.save(System.getProperty("user.home") + "/" + LOAN_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
+	} catch (COSVisitorException ex) {
+	    Logger.getLogger(PdfExporter.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    document.close();
+	}
+    }
+    
+    public static void saveItems() throws IOException {
+	final int stepY = 50;
+	PDDocument document = new PDDocument();
+	List<? extends Item> items = ItemRepository.getInstance().getItems();
+	float y = 0;
+	PDPage page;
+	PDRectangle rectangle;
+	PDPageContentStream cos;
+
+	page = new PDPage(PDPage.PAGE_SIZE_A4);
+	document.addPage(page);
+	rectangle = page.getMediaBox();
+	cos = new PDPageContentStream(document, page);
+
+	cos.beginText();
+	cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
+	cos.setFont(FONT, 21);
+	cos.drawString("Overzicht van open uitleningen");
+	y += 40;
+	cos.endText();
+
+	for (Item item : items) {
 	    if (rectangle.getHeight() - y <= 100) {
 		cos.close();
 		page = new PDPage(PDPage.PAGE_SIZE_A4);
@@ -125,12 +180,14 @@ public class PdfExporter {
 		y = 0;
 	    }
 
-	    System.out.println(rectangle.getHeight() - y);
 	    cos.beginText();
 	    cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
 	    cos.setFont(FONT, 13);
-	    cos.drawString(loan + " van " + DATE_FORMAT.format(loan.getStartDate()) + DATE_FORMAT.format(loan.getDate()));
-
+	    StringBuilder builder = new StringBuilder();
+	    item.getItemCopies().forEach(ic -> builder.append(ic.getCopyNumber()).append(" "));
+	    cos.drawString(item.getName() + ", met exemplaren: " + builder);
+	    cos.moveTextPositionByAmount(20, -15);
+	    
 	    y += stepY;
 	    cos.endText();
 	}
@@ -138,7 +195,7 @@ public class PdfExporter {
 	cos.close();
 
 	try {
-	    document.save(System.getProperty("user.home") + "/" + LOAN_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
+	    document.save(System.getProperty("user.home") + "/" + ITEMS_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
 	} catch (COSVisitorException ex) {
 	    Logger.getLogger(PdfExporter.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {

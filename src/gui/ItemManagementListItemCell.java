@@ -3,6 +3,7 @@ package gui;
 import domain.Cache;
 import domain.Item;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -27,14 +28,37 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
-	    super.setGraphic(null);
+	    Platform.runLater(() -> super.setGraphic(null));
 	} else {
+	    final ChangeListener<Boolean> listener = (obs, ov, nv) -> {
+		if (nv) {
+		    super.setGraphic(null);
+		} else {
+		    super.setGraphic(listItem);
+		}
+	    };
+
+	    if (listItem != null) {
+		listItem.getItem().visibleProperty().removeListener(listener);
+	    }
+
 	    listItem = Cache.getItemCache().get(item);
+	    listItem.getItem().visibleProperty().addListener(listener);
 	    if (listItem != null) {
 		if (Platform.isFxApplicationThread()) {
-		    super.setGraphic(listItem);
+		    if (listItem.getItem().getVisible()) {
+			super.setGraphic(listItem);
+		    } else {
+			super.setGraphic(null);
+		    }
 		} else {
-		    Platform.runLater(() -> super.setGraphic(listItem));
+		    Platform.runLater(() -> {
+			if (listItem.getItem() == null || listItem.getItem().getVisible()) {
+			    super.setGraphic(listItem);
+			} else {
+			    super.setGraphic(null);
+			}
+		    });
 		}
 	    }
 	}

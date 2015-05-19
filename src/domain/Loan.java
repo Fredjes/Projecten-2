@@ -74,7 +74,7 @@ public class Loan implements Serializable, Searchable {
 	return itemCopy;
     }
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     public User getUser() {
 	return user.get();
     }

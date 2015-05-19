@@ -28,7 +28,7 @@ public class MainApp extends Application {
 	    UserRepository.getInstance().addSyncListener(() -> {
 		LoanRepository.getInstance().sync();
 		try {
-		    PdfExporter.saveLoans();
+		    PdfExporter.saveItems();
 		} catch (IOException ex) {
 		    Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
 		}

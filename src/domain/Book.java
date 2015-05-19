@@ -62,7 +62,7 @@ public class Book extends Item implements Serializable {
 
     @Override
     public String toString() {
-	return getName() + (getAuthor().isEmpty() ? "" : " (" + getAuthor() + ")");
+	return getName() + (getAuthor() == null || getAuthor().isEmpty() ? "" : " (" + getAuthor() + ")");
     }
 
     @Override
