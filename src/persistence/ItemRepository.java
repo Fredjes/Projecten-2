@@ -4,6 +4,8 @@ import domain.Book;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
+import gui.PdfExporter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +58,10 @@ public class ItemRepository extends Repository<Item> {
 		itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
 		super.triggerListeners();
+		try {
+		    PdfExporter.saveUsers();
+		} catch (IOException ex) {
+		}
 	    }
 	});
 

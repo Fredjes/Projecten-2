@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
 import persistence.UserRepository;
@@ -25,14 +24,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
 	ItemRepository.getInstance().addSyncListener(() -> {
-	    UserRepository.getInstance().addSyncListener(() -> {
-		LoanRepository.getInstance().sync();
-		try {
-		    PdfExporter.saveItems();
-		} catch (IOException ex) {
-		    Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	    });
+	    UserRepository.getInstance().addSyncListener(LoanRepository.getInstance()::sync);
 	    UserRepository.getInstance().sync();
 	});
 

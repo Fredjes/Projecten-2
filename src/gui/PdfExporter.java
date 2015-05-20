@@ -4,6 +4,8 @@ import domain.Item;
 import domain.Loan;
 import domain.User;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -37,6 +39,16 @@ public class PdfExporter {
     private static final int X_OFFSET = 50;
     private static final int Y_OFFSET = 50;
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    private static final String DIRECTORY = System.getProperty("user.home") + "/Krekelschool";
+
+    static {
+	if (!Files.exists(Paths.get(DIRECTORY))) {
+	    try {
+		Files.createDirectory(Paths.get(DIRECTORY));
+	    } catch (IOException ex) {
+	    }
+	}
+    }
 
     public static void saveUsers() throws IOException {
 	final int stepY = 50;
@@ -87,7 +99,7 @@ public class PdfExporter {
 	cos.close();
 
 	try {
-	    document.save(System.getProperty("user.home") + "/" + USER_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
+	    document.save(DIRECTORY + "/" + USER_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
 	} catch (COSVisitorException ex) {
 	    Logger.getLogger(PdfExporter.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
@@ -133,7 +145,7 @@ public class PdfExporter {
 	    cos.moveTextPositionByAmount(20, -15);
 	    String toLatetext = loan.getDate().before(Date.from(Instant.now())) && !loan.getReturned() ? "(te laat)" : "";
 	    cos.drawString("van " + DATE_FORMAT.format(Date.from(loan.getStartDate().toInstant())) + " tot " + DATE_FORMAT.format(Date.from(loan.getDate().toInstant())) + " " + toLatetext);
-	    
+
 	    y += stepY;
 	    cos.endText();
 	}
@@ -141,14 +153,14 @@ public class PdfExporter {
 	cos.close();
 
 	try {
-	    document.save(System.getProperty("user.home") + "/" + LOAN_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
+	    document.save(DIRECTORY + "/" + LOAN_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
 	} catch (COSVisitorException ex) {
 	    Logger.getLogger(PdfExporter.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
 	    document.close();
 	}
     }
-    
+
     public static void saveItems() throws IOException {
 	final int stepY = 50;
 	PDDocument document = new PDDocument();
@@ -171,6 +183,10 @@ public class PdfExporter {
 	cos.endText();
 
 	for (Item item : items) {
+	    if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("null")) {
+		continue;
+	    }
+	    
 	    if (rectangle.getHeight() - y <= 100) {
 		cos.close();
 		page = new PDPage(PDPage.PAGE_SIZE_A4);
@@ -184,10 +200,11 @@ public class PdfExporter {
 	    cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
 	    cos.setFont(FONT, 13);
 	    StringBuilder builder = new StringBuilder();
-	    item.getItemCopies().forEach(ic -> builder.append(ic.getCopyNumber()).append(" "));
-	    cos.drawString(item.getName() + ", met exemplaren: " + builder);
+	    item.getItemCopies().forEach(ic -> builder.append(ic.getCopyNumber()).append(", "));
+
+	    cos.drawString(item.getName() + (item.getItemCopies().isEmpty() ? " zonder exemplaren." : (" met exemplaren: " + builder.toString().substring(0, builder.toString().length() - 2))));
 	    cos.moveTextPositionByAmount(20, -15);
-	    
+
 	    y += stepY;
 	    cos.endText();
 	}
@@ -195,7 +212,7 @@ public class PdfExporter {
 	cos.close();
 
 	try {
-	    document.save(System.getProperty("user.home") + "/" + ITEMS_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
+	    document.save(DIRECTORY + "/" + ITEMS_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
 	} catch (COSVisitorException ex) {
 	    Logger.getLogger(PdfExporter.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {

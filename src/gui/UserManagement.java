@@ -67,6 +67,7 @@ public class UserManagement extends BorderPane {
 
 	    if (PopupUtil.confirm("Gebruiker verwijderen", String.format("Bent u zeker dat u %s wilt verwijderen?", user.getName()))) {
 		UserRepository.getInstance().remove(user);
+		filteredList.setPredicate(predicate::test);
 		if (index > 0) {
 		    userList.getSelectionModel().select(index - 1);
 		}

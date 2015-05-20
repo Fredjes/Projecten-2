@@ -2,6 +2,8 @@ package persistence;
 
 import domain.User;
 import gui.MainApp;
+import gui.PdfExporter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -50,8 +52,7 @@ public class UserRepository extends Repository<User> {
     }
 
     public void remove(User u) {
-	users.remove(u);
-	deletedUsers.add(u);
+	u.setVisible(false);
     }
 
     public ObservableList<User> getUsers() {
@@ -138,6 +139,10 @@ public class UserRepository extends Repository<User> {
 		users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
 		super.triggerListeners();
+		try {
+		    PdfExporter.saveUsers();
+		} catch (IOException ex) {
+		}
 	    }
 	});
 

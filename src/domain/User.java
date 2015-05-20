@@ -7,7 +7,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -42,6 +44,7 @@ public class User implements Serializable, Searchable, Importable {
     private final StringProperty registerNumber = new SimpleStringProperty();
     private final ObjectProperty<UserType> userType = new SimpleObjectProperty<>();
     private final ObservableList<Loan> loans = FXCollections.observableArrayList();
+    private final BooleanProperty visible = new SimpleBooleanProperty();
     private final StringProperty lastName = new SimpleStringProperty();
     private String passwordHash;
 
@@ -152,6 +155,14 @@ public class User implements Serializable, Searchable, Importable {
 	this.registerNumber.set(number);
     }
 
+    public boolean getVisible() {
+	return visible.get();
+    }
+
+    public void setVisible(boolean visible) {
+	this.visible.set(visible);
+    }
+
     /*
      * Property
      */
@@ -175,6 +186,10 @@ public class User implements Serializable, Searchable, Importable {
 	return registerNumber;
     }
 
+    public BooleanProperty visibleProperty() {
+	return visible;
+    }
+
     @Override
     public String toString() {
 	return this.getName();
@@ -182,6 +197,10 @@ public class User implements Serializable, Searchable, Importable {
 
     @Override
     public boolean test(String query) {
+	if (!getVisible()) {
+	    return false;
+	}
+
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getClassRoom(), t)
 		    || SearchPredicate.containsIgnoreCase(getEmail(), t)
