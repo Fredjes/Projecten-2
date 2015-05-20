@@ -7,13 +7,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="225.0" styleClass="white" tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root styleClass="white" tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
       <Tab closable="false" text="Details gebruiker">
          <content>
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
                <children>
-                  <GridPane hgap="10.0" maxWidth="1.7976931348623157E308" vgap="8.0">
+                  <GridPane hgap="10.0" maxWidth="1.7976931348623157E308" vgap="12.0">
                      <children>
                         <Label text="Naam:" />
                         <Label text="Klas:" GridPane.rowIndex="1" />
@@ -21,7 +21,7 @@
                         <TextField fx:id="name" GridPane.columnIndex="1" />
                         <TextField fx:id="email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="classRoom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
                            <children>
                               <ChoiceBox fx:id="userType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Button fx:id="changePasswordButton" mnemonicParsing="false" onAction="#onChangePassword" text="Wachtwoord wijzigen">
@@ -32,21 +32,23 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label text="Gebruiker:" GridPane.rowIndex="4" />
-                        <Label text="Stamboeknummer:" GridPane.rowIndex="3" />
-                        <TextField fx:id="registerNumber" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Gebruiker:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label text="Stamboeknummer:" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <TextField fx:id="registerNumber" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Label text="Adres:" GridPane.columnIndex="3" />
+                        <TextField fx:id="userAddress" GridPane.columnIndex="4" />
                      </children>
                      <columnConstraints>
-                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
                         <ColumnConstraints hgrow="SOMETIMES" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                         <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                         <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
                </children>

@@ -17,6 +17,9 @@ public class DetailViewUser extends TabPane {
 
     @FXML
     private TextField classRoom;
+    
+    @FXML
+    private TextField userAddress;
 
     @FXML
     private ChoiceBox<User.UserType> userType;
@@ -51,6 +54,7 @@ public class DetailViewUser extends TabPane {
 	    Bindings.unbindBidirectional(email.textProperty(), boundUser.emailProperty());
 	    Bindings.unbindBidirectional(classRoom.textProperty(), boundUser.classRoomProperty());
 	    Bindings.unbindBidirectional(registerNumber.textProperty(), boundUser.registerNumberProperty());
+	    Bindings.unbindBidirectional(userAddress.textProperty(), boundUser.addressProperty());
 	    boundUser.userTypeProperty().removeListener(userTypeChangeListener);;
 	    boundUser.userTypeProperty().unbind();
 	}
@@ -62,6 +66,7 @@ public class DetailViewUser extends TabPane {
 	    Bindings.bindBidirectional(email.textProperty(), user.emailProperty());
 	    Bindings.bindBidirectional(classRoom.textProperty(), user.classRoomProperty());
 	    Bindings.bindBidirectional(registerNumber.textProperty(), user.registerNumberProperty());
+	    Bindings.bindBidirectional(userAddress.textProperty(), user.addressProperty());
 	    userType.getSelectionModel().select(user.getUserType());
 	    user.userTypeProperty().addListener(userTypeChangeListener);
 	    user.userTypeProperty().bind(userType.getSelectionModel().selectedItemProperty());

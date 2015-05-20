@@ -46,6 +46,7 @@ public class User implements Serializable, Searchable, Importable {
     private final ObservableList<Loan> loans = FXCollections.observableArrayList();
     private final BooleanProperty visible = new SimpleBooleanProperty();
     private final StringProperty lastName = new SimpleStringProperty();
+    private final StringProperty address = new SimpleStringProperty();
     private String passwordHash;
 
     public static enum UserType {
@@ -104,6 +105,14 @@ public class User implements Serializable, Searchable, Importable {
 
     public void setPasswordHash(String passwordHash) {
 	this.passwordHash = passwordHash;
+    }
+    
+    public String getAddress(){
+	return this.address.get();
+    }
+    
+    public void setAddress(String address){
+	this.address.set(address);
     }
 
     public UserType getUserType() {
@@ -168,6 +177,10 @@ public class User implements Serializable, Searchable, Importable {
      */
     public StringProperty nameProperty() {
 	return name;
+    }
+    
+    public StringProperty addressProperty(){
+	return address;
     }
 
     public StringProperty classRoomProperty() {
@@ -245,7 +258,7 @@ public class User implements Serializable, Searchable, Importable {
     private class UserImporter implements Importer {
 
 	private final Set<String> fieldSet = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new String[]{
-	    "", "Klas", "E-mail", "Voornaam/Naam", "Achternaam", "Wachtwoord", "Stamboeknummer"
+	    "", "Klas", "E-mail", "Voornaam/Naam", "Achternaam", "Wachtwoord", "Stamboeknummer", "Adres"
 	})));
 
 	private List<String> headerList = new ArrayList<>();
@@ -286,6 +299,8 @@ public class User implements Serializable, Searchable, Importable {
 		return "Wachtwoord";
 	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "stamboeknummer", "register", "id", "nummer")) {
 		return "Stamboeknummer";
+	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "adres", "locatie")){
+		return "Adres";
 	    } else {
 		return "";
 	    }
@@ -309,6 +324,8 @@ public class User implements Serializable, Searchable, Importable {
 		case "Wachtwoord":
 		    getCurrentEntity().setPasswordHash(UserRepository.getInstance().generatePasswordHash(value));
 		    break;
+		case "Adres":
+		    getCurrentEntity().setAddress(value);
 		case "Stamboeknummer":
 		    getCurrentEntity().setRegisterNumber(value);
 		    break;

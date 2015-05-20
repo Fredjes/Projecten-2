@@ -129,15 +129,16 @@ public class ItemRepository extends Repository<Item> {
     }
 
     /**
-     * Saves every item in the internal list to the database.
+     * Only save the items that satisfy the predicate.
+     * @param itemPredicate The predicate which will be used to perform the checks
      */
-    public void saveChanges() {
+    public void saveChangesWithPredicate(Predicate<Item> itemPredicate) {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		manager.getTransaction().begin();
 
-		items.forEach(item -> {
+		getItemsByPredicate(itemPredicate).forEach(item -> {
 		    if ((item.getName() == null || item.getName().isEmpty()) && (item.getDescription() == null || item.getDescription().isEmpty()) && item.getThemes().isEmpty() && (item.getAgeCategory() == null || item.getAgeCategory().isEmpty())) {
 			return;
 		    }
@@ -172,6 +173,13 @@ public class ItemRepository extends Repository<Item> {
 
 	t.setName("DB save thread");
 	t.start();
+    }
+
+    /**
+     * Saves every item in the internal list to the database.
+     */
+    public void saveChanges() {
+	saveChangesWithPredicate(i -> true);
     }
 
     public void saveItem(Item item) {
