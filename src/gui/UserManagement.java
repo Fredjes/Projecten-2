@@ -65,14 +65,11 @@ public class UserManagement extends BorderPane {
 	    int index = userList.getSelectionModel().getSelectedIndex();
 	    User user = userList.getSelectionModel().getSelectedItem();
 
-	    if (user.getLoans().stream().anyMatch(l -> !l.getReturned())) {
-		PopupUtil.showNotification("Nog uitleningen", "Er zijn nog uitleningen gekoppeld aan de gebruiker!", PopupUtil.Notification.WARNING);
-		return;
-	    }
-
-	    UserRepository.getInstance().remove(user);
-	    if (index > 0) {
-		userList.getSelectionModel().select(index - 1);
+	    if (PopupUtil.confirm("Gebruiker verwijderen", String.format("Bent u zeker dat u %s wilt verwijderen?", user.getName()))) {
+		UserRepository.getInstance().remove(user);
+		if (index > 0) {
+		    userList.getSelectionModel().select(index - 1);
+		}
 	    }
 	}
     }
@@ -108,28 +105,28 @@ public class UserManagement extends BorderPane {
 		Platform.runLater(() -> super.setBottom(detailViewUser));
 	    }
 	});
-	
-        FXUtil.loadFXML(this, "user_management");
-        predicate = new SearchPredicate(User.class, "");
-        predicate.searchQueryProperty().bind(searchBar.textProperty());
-        filteredList = new FilteredList<>(UserRepository.getInstance().getUsers());
-        userList.setCellFactory(UserManagementListItemCell.forListView());
-        detailViewUser = new DetailViewUser();
-        onSearchQuery();
-        userList.setItems(filteredList);
-        saveButton.graphicProperty().addListener((obs, ov, nv) -> {
-            if (nv != null) {
-                ((Text) nv).setFont(FontCache.getIconFont(16));
-            }
-        });
-        userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
-            saved = false;
-            if (nv == null) {
-                Platform.runLater(() -> super.setBottom(null));
-            } else {
-                detailViewUser.bind(nv);
-                Platform.runLater(() -> super.setBottom(detailViewUser));
-            }
-        });
+
+	FXUtil.loadFXML(this, "user_management");
+	predicate = new SearchPredicate(User.class, "");
+	predicate.searchQueryProperty().bind(searchBar.textProperty());
+	filteredList = new FilteredList<>(UserRepository.getInstance().getUsers());
+	userList.setCellFactory(UserManagementListItemCell.forListView());
+	detailViewUser = new DetailViewUser();
+	onSearchQuery();
+	userList.setItems(filteredList);
+	saveButton.graphicProperty().addListener((obs, ov, nv) -> {
+	    if (nv != null) {
+		((Text) nv).setFont(FontCache.getIconFont(16));
+	    }
+	});
+	userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+	    saved = false;
+	    if (nv == null) {
+		Platform.runLater(() -> super.setBottom(null));
+	    } else {
+		detailViewUser.bind(nv);
+		Platform.runLater(() -> super.setBottom(detailViewUser));
+	    }
+	});
     }
 }

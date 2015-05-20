@@ -109,32 +109,32 @@ public class ItemManagement extends BorderPane {
 	buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
 	buttonLayout.accept(saveButton);
 
-        buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
-        buttonLayout.accept(saveButton);
-        saveButton.graphicProperty().addListener((obs, ov, nv) -> {
-            if (nv != null) {
-                ((Text) nv).setFont(FontCache.getIconFont(16));
-            }
-        });
+	buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
+	buttonLayout.accept(saveButton);
+	saveButton.graphicProperty().addListener((obs, ov, nv) -> {
+	    if (nv != null) {
+		((Text) nv).setFont(FontCache.getIconFont(16));
+	    }
+	});
 
-        // Show temporary loading indicator
-        ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
-        loadingIndicator.setMaxWidth(50);
-        StackPane.setAlignment(loadingIndicator, Pos.CENTER);
-        contentStackPane.getChildren().add(loadingIndicator);
-        if (filteredList.size() == 0) {
-            Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
-            final BooleanProperty prop = new SimpleBooleanProperty(false);
-            filteredList.addListener((Observable obs) -> {
-                if (!prop.get()) {
-                    prop.set(true);
-                } else {
-                    removeIndicator.run();
-                }
-            });
-            ItemRepository.getInstance().addSyncListener(removeIndicator);
-        }
-        // End code loading indicator
+	// Show temporary loading indicator
+	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
+	loadingIndicator.setMaxWidth(50);
+	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
+	contentStackPane.getChildren().add(loadingIndicator);
+	if (filteredList.size() == 0) {
+	    Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
+	    final BooleanProperty prop = new SimpleBooleanProperty(false);
+	    filteredList.addListener((Observable obs) -> {
+		if (!prop.get()) {
+		    prop.set(true);
+		} else {
+		    removeIndicator.run();
+		}
+	    });
+	    ItemRepository.getInstance().addSyncListener(removeIndicator);
+	}
+	// End code loading indicator
 
 	itemList.setOnDragDetected(e -> {
 	    Dragboard db = itemList.startDragAndDrop(TransferMode.LINK);
@@ -279,16 +279,16 @@ public class ItemManagement extends BorderPane {
 
     @FXML
     public void onSave() {
-        saveButton.setDisable(true);
+	saveButton.setDisable(true);
 
-        ItemRepository.getInstance().addSyncListener(() -> {
-            Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
-            updateList();
-        });
+	ItemRepository.getInstance().addSyncListener(() -> {
+	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
+	    updateList();
+	});
 
-        ItemRepository.getInstance().saveChanges();
-        PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
-        saveButton.setDisable(false);
+	ItemRepository.getInstance().saveChanges();
+	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
+	saveButton.setDisable(false);
     }
 
     @FXML
@@ -319,14 +319,17 @@ public class ItemManagement extends BorderPane {
     public void onRemove() {
 	if (!itemList.getSelectionModel().isEmpty()) {
 	    int selected = itemList.getSelectionModel().getSelectedIndex();
-	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
-	    updateList();
+	    Item selectedItem = itemList.getSelectionModel().getSelectedItem();
+	    if (PopupUtil.confirm("Voorwerp verwijderen", "Wilt u " + selectedItem.getName() + " verwijderen?")) {
+		ItemRepository.getInstance().remove(selectedItem);
+		updateList();
 
-	    if (!itemList.getItems().isEmpty()) {
-		itemList.getSelectionModel().select(Math.max(0, selected - 1));
+		if (!itemList.getItems().isEmpty()) {
+		    itemList.getSelectionModel().select(Math.max(0, selected - 1));
+		}
+
+		updateDetailView();
 	    }
-
-	    updateDetailView();
 	}
     }
 

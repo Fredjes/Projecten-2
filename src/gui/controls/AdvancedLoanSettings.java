@@ -86,8 +86,7 @@ public class AdvancedLoanSettings extends GridPane {
 	    }
 	});
 
-	ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(itemCopyLast), "Exemplaar selecteren", "Welk exemplaar wordt uigeleend?");
-	//ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(ItemRepository.getInstance().getItemCopies()), "Exemplaar selecteren", "Welk exemplaar wordt uigeleend?");
+	ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(itemCopyLast), "Exemplaar selecteren", "Welk exemplaar wordt uitgeleend?");
 
 	if (copy != null) {
 	    loan.getItemCopy().getLoans().remove(loan);
