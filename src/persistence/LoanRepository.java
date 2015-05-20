@@ -92,7 +92,7 @@ public class LoanRepository extends Repository<Loan> {
 		    ex.printStackTrace();
 		    manager.getTransaction().rollback();
 		}
-		
+
 		PdfExporter.saveLoans();
 		PdfExporter.saveLoanHistory();
 	    }

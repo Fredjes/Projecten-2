@@ -39,6 +39,9 @@ public class Titlebar extends GridPane {
     @FXML
     private HBox excelImporteren;
 
+    @FXML
+    private Button settings;
+
     private ScreenSwitcher switcher;
     private TitleBarController controller;
 
@@ -114,6 +117,10 @@ public class Titlebar extends GridPane {
     @FXML
     public void onSettings() {
 	switcher.openSettings();
+    }
+
+    public Button getSettings() {
+	return settings;
     }
 
 }

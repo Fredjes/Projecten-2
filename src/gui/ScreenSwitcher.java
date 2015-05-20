@@ -91,7 +91,7 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openSettings() {
-	if (!isNavigationAllowed()) {
+	if (!isNavigationAllowed() || !login(UserRepository.getInstance().getAuthenticatedUser().getName(), PopupUtil.input("Wachtwoord", "Gelieve uw wachtwoord nogmaals in te vullen"), false)) {
 	    return;
 	}
 	titlebar.setTitle("Applicatie configureren");
@@ -197,7 +197,11 @@ public class ScreenSwitcher extends BorderPane {
      * @return true if the email and password are correct
      */
     public boolean login(String email, String password) {
-	return USER_REPO_INSTANCE.authenticate(email, password);
+	return login(email, password, true);
+    }
+
+    public boolean login(String email, String password, boolean updateAuth) {
+	return USER_REPO_INSTANCE.authenticate(email, password, updateAuth);
     }
 
     public void processLoginRequest(Button loginButton, Label authenticatedUserLabel) {

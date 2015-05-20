@@ -45,7 +45,7 @@
                         <String fx:value="icon-home" />
                      </styleClass>
                   </Button>
-                  <Button focusTraversable="false" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettings" text="settings">
+                  <Button fx:id="settings" focusTraversable="false" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettings" text="settings">
                      <styleClass>
                         <String fx:value="btn" />
                         <String fx:value="btn-default" />
