@@ -103,7 +103,7 @@ public class LoanManagementListItem extends AnchorPane {
     }
 
     private void updateDate(Observable user, Calendar oldDate, Calendar newDate) {
-	toLateWarningLabel.visibleProperty().set(Calendar.getInstance().getTimeInMillis() >= newDate.getTimeInMillis());
+	toLateWarningLabel.visibleProperty().set(Calendar.getInstance().getTimeInMillis() >= newDate.getTimeInMillis() && !loan.getReturned());
     }
 
     @FXML

@@ -28,7 +28,7 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
-//	    Platform.runLater(() -> super.setGraphic(null));
+	    Platform.runLater(() -> super.setGraphic(listItem));
 	} else {
 	    final ChangeListener<Boolean> listener = (obs, ov, nv) -> {
 		if (!nv) {
@@ -49,14 +49,16 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 		    if (listItem.getItem().getVisible()) {
 			super.setGraphic(listItem);
 		    } else {
-			super.setGraphic(null);
+			listItem = null;
+			super.setGraphic(listItem);
 		    }
 		} else {
 		    Platform.runLater(() -> {
 			if (listItem.getItem() == null || listItem.getItem().getVisible()) {
 			    super.setGraphic(listItem);
 			} else {
-			    super.setGraphic(null);
+			    listItem = null;
+			    super.setGraphic(listItem);
 			}
 		    });
 		}

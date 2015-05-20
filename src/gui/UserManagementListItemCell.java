@@ -4,7 +4,6 @@ import domain.Cache;
 import domain.User;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -14,7 +13,7 @@ import javafx.util.Callback;
  * @author Frederik
  */
 public class UserManagementListItemCell extends ListCell<User> {
-    
+
     private UserManagementListItem listItem;
 
     public static Callback<ListView<User>, ListCell<User>> forListView() {
@@ -29,14 +28,18 @@ public class UserManagementListItemCell extends ListCell<User> {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
-//	    Platform.runLater(() -> super.setGraphic(null));
+	    if (Platform.isFxApplicationThread()) {
+		super.setGraphic(listItem);
+	    }
+	    
+	    Platform.runLater(() -> super.setGraphic(listItem));
 	} else {
 	    final ChangeListener<Boolean> listener = (obs, ov, nv) -> {
 		if (!nv) {
-		    super.setGraphic(null);
-		} else {
-		    super.setGraphic(listItem);
+		    listItem = null;
 		}
+		
+		super.setGraphic(listItem);
 	    };
 
 	    if (listItem != null) {
@@ -50,11 +53,12 @@ public class UserManagementListItemCell extends ListCell<User> {
 		    if (listItem.getUser().getVisible()) {
 			super.setGraphic(listItem);
 		    } else {
+			listItem = null;
 			super.setGraphic(null);
 		    }
 		} else {
 		    Platform.runLater(() -> {
-			if (listItem.getUser()== null || listItem.getUser().getVisible()) {
+			if (listItem.getUser() == null || listItem.getUser().getVisible()) {
 			    super.setGraphic(listItem);
 			} else {
 			    super.setGraphic(null);

@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,7 +50,23 @@ public class UserRepository extends Repository<User> {
 	if (users.stream().anyMatch(uu -> uu.getName().equalsIgnoreCase(u.getName()))) {
 	    return;
 	}
+	
 	users.add(u);
+    }
+
+    public void addOrUpdate(User u) {
+	final BooleanProperty foundResults = new SimpleBooleanProperty(false);
+	getUsers().stream().filter(user -> user.getRegisterNumber().equals(u.getRegisterNumber())).forEach(user -> {
+	    foundResults.set(true);
+	    user.setClassRoom(u.getClassRoom());
+	    user.setEmail(u.getEmail());
+	    user.setName(u.getName());
+	    user.setVisible(true);
+	});
+
+	if (!foundResults.get()) {
+	    add(u);
+	}
     }
 
     public void remove(User u) {
@@ -202,13 +220,13 @@ public class UserRepository extends Repository<User> {
 
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
-	
+
 	if (user.getId() == 0) {
 	    manager.persist(user);
 	} else {
 	    manager.merge(user);
 	}
-	
+
 	manager.getTransaction().commit();
     }
 

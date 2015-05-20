@@ -243,7 +243,8 @@ public class ExcelManager {
 
 		switch (c.getCellType()) {
 		    case Cell.CELL_TYPE_STRING:
-			data.setData(column - first, c.getStringCellValue());
+			// Do not touch! Unicode chars being replaced
+			data.setData(column - first, c.getStringCellValue().replaceAll("–", "-").replaceAll("…", "..."));
 			break;
 		    case Cell.CELL_TYPE_NUMERIC:
 			data.setData(column - first, String.valueOf(c.getNumericCellValue()));
@@ -257,7 +258,7 @@ public class ExcelManager {
 	excelDataPerSheet.put(sheet, out);
 	return out;
     }
-
+    
     public XSSFSheet getSheetById(int id) {
 	if (id >= entries.size() || id < 0) {
 	    return null;

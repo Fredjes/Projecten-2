@@ -99,7 +99,7 @@ public class CopyPopOver extends BorderPane {
 
     @FXML
     public void onStartLoan(ActionEvent event) {
-	User selectedUser = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsers(), "Gebruiker selecteren", "Wie leent het voorwerp uit?");
+	User selectedUser = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsersByPredicate(User::getVisible), "Gebruiker selecteren", "Wie leent het voorwerp uit?");
 	if (selectedUser == null) {
 	    return;
 	}
@@ -110,6 +110,7 @@ public class CopyPopOver extends BorderPane {
 	LoanRepository.getInstance().saveChanges();
 	backedCopy.getLoans().add(loan);
 	loan.getUser().getLoans().add(loan);
+	loan.getItemCopy().getLoans().add(loan);
 
 	if (onStartLoan != null) {
 	    LoanEvent evt = new LoanEvent(loan);

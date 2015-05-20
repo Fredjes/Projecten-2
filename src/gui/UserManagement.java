@@ -1,9 +1,11 @@
 package gui;
 
 import domain.FontCache;
+import domain.Loan;
 import domain.SearchPredicate;
 import domain.User;
 import gui.dialogs.PopupUtil;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -64,6 +66,12 @@ public class UserManagement extends BorderPane {
 	if (!userList.getSelectionModel().isEmpty()) {
 	    int index = userList.getSelectionModel().getSelectedIndex();
 	    User user = userList.getSelectionModel().getSelectedItem();
+
+	    List<Loan> loans = user.getLoans();
+	    if (user.getLoans().stream().anyMatch(l -> !l.getReturned())) {
+		PopupUtil.showNotification("Nog uitleningen", user.getName() + " heeft nog uitleningen open staan.", PopupUtil.Notification.WARNING);
+		return;
+	    }
 
 	    if (PopupUtil.confirm("Gebruiker verwijderen", String.format("Bent u zeker dat u %s wilt verwijderen?", user.getName()))) {
 		UserRepository.getInstance().remove(user);

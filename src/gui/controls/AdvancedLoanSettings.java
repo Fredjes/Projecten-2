@@ -63,7 +63,7 @@ public class AdvancedLoanSettings extends GridPane {
 
     @FXML
     public void onChangeUser() {
-	User user = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsers(), "Gebruiker selecteren", "Wie leent het voorwerp uit?");
+	User user = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsersByPredicate(User::getVisible), "Gebruiker selecteren", "Wie leent het voorwerp uit?");
 	if (user != null) {
 	    loan.setUser(user);
 	    updateDb(() -> PopupUtil.showNotification("Veranderd", "Gebruiker veranderd naar " + user + "."));

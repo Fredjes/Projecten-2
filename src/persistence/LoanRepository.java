@@ -95,6 +95,11 @@ public class LoanRepository extends Repository<Loan> {
 		    ex.printStackTrace();
 		    manager.getTransaction().rollback();
 		}
+		
+		try {
+		    PdfExporter.saveLoans();
+		} catch (IOException ex) {
+		}
 	    }
 	});
 
@@ -116,6 +121,10 @@ public class LoanRepository extends Repository<Loan> {
 
 		manager.getTransaction().commit();
 		super.triggerListeners();
+		try {
+		    PdfExporter.saveLoans();
+		} catch (IOException ex) {
+		}
 	    }
 	});
 

@@ -284,7 +284,7 @@ public class User implements Serializable, Searchable, Importable {
 		}
 	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "wachtwoord", "paswoord", "passwoord", "password")) {
 		return "Wachtwoord";
-	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "stamboeknummer", "register", "id")) {
+	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "stamboeknummer", "register", "id", "nummer")) {
 		return "Stamboeknummer";
 	    } else {
 		return "";
@@ -321,12 +321,14 @@ public class User implements Serializable, Searchable, Importable {
 
 	@Override
 	public void nextEntity() {
-	    entityList.add(new User(UserType.STUDENT));
+	    User user = new User(UserType.STUDENT);
+	    user.setVisible(true);
+	    entityList.add(user);
 	}
 
 	@Override
 	public void persistEntities() {
-	    entityList.forEach(UserRepository.getInstance()::add);
+	    entityList.stream().filter(u -> u.getName() != null && !u.getName().equals("null")).forEach(UserRepository.getInstance()::addOrUpdate);
 	}
     }
 }

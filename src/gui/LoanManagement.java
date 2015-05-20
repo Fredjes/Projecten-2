@@ -53,7 +53,7 @@ public class LoanManagement extends BorderPane {
         this.controller = controller;
         predicate = new SearchPredicate(Loan.class, "");
         predicate.searchQueryProperty().bind(searchBar.textProperty());
-        filteredList = new FilteredList<>(LoanRepository.getInstance().getLoans());
+        filteredList = new FilteredList<>(LoanRepository.getInstance().getLoans().sorted((l1, l2) -> l1.getDate().compareTo(l2.getDate())));
         loanList.setCellFactory(LoanManagementListItemCell.forListView());
         onSearchQuery();
         loanList.setItems(filteredList);

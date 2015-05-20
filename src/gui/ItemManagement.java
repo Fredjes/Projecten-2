@@ -10,6 +10,7 @@ import domain.FilterOption;
 import domain.FontCache;
 import domain.Game;
 import domain.Item;
+import domain.ItemCopy;
 import domain.SearchPredicate;
 import domain.StoryBag;
 import domain.User;
@@ -320,6 +321,12 @@ public class ItemManagement extends BorderPane {
 	if (!itemList.getSelectionModel().isEmpty()) {
 	    int selected = itemList.getSelectionModel().getSelectedIndex();
 	    Item selectedItem = itemList.getSelectionModel().getSelectedItem();
+	    
+	    if(selectedItem.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).anyMatch(l -> !l.getReturned())){
+		PopupUtil.showNotification("Openstaande uitleningen", "Dit voorwerp wordt nog uitgeleend.", PopupUtil.Notification.WARNING);
+		return;
+	    }
+	    
 	    if (PopupUtil.confirm("Voorwerp verwijderen", "Wilt u " + selectedItem.getName() + " verwijderen?")) {
 		ItemRepository.getInstance().remove(selectedItem);
 		updateList();

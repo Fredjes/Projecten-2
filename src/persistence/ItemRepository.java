@@ -59,7 +59,7 @@ public class ItemRepository extends Repository<Item> {
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
 		super.triggerListeners();
 		try {
-		    PdfExporter.saveUsers();
+		    PdfExporter.saveItems();
 		} catch (IOException ex) {
 		}
 	    }
