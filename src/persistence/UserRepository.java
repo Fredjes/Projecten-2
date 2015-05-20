@@ -56,7 +56,7 @@ public class UserRepository extends Repository<User> {
 
     public void addOrUpdate(User u) {
 	final BooleanProperty foundResults = new SimpleBooleanProperty(false);
-	getUsers().stream().filter(user -> user.getRegisterNumber().equals(u.getRegisterNumber())).forEach(user -> {
+	getUsers().stream().filter(user -> user != null && user.getRegisterNumber() != null && user.getRegisterNumber().equals(u.getRegisterNumber())).forEach(user -> {
 	    foundResults.set(true);
 	    user.setClassRoom(u.getClassRoom());
 	    user.setEmail(u.getEmail());

@@ -4,6 +4,7 @@ import domain.FontCache;
 import domain.Loan;
 import domain.SearchPredicate;
 import domain.User;
+import domain.User.UserType;
 import gui.dialogs.PopupUtil;
 import java.util.List;
 import javafx.application.Platform;
@@ -69,6 +70,10 @@ public class UserManagement extends BorderPane {
 	    User user = userList.getSelectionModel().getSelectedItem();
 
 	    List<Loan> loans = user.getLoans();
+	    if (user.getUserType() == UserType.TEACHER && UserRepository.getInstance().getUsers().stream().filter(u -> u.getVisible() && u.getUserType() == UserType.TEACHER).count() <= 1) {
+		PopupUtil.showNotification("Laatste leerkracht", "Kan de laatste leerkracht niet verwijderen.", PopupUtil.Notification.WARNING);
+		return;
+	    }
 	    if (user.getLoans().stream().anyMatch(l -> !l.getReturned())) {
 		PopupUtil.showNotification("Nog uitleningen", user.getName() + " heeft nog uitleningen open staan.", PopupUtil.Notification.WARNING);
 		return;

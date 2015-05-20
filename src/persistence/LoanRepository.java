@@ -2,7 +2,6 @@ package persistence;
 
 import domain.Loan;
 import gui.PdfExporter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,7 +24,7 @@ public class LoanRepository extends Repository<Loan> {
     private LoanRepository() {
 	super();
     }
-    
+
     public static LoanRepository getInstance() {
 	if (repositoryInstance == null) {
 	    repositoryInstance = new LoanRepository();
@@ -52,10 +51,8 @@ public class LoanRepository extends Repository<Loan> {
 		loans.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Loan.findAll", Loan.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized loan repository with database");
 		super.triggerListeners();
-		try {
-		    PdfExporter.saveLoans();
-		} catch (IOException ex) {
-		}
+		PdfExporter.saveLoans();
+		PdfExporter.saveLoanHistory();
 	    }
 	});
 
@@ -96,10 +93,8 @@ public class LoanRepository extends Repository<Loan> {
 		    manager.getTransaction().rollback();
 		}
 		
-		try {
-		    PdfExporter.saveLoans();
-		} catch (IOException ex) {
-		}
+		PdfExporter.saveLoans();
+		PdfExporter.saveLoanHistory();
 	    }
 	});
 
@@ -121,10 +116,8 @@ public class LoanRepository extends Repository<Loan> {
 
 		manager.getTransaction().commit();
 		super.triggerListeners();
-		try {
-		    PdfExporter.saveLoans();
-		} catch (IOException ex) {
-		}
+		PdfExporter.saveLoans();
+		PdfExporter.saveLoanHistory();
 	    }
 	});
 
