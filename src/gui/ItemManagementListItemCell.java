@@ -28,7 +28,7 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
-	    Platform.runLater(() -> super.setGraphic(null));
+//	    Platform.runLater(() -> super.setGraphic(null));
 	} else {
 	    final ChangeListener<Boolean> listener = (obs, ov, nv) -> {
 		if (nv) {

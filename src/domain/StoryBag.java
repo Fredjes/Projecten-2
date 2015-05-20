@@ -68,6 +68,10 @@ public class StoryBag extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
+	if (!super.getVisible()) {
+	    return false;
+	}
+
 	if (super.test(query)) {
 	    return true;
 	}

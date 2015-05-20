@@ -94,7 +94,7 @@ public class ItemRepository extends Repository<Item> {
     }
 
     public ObservableList<? extends Item> getItems() {
-	return items.filtered(Item::getVisible);
+	return items;
     }
 
     public ObservableList<ItemCopy> getItemCopies() {

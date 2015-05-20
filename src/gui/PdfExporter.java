@@ -152,7 +152,7 @@ public class PdfExporter {
     public static void saveItems() throws IOException {
 	final int stepY = 50;
 	PDDocument document = new PDDocument();
-	List<? extends Item> items = ItemRepository.getInstance().getItems();
+	List<? extends Item> items = ItemRepository.getInstance().getItemsByPredicate(Item::getVisible);
 	float y = 0;
 	PDPage page;
 	PDRectangle rectangle;

@@ -3,10 +3,7 @@ package domain;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -52,6 +49,10 @@ public class Dvd extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
+	if (!super.getVisible()) {
+	    return false;
+	}
+
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getDirector(), t);
 

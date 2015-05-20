@@ -67,6 +67,10 @@ public class Book extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
+	if (!super.getVisible()) {
+	    return false;
+	}
+
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getAuthor(), t)
 		    || SearchPredicate.containsIgnoreCase(getPublisher(), t);

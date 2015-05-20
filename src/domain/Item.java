@@ -228,6 +228,10 @@ public abstract class Item implements Serializable, Searchable, Importable {
 
     @Override
     public boolean test(String query) {
+	if (!visible.get()) {
+	    return false;
+	}
+	
 	outer:
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)

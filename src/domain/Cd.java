@@ -71,6 +71,10 @@ public class Cd extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
+	if (!super.getVisible()) {
+	    return false;
+	}
+
 	outer:
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getArtist(), t);
