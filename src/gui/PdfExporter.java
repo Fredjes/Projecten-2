@@ -32,7 +32,7 @@ import persistence.UserRepository;
  */
 public class PdfExporter {
 
-    private static final String USER_FILE_NAME = "Gebruikers";
+    private static final String USER_FILE_NAME = "Leerlingen";
     private static final String LOAN_FILE_NAME = "Uitleningen";
     private static final String ITEMS_FILE_NAME = "Voorwerpen";
     private static final PDFont FONT = PDType1Font.HELVETICA;
@@ -191,7 +191,7 @@ public class PdfExporter {
 	cos.beginText();
 	cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
 	cos.setFont(FONT, 21);
-	cos.drawString("Overzicht van open uitleningen");
+	cos.drawString("Overzicht van voorwerpen");
 	y += 40;
 	cos.endText();
 
