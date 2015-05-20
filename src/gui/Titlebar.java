@@ -4,7 +4,6 @@ import domain.controllers.TitleBarController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -110,6 +109,11 @@ public class Titlebar extends GridPane {
 
     void setController(TitleBarController controller) {
 	this.controller = controller;
+    }
+
+    @FXML
+    public void onSettings() {
+	switcher.openSettings();
     }
 
 }

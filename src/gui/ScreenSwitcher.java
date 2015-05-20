@@ -45,6 +45,8 @@ public class ScreenSwitcher extends BorderPane {
     private ItemManagementController itemManagementController;
     private LoanManagementListItemController loanManagementController;
 
+    private Settings settings;
+
     private boolean navigationAllowed = true;
 
     public ScreenSwitcher() {
@@ -61,6 +63,7 @@ public class ScreenSwitcher extends BorderPane {
 	loadIcons(userManagement);
 	loadIcons(excelWizard);
 	loadIcons(titlebar);
+	loadIcons(settings);
     }
 
     public boolean isNavigationAllowed() {
@@ -84,6 +87,15 @@ public class ScreenSwitcher extends BorderPane {
 
 	itemManagement.setController(itemManagementController);
 	excelWizard = new ExcelWizardS1(this);
+	settings = new Settings();
+    }
+
+    public void openSettings() {
+	if (!isNavigationAllowed()) {
+	    return;
+	}
+	titlebar.setTitle("Applicatie configureren");
+	setCenter(settings);
     }
 
     public void loadIcons(Node node) {
@@ -180,7 +192,7 @@ public class ScreenSwitcher extends BorderPane {
     /**
      * Log in using the email of the user and a non-encrypted password.
      *
-     * @param email the email of the user
+     * @param email    the email of the user
      * @param password the password of the user
      * @return true if the email and password are correct
      */

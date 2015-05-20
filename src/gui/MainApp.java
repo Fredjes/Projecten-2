@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
 import persistence.Repository;
+import persistence.SettingsManager;
 import persistence.UserRepository;
 
 /**
@@ -22,6 +23,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+	System.out.println(SettingsManager.instance.getString("host"));
 	ItemRepository.getInstance().addSyncListener(() -> {
 	    UserRepository.getInstance().addSyncListener(LoanRepository.getInstance()::sync);
 	    UserRepository.getInstance().sync();
