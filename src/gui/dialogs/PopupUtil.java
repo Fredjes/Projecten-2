@@ -75,7 +75,7 @@ public class PopupUtil {
 
 	PopOver popOver = new PopOver();
 	Button ok = new Button("OK");
-	ok.setAlignment(Pos.CENTER_RIGHT);
+	ok.setAlignment(Pos.BOTTOM_CENTER);
 	ok.getStyleClass().addAll("btn", "btn-lime");
 	ok.setOnAction(e -> {
 	    LoanRepository.getInstance().addSyncListener(completionCallback);

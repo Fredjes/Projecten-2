@@ -107,10 +107,23 @@ public class PdfExporter {
 	}
     }
 
-    public static void saveLoans() throws IOException {
+    public static void saveLoanHistory() {
+	try {
+	    saveLoans(DIRECTORY + "/Teruggebrachte uitleningen op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf", "Overzicht van gesloten uitleningen", LoanRepository.getInstance().getLoans().stream().filter(l -> l.getReturned()).collect(Collectors.toList()));
+	} catch (IOException ex) {
+	}
+    }
+    
+    public static void saveLoans() {
+	try {
+	    saveLoans(DIRECTORY + "/" + LOAN_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf", "Overzicht van open uitleningen", LoanRepository.getInstance().getLoans().stream().filter(l -> !l.getReturned()).collect(Collectors.toList()));
+	} catch (IOException ex) {
+	}
+    }
+    
+    private static void saveLoans(String filename, String title, List<Loan> loans) throws IOException {
 	final int stepY = 50;
 	PDDocument document = new PDDocument();
-	List<Loan> loans = LoanRepository.getInstance().getLoans().stream().filter(l -> !l.getReturned()).collect(Collectors.toList());
 	float y = 0;
 	PDPage page;
 	PDRectangle rectangle;
@@ -124,7 +137,7 @@ public class PdfExporter {
 	cos.beginText();
 	cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
 	cos.setFont(FONT, 21);
-	cos.drawString("Overzicht van open uitleningen");
+	cos.drawString(title);
 	y += 40;
 	cos.endText();
 
@@ -153,7 +166,7 @@ public class PdfExporter {
 	cos.close();
 
 	try {
-	    document.save(DIRECTORY + "/" + LOAN_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf");
+	    document.save(filename);
 	} catch (COSVisitorException ex) {
 	    Logger.getLogger(PdfExporter.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
@@ -186,7 +199,7 @@ public class PdfExporter {
 	    if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("null")) {
 		continue;
 	    }
-	    
+
 	    if (rectangle.getHeight() - y <= 100) {
 		cos.close();
 		page = new PDPage(PDPage.PAGE_SIZE_A4);
