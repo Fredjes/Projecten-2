@@ -13,7 +13,7 @@
          <content>
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
                <children>
-                  <GridPane hgap="10.0" maxWidth="1.7976931348623157E308" vgap="12.0">
+                  <GridPane hgap="10.0" maxWidth="1.7976931348623157E308" vgap="20.0">
                      <children>
                         <Label text="Naam:" />
                         <Label text="Klas:" GridPane.rowIndex="1" />
@@ -42,7 +42,7 @@
                         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" prefWidth="131.0" />
                         <ColumnConstraints hgrow="SOMETIMES" />
                      </columnConstraints>
                      <rowConstraints>

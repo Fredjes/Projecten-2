@@ -52,7 +52,8 @@ public class UserManagement extends BorderPane {
 
     @FXML
     public void onAdd() {
-	User user = new User();
+	User user = new User(User.UserType.STUDENT);
+	user.setVisible(true);
 	UserRepository.getInstance().add(user);
 	searchBar.setText("");
 	user.setName(" ");
