@@ -19,7 +19,7 @@ public enum SettingsManager {
 
     private SettingsManager() {
 	try {
-	    if (!new File("config.properties").exists()) {
+	    if (!new File("config.dat").exists()) {
 		properties.put("host", "127.0.0.1");
 		properties.put("port", "3306");
 		properties.put("schema", "krekelschool");

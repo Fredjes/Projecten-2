@@ -1,10 +1,12 @@
 package gui;
 
+import gui.dialogs.PopupUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 import persistence.SettingsManager;
 
 /**
@@ -54,7 +56,21 @@ public class Settings extends ScrollPane {
 
     @FXML
     void onSave(ActionEvent event) {
+	updateValues();
+	if (SettingsManager.instance.save()) {
+	    PopupUtil.showNotification("Configuratie", "Configuratie opgeslagen. Gelieve te herstarten!", PopupUtil.Notification.INFORMATION, Duration.seconds(15));
+	} else {
+	    PopupUtil.showNotification("Configuratie", "Configuratie niet opgeslagen!", PopupUtil.Notification.ERROR, Duration.seconds(15));
+	}
+    }
 
+    public void updateValues() {
+	SettingsManager.instance.setString("host", txtHost.getText());
+	SettingsManager.instance.setString("port", txtPort.getText());
+	SettingsManager.instance.setString("schema", txtSchema.getText());
+	SettingsManager.instance.setString("username", txtGebruikersnaam.getText());
+	SettingsManager.instance.setString("password", txtWachtwoord.getText());
+	SettingsManager.instance.setString("pdfPath", txtPdfPath.getText());
     }
 
     public void updateGui() {

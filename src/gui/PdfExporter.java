@@ -23,6 +23,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
+import persistence.SettingsManager;
 import persistence.UserRepository;
 
 /**
@@ -39,7 +40,7 @@ public class PdfExporter {
     private static final int X_OFFSET = 50;
     private static final int Y_OFFSET = 50;
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-    private static final String DIRECTORY = System.getProperty("user.home") + "/Krekelschool";
+    private static final String DIRECTORY = SettingsManager.instance.getString("pdfPath");
 
     static {
 	if (!Files.exists(Paths.get(DIRECTORY))) {
@@ -113,14 +114,14 @@ public class PdfExporter {
 	} catch (IOException ex) {
 	}
     }
-    
+
     public static void saveLoans() {
 	try {
 	    saveLoans(DIRECTORY + "/" + LOAN_FILE_NAME + " op " + DATE_FORMAT.format(Date.from(Instant.now())) + ".pdf", "Overzicht van open uitleningen", LoanRepository.getInstance().getLoans().stream().filter(l -> !l.getReturned()).collect(Collectors.toList()));
 	} catch (IOException ex) {
 	}
     }
-    
+
     private static void saveLoans(String filename, String title, List<Loan> loans) throws IOException {
 	final int stepY = 50;
 	PDDocument document = new PDDocument();
