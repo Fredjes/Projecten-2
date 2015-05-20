@@ -34,7 +34,7 @@ public class MainMenuController extends BaseController<MainMenu> {
 		hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
-		getView().getLblVoorwerpen().setText("Voorwerpen beheren");
+		getView().getLblVoorwerpen().setText("Voorwerpen");
 		getView().getVoorwerpenBeherenIcon().getStyleClass().remove("icon-voorwerpen-beheren");
 		getView().getVoorwerpenBeherenIcon().getStyleClass().add("icon-search");
 		break;
@@ -44,7 +44,7 @@ public class MainMenuController extends BaseController<MainMenu> {
 		showNode("gebruikersBeheren");
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
-		getView().getLblVoorwerpen().setText("Voorwerpen beheren");
+		getView().getLblVoorwerpen().setText("Voorwerpen");
 		break;
 	}
     }

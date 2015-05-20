@@ -31,7 +31,7 @@
                               <Image url="@img/user_management_icon.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lblGebruikers" text="Gebruikers beheren" textFill="WHITE">
+                        <Label fx:id="lblGebruikers" text="Gebruikers" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -67,7 +67,7 @@
                               <Image url="@img/loan_management_icon.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lblUitleningen" text="Uitleningen beheren" textFill="WHITE">
+                        <Label fx:id="lblUitleningen" text="Uitleningen" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -85,7 +85,7 @@
                               <Image url="@img/item_management_icon.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lblVoorwerpen" text="Voorwerpen beheren" textFill="WHITE">
+                        <Label fx:id="lblVoorwerpen" text="Voorwerpen" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>

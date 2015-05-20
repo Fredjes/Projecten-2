@@ -116,7 +116,7 @@ public class ScreenSwitcher extends BorderPane {
 	if (!isNavigationAllowed()) {
 	    return;
 	}
-	titlebar.setTitle("Voorwerpen beheren");
+	titlebar.setTitle("Voorwerpen");
 	setCenter(itemManagement);
     }
 
@@ -124,7 +124,7 @@ public class ScreenSwitcher extends BorderPane {
 	if (!isNavigationAllowed()) {
 	    return;
 	}
-	titlebar.setTitle("Gebruikers beheren");
+	titlebar.setTitle("Gebruikers");
 	setCenter(userManagement);
     }
 
@@ -132,7 +132,7 @@ public class ScreenSwitcher extends BorderPane {
 	if (!isNavigationAllowed()) {
 	    return;
 	}
-	titlebar.setTitle("Uitleningen beheren");
+	titlebar.setTitle("Uitleningen");
 	setCenter(loanManagement);
     }
 

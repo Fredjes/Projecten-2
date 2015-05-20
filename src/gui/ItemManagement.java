@@ -10,7 +10,6 @@ import domain.FilterOption;
 import domain.FontCache;
 import domain.Game;
 import domain.Item;
-import domain.ItemCopy;
 import domain.SearchPredicate;
 import domain.StoryBag;
 import domain.User;
@@ -105,16 +104,18 @@ public class ItemManagement extends BorderPane {
 	Consumer<Button> buttonLayout = b -> {
 	    b.setPadding(new Insets(7, 0, 7, 15));
 	    b.setGraphicTextGap(20);
+	    b.graphicProperty().addListener((obs, ov, nv) -> {
+		if (nv != null) {
+		    ((Text) nv).setFont(FontCache.getIconFont(20));
+		}
+	    });
 	};
-
-	buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
-	buttonLayout.accept(saveButton);
 
 	buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
 	buttonLayout.accept(saveButton);
 	saveButton.graphicProperty().addListener((obs, ov, nv) -> {
 	    if (nv != null) {
-		((Text) nv).setFont(FontCache.getIconFont(16));
+		((Text) nv).setFont(FontCache.getIconFont(20));
 	    }
 	});
 
@@ -321,12 +322,12 @@ public class ItemManagement extends BorderPane {
 	if (!itemList.getSelectionModel().isEmpty()) {
 	    int selected = itemList.getSelectionModel().getSelectedIndex();
 	    Item selectedItem = itemList.getSelectionModel().getSelectedItem();
-	    
-	    if(selectedItem.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).anyMatch(l -> !l.getReturned())){
+
+	    if (selectedItem.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).anyMatch(l -> !l.getReturned())) {
 		PopupUtil.showNotification("Openstaande uitleningen", "Dit voorwerp wordt nog uitgeleend.", PopupUtil.Notification.WARNING);
 		return;
 	    }
-	    
+
 	    if (PopupUtil.confirm("Voorwerp verwijderen", "Wilt u " + selectedItem.getName() + " verwijderen?")) {
 		ItemRepository.getInstance().remove(selectedItem);
 		updateList();
