@@ -24,6 +24,8 @@ import javafx.scene.text.Text;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 /**
+ * The GUI for the second step in the excel import wizard: Selecting the correct
+ * column name for each column.
  *
  * @author Brent C.
  */
@@ -73,7 +75,7 @@ public class ExcelWizardS2 extends BorderPane {
      * assign columns to properties.
      *
      * @param properties A collection of all possible properties that can be
-     *                   selected
+     * selected
      */
     public void setHeaderList(Collection<String> properties) {
 	if (!properties.contains("")) {

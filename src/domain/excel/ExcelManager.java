@@ -33,6 +33,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
+ * ExcelManager will read an Excel-file, split it into different worksheets,
+ * split all columns and read every cell so that all data from the Excel is
+ * present.
  *
  * @author Brent C.
  */
@@ -258,7 +261,7 @@ public class ExcelManager {
 	excelDataPerSheet.put(sheet, out);
 	return out;
     }
-    
+
     public XSSFSheet getSheetById(int id) {
 	if (id >= entries.size() || id < 0) {
 	    return null;

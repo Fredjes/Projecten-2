@@ -10,6 +10,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 
 /**
+ * The titlebar shown on top of every screen.
  *
  * @author Frederik De Smedt
  */

@@ -27,6 +27,8 @@ import org.controlsfx.control.PopOver;
 import persistence.UserRepository;
 
 /**
+ * Big brother GUI, determines which GUI must be shown where and holds all
+ * instances of major GUI's.
  *
  * @author Frederik De Smedt
  */
@@ -93,7 +95,6 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openSettings() {
-
 	if (!UserRepository.getInstance().getAuthenticatedUser().getName().equals("@")) {
 	    if (!login(UserRepository.getInstance().getAuthenticatedUser().getName(),
 		    PopupUtil.input("Wachtwoord", "Gelieve uw wachtwoord nogmaals in te vullen"), false)) {

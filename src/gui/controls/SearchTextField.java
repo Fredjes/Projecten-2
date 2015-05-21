@@ -10,6 +10,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 /**
+ * The search bar used in every management GUI, for example adds the lookup icon
+ * on the right of the text field.
  *
  * @author Brent C.
  */

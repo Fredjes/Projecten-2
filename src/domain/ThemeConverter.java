@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * A {@link domain.PropertyListConverter} implementation that allows a String
+ * (of themes) to be converted to a List of separate themes.
  *
  * @author Frederik De Smedt
  */

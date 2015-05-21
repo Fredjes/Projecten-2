@@ -8,6 +8,8 @@ import javafx.scene.control.ListView;
 import javafx.util.Callback;
 
 /**
+ * A ListCell holding a {@link LoanManagementListItem} and used in the Listview
+ * of {@link LoanManagement}.
  *
  * @author Frederik De Smedt
  */

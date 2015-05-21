@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.Comparator;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
@@ -8,6 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 
 /**
+ * A JavaFX TableColumn to which a header name can be assigned.
  *
  * @author Frederik
  */

@@ -10,6 +10,8 @@ import org.controlsfx.control.PopOver;
 import persistence.UserRepository;
 
 /**
+ * A separate GUI component that can be used to change a password and checks for
+ * all specified constraints.
  *
  * @author Frederik
  */

@@ -1,6 +1,5 @@
 package domain;
 
-import domain.controllers.StoryBagController;
 import gui.Binding;
 import gui.DetailViewBook;
 import gui.DetailViewCd;
@@ -49,7 +48,7 @@ public class DetailViewUtil {
 	} else if (o == FilterOption.GAME) {
 	    return new DetailViewGame();
 	} else if (o == FilterOption.STORYBAG) {
-	    return new DetailViewStoryBag(new StoryBagController());
+	    return new DetailViewStoryBag();
 	}
 	return null;
     }

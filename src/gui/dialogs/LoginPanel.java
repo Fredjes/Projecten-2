@@ -14,6 +14,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import persistence.UserRepository;
 
+/**
+ * The component that is used for logging in. Will check whether the user is
+ * succesfully logged in and acts accordingly if not.
+ *
+ * @author Frederik
+ */
 public class LoginPanel extends GridPane {
 
     private UserRepository INSTANCE = UserRepository.getInstance();

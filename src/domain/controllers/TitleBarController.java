@@ -6,6 +6,7 @@ import gui.Titlebar;
 import persistence.UserRepository;
 
 /**
+ * Controller for TitleBar.
  *
  * @author Frederik De Smedt
  */

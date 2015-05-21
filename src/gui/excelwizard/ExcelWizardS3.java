@@ -5,10 +5,8 @@ import domain.Importer;
 import domain.excel.ExcelManager;
 import gui.FXUtil;
 import gui.ScreenSwitcher;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
@@ -17,6 +15,8 @@ import javafx.scene.layout.BorderPane;
 import persistence.Repository;
 
 /**
+ * A GUI representing the third step in the excel import wizard: importing the
+ * actual data and displaying that the imports are complete.
  *
  * @author Brent C.
  */
@@ -55,7 +55,7 @@ public class ExcelWizardS3 extends BorderPane {
 		    importer.nextEntity();
 		    current.set(current.get() + 1);
 		});
-		
+
 		importer.persistEntities();
 	    }
 	});

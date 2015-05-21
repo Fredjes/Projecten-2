@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 
 /**
+ * Repository used to manage {@link User}s.
  *
  * @author Brent
  */

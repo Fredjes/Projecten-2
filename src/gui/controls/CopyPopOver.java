@@ -23,6 +23,7 @@ import persistence.LoanRepository;
 import persistence.UserRepository;
 
 /**
+ * A popover that allows all functionality for a given {@link ItemCopy}.
  *
  * @author Frederik De Smedt
  */
@@ -75,7 +76,7 @@ public class CopyPopOver extends BorderPane {
 	copy.getObservableLoans().addListener((Observable obs) -> {
 	    startLoanButton.setDisable(copy.getLoans().stream().anyMatch(i -> !i.getReturned()));
 	});
-	
+
 	copy.damageProperty().addListener((obs, ov, nv) -> {
 	    startLoanButton.setDisable(nv == Damage.HIGH_DAMAGE);
 	});

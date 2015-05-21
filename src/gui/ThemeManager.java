@@ -5,7 +5,6 @@ import domain.SearchPredicate;
 import gui.controls.ThemeItem;
 import gui.dialogs.PopupUtil;
 import java.util.List;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -22,6 +21,8 @@ import org.controlsfx.control.PopOver;
 import persistence.ItemRepository;
 
 /**
+ * Class that handles the theme system, which uses separate components for each
+ * theme, automatically looks up existing themes, etc.
  *
  * @author Frederik
  */

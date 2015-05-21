@@ -4,6 +4,8 @@ import java.util.function.Function;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 /**
+ * A constraint of which several must pass in order to assign an Excel Worksheet
+ * to a specific entity type.
  *
  * @author Brent C.
  */

@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 /**
+ * An abstract interface that allows the binding of some type T to something
+ * (for example DetailViews).
  *
  * @author PjGeeroms
  */

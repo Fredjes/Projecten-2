@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
 
 /**
+ * A button that holds the {@link domain.Item} icon and {@link ItemCopy} number.
  *
  * @author Frederik De Smedt
  */
@@ -48,7 +49,7 @@ public class CopyButton extends HBox implements Comparator<CopyButton> {
 	this.copy = copy;
 	popOverContent = new CopyPopOver(copy);
 	super.setOnMouseClicked(e -> showDetails());
-	copyId.setText("#" + copy.getCopyNumber().substring(1));
+	copyId.setText(copy.getCopyNumber());
 	createIcon();
 
 	updateIconAvailability();

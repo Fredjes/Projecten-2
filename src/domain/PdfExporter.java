@@ -1,8 +1,5 @@
 package domain;
 
-import domain.Item;
-import domain.Loan;
-import domain.User;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

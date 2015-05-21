@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 /**
+ * The MainMenu GUI.
  *
  * @author Frederik De Smedt
  */

@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 /**
  * Configurations to manage icons.
  *
- * @author Frederik De Smedt
+ * @author Brent Couck
  */
 public class IconConfig {
 

@@ -3,6 +3,8 @@ package domain;
 import java.util.List;
 
 /**
+ * An interface used in {@link PropertyListBinding} that allows for conversion
+ * between properties and lists.
  *
  * @author Frederik De Smedt
  */

@@ -44,6 +44,9 @@ import persistence.ItemRepository;
 import persistence.UserRepository;
 
 /**
+ * A GUI used to manage {@link Item}s.
+ *
+ * Uses {@link ItemRepository} to retrieve Items.
  *
  * @author Frederik De Smedt
  */

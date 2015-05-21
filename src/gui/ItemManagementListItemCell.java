@@ -9,7 +9,8 @@ import javafx.scene.control.ListView;
 import javafx.util.Callback;
 
 /**
- *
+ * A ListCell that holds an {@link ItemManagementListItem}, used in {@link ItemManagement}
+ * 
  * @author Frederik De Smedt
  */
 public class ItemManagementListItemCell extends ListCell<Item> {

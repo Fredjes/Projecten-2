@@ -40,15 +40,14 @@ import persistence.ItemRepository;
 import persistence.LoanRepository;
 
 /**
- *
- * @author Brent
+ * A Util-class used for showing all kinds of popovers.
  */
 public class PopupUtil {
 
     /**
      * Shows the popOver with content & parent of your choice
      *
-     * @param parent  Node to show popOver at.
+     * @param parent Node to show popOver at.
      * @param content Content to place in the popOver
      */
     public static PopOver showPopOver(Node parent, Node content) {

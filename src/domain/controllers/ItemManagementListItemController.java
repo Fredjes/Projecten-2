@@ -9,6 +9,7 @@ import static domain.User.UserType.TEACHER;
 import static domain.User.UserType.VOLUNTEER;
 
 /**
+ * Controller for ItemManagementListItem.
  *
  * @author Frederik De Smedt
  */

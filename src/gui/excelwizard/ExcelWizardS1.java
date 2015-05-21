@@ -21,6 +21,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
+ * The GUI for the first step in the excel import wizard: selecting the correct
+ * worksheets.
  *
  * @author Brent C.
  */
@@ -106,10 +108,10 @@ public class ExcelWizardS1 extends BorderPane {
 	if (contentScreens.isEmpty()) {
 	    buildContentList();
 	}
-	
+
 	List<ExcelWizardS2> contentScreenResults = contentScreens.stream().filter(cs -> ExcelManager.getInstance().getEntry(cs.getExcelId()) == entry).collect(Collectors.toList());
 	Optional<ExcelWizardS2> contentScreen = contentScreenResults.stream().findFirst();
-	if(contentScreen.isPresent()){
+	if (contentScreen.isPresent()) {
 	    contentScreens.remove(contentScreen.get());
 	    contentScreens.stream().filter(cs -> cs.getExcelId() > contentScreen.get().getExcelId()).forEach(cs -> cs.setExcelId(cs.getExcelId() - 1));
 	    ExcelManager.getInstance().removeEntry(entry);
@@ -149,7 +151,7 @@ public class ExcelWizardS1 extends BorderPane {
 		contentScreens.clear();
 		currentIndex = -1;
 	    });
-	    
+
 	    loadingScreen.startImport();
 	}
     }

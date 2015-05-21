@@ -22,6 +22,7 @@ import persistence.LoanRepository;
 import persistence.UserRepository;
 
 /**
+ * A separate GUI component to display advanced loan settings.
  *
  * @author Frederik
  */

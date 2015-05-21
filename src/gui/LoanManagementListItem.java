@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import persistence.ItemRepository;
 
 /**
+ * A representation of a single {@link Loan}, used by {@link LoanManagement}.
  *
  * @author Frederik De Smedt
  */

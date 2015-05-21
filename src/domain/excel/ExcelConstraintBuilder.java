@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A Builder to add multiple constraints and eventually create a
+ * ConstraintCollection.
  *
  * @author Brent C.
  */

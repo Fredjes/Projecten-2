@@ -10,6 +10,8 @@ import javafx.util.Duration;
 import persistence.UserRepository;
 
 /**
+ * An abstract Controller (the MVC kind), that gives a default implementation
+ * for hiding and showing nodes based on the currently logged in user.
  *
  * @author Frederik De Smedt
  * @param <E>

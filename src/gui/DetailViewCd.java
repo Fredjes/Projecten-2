@@ -3,7 +3,6 @@ package gui;
 import domain.Cd;
 import domain.DetailViewUtil;
 import domain.PropertyListBinding;
-import domain.ThemeConverter;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -16,6 +15,10 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+/**
+ * A DetailView which can be bound to a specific Cd.
+ *
+ */
 public class DetailViewCd extends TabPane implements Binding<Cd> {
 
     @FXML

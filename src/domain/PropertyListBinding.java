@@ -8,6 +8,8 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 /**
+ * A class that allows for an ObservableList and a some Property to bind, for
+ * example by splitting a String to retrieve a list.
  *
  * @author Frederik De Smedt
  */
@@ -36,7 +38,7 @@ public class PropertyListBinding<EProp, EList> {
 
 	this.currentProperty = property;
 	this.currentList = list;
-	
+
 	this.currentProperty.setValue(converter.toProperty(currentList));
 
 	property.addListener(propertyListener);

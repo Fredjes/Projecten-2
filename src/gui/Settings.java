@@ -15,6 +15,7 @@ import persistence.SettingsManager;
 import persistence.UserRepository;
 
 /**
+ * The advanced settings window only displayed for administrators.
  *
  * @author Brent C.
  */
@@ -64,11 +65,11 @@ public class Settings extends ScrollPane {
     @FXML
     void onPdfPathSearch() {
 	File pdfPath = new File(SettingsManager.instance.getString("pdfPath"));
-	
-	if(!pdfPath.exists()){
+
+	if (!pdfPath.exists()) {
 	    pdfPath = new File(System.getProperty("user.home"));
 	}
-	
+
 	File f = PopupUtil.showDirectoryChooser(null, "Kies een folder om de PDFs in op te slaan", pdfPath);
 	txtPdfPath.setText(f.getAbsolutePath());
 	updateValues();

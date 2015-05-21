@@ -9,6 +9,8 @@ import javafx.scene.control.ListView;
 import javafx.util.Callback;
 
 /**
+ * Holds a {@link UserManagementListItem} and is used in the ListView of
+ * {@link UserManagement}.
  *
  * @author Frederik
  */
@@ -31,14 +33,14 @@ public class UserManagementListItemCell extends ListCell<User> {
 	    if (Platform.isFxApplicationThread()) {
 		super.setGraphic(listItem);
 	    }
-	    
+
 	    Platform.runLater(() -> super.setGraphic(listItem));
 	} else {
 	    final ChangeListener<Boolean> listener = (obs, ov, nv) -> {
 		if (!nv) {
 		    listItem = null;
 		}
-		
+
 		super.setGraphic(listItem);
 	    };
 

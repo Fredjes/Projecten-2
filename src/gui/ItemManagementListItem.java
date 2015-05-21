@@ -22,6 +22,10 @@ import javafx.scene.layout.HBox;
 import persistence.ItemRepository;
 
 /**
+ * A single Item displayed in the ListView of {@link ItemManagement}.
+ *
+ * Shouldn't be manually instantiated, rather ask {@link domain.Cache} for an
+ * instance for a certain Item.
  *
  * @author Frederik De Smedt
  */
@@ -75,7 +79,7 @@ public class ItemManagementListItem extends AnchorPane {
 	SortedList<ItemCopy> copies = FXCollections.observableArrayList(item.getItemCopies()).sorted((i1, i2) -> {
 	    return i1.getCopyNumber().compareTo(i2.getCopyNumber());
 	});
-	
+
 	copies.forEach(this::addCopyButtonFor);
     }
 

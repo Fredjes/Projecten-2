@@ -20,6 +20,9 @@ import javafx.scene.text.Text;
 import persistence.UserRepository;
 
 /**
+ * The GUI to manage every {@link User}.
+ *
+ * Uses the {@link UserRepository} to retrieve its users.
  *
  * @author Frederik De Smedt
  */

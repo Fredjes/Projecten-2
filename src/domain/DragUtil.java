@@ -5,6 +5,7 @@ import java.util.List;
 import persistence.ItemRepository;
 
 /**
+ * A Util-class that holds all drag functionality and logic.
  *
  * @author Frederik
  */

@@ -3,6 +3,9 @@ package domain;
 import java.util.HashMap;
 
 /**
+ * This class represents a row that is imported using the Excel Importing
+ * system. It will eventually be used to retrieve data at a certain column
+ * index.
  *
  * @author Frederik
  */

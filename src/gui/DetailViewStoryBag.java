@@ -6,8 +6,6 @@ import domain.DragUtil;
 import domain.Item;
 import domain.PropertyListBinding;
 import domain.StoryBag;
-import domain.ThemeConverter;
-import domain.controllers.StoryBagController;
 import gui.controls.ItemTile;
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +23,10 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 
+/**
+ * A DetailView which can be bound to a specific StoryBag.
+ *
+ */
 public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 
     @FXML
@@ -45,11 +47,8 @@ public class DetailViewStoryBag extends TabPane implements Binding<StoryBag> {
 
     private StoryBag boundStoryBag;
 
-    private StoryBagController controller;
-
-    public DetailViewStoryBag(StoryBagController controller) {
+    public DetailViewStoryBag() {
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/gui/detailview_storybag.fxml"));
-	this.controller = controller;
 	themesBinding = new PropertyListBinding();
 
 	try {

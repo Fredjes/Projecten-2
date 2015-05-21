@@ -3,7 +3,6 @@ package gui;
 import domain.DetailViewUtil;
 import domain.Game;
 import domain.PropertyListBinding;
-import domain.ThemeConverter;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -14,6 +13,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+/**
+ * A DetailView which can be bound to a specific Game.
+ *
+ */
 public class DetailViewGame extends TabPane implements Binding<Game> {
 
     @FXML

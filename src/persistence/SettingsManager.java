@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * Manager used to load and write settings.
  *
  * @author Brent C.
  */

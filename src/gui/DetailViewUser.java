@@ -10,6 +10,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
+/**
+ * A DetailView which can be bound to a specific User.
+ *
+ */
 public class DetailViewUser extends TabPane {
 
     @FXML

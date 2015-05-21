@@ -5,12 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 /**
+ * A component used by the {@link gui.ThemeManager} that represents a single
+ * theme. The value of the theme will be shown, yet there is also the
+ * possibility for deleting the theme.
  *
  * @author Frederik
  */

@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
+ * An entity representing a loan stored in the database.
  *
  * @author Frederik De Smedt
  */

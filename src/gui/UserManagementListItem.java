@@ -6,6 +6,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 /**
+ * A component representing a single User, used in the {@link UserManagement}
+ * GUI.
  *
  * @author Frederik
  */

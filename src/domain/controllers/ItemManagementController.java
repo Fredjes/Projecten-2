@@ -6,6 +6,7 @@ import gui.ScreenSwitcher;
 import persistence.UserRepository;
 
 /**
+ * Controller for ItemManagement.
  *
  * @author Frederik De Smedt
  */
@@ -20,7 +21,7 @@ public class ItemManagementController extends BaseController<ItemManagement> {
 	if (getView() == null) {
 	    return;
 	}
-	
+
 	User u = UserRepository.getInstance().getAuthenticatedUser();
 
 	if (u == null || u.getUserType() == null || u.getUserType() == User.UserType.STUDENT) {

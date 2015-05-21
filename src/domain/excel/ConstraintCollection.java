@@ -4,6 +4,8 @@ import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 /**
+ * A collection of constraints that will be checked to decide whether an Excel
+ * Worksheet should be assigned to an entity type.
  *
  * @author Brent C.
  */

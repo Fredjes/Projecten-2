@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * An abstract Repository with some basic implementations and a minimum amount
+ * of methods that must be supported by every Repository.
+ *
+ * Note: Abstraction (of the abstract methods) is necessary to enforce every
+ * Repository to have a certain amount of methods, since some systems such as
+ * the excel import system might not know which repository is being used.
  *
  * @author Frederik De Smedt
  */
@@ -15,11 +21,11 @@ public abstract class Repository<E> {
     public Repository() {
 	submitRepository(this);
     }
-    
-    public static void submitRepository(Repository repository){
+
+    public static void submitRepository(Repository repository) {
 	repositories.add(repository);
     }
-    
+
     public void addSyncListener(Runnable r) {
 	listeners.add(r);
     }
@@ -32,14 +38,14 @@ public abstract class Repository<E> {
 	listeners.forEach(Runnable::run);
 	listeners.clear();
     }
-    
-    public static void saveAllChanges(){
+
+    public static void saveAllChanges() {
 	repositories.forEach(Repository::saveChanges);
     }
-    
+
     public abstract void add(E e);
-    
+
     public abstract void remove(E e);
-    
+
     public abstract void saveChanges();
 }

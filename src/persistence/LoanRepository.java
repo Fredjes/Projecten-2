@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
 
 /**
+ * Repository for {@link Loan}s.
  *
  * @author Frederik De Smedt
  */

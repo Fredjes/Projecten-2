@@ -10,7 +10,7 @@ import persistence.ItemRepository;
 
 /**
  * Importer for Item-entities that should be extended by an Importer that uses a
- * subclass of Item, since Item is abstract as well.
+ * subclass of Item.
  *
  * @author Frederik
  * @param <E>

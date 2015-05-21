@@ -6,6 +6,7 @@ import gui.ScreenSwitcher;
 import persistence.UserRepository;
 
 /**
+ * Controller for MainMenu.
  *
  * @author Frederik De Smedt
  */

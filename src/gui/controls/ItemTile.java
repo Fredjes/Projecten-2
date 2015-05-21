@@ -15,6 +15,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 
 /**
+ * An ItemTile used in the overview of all present items in a StoryBag.
  *
  * @author Frederik
  */

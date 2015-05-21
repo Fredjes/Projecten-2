@@ -5,13 +5,14 @@ import javafx.event.Event;
 import javafx.event.EventType;
 
 /**
+ * An event occurding when a Loan has been deleted or added in the GUI.
  *
  * @author Frederik
  */
 public class LoanEvent extends Event {
 
     private Loan loan;
-    
+
     public LoanEvent(Loan l) {
 	this(null, l);
     }
