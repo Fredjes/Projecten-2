@@ -170,7 +170,7 @@ public class UserRepository extends Repository<User> {
 	    synchronized (this) {
 		users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
 		users.stream().filter(u -> u.getName() == null || u.getName().isEmpty() || u.getName().equals("null")).forEach(this::remove);
-		saveChangesNoSync();
+		saveChangesAfterSync();
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
 		super.triggerListeners();
 		try {
@@ -189,7 +189,7 @@ public class UserRepository extends Repository<User> {
 	return filteredList;
     }
 
-    private void saveChangesNoSync() {
+    private void saveChangesAfterSync() {
 	Runnable r = () -> {
 	    synchronized (this) {
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
@@ -197,10 +197,6 @@ public class UserRepository extends Repository<User> {
 		    manager.getTransaction().begin();
 
 		    users.forEach(user -> {
-			if (user.getName() == null || user.getName().trim().isEmpty()) {
-			    return;
-			}
-
 			if (user.getId() == 0) {
 			    manager.persist(user);
 			} else {
