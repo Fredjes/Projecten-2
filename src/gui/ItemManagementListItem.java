@@ -51,6 +51,11 @@ public class ItemManagementListItem extends AnchorPane {
     public ItemManagementListItem(Item item) {
 	this();
 	setItem(item);
+
+	if (item == null) {
+	    return;
+	}
+
 	item.getObservableItemCopies().addListener((ListChangeListener.Change<? extends ItemCopy> c) -> {
 	    while (c.next()) {
 		if (c.wasAdded()) {
@@ -70,8 +75,8 @@ public class ItemManagementListItem extends AnchorPane {
 	SortedList<ItemCopy> copies = FXCollections.observableArrayList(item.getItemCopies()).sorted((i1, i2) -> {
 	    return i1.getCopyNumber().compareTo(i2.getCopyNumber());
 	});
+	
 	copies.forEach(this::addCopyButtonFor);
-
     }
 
     private void addCopyButtonFor(ItemCopy copy) {

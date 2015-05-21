@@ -24,7 +24,7 @@ public class LoanManagementListItemCell extends ListCell<Loan> {
 	super.updateItem(item, empty);
 	if (super.isEmpty()) {
 	    listItem = null;
-	    super.setGraphic(null);
+	    Platform.runLater(() -> super.setGraphic(null));
 	} else {
 	    listItem = Cache.getLoanCache().get(item);
 	    Platform.runLater(() -> super.setGraphic(listItem));

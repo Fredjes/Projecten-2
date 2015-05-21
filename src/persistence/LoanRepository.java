@@ -118,6 +118,7 @@ public class LoanRepository extends Repository<Loan> {
 		super.triggerListeners();
 		PdfExporter.saveLoans();
 		PdfExporter.saveLoanHistory();
+		LoanRepository.getInstance().sync();
 	    }
 	});
 

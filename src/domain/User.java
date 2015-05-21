@@ -326,6 +326,7 @@ public class User implements Serializable, Searchable, Importable {
 		    break;
 		case "Adres":
 		    getCurrentEntity().setAddress(value);
+		    break;
 		case "Stamboeknummer":
 		    getCurrentEntity().setRegisterNumber(value);
 		    break;

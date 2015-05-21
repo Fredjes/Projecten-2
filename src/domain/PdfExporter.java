@@ -192,7 +192,7 @@ public class PdfExporter {
 	cos.beginText();
 	cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
 	cos.setFont(FONT, 21);
-	cos.drawString("Overzicht van open uitleningen");
+	cos.drawString("Overzicht van voorwerpen");
 	y += 40;
 	cos.endText();
 
