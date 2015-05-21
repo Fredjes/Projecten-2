@@ -7,9 +7,9 @@
 
 <fx:root fitToHeight="true" fitToWidth="true" styleClass="white" type="ScrollPane" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <VBox spacing="25.0" styleClass="white">
+      <VBox alignment="CENTER" spacing="25.0" styleClass="white">
          <children>
-            <TitledPane styleClass="white" text="Database">
+            <TitledPane collapsible="false" styleClass="white" text="Database">
                <content>
                   <HBox alignment="CENTER" spacing="5.0" styleClass="white">
                      <children>
@@ -47,7 +47,7 @@
                   </HBox>
                </content>
             </TitledPane>
-            <TitledPane text="Gegevens">
+            <TitledPane collapsible="false" text="Gegevens">
                <content>
                   <VBox spacing="5.0" styleClass="white">
                      <children>
@@ -90,7 +90,7 @@
                   </VBox>
                </content>
             </TitledPane>
-            <HBox alignment="BOTTOM_RIGHT">
+            <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                <children>
                   <Button mnemonicParsing="false" onAction="#onSave" text="Opslaan">
                      <styleClass>
