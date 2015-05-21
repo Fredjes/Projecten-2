@@ -1,6 +1,5 @@
 package gui;
 
-import domain.FontCache;
 import domain.Loan;
 import domain.SearchPredicate;
 import domain.User;
@@ -16,7 +15,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import persistence.UserRepository;
 
 /**

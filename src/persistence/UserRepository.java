@@ -169,6 +169,8 @@ public class UserRepository extends Repository<User> {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
 		users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
+		users.stream().filter(u -> u.getName() == null || u.getName().isEmpty() || u.getName().equals("null")).forEach(this::remove);
+		saveChangesNoSync();
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
 		super.triggerListeners();
 		try {
@@ -185,6 +187,44 @@ public class UserRepository extends Repository<User> {
     public ObservableList<User> getUsersByPredicate(Predicate<User> predicate) {
 	ObservableList<User> filteredList = users.filtered(predicate);
 	return filteredList;
+    }
+
+    private void saveChangesNoSync() {
+	Runnable r = () -> {
+	    synchronized (this) {
+		EntityManager manager = JPAUtil.getInstance().getEntityManager();
+		try {
+		    manager.getTransaction().begin();
+
+		    users.forEach(user -> {
+			if (user.getName() == null || user.getName().trim().isEmpty()) {
+			    return;
+			}
+
+			if (user.getId() == 0) {
+			    manager.persist(user);
+			} else {
+			    manager.merge(user);
+			}
+		    });
+
+		    deletedUsers.forEach(u -> {
+			Object o = manager.merge(u);
+			manager.remove(o);
+		    });
+
+		    manager.getTransaction().commit();
+		    deletedUsers.clear();
+		} catch (RollbackException ex) {
+		    System.err.println("Could not save changes for Users to the database. " + ex.getMessage());
+		    manager.getTransaction().rollback();
+		}
+	    }
+	};
+
+	Thread t = new Thread(r);
+	t.setName("User repository change thread");
+	t.start();
     }
 
     public void saveChanges() {
