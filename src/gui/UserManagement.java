@@ -58,7 +58,7 @@ public class UserManagement extends BorderPane {
     public void onAdd() {
 	User user = new User(User.UserType.STUDENT);
 	user.setVisible(true);
-	UserRepository.getInstance().add(user);
+	UserRepository.getInstance().saveUser(user);
 	searchBar.setText("");
 	user.setName(" ");
 	onSearchQuery();
@@ -114,29 +114,6 @@ public class UserManagement extends BorderPane {
 	detailViewUser = new DetailViewUser();
 	onSearchQuery();
 	userList.setItems(filteredList);
-	userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
-	    saved = false;
-	    if (nv == null) {
-		Platform.runLater(() -> super.setBottom(null));
-	    } else {
-		detailViewUser.bind(nv);
-		Platform.runLater(() -> super.setBottom(detailViewUser));
-	    }
-	});
-
-	FXUtil.loadFXML(this, "user_management");
-	predicate = new SearchPredicate(User.class, "");
-	predicate.searchQueryProperty().bind(searchBar.textProperty());
-	filteredList = new FilteredList<>(UserRepository.getInstance().getUsers());
-	userList.setCellFactory(UserManagementListItemCell.forListView());
-	detailViewUser = new DetailViewUser();
-	onSearchQuery();
-	userList.setItems(filteredList);
-	saveButton.graphicProperty().addListener((obs, ov, nv) -> {
-	    if (nv != null) {
-		((Text) nv).setFont(FontCache.getIconFont(16));
-	    }
-	});
 	userList.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
 	    saved = false;
 	    if (nv == null) {
