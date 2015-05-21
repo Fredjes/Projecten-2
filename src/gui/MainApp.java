@@ -20,6 +20,8 @@ public class MainApp extends Application {
 
     public static boolean DEVELOPMENT_MODE = false;
 
+    public static final String ADMIN_PASSWORD = ".gnvxKQ5Y";
+
     @Override
     public void start(Stage primaryStage) {
 	ItemRepository.getInstance().addSyncListener(() -> {

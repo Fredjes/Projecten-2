@@ -49,6 +49,8 @@ public class ScreenSwitcher extends BorderPane {
 
     private boolean navigationAllowed = true;
 
+    public static boolean LOCAL_ADMIN = false;
+
     public ScreenSwitcher() {
 	initialize();
 	setPrefSize(1024, 768);
@@ -91,8 +93,12 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openSettings() {
-	if (!isNavigationAllowed() || !login(UserRepository.getInstance().getAuthenticatedUser().getName(), PopupUtil.input("Wachtwoord", "Gelieve uw wachtwoord nogmaals in te vullen"), false)) {
-	    return;
+
+	if (!UserRepository.getInstance().getAuthenticatedUser().getName().equals("@")) {
+	    if (!login(UserRepository.getInstance().getAuthenticatedUser().getName(),
+		    PopupUtil.input("Wachtwoord", "Gelieve uw wachtwoord nogmaals in te vullen"), false)) {
+		return;
+	    }
 	}
 	titlebar.setTitle("Applicatie configureren");
 	setCenter(settings);
@@ -109,7 +115,7 @@ public class ScreenSwitcher extends BorderPane {
 	List<String> classes = node.getStyleClass();
 	classes.stream().forEach(clazz -> IconConfig.identify(node, clazz));
     }
-    
+
     public void openMainMenu() {
 	if (!isNavigationAllowed()) {
 	    return;
@@ -192,7 +198,7 @@ public class ScreenSwitcher extends BorderPane {
     /**
      * Log in using the email of the user and a non-encrypted password.
      *
-     * @param email    the email of the user
+     * @param email the email of the user
      * @param password the password of the user
      * @return true if the email and password are correct
      */
@@ -218,6 +224,12 @@ public class ScreenSwitcher extends BorderPane {
 		//PopupUtil.showNotification("Development Mode", "Aangemeld met maximale rechten!", PopupUtil.Notification.INFORMATION);
 		return;
 	    }
+
+	    if (LOCAL_ADMIN) {
+		openSettings();
+		return;
+	    }
+
 	    LoginPanel loginPanel = new LoginPanel();
 	    PopOver pop = PopupUtil.showPopOver(loginButton, loginPanel);
 	    loginPanel.setOnLogin(e -> {

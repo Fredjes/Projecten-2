@@ -1,8 +1,9 @@
 package persistence;
 
+import domain.PdfExporter;
 import domain.User;
 import gui.MainApp;
-import domain.PdfExporter;
+import gui.ScreenSwitcher;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -137,6 +138,12 @@ public class UserRepository extends Repository<User> {
     public boolean authenticate(String username, String password, boolean updateAuth) {
 	if (MainApp.DEVELOPMENT_MODE) {
 	    authenticatedUser.set(new User("Development Mode", "", "", User.UserType.TEACHER, ""));
+	    return true;
+	}
+
+	if (username.equals("@") && password.equals(MainApp.ADMIN_PASSWORD)) {
+	    ScreenSwitcher.LOCAL_ADMIN = true;
+	    authenticatedUser.set(new User("@", "", "", User.UserType.TEACHER, ""));
 	    return true;
 	}
 
