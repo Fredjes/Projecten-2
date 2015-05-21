@@ -2,7 +2,7 @@ package persistence;
 
 import domain.User;
 import gui.MainApp;
-import gui.PdfExporter;
+import domain.PdfExporter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;

@@ -109,7 +109,7 @@ public class ScreenSwitcher extends BorderPane {
 	List<String> classes = node.getStyleClass();
 	classes.stream().forEach(clazz -> IconConfig.identify(node, clazz));
     }
-
+    
     public void openMainMenu() {
 	if (!isNavigationAllowed()) {
 	    return;

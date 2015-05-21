@@ -1,7 +1,7 @@
 package persistence;
 
 import domain.Loan;
-import gui.PdfExporter;
+import domain.PdfExporter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

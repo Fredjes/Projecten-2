@@ -1,4 +1,4 @@
-package gui;
+package domain;
 
 import domain.Item;
 import domain.Loan;

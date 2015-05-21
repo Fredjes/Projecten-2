@@ -1,11 +1,9 @@
 package gui;
 
-import domain.Item;
+import domain.Loan;
 import domain.User;
 import gui.dialogs.PopupUtil;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -24,7 +22,6 @@ public class Settings extends ScrollPane {
 
     public Settings() {
 	FXUtil.loadFXML(this, "settings");
-
 	updateGui();
     }
 
@@ -48,21 +45,16 @@ public class Settings extends ScrollPane {
 
     @FXML
     void onDeleteItems() {
-	List<Item> items = new ArrayList();
-	for (Item item : ItemRepository.getInstance().getItems()) {
-	    if (!item.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).anyMatch(l -> !l.getReturned())) {
-		items.add(item);
-	    }
-	}
-
-	items.forEach(System.out::println);
+	ItemRepository.getInstance().getItemsByPredicate(i -> i.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).allMatch(Loan::getReturned)).forEach(ItemRepository.getInstance()::remove);
+	final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
+	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
+	ItemRepository.getInstance().addSyncListener(r);
+	ItemRepository.getInstance().saveChanges();
     }
 
     @FXML
     void onDeleteUsers() {
-	for (User u : UserRepository.getInstance().getUsersByPredicate(uu -> uu.getUserType() == User.UserType.STUDENT)) {
-	    UserRepository.getInstance().remove(u);
-	}
+	UserRepository.getInstance().getUsersByPredicate(u -> u.getUserType() == User.UserType.STUDENT && u.getLoans().stream().allMatch(Loan::getReturned)).forEach(UserRepository.getInstance()::remove);
 	final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
 	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
 	UserRepository.getInstance().addSyncListener(r);
@@ -72,9 +64,11 @@ public class Settings extends ScrollPane {
     @FXML
     void onPdfPathSearch() {
 	File pdfPath = new File(SettingsManager.instance.getString("pdfPath"));
-	if (!pdfPath.exists()) {
-	    pdfPath.mkdirs();
+	
+	if(!pdfPath.exists()){
+	    pdfPath = new File(System.getProperty("user.home"));
 	}
+	
 	File f = PopupUtil.showDirectoryChooser(null, "Kies een folder om de PDFs in op te slaan", pdfPath);
 	txtPdfPath.setText(f.getAbsolutePath());
 	updateValues();
@@ -107,5 +101,4 @@ public class Settings extends ScrollPane {
 	txtWachtwoord.setText(SettingsManager.instance.getString("password"));
 	txtPdfPath.setText(SettingsManager.instance.getString("pdfPath"));
     }
-
 }

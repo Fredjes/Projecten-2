@@ -4,7 +4,7 @@ import domain.Book;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
-import gui.PdfExporter;
+import domain.PdfExporter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
