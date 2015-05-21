@@ -24,6 +24,7 @@ public class TitleBarController extends BaseController<Titlebar> {
 	    hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
 	    //hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
 	    hideNode(getView().getUitleningenBeheren(), "uitleningenBeheren");
+	    hideNode(getView().getSettings(), "settings");
 	    getView().getVoorwerpenBeheren().getStyleClass().remove("icon-voorwerpen-beheren");
 	    getView().getVoorwerpenBeheren().getStyleClass().add("icon-search");
 	    return;
@@ -33,6 +34,7 @@ public class TitleBarController extends BaseController<Titlebar> {
 	    case VOLUNTEER:
 		hideNode(getView().getExcelImporteren(), "excel");
 		hideNode(getView().getGebruikersBeheren(), "gebruikersBeheren");
+		hideNode(getView().getSettings(), "settings");
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
 		getView().getVoorwerpenBeheren().getStyleClass().remove("icon-voorwerpen-beheren");
@@ -44,6 +46,7 @@ public class TitleBarController extends BaseController<Titlebar> {
 		showNode("uitleningenBeheren");
 		showNode("gebruikersBeheren");
 		showNode("excel");
+		showNode("settings");
 		getView().getVoorwerpenBeheren().getStyleClass().add("icon-voorwerpen-beheren");
 		getView().getVoorwerpenBeheren().getStyleClass().remove("icon-search");
 		break;

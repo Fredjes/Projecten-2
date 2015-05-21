@@ -1,7 +1,7 @@
 package persistence;
 
 import domain.Loan;
-import gui.PdfExporter;
+import domain.PdfExporter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -92,7 +92,7 @@ public class LoanRepository extends Repository<Loan> {
 		    ex.printStackTrace();
 		    manager.getTransaction().rollback();
 		}
-		
+
 		PdfExporter.saveLoans();
 		PdfExporter.saveLoanHistory();
 	    }

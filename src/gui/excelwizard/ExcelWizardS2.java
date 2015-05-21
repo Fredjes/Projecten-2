@@ -55,6 +55,7 @@ public class ExcelWizardS2 extends BorderPane {
 	this.id = id;
 	FXUtil.loadFXML(this, "excel_management_s2");
 	title.setText(ExcelManager.getInstance().getSheetById(id).getSheetName() + " koppelen - " + ExcelManager.getInstance().getEntry(id).getDestination().toString());
+	switcher.loadIcons(this);
     }
 
     @FXML
@@ -72,7 +73,7 @@ public class ExcelWizardS2 extends BorderPane {
      * assign columns to properties.
      *
      * @param properties A collection of all possible properties that can be
-     * selected
+     *                   selected
      */
     public void setHeaderList(Collection<String> properties) {
 	if (!properties.contains("")) {

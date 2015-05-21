@@ -2,7 +2,7 @@ package persistence;
 
 import domain.User;
 import gui.MainApp;
-import gui.PdfExporter;
+import domain.PdfExporter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -50,7 +50,7 @@ public class UserRepository extends Repository<User> {
 	if (users.stream().anyMatch(uu -> uu.getName().equalsIgnoreCase(u.getName()))) {
 	    return;
 	}
-	
+
 	users.add(u);
     }
 
@@ -131,6 +131,10 @@ public class UserRepository extends Repository<User> {
     }
 
     public boolean authenticate(String username, String password) {
+	return authenticate(username, password, true);
+    }
+
+    public boolean authenticate(String username, String password, boolean updateAuth) {
 	if (MainApp.DEVELOPMENT_MODE) {
 	    authenticatedUser.set(new User("Development Mode", "", "", User.UserType.TEACHER, ""));
 	    return true;
@@ -145,7 +149,9 @@ public class UserRepository extends Repository<User> {
 
 	if (!found.isEmpty()) {
 	    assert found.size() == 1;
-	    authenticatedUser.set(found.get(0));
+	    if (updateAuth) {
+		authenticatedUser.set(found.get(0));
+	    }
 	    return true;
 	}
 	return false;

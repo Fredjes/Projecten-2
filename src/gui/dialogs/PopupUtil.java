@@ -5,6 +5,7 @@ import domain.Loan;
 import domain.Searchable;
 import gui.ScreenSwitcher;
 import gui.controls.SearchTextField;
+import java.io.File;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -28,6 +30,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -45,7 +48,7 @@ public class PopupUtil {
     /**
      * Shows the popOver with content & parent of your choice
      *
-     * @param parent Node to show popOver at.
+     * @param parent  Node to show popOver at.
      * @param content Content to place in the popOver
      */
     public static PopOver showPopOver(Node parent, Node content) {
@@ -198,10 +201,10 @@ public class PopupUtil {
 	dialog.setTitle(title);
 	dialog.setContentText(message);
 	dialog.setResultConverter(bt -> bt.equals(ButtonType.YES));
-	
+
 	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.NO)).setText("Nee");
 	dialog.getDialogPane().lookupButton(ButtonType.NO).getStyleClass().addAll("btn", "btn-red");
-	
+
 	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.YES)).setText("Ja");
 	dialog.getDialogPane().lookupButton(ButtonType.YES).getStyleClass().addAll("btn", "btn-lime");
 	dialog.getDialogPane().setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -212,6 +215,42 @@ public class PopupUtil {
 	    return answer.get();
 	} else {
 	    return false;
+	}
+    }
+
+    public static File showDirectoryChooser(javafx.stage.Window owner, String title, File initialPath) {
+	DirectoryChooser dc = new DirectoryChooser();
+	dc.setInitialDirectory(initialPath);
+	dc.setTitle(title);
+
+	return dc.showDialog(owner);
+    }
+
+    public static String input(String title, String question) {
+	Dialog<String> dialog = new Dialog<>();
+	dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+	dialog.setTitle(title);
+
+	PasswordField field = new PasswordField();
+	VBox box = new VBox(new Label(question), field);
+	box.setPadding(new Insets(10));
+	box.setSpacing(5);
+	dialog.getDialogPane().setContent(box);
+	dialog.setResultConverter((r) -> {
+	    return field.getText();
+	});
+	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Ok");
+	dialog.getDialogPane().lookupButton(ButtonType.OK).getStyleClass().addAll("btn", "btn-lime");
+	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("Annuleren");
+	dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().addAll("btn", "btn-red");
+	dialog.getDialogPane().setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+	dialog.getDialogPane().getStylesheets().add(PopupUtil.class.getResource("/resources/css/global.css").toExternalForm());
+
+	Optional<String> answer = dialog.showAndWait();
+	if (answer.isPresent()) {
+	    return answer.get();
+	} else {
+	    return "";
 	}
     }
 
