@@ -30,6 +30,7 @@
                <styleClass>
                   <String fx:value="btn" />
                   <String fx:value="btn-lime" />
+                  <String fx:value="icon-next" />
                </styleClass>
             </Button>
          </children>
@@ -63,7 +64,7 @@
                <children>
                   <HBox alignment="TOP_RIGHT" spacing="5.0" style="-fx-background-color: derive(rgb(153,201,56), 60%);" VBox.vgrow="NEVER">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onFileSelect" text="selecteer een bestand">
+                        <Button fx:id="selectButton" mnemonicParsing="false" onAction="#onFileSelect" text="selecteer een bestand">
                            <styleClass>
                               <String fx:value="btn" />
                               <String fx:value="btn-small" />

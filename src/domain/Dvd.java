@@ -1,10 +1,9 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
+import java.util.Set;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Access;
@@ -50,6 +49,10 @@ public class Dvd extends Item implements Serializable {
 
     @Override
     public boolean test(String query) {
+	if (!super.getVisible()) {
+	    return false;
+	}
+
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getDirector(), t);
 
@@ -66,35 +69,41 @@ public class Dvd extends Item implements Serializable {
     }
 
     @Override
-    public Map<String, BiConsumer<String, Dvd>> createHeaderList() {
-	Map<String, BiConsumer<String, Dvd>> map = super.createHeaderList();
-	map.put("Regisseur", new BiConsumer<String, Dvd>() {
-
-	    public void accept(String da, Dvd dv) {
-		dv.setDirector(da);
-	    }
-	});
-	return map;
+    public Importer createImporter() {
+	return new DvdImporter();
     }
 
-    @Override
-    public Map<String, Predicate<String>> createHeaderAssignmentList() {
-	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
-	map.put("Regisseur", new Predicate<String>() {
+    private class DvdImporter extends ItemImporter<Dvd> {
 
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "regisseur", "producer", "ontwikkelaar");
-	    }
-	});
-	final Predicate<String> original = map.get("Titel");
-	map.put("Titel", new Predicate<String>() {
+	private final Set<String> fieldSet = super.getFields();
 
-	    @Override
-	    public boolean test(String t) {
-		return original.test(t) || SearchPredicate.containsIgnoreCase(t, "dvd");
+	public DvdImporter() {
+	    super(Dvd::new);
+	    fieldSet.add("Regisseur");
+	}
+
+	@Override
+	public Set<String> getFields() {
+	    return Collections.unmodifiableSet(fieldSet);
+	}
+
+	@Override
+	public void setField(String field, String value) {
+	    if (field.equals("Regisseur")) {
+		getCurrentEntity().setDirector(value);
+	    } else {
+		super.setField(field, value);
 	    }
-	});
-	return map;
+	}
+
+	@Override
+	public String predictField(String columnName) {
+	    if (SearchPredicate.containsAnyIgnoreCase(columnName, "regisseur", "producer", "ontwikkelaar")) {
+		return "Regisseur";
+	    } else {
+		return super.predictField(columnName);
+	    }
+	}
+
     }
 }

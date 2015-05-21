@@ -49,13 +49,13 @@ public class LoanManagementListItem extends AnchorPane {
 
 	this.loan = loan;
 	new LoanManagementListItemController(this, null);
-	
+
 	loan.itemCopyProperty().addListener((Observable o) -> updateItem());
 	loan.userProperty().addListener(this::updateUser);
 	loan.dateProperty().addListener(this::updateDate);
 	ItemRepository.getInstance().getItems().addListener((Observable o) -> updateItem());
 	updateItem();
-	
+
 	loan.dateProperty().addListener((Observable o) -> updateDate());
 	updateDate();
     }
@@ -97,11 +97,13 @@ public class LoanManagementListItem extends AnchorPane {
 	    username.textProperty().unbind();
 	}
 
-	username.textProperty().bind(newUser.nameProperty());
+	if (newUser != null) {
+	    username.textProperty().bind(newUser.nameProperty());
+	}
     }
 
     private void updateDate(Observable user, Calendar oldDate, Calendar newDate) {
-	toLateWarningLabel.visibleProperty().set(Calendar.getInstance().getTimeInMillis() >= newDate.getTimeInMillis());
+	toLateWarningLabel.visibleProperty().set(Calendar.getInstance().getTimeInMillis() >= newDate.getTimeInMillis() && !loan.getReturned());
     }
 
     @FXML

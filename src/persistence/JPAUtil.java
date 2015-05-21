@@ -1,6 +1,8 @@
 package persistence;
 
 import gui.dialogs.PopupUtil;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.util.Duration;
 import javax.persistence.EntityManager;
@@ -40,7 +42,12 @@ public class JPAUtil {
     public EntityManagerFactory getEntityManagerFactory() {
 	if (entityManagerFactory == null) {
 	    try {
-		entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU");
+		Map<String, String> map = new HashMap<>();
+		map.put("javax.persistence.jdbc.url", "jdbc:mysql://" + SettingsManager.instance.getString("host") + ":" + SettingsManager.instance.getString("port") + "/" + SettingsManager.instance.getString("schema") + "?zeroDateTimeBehavior=convertToNull");
+		map.put("javax.persistence.jdbc.user", SettingsManager.instance.getString("username"));
+		map.put("javax.persistence.jdbc.password", SettingsManager.instance.getString("password"));
+
+		entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU", map);
 	    } catch (Exception e) {
 		e.printStackTrace();
 		Platform.runLater(() -> {

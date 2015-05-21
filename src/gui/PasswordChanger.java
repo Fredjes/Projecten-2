@@ -29,7 +29,7 @@ public class PasswordChanger extends VBox {
 
     public PasswordChanger() {
 	FXUtil.loadFXML(this, "password_change");
-	popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_LEFT);
+	popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);
 	popOver.setAutoHide(true);
 	popOver.setDetachable(false);
 	popOver.setOnHiding(e -> {

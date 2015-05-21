@@ -23,12 +23,13 @@ public class IconConfig {
 	    put("icon-search", new Icon("\uf002", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-home", new Icon("\uf015", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-add", new Icon("\uf0fe", IconType.TEXT, IconPosition.OVERWRITE));
-	    put("icon-close", new Icon("\uf00d", IconType.TEXT, IconPosition.OVERWRITE));
-	    put("icon-add", new Icon("\uf0fe", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-delete", new Icon("\uf014", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-save", new Icon("\uf0c7", IconType.GRAPHIC, IconPosition.PREPEND));
 	    put("icon-return", new Icon("\uf064", IconType.GRAPHIC, IconPosition.PREPEND));
 	    put("icon-extend", new Icon("\uf017", IconType.GRAPHIC, IconPosition.PREPEND));
+	    put("icon-back", new Icon("\uf137", IconType.GRAPHIC, IconPosition.PREPEND));
+	    put("icon-next", new Icon("\uf138", IconType.GRAPHIC, IconPosition.APPEND));
+	    put("icon-file", new Icon("\uf15b", IconType.GRAPHIC, IconPosition.PREPEND));
 
 	    put("icon-book", new Icon("\uf02d", IconType.GRAPHIC, IconPosition.PREPEND));
 	    put("icon-game", new Icon("\uf091", IconType.GRAPHIC, IconPosition.PREPEND));
@@ -36,6 +37,8 @@ public class IconConfig {
 	    put("icon-dvd", new Icon("\uf008", IconType.GRAPHIC, IconPosition.PREPEND));
 	    put("icon-story", new Icon("\uf0b1", IconType.GRAPHIC, IconPosition.PREPEND));
 	    put("icon-all", new Icon("\uf1ce", IconType.GRAPHIC, IconPosition.PREPEND));
+	    put("icon-settings", new Icon("\uf013", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-close", new Icon("\uf00d", IconType.TEXT, IconPosition.OVERWRITE));
 
 	}
     };

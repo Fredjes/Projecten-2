@@ -408,6 +408,10 @@
     -fx-font-family: "FontAwesome";
 }
 
+.icon-settings {
+    -fx-font-family: "FontAwesome";
+}
+
 .icon-close {
     -fx-font-size: 24px;
     -fx-font-weight: bold;

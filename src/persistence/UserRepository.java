@@ -2,6 +2,8 @@ package persistence;
 
 import domain.User;
 import gui.MainApp;
+import domain.PdfExporter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,7 +12,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +36,7 @@ public class UserRepository extends Repository<User> {
     private final List<User> deletedUsers = new ArrayList();
 
     private UserRepository() {
+	super();
     }
 
     public static UserRepository getInstance() {
@@ -45,12 +50,27 @@ public class UserRepository extends Repository<User> {
 	if (users.stream().anyMatch(uu -> uu.getName().equalsIgnoreCase(u.getName()))) {
 	    return;
 	}
+
 	users.add(u);
     }
 
+    public void addOrUpdate(User u) {
+	final BooleanProperty foundResults = new SimpleBooleanProperty(false);
+	getUsers().stream().filter(user -> user != null && user.getRegisterNumber() != null && user.getRegisterNumber().equals(u.getRegisterNumber())).forEach(user -> {
+	    foundResults.set(true);
+	    user.setClassRoom(u.getClassRoom());
+	    user.setEmail(u.getEmail());
+	    user.setName(u.getName());
+	    user.setVisible(true);
+	});
+
+	if (!foundResults.get()) {
+	    add(u);
+	}
+    }
+
     public void remove(User u) {
-	users.remove(u);
-	deletedUsers.add(u);
+	u.setVisible(false);
     }
 
     public ObservableList<User> getUsers() {
@@ -111,6 +131,10 @@ public class UserRepository extends Repository<User> {
     }
 
     public boolean authenticate(String username, String password) {
+	return authenticate(username, password, true);
+    }
+
+    public boolean authenticate(String username, String password, boolean updateAuth) {
 	if (MainApp.DEVELOPMENT_MODE) {
 	    authenticatedUser.set(new User("Development Mode", "", "", User.UserType.TEACHER, ""));
 	    return true;
@@ -125,7 +149,9 @@ public class UserRepository extends Repository<User> {
 
 	if (!found.isEmpty()) {
 	    assert found.size() == 1;
-	    authenticatedUser.set(found.get(0));
+	    if (updateAuth) {
+		authenticatedUser.set(found.get(0));
+	    }
 	    return true;
 	}
 	return false;
@@ -137,6 +163,10 @@ public class UserRepository extends Repository<User> {
 		users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
 		super.triggerListeners();
+		try {
+		    PdfExporter.saveUsers();
+		} catch (IOException ex) {
+		}
 	    }
 	});
 
@@ -196,13 +226,13 @@ public class UserRepository extends Repository<User> {
 
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
-	
+
 	if (user.getId() == 0) {
 	    manager.persist(user);
 	} else {
 	    manager.merge(user);
 	}
-	
+
 	manager.getTransaction().commit();
     }
 

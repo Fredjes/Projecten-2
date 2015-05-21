@@ -34,12 +34,14 @@
                <styleClass>
                   <String fx:value="btn" />
                   <String fx:value="btn-default" />
+                  <String fx:value="icon-back" />
                </styleClass>
             </Button>
             <Button fx:id="btnNext" mnemonicParsing="false" onAction="#onNext" text="Volgende">
                <styleClass>
                   <String fx:value="btn" />
                   <String fx:value="btn-lime" />
+                  <String fx:value="icon-next" />
                </styleClass>
             </Button>
          </children>

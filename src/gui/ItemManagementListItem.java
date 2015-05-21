@@ -78,7 +78,6 @@ public class ItemManagementListItem extends AnchorPane {
 	CopyButton button = new CopyButton(copy);
 	initEvents(button, copy);
 	copyList.getChildren().add(button);
-
     }
 
     private ItemManagementListItem() {

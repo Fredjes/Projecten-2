@@ -1,5 +1,6 @@
 package gui;
 
+import gui.dialogs.PopupUtil;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -7,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
+import persistence.Repository;
 import persistence.UserRepository;
 
 /**
@@ -21,9 +23,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
 	ItemRepository.getInstance().addSyncListener(() -> {
-	    UserRepository.getInstance().addSyncListener(() -> {
-		LoanRepository.getInstance().sync();
-	    });
+	    UserRepository.getInstance().addSyncListener(LoanRepository.getInstance()::sync);
 	    UserRepository.getInstance().sync();
 	});
 
@@ -37,6 +37,11 @@ public class MainApp extends Application {
 	Scene scene = new Scene(switcher);
 	primaryStage.setScene(scene);
 	primaryStage.show();
+	primaryStage.setOnCloseRequest(evt -> {
+	    if (PopupUtil.confirm("Wijzingen opslaan", "Wilt u al de wijzigingen opslaan?")) {
+		Repository.saveAllChanges();
+	    }
+	});
 
 //	ScenicView.show(scene);
     }

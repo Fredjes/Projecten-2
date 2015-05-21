@@ -53,7 +53,6 @@ public class BookUtil {
             JsonArray items = response.getJsonArray("items");
 
             if (items != null) {
-
                 items.stream().filter(i -> i instanceof JsonObject).map(i -> (JsonObject) i).forEach(i -> {
                     JsonObject info = i.getJsonObject("volumeInfo");
                     List<String> genres = new ArrayList<>();

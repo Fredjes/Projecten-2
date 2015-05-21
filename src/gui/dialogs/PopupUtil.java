@@ -5,6 +5,7 @@ import domain.Loan;
 import domain.Searchable;
 import gui.ScreenSwitcher;
 import gui.controls.SearchTextField;
+import java.io.File;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,11 +19,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -70,7 +78,7 @@ public class PopupUtil {
 
 	PopOver popOver = new PopOver();
 	Button ok = new Button("OK");
-	ok.setAlignment(Pos.CENTER_RIGHT);
+	ok.setAlignment(Pos.BOTTOM_CENTER);
 	ok.getStyleClass().addAll("btn", "btn-lime");
 	ok.setOnAction(e -> {
 	    LoanRepository.getInstance().addSyncListener(completionCallback);
@@ -118,8 +126,8 @@ public class PopupUtil {
     public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text) {
 	return showSelectionQuestion(list, title, text, null);
     }
-    
-    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text, Callback<ListView<E>, ListCell<E>> cellFactory, double width){
+
+    public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text, Callback<ListView<E>, ListCell<E>> cellFactory, double width) {
 	FilteredList<? extends Searchable> filteredList = new FilteredList<>(list);
 	Dialog<E> dialog = new Dialog<>();
 	ButtonType selectButton = new ButtonType("Selecteren", ButtonBar.ButtonData.OK_DONE);
@@ -170,6 +178,7 @@ public class PopupUtil {
 	    }
 	});
 
+	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("Annuleren");
 	dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().addAll("btn", "btn-red");
 	dialog.getDialogPane().getStylesheets().add(PopupUtil.class.getResource("/resources/css/global.css").toExternalForm());
 	dialog.getDialogPane().setContent(box);
@@ -184,6 +193,65 @@ public class PopupUtil {
 
     public static <E extends Searchable> E showSelectionQuestion(ObservableList<E> list, String title, String text, Callback<ListView<E>, ListCell<E>> cellFactory) {
 	return showSelectionQuestion(list, title, text, cellFactory, 350);
+    }
+
+    public static boolean confirm(String title, String message) {
+	Dialog<Boolean> dialog = new Dialog<>();
+	dialog.getDialogPane().getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+	dialog.setTitle(title);
+	dialog.setContentText(message);
+	dialog.setResultConverter(bt -> bt.equals(ButtonType.YES));
+
+	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.NO)).setText("Nee");
+	dialog.getDialogPane().lookupButton(ButtonType.NO).getStyleClass().addAll("btn", "btn-red");
+
+	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.YES)).setText("Ja");
+	dialog.getDialogPane().lookupButton(ButtonType.YES).getStyleClass().addAll("btn", "btn-lime");
+	dialog.getDialogPane().setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+	dialog.getDialogPane().getStylesheets().add(PopupUtil.class.getResource("/resources/css/global.css").toExternalForm());
+
+	Optional<Boolean> answer = dialog.showAndWait();
+	if (answer.isPresent()) {
+	    return answer.get();
+	} else {
+	    return false;
+	}
+    }
+
+    public static File showDirectoryChooser(javafx.stage.Window owner, String title, File initialPath) {
+	DirectoryChooser dc = new DirectoryChooser();
+	dc.setInitialDirectory(initialPath);
+	dc.setTitle(title);
+
+	return dc.showDialog(owner);
+    }
+
+    public static String input(String title, String question) {
+	Dialog<String> dialog = new Dialog<>();
+	dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+	dialog.setTitle(title);
+
+	PasswordField field = new PasswordField();
+	VBox box = new VBox(new Label(question), field);
+	box.setPadding(new Insets(10));
+	box.setSpacing(5);
+	dialog.getDialogPane().setContent(box);
+	dialog.setResultConverter((r) -> {
+	    return field.getText();
+	});
+	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Ok");
+	dialog.getDialogPane().lookupButton(ButtonType.OK).getStyleClass().addAll("btn", "btn-lime");
+	((Labeled) dialog.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("Annuleren");
+	dialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().addAll("btn", "btn-red");
+	dialog.getDialogPane().setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+	dialog.getDialogPane().getStylesheets().add(PopupUtil.class.getResource("/resources/css/global.css").toExternalForm());
+
+	Optional<String> answer = dialog.showAndWait();
+	if (answer.isPresent()) {
+	    return answer.get();
+	} else {
+	    return "";
+	}
     }
 
     public enum Notification {

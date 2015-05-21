@@ -4,6 +4,8 @@ import domain.Book;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
+import domain.PdfExporter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +32,10 @@ public class ItemRepository extends Repository<Item> {
     private ObservableList<Item> items = FXCollections.observableArrayList();
     private ObservableList<ItemCopy> itemCopies = FXCollections.observableArrayList();
 
-    private List<Object> deletedElements = new ArrayList();
+    private List<Item> deletedElements = new ArrayList();
 
     private ItemRepository() {
+	super();
 	ListChangeListener changeListener = c -> {
 	    while (c.next()) {
 		c.getAddedSubList().forEach(i -> JPAUtil.getInstance().getEntityManager().persist(i));
@@ -55,6 +58,10 @@ public class ItemRepository extends Repository<Item> {
 		itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
 		super.triggerListeners();
+		try {
+		    PdfExporter.saveItems();
+		} catch (IOException ex) {
+		}
 	    }
 	});
 
@@ -76,12 +83,10 @@ public class ItemRepository extends Repository<Item> {
 
     @Override
     public void remove(Item item) {
-	deletedElements.add(item);
-	items.remove(item);
+	item.setVisible(false);
     }
 
     public void add(ItemCopy itemCopy) {
-
 	itemCopies.add(itemCopy);
     }
 
@@ -90,10 +95,8 @@ public class ItemRepository extends Repository<Item> {
     }
 
     public void remove(ItemCopy itemCopy, boolean removeList) {
-	if (removeList) {
-	    deletedElements.add(itemCopy);
-	}
 	itemCopies.remove(itemCopy);
+	items.stream().filter(i -> i.getItemCopies().contains(itemCopy)).forEach((Item i) -> i.getItemCopies().remove(itemCopy));
     }
 
     public ObservableList<? extends Item> getItems() {
@@ -126,15 +129,16 @@ public class ItemRepository extends Repository<Item> {
     }
 
     /**
-     * Saves every item in the internal list to the database.
+     * Only save the items that satisfy the predicate.
+     * @param itemPredicate The predicate which will be used to perform the checks
      */
-    public void saveChanges() {
+    public void saveChangesWithPredicate(Predicate<Item> itemPredicate) {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		manager.getTransaction().begin();
 
-		items.forEach(item -> {
+		getItemsByPredicate(itemPredicate).forEach(item -> {
 		    if ((item.getName() == null || item.getName().isEmpty()) && (item.getDescription() == null || item.getDescription().isEmpty()) && item.getThemes().isEmpty() && (item.getAgeCategory() == null || item.getAgeCategory().isEmpty())) {
 			return;
 		    }
@@ -144,19 +148,22 @@ public class ItemRepository extends Repository<Item> {
 		    } else {
 			manager.merge(item);
 		    }
-
-		    item.getItemCopies().forEach(i -> {
-			if (i.getId() == 0) {
-			    manager.persist(i);
-			} else {
-			    manager.merge(i);
-			}
-		    });
 		});
 
-		deletedElements.forEach((el) -> {
-		    Object o = manager.merge(el);
-		    manager.remove(o);
+		deletedElements.stream().distinct().forEach((el) -> {
+		    if (!manager.contains(el)) {
+			if (manager.find(el.getClass(), el.getId()) != null) {
+			    if (manager.contains(el)) {
+				manager.remove(el);
+			    } else {
+				try {
+				    manager.remove(manager.merge(el));
+				} catch (Exception ex) {
+				    ex.printStackTrace();
+				}
+			    }
+			}
+		    }
 		});
 
 		manager.getTransaction().commit();
@@ -166,6 +173,13 @@ public class ItemRepository extends Repository<Item> {
 
 	t.setName("DB save thread");
 	t.start();
+    }
+
+    /**
+     * Saves every item in the internal list to the database.
+     */
+    public void saveChanges() {
+	saveChangesWithPredicate(i -> true);
     }
 
     public void saveItem(Item item) {
@@ -184,7 +198,7 @@ public class ItemRepository extends Repository<Item> {
     public void saveItemCopy(ItemCopy copy) {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
 	manager.getTransaction().begin();
-	if (copy.getId() != 0 && getItemCopies().stream().anyMatch(i -> i.getId() == copy.getId())) {
+	if (copy.getId() != 0) {
 	    manager.merge(copy);
 	} else {
 	    manager.persist(copy);

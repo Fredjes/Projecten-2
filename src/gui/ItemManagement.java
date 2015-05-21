@@ -7,6 +7,7 @@ import domain.DetailViewUtil;
 import domain.DragCommand;
 import domain.Dvd;
 import domain.FilterOption;
+import domain.FontCache;
 import domain.Game;
 import domain.Item;
 import domain.SearchPredicate;
@@ -38,6 +39,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import persistence.ItemRepository;
 import persistence.UserRepository;
 
@@ -102,10 +104,20 @@ public class ItemManagement extends BorderPane {
 	Consumer<Button> buttonLayout = b -> {
 	    b.setPadding(new Insets(7, 0, 7, 15));
 	    b.setGraphicTextGap(20);
+	    b.graphicProperty().addListener((obs, ov, nv) -> {
+		if (nv != null) {
+		    ((Text) nv).setFont(FontCache.getIconFont(20));
+		}
+	    });
 	};
 
 	buttonBox.getChildren().stream().filter(n -> n instanceof Button).map(n -> (Button) n).forEach(buttonLayout);
 	buttonLayout.accept(saveButton);
+	saveButton.graphicProperty().addListener((obs, ov, nv) -> {
+	    if (nv != null) {
+		((Text) nv).setFont(FontCache.getIconFont(20));
+	    }
+	});
 
 	// Show temporary loading indicator
 	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
@@ -309,14 +321,23 @@ public class ItemManagement extends BorderPane {
     public void onRemove() {
 	if (!itemList.getSelectionModel().isEmpty()) {
 	    int selected = itemList.getSelectionModel().getSelectedIndex();
-	    ItemRepository.getInstance().remove(itemList.getSelectionModel().getSelectedItem());
-	    updateList();
+	    Item selectedItem = itemList.getSelectionModel().getSelectedItem();
 
-	    if (!itemList.getItems().isEmpty()) {
-		itemList.getSelectionModel().select(Math.max(0, selected - 1));
+	    if (selectedItem.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).anyMatch(l -> !l.getReturned())) {
+		PopupUtil.showNotification("Openstaande uitleningen", "Dit voorwerp wordt nog uitgeleend.", PopupUtil.Notification.WARNING);
+		return;
 	    }
 
-	    updateDetailView();
+	    if (PopupUtil.confirm("Voorwerp verwijderen", "Wilt u " + selectedItem.getName() + " verwijderen?")) {
+		ItemRepository.getInstance().remove(selectedItem);
+		updateList();
+
+		if (!itemList.getItems().isEmpty()) {
+		    itemList.getSelectionModel().select(Math.max(0, selected - 1));
+		}
+
+		updateDetailView();
+	    }
 	}
     }
 

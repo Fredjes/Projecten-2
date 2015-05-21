@@ -1,8 +1,11 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import javafx.beans.property.SimpleStringProperty;
@@ -59,11 +62,15 @@ public class Book extends Item implements Serializable {
 
     @Override
     public String toString() {
-	return getName() + (getAuthor().isEmpty() ? "" : " (" + getAuthor() + ")");
+	return getName() + (getAuthor() == null || getAuthor().isEmpty() ? "" : " (" + getAuthor() + ")");
     }
 
     @Override
     public boolean test(String query) {
+	if (!super.getVisible()) {
+	    return false;
+	}
+
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getAuthor(), t)
 		    || SearchPredicate.containsIgnoreCase(getPublisher(), t);
@@ -79,56 +86,49 @@ public class Book extends Item implements Serializable {
     }
 
     @Override
-    public Map<String, BiConsumer<String, Book>> createHeaderList() {
-	Map<String, BiConsumer<String, Book>> temp = super.createHeaderList();
-
-	temp.put("Auteur", new BiConsumer<String, Book>() {
-
-	    public void accept(String d, Book b) {
-		b.setAuthor(d);
-	    }
-	});
-
-	temp.put("Uitgeverij", new BiConsumer<String, Book>() {
-
-	    public void accept(String d, Book b) {
-		b.setPublisher(d);
-	    }
-	});
-
-	return temp;
+    public Importer createImporter() {
+	return new BookImporter();
     }
 
-    @Override
-    public Map<String, Predicate<String>> createHeaderAssignmentList() {
-	Map<String, Predicate<String>> map = super.createHeaderAssignmentList();
-	
-	map.put("Auteur", new Predicate<String>() {
+    private class BookImporter extends ItemImporter<Book> {
 
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "auteur", "schrijver", "maker");
-	    }
-	});
-	
-	final Predicate<String> original = map.get("Titel");
-	map.put("Titel", new Predicate<String>() {
+	private final Set<String> fieldSet = super.getFields();
 
-	    @Override
-	    public boolean test(String t) {
-		return original.test(t) || SearchPredicate.containsIgnoreCase(t, "boek");
-	    }
-	});
-	
-	map.put("Uitgeverij", new Predicate<String>() {
+	public BookImporter() {
+	    super(Book::new);
+	    fieldSet.addAll(Arrays.asList(new String[]{"Auteur", "Titel", "Uitgeverij"}));
+	}
 
-	    @Override
-	    public boolean test(String t) {
-		return SearchPredicate.containsAnyIgnoreCase(t, "uitgeverij", "bedrijf", "firma");
+	@Override
+	public Set<String> getFields() {
+	    return Collections.unmodifiableSet(fieldSet);
+	}
+
+	@Override
+	public String predictField(String columnName) {
+	    if (SearchPredicate.containsAnyIgnoreCase(columnName, "auteur", "schrijver", "maker")) {
+		return "Auteur";
+	    } else if (SearchPredicate.containsIgnoreCase(columnName, "boek")) {
+		return "Titel";
+	    } else if (SearchPredicate.containsAnyIgnoreCase(columnName, "uitgeverij", "bedrijf", "firma")) {
+		return "Uitgeverij";
+	    } else {
+		return super.predictField(columnName);
 	    }
-	});
-	
-	return map;
+	}
+
+	@Override
+	public void setField(String field, String value) {
+	    switch (field) {
+		case "Auteur":
+		    super.getCurrentEntity().setAuthor(value);
+		    return;
+		case "Uitgeverij":
+		    super.getCurrentEntity().setPublisher(value);
+		    return;
+		default:
+		    super.setField(field, value);
+	    }
+	}
     }
-
 }

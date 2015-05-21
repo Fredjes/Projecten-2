@@ -88,7 +88,7 @@ public class ExcelManager {
 	public Set<String> getHeaderList() {
 	    if (supplier != null) {
 		// Create a copy so that modification operations (add and remove) are supported
-		Set<String> setCopy = new HashSet<>(supplier.get().createHeaderList().keySet());
+		Set<String> setCopy = new HashSet<>(supplier.get().createImporter().getFields());
 		return setCopy;
 	    } else {
 		return Collections.EMPTY_SET;
@@ -130,11 +130,13 @@ public class ExcelManager {
 	try {
 	    workbook = new XSSFWorkbook(file);
 	    for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-		ExcelEntry entry = new ExcelEntry(wizard, workbook, workbook.getSheetAt(i), file.getName());
-		entry.loadMetadata();
-		addEntry(entry);
-		getExcelData(workbook.getSheetAt(i)); //so it loads data into cache
-
+		XSSFSheet sheet = workbook.getSheetAt(i);
+		if (!getColumnHeaders(sheet).isEmpty()) {
+		    ExcelEntry entry = new ExcelEntry(wizard, workbook, sheet, file.getName());
+		    entry.loadMetadata();
+		    addEntry(entry);
+		    getExcelData(workbook.getSheetAt(i)); //so it loads data into cache
+		}
 	    }
 	} catch (IOException | InvalidFormatException ex) {
 	    ex.printStackTrace();
@@ -181,6 +183,11 @@ public class ExcelManager {
 	}
 
 	Row columnHeader = getFirstNonEmptyRow(sheet);
+
+	if (columnHeader == null) {
+	    return new ArrayList<>();
+	}
+
 	Iterator<Cell> iterator = columnHeader.cellIterator();
 	for (int i = 0; i < columnHeader.getFirstCellNum(); i++) {
 	    iterator.next();
@@ -236,7 +243,8 @@ public class ExcelManager {
 
 		switch (c.getCellType()) {
 		    case Cell.CELL_TYPE_STRING:
-			data.setData(column - first, c.getStringCellValue());
+			// Do not touch! Unicode chars being replaced
+			data.setData(column - first, c.getStringCellValue().replaceAll("–", "-").replaceAll("…", "..."));
 			break;
 		    case Cell.CELL_TYPE_NUMERIC:
 			data.setData(column - first, String.valueOf(c.getNumericCellValue()));
@@ -250,7 +258,7 @@ public class ExcelManager {
 	excelDataPerSheet.put(sheet, out);
 	return out;
     }
-
+    
     public XSSFSheet getSheetById(int id) {
 	if (id >= entries.size() || id < 0) {
 	    return null;

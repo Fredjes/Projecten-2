@@ -7,8 +7,10 @@ import gui.FXUtil;
 import gui.dialogs.PopupUtil;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -61,7 +63,7 @@ public class AdvancedLoanSettings extends GridPane {
 
     @FXML
     public void onChangeUser() {
-	User user = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsers(), "Gebruiker selecteren", "Wie leent het voorwerp uit?");
+	User user = PopupUtil.showSelectionQuestion(UserRepository.getInstance().getUsersByPredicate(User::getVisible), "Gebruiker selecteren", "Wie leent het voorwerp uit?");
 	if (user != null) {
 	    loan.setUser(user);
 	    updateDb(() -> PopupUtil.showNotification("Veranderd", "Gebruiker veranderd naar " + user + "."));
@@ -70,8 +72,21 @@ public class AdvancedLoanSettings extends GridPane {
 
     @FXML
     public void onChangeItemCopy() {
-	ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(ItemRepository.getInstance().getItemCopies().stream().filter(ic -> !ic.getLoans().stream().anyMatch(l -> !l.getReturned())).collect(Collectors.toList())), "Exemplaar selecteren", "Welk exemplaar wordt uigeleend?");
-	//ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(ItemRepository.getInstance().getItemCopies()), "Exemplaar selecteren", "Welk exemplaar wordt uigeleend?");
+	List<ItemCopy> itemCopyLast = new ArrayList<>();
+	List<ItemCopy> itemCopies = ItemRepository.getInstance().getItemCopies().stream().filter(ic -> !ic.getLoans().stream().anyMatch(l -> !l.getReturned())).distinct().collect(Collectors.toList());
+	itemCopies.stream().forEach(i -> {
+	    if (itemCopyLast.stream().noneMatch(ic -> ic.getCopyNumber().equals(i.getCopyNumber()))) {
+		itemCopyLast.add(i);
+	    }
+	});
+
+	LoanRepository.getInstance().getLoans().stream().forEach(l -> {
+	    if (!l.getReturned()) {
+		itemCopyLast.removeIf(ic -> ic.getCopyNumber().equals(l.getItemCopy().getCopyNumber()));
+	    }
+	});
+
+	ItemCopy copy = PopupUtil.showSelectionQuestion(FXCollections.observableArrayList(itemCopyLast), "Exemplaar selecteren", "Welk exemplaar wordt uitgeleend?");
 
 	if (copy != null) {
 	    loan.getItemCopy().getLoans().remove(loan);

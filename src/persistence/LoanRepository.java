@@ -1,6 +1,7 @@
 package persistence;
 
 import domain.Loan;
+import domain.PdfExporter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,6 +20,10 @@ public class LoanRepository extends Repository<Loan> {
     private List<Loan> removedLoans = new ArrayList<>();
 
     private static LoanRepository repositoryInstance;
+
+    private LoanRepository() {
+	super();
+    }
 
     public static LoanRepository getInstance() {
 	if (repositoryInstance == null) {
@@ -46,6 +51,8 @@ public class LoanRepository extends Repository<Loan> {
 		loans.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Loan.findAll", Loan.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized loan repository with database");
 		super.triggerListeners();
+		PdfExporter.saveLoans();
+		PdfExporter.saveLoanHistory();
 	    }
 	});
 
@@ -85,6 +92,9 @@ public class LoanRepository extends Repository<Loan> {
 		    ex.printStackTrace();
 		    manager.getTransaction().rollback();
 		}
+
+		PdfExporter.saveLoans();
+		PdfExporter.saveLoanHistory();
 	    }
 	});
 
@@ -106,6 +116,8 @@ public class LoanRepository extends Repository<Loan> {
 
 		manager.getTransaction().commit();
 		super.triggerListeners();
+		PdfExporter.saveLoans();
+		PdfExporter.saveLoanHistory();
 	    }
 	});
 
