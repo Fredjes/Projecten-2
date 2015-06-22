@@ -23,7 +23,7 @@ public class UserRepositoryTest {
     @Test
     public void testSaveChangesPersistsUser() {
 	User u = new User();
-	u.setName("test");
+	u.setFirstName("test");
 	u.setPasswordHash(UserRepository.getInstance().generatePasswordHash("password"));
 	u.setUserType(User.UserType.TEACHER);
 	u.setEmail("bla@bla.com");

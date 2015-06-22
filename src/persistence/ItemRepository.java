@@ -5,6 +5,7 @@ import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
 import domain.PdfExporter;
+import domain.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  * The repository used to handle the storing of items, can synchronize save
@@ -54,8 +56,18 @@ public class ItemRepository extends Repository<Item> {
     public void sync() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
-		items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
-		itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
+		EntityManager manager = JPAUtil.getInstance().getEntityManager();
+		long count = (long) manager.createQuery("SELECT COUNT(i) FROM Item i").getSingleResult();
+		items.clear();
+		for (int i = 0; i < count; i += Repository.SYNC_BULK_STEP_COUNT) {
+		    int size = (int) Math.min(Repository.SYNC_BULK_STEP_COUNT, count - i);
+		    TypedQuery<Item> query = manager.createNamedQuery("Item.findAll", Item.class);
+		    query.setMaxResults(size);
+		    query.setFirstResult(i);
+		    items.addAll(query.getResultList());
+		}
+//		items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
+//		itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
 		super.triggerListeners();
 		try {
@@ -130,7 +142,9 @@ public class ItemRepository extends Repository<Item> {
 
     /**
      * Only save the items that satisfy the predicate.
-     * @param itemPredicate The predicate which will be used to perform the checks
+     *
+     * @param itemPredicate The predicate which will be used to perform the
+     * checks
      */
     public void saveChangesWithPredicate(Predicate<Item> itemPredicate) {
 	Thread t = new Thread(() -> {

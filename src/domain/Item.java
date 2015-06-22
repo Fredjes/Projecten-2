@@ -18,10 +18,12 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -156,6 +158,7 @@ public abstract class Item implements Serializable, Searchable, Importable {
     }
 
     @Lob
+    @Basic(fetch = FetchType.LAZY, optional = true)
     public byte[] getImage() {
 	if (image.get() == null) {
 	    return new byte[0];

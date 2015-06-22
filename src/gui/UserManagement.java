@@ -58,9 +58,9 @@ public class UserManagement extends BorderPane {
 	user.setVisible(true);
 	UserRepository.getInstance().saveUser(user);
 	searchBar.setText("");
-	user.setName(" ");
+	user.setFirstName(" ");
 	onSearchQuery();
-	user.setName("");
+	user.setFirstName("");
 	userList.getSelectionModel().select(user);
     }
 

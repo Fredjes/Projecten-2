@@ -18,7 +18,12 @@
                         <Label text="Naam:" />
                         <Label text="Klas:" GridPane.rowIndex="1" />
                         <Label text="Email:" GridPane.rowIndex="2" />
-                        <TextField fx:id="name" GridPane.columnIndex="1" />
+                        <HBox spacing="2.0" GridPane.columnIndex="1">
+                           <children>
+                              <TextField fx:id="firstName" promptText="Voornaam" />
+                              <TextField fx:id="lastName" promptText="Achternaam" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="classRoom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
@@ -42,7 +47,7 @@
                         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" prefWidth="131.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" />
                         <ColumnConstraints hgrow="SOMETIMES" />
                      </columnConstraints>
                      <rowConstraints>

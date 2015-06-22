@@ -21,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
+import javax.persistence.TypedQuery;
 
 /**
  * Repository used to manage {@link User}s.
@@ -62,7 +63,8 @@ public class UserRepository extends Repository<User> {
 	    foundResults.set(true);
 	    user.setClassRoom(u.getClassRoom());
 	    user.setEmail(u.getEmail());
-	    user.setName(u.getName());
+	    user.setFirstName(u.getFirstName());
+	    user.setLastName(u.getLastName());
 	    user.setVisible(true);
 	});
 
@@ -138,13 +140,13 @@ public class UserRepository extends Repository<User> {
 
     public boolean authenticate(String username, String password, boolean updateAuth) {
 	if (MainApp.DEVELOPMENT_MODE) {
-	    authenticatedUser.set(new User("Development Mode", "", "", User.UserType.TEACHER, ""));
+	    authenticatedUser.set(new User("Development Mode", "", "", "", User.UserType.TEACHER, ""));
 	    return true;
 	}
 
 	if (username.equals("@") && password.equals(MainApp.ADMIN_PASSWORD)) {
 	    ScreenSwitcher.LOCAL_ADMIN = true;
-	    authenticatedUser.set(new User("@", "", "", User.UserType.TEACHER, ""));
+	    authenticatedUser.set(new User("@", "", "", "", User.UserType.TEACHER, ""));
 	    return true;
 	}
 
@@ -168,7 +170,17 @@ public class UserRepository extends Repository<User> {
     public void sync() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
-		users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
+		EntityManager manager = JPAUtil.getInstance().getEntityManager();
+		long count = (long) manager.createQuery("SELECT COUNT(u) FROM User u").getSingleResult();
+		users.clear();
+		for (int i = 0; i < count; i += Repository.SYNC_BULK_STEP_COUNT) {
+		    int size = (int) Math.min(Repository.SYNC_BULK_STEP_COUNT, count - i);
+		    TypedQuery<User> query = manager.createNamedQuery("User.findAll", User.class);
+		    query.setMaxResults(size);
+		    query.setFirstResult(i);
+		    users.addAll(query.getResultList());
+		}
+//		users.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("User.findAll", User.class).getResultList());
 		users.stream().filter(u -> u.getName() == null || u.getName().isEmpty() || u.getName().equals("null")).forEach(this::remove);
 		saveChangesAfterSync();
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized user repository with database");
@@ -281,9 +293,9 @@ public class UserRepository extends Repository<User> {
     }
 
     public static void main(String[] args) {
-	User frederik = new User("Frederik De Smedt", "2A", "frederik.de.smedt@hotmail.com", User.UserType.TEACHER, getInstance().generatePasswordHash("frederik"));
-	User brent = new User("Brent Couck", "2A", "bla@bla.com", User.UserType.VOLUNTEER, getInstance().generatePasswordHash("brent"));
-	User pieterjan = new User("Pieter-Jan Geeroms", "2A", "pieterjangeeroms@hotmail.com", User.UserType.STUDENT, getInstance().generatePasswordHash("pj"));
+	User frederik = new User("Frederik", "De Smedt", "2A", "frederik.de.smedt@hotmail.com", User.UserType.TEACHER, getInstance().generatePasswordHash("frederik"));
+	User brent = new User("Brent", "Couck", "2A", "bla@bla.com", User.UserType.VOLUNTEER, getInstance().generatePasswordHash("brent"));
+	User pieterjan = new User("Pieter-Jan", "Geeroms", "2A", "pieterjangeeroms@hotmail.com", User.UserType.STUDENT, getInstance().generatePasswordHash("pj"));
 	getInstance().getUsers().addAll(frederik, brent, pieterjan);
 	getInstance().saveChanges();
     }

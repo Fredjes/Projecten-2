@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,6 +28,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import persistence.UserRepository;
 
 @Entity
@@ -38,14 +41,14 @@ public class User implements Serializable, Searchable, Importable {
 
     private int id;
 
-    private final StringProperty name = new SimpleStringProperty();
+    private final StringProperty firstName = new SimpleStringProperty("");
+    private final StringProperty lastName = new SimpleStringProperty("");
     private final StringProperty classRoom = new SimpleStringProperty();
     private final StringProperty email = new SimpleStringProperty();
     private final StringProperty registerNumber = new SimpleStringProperty();
     private final ObjectProperty<UserType> userType = new SimpleObjectProperty<>();
     private final ObservableList<Loan> loans = FXCollections.observableArrayList();
     private final BooleanProperty visible = new SimpleBooleanProperty();
-    private final StringProperty lastName = new SimpleStringProperty();
     private final StringProperty address = new SimpleStringProperty();
     private String passwordHash;
 
@@ -72,8 +75,9 @@ public class User implements Serializable, Searchable, Importable {
 	this.setUserType(userType);
     }
 
-    public User(String name, String classroom, String email, UserType userType, String passwordHash) {
-	this.name.set(name);
+    public User(String firstName, String lastName, String classroom, String email, UserType userType, String passwordHash) {
+	this.firstName.set(firstName);
+	this.lastName.set(lastName);
 	this.classRoom.set(classroom);
 	this.email.set(email);
 	this.userType.set(userType);
@@ -106,12 +110,12 @@ public class User implements Serializable, Searchable, Importable {
     public void setPasswordHash(String passwordHash) {
 	this.passwordHash = passwordHash;
     }
-    
-    public String getAddress(){
+
+    public String getAddress() {
 	return this.address.get();
     }
-    
-    public void setAddress(String address){
+
+    public void setAddress(String address) {
 	this.address.set(address);
     }
 
@@ -123,12 +127,21 @@ public class User implements Serializable, Searchable, Importable {
 	this.userType.set(userType);
     }
 
+    @Transient
     public String getName() {
-	return name.get() + (lastName.get() == null ? "" : " " + lastName.get());
+	return firstName.get() + " " + lastName.get();
     }
 
-    public void setName(String name) {
-	this.name.set(name);
+    public String getFirstName() {
+	return firstName.get();
+    }
+
+    public void setFirstName(String name) {
+	this.firstName.set(name);
+    }
+
+    public String getLastName() {
+	return lastName.get();
     }
 
     public void setLastName(String name) {
@@ -175,12 +188,20 @@ public class User implements Serializable, Searchable, Importable {
     /*
      * Property
      */
-    public StringProperty nameProperty() {
-	return name;
+    public StringProperty firstNameProperty() {
+	return firstName;
+    }
+
+    public StringProperty addressProperty() {
+	return address;
     }
     
-    public StringProperty addressProperty(){
-	return address;
+    public StringProperty lastNameProperty() {
+	return lastName;
+    }
+    
+    public StringExpression nameProperty(){
+	return Bindings.concat(firstName, " ", lastName);
     }
 
     public StringProperty classRoomProperty() {
@@ -258,7 +279,7 @@ public class User implements Serializable, Searchable, Importable {
     private class UserImporter implements Importer {
 
 	private final Set<String> fieldSet = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new String[]{
-	    "", "Klas", "E-mail", "Voornaam/Naam", "Achternaam", "Wachtwoord", "Stamboeknummer", "Adres"
+	    "", "Klas", "E-mail", "Voornaam", "Achternaam", "Wachtwoord", "Stamboeknummer", "Adres"
 	})));
 
 	private List<String> headerList = new ArrayList<>();
@@ -286,20 +307,20 @@ public class User implements Serializable, Searchable, Importable {
 	    } else if (SearchPredicate.containsIgnoreCase(t, "mail")) {
 		return "E-mail";
 	    } else if (SearchPredicate.containsIgnoreCase(t, "voornaam")) {
-		return "Voornaam/Naam";
+		return "Voornaam";
 	    } else if (SearchPredicate.containsIgnoreCase(t, "achternaam")) {
 		return "Achternaam";
 	    } else if (SearchPredicate.containsIgnoreCase(t, "naam")) {
 		if (headerList.stream().anyMatch(v -> SearchPredicate.containsIgnoreCase(v, "voornaam"))) {
 		    return "Achternaam";
 		} else {
-		    return "Voornaam/Naam";
+		    return "Voornaam";
 		}
 	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "wachtwoord", "paswoord", "passwoord", "password")) {
 		return "Wachtwoord";
 	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "stamboeknummer", "register", "id", "nummer")) {
 		return "Stamboeknummer";
-	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "adres", "locatie")){
+	    } else if (SearchPredicate.containsAnyIgnoreCase(t, "adres", "locatie")) {
 		return "Adres";
 	    } else {
 		return "";
@@ -315,8 +336,8 @@ public class User implements Serializable, Searchable, Importable {
 		case "E-mail":
 		    getCurrentEntity().setEmail(value);
 		    break;
-		case "Voornaam/Naam":
-		    getCurrentEntity().setName(value);
+		case "Voornaam":
+		    getCurrentEntity().setFirstName(value);
 		    break;
 		case "Achternaam":
 		    getCurrentEntity().setLastName(value);

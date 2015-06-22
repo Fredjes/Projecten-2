@@ -17,6 +17,8 @@ public abstract class Repository<E> {
 
     private List<Runnable> listeners = new ArrayList<>();
     private static List<Repository> repositories = new ArrayList<>();
+    
+    public static int SYNC_BULK_STEP_COUNT = 5;
 
     public Repository() {
 	submitRepository(this);

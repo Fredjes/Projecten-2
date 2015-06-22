@@ -17,7 +17,10 @@ import javafx.scene.control.TextField;
 public class DetailViewUser extends TabPane {
 
     @FXML
-    private TextField name;
+    private TextField firstName;
+    
+    @FXML
+    private TextField lastName;
 
     @FXML
     private TextField classRoom;
@@ -54,19 +57,21 @@ public class DetailViewUser extends TabPane {
 	InvalidationListener userTypeChangeListener = o -> userType.getSelectionModel().select(boundUser.getUserType());
 
 	if (boundUser != null) {
-	    Bindings.unbindBidirectional(name.textProperty(), boundUser.nameProperty());
+	    Bindings.unbindBidirectional(firstName.textProperty(), boundUser.firstNameProperty());
+	    Bindings.unbindBidirectional(lastName.textProperty(), boundUser.lastNameProperty());
 	    Bindings.unbindBidirectional(email.textProperty(), boundUser.emailProperty());
 	    Bindings.unbindBidirectional(classRoom.textProperty(), boundUser.classRoomProperty());
 	    Bindings.unbindBidirectional(registerNumber.textProperty(), boundUser.registerNumberProperty());
 	    Bindings.unbindBidirectional(userAddress.textProperty(), boundUser.addressProperty());
-	    boundUser.userTypeProperty().removeListener(userTypeChangeListener);;
+	    boundUser.userTypeProperty().removeListener(userTypeChangeListener);
 	    boundUser.userTypeProperty().unbind();
 	}
 
 	boundUser = user;
 
 	if (user != null) {
-	    Bindings.bindBidirectional(name.textProperty(), user.nameProperty());
+	    Bindings.bindBidirectional(firstName.textProperty(), user.firstNameProperty());
+	    Bindings.bindBidirectional(lastName.textProperty(), user.lastNameProperty());
 	    Bindings.bindBidirectional(email.textProperty(), user.emailProperty());
 	    Bindings.bindBidirectional(classRoom.textProperty(), user.classRoomProperty());
 	    Bindings.bindBidirectional(registerNumber.textProperty(), user.registerNumberProperty());

@@ -15,7 +15,7 @@ public class UserManagementListItem extends HBox {
 
     @FXML
     private Text name;
-
+    
     @FXML
     private Text classroom;
 
@@ -26,7 +26,7 @@ public class UserManagementListItem extends HBox {
 
     public UserManagementListItem(User user) {
 	FXUtil.loadFXML(this, "listview_user");
-	name.textProperty().bindBidirectional(user.nameProperty());
+	name.textProperty().bind(user.nameProperty());
 	classroom.textProperty().bind(user.classRoomProperty());
 	email.textProperty().bind(user.emailProperty());
 	this.user = user;
