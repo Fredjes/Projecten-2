@@ -37,7 +37,7 @@ public class PdfExporter {
     private static final int X_OFFSET = 50;
     private static final int Y_OFFSET = 50;
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-    private static final String DIRECTORY = SettingsManager.instance.getString("pdfPath");
+    private static final String DIRECTORY = SettingsManager.INSTANCE.getString("pdfPath");
 
     static {
 	if (!Files.exists(Paths.get(DIRECTORY))) {

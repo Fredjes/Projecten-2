@@ -1,12 +1,19 @@
 package gui.controls;
 
+import domain.Book;
+import domain.Cd;
 import domain.Damage;
+import domain.Dvd;
+import domain.Game;
 import domain.ItemCopy;
 import domain.Loan;
+import domain.Setting;
+import domain.StoryBag;
 import domain.User;
 import gui.FXUtil;
 import gui.LoanEvent;
 import gui.dialogs.PopupUtil;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -20,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import persistence.LoanRepository;
+import persistence.SettingsManager;
 import persistence.UserRepository;
 
 /**
@@ -105,20 +113,30 @@ public class CopyPopOver extends BorderPane {
 	    return;
 	}
 
-	Loan loan = new Loan(backedCopy, selectedUser);
+	SettingsManager sm = SettingsManager.INSTANCE;
 
-	LoanRepository.getInstance().add(loan);
-	LoanRepository.getInstance().saveChanges();
-	backedCopy.getLoans().add(loan);
-	loan.getUser().getLoans().add(loan);
-	loan.getItemCopy().getLoans().add(loan);
+	if (backedCopy.getItem() instanceof Book && selectedUser.getLoans().stream().filter(l -> l.getItemCopy().getItem() instanceof Book).count() >= sm.getSettingValue(Setting.SettingType.LOAN_COUNT_BOOK)) {
+	    Platform.runLater(() -> PopupUtil.showNotification("Uitlening", selectedUser.getName() + " mag niet meer dan  " + sm.getSettingValue(Setting.SettingType.LOAN_COUNT_BOOK) + " boeken uitlenen.", PopupUtil.Notification.WARNING));
+	} else if ((backedCopy.getItem() instanceof Cd || backedCopy.getItem() instanceof Dvd) && selectedUser.getLoans().stream().filter(l -> l.getItemCopy().getItem() instanceof Cd || l.getItemCopy().getItem() instanceof Dvd).count() >= sm.getSettingValue(Setting.SettingType.LOAN_COUNT_CD_DVD)) {
+	    Platform.runLater(() -> PopupUtil.showNotification("Uitlening", selectedUser.getName() + " mag niet meer dan  " + sm.getSettingValue(Setting.SettingType.LOAN_COUNT_CD_DVD) + " cd's en dvd's uitlenen.", PopupUtil.Notification.WARNING));
+	} else if (backedCopy.getItem() instanceof Game && selectedUser.getLoans().stream().filter(l -> l.getItemCopy().getItem() instanceof Game).count() >= sm.getSettingValue(Setting.SettingType.LOAN_COUNT_GAME)) {
+	    Platform.runLater(() -> PopupUtil.showNotification("Uitlening", selectedUser.getName() + " mag niet meer dan  " + sm.getSettingValue(Setting.SettingType.LOAN_COUNT_GAME) + " spelletjes uitlenen.", PopupUtil.Notification.WARNING));
+	} else if (backedCopy.getItem() instanceof StoryBag && selectedUser.getLoans().stream().filter(l -> l.getItemCopy().getItem() instanceof StoryBag).count() >= sm.getSettingValue(Setting.SettingType.LOAN_COUNT_STORYBAG)) {
+	    Platform.runLater(() -> PopupUtil.showNotification("Uitlening", selectedUser.getName() + " mag niet meer dan  " + sm.getSettingValue(Setting.SettingType.LOAN_COUNT_STORYBAG) + " verteltassen uitlenen.", PopupUtil.Notification.WARNING));
+	} else {
+	    Loan loan = new Loan(backedCopy, selectedUser, sm.getSettingValue(Setting.SettingType.DAY_COUNT_LOAN));
 
-	if (onStartLoan != null) {
-	    LoanEvent evt = new LoanEvent(loan);
-	    onStartLoan.handle(evt);
+	    selectedUser.getLoans().add(loan);
+	    backedCopy.getLoans().add(loan);
+	    LoanRepository.getInstance().saveLoan(loan);
+
+	    if (onStartLoan != null) {
+		LoanEvent evt = new LoanEvent(loan);
+		onStartLoan.handle(evt);
+	    }
+
+	    PopupUtil.showNotification("Uitlening", String.format("%s, %s is uitgeleend aan %s.", backedCopy.getItem().getName(), backedCopy.getCopyNumber(), selectedUser.getName()));
 	}
-
-	PopupUtil.showNotification("Uitlening", String.format("%s, %s is uitgeleend aan %s.", backedCopy.getItem().getName(), backedCopy.getCopyNumber(), selectedUser.getName()));
     }
 
     public void setOnDelete(EventHandler<LoanEvent> handler) {

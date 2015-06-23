@@ -55,7 +55,7 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 		    }
 		} else {
 		    Platform.runLater(() -> {
-			if (listItem.getItem() == null || listItem.getItem().getVisible()) {
+			if (listItem != null && listItem.getItem() != null && listItem.getItem().getVisible()) {
 			    super.setGraphic(listItem);
 			} else {
 			    listItem = null;

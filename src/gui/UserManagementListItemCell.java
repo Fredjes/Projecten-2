@@ -60,7 +60,7 @@ public class UserManagementListItemCell extends ListCell<User> {
 		    }
 		} else {
 		    Platform.runLater(() -> {
-			if (listItem.getUser() != null && listItem.getUser().getVisible()) {
+			if (listItem != null && listItem.getUser() != null && listItem.getUser().getVisible()) {
 			    super.setGraphic(listItem);
 			} else {
 			    super.setGraphic(null);

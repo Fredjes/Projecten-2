@@ -1,11 +1,17 @@
 package persistence;
 
+import domain.Setting;
+import domain.Setting.SettingType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import javax.persistence.EntityManager;
 
 /**
  * Manager used to load and write settings.
@@ -14,9 +20,10 @@ import java.util.Properties;
  */
 public enum SettingsManager {
 
-    instance;
+    INSTANCE;
 
     private Properties properties = new Properties();
+    private Set<Setting> settings = new HashSet<>();
 
     private SettingsManager() {
 	try {
@@ -46,11 +53,47 @@ public enum SettingsManager {
 
     public boolean save() {
 	try {
+	    saveSettingsToDb();
 	    properties.store(new BrabbledFileOutputStream("config.dat"), "");
 	} catch (IOException ex) {
 	    return false;
 	}
 	return true;
+    }
+
+    public void setSetting(SettingType type, String value) {
+	ensureLoadedSettings();
+	
+	try {
+	    int intValue = Integer.parseInt(value);
+	    settings.stream().filter(s -> s.getKey() == type).forEach(s -> s.setValue(intValue));
+	} catch (NumberFormatException ex) {
+	    int intValue = type.getDefaultValue();
+	    settings.stream().filter(s -> s.getKey() == type).forEach(s -> s.setValue(intValue));
+	}
+    }
+    
+    private void ensureLoadedSettings() {
+	if (settings.isEmpty()) {
+	    List<Setting> settingsList = JPAUtil.getInstance().getEntityManager().createNamedQuery("Setting.findAll", Setting.class).getResultList();
+	    settingsList.forEach(settings::add);
+	}
+    }
+
+    private void saveSettingsToDb() {
+	EntityManager manager = JPAUtil.getInstance().getEntityManager();
+	manager.getTransaction().begin();
+	List<Setting> dbSettings = JPAUtil.getInstance().getEntityManager().createNamedQuery("Setting.findAll", Setting.class).getResultList();
+	settings.stream().filter(dbSettings::contains).forEach(manager::merge);
+	settings.stream().filter(s -> !dbSettings.contains(s)).forEach(manager::persist);
+	manager.getTransaction().commit();
+    }
+
+    public int getSettingValue(SettingType type) {
+	ensureLoadedSettings();
+	Setting setting = settings.stream().filter(s -> s.getKey() == type).findAny().orElse(new Setting(type, type.getDefaultValue()));
+	settings.add(setting);
+	return setting.getValue();
     }
 
     private class BrabbledFileInputStream extends FileInputStream {

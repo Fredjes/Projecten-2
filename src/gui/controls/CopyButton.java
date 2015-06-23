@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
+import persistence.ItemRepository;
 
 /**
  * A button that holds the {@link domain.Item} icon and {@link ItemCopy} number.
@@ -89,6 +90,7 @@ public class CopyButton extends HBox implements Comparator<CopyButton> {
     }
 
     public void showDetails() {
+	ItemRepository.getInstance().saveItemCopy(copy);
 	popOverContent.update();
 	popOver = PopupUtil.showPopOver(this, popOverContent);
     }

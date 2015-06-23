@@ -43,9 +43,9 @@ public class JPAUtil {
 	if (entityManagerFactory == null) {
 	    try {
 		Map<String, String> map = new HashMap<>();
-		map.put("javax.persistence.jdbc.url", "jdbc:mysql://" + SettingsManager.instance.getString("host") + ":" + SettingsManager.instance.getString("port") + "/" + SettingsManager.instance.getString("schema") + "?zeroDateTimeBehavior=convertToNull");
-		map.put("javax.persistence.jdbc.user", SettingsManager.instance.getString("username"));
-		map.put("javax.persistence.jdbc.password", SettingsManager.instance.getString("password"));
+		map.put("javax.persistence.jdbc.url", "jdbc:mysql://" + SettingsManager.INSTANCE.getString("host") + ":" + SettingsManager.INSTANCE.getString("port") + "/" + SettingsManager.INSTANCE.getString("schema") + "?zeroDateTimeBehavior=convertToNull");
+		map.put("javax.persistence.jdbc.user", SettingsManager.INSTANCE.getString("username"));
+		map.put("javax.persistence.jdbc.password", SettingsManager.INSTANCE.getString("password"));
 
 		entityManagerFactory = Persistence.createEntityManagerFactory("Projecten_2PU", map);
 	    } catch (Exception e) {

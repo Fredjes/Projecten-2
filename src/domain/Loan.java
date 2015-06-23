@@ -3,8 +3,10 @@ package domain;
 import java.io.Serializable;
 import java.util.Calendar;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -38,16 +40,17 @@ public class Loan implements Serializable, Searchable {
     private final ObjectProperty<Calendar> startDate = new SimpleObjectProperty<>();
     private final ObjectProperty<Calendar> date = new SimpleObjectProperty<>();
     private final BooleanProperty returned = new SimpleBooleanProperty(false);
+    private final IntegerProperty amountOfExtensions = new SimpleIntegerProperty(0);
 
     public Loan() {
     }
 
-    public Loan(ItemCopy copy, User user) {
+    public Loan(ItemCopy copy, User user, int days) {
 	this.itemCopy.set(copy);
 	this.user.set(user);
 	startDate.set(Calendar.getInstance());
 	date.set(Calendar.getInstance());
-	date.get().add(Calendar.WEEK_OF_MONTH, 1);
+	date.get().add(Calendar.DAY_OF_YEAR, days);
     }
 
     public boolean getReturned() {
@@ -62,7 +65,19 @@ public class Loan implements Serializable, Searchable {
 	return this.returned;
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    public int getAmountOfExtensions() {
+	return amountOfExtensions.get();
+    }
+
+    public void setAmountOfExtensions(int count) {
+	amountOfExtensions.set(count);
+    }
+
+    public IntegerProperty amountOfExtensions() {
+	return amountOfExtensions;
+    }
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     public ItemCopy getItemCopy() {
 	return itemCopy.get();
     }

@@ -8,10 +8,10 @@
     <class>domain.Cd</class>
     <class>domain.Dvd</class>
     <class>domain.User</class>
-    <class>domain.Loan</class>
     <class>domain.Book</class>
     <class>domain.Game</class>
-    <class>domain.Change</class>
+    <class>domain.Loan</class>
+    <class>domain.Setting</class>
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/krekelschool?zeroDateTimeBehavior=convertToNull"/>

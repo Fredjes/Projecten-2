@@ -1,10 +1,10 @@
 package gui;
 
 import domain.Loan;
+import domain.Setting.SettingType;
 import domain.User;
 import gui.dialogs.PopupUtil;
 import java.io.File;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
@@ -27,22 +27,52 @@ public class Settings extends ScrollPane {
     }
 
     @FXML
+    private TextField dayCountLoan;
+
+    @FXML
     private TextField txtHost;
 
     @FXML
-    private TextField txtPort;
+    private TextField loanExtensionCountStoryBag;
 
     @FXML
-    private TextField txtSchema;
-
-    @FXML
-    private TextField txtGebruikersnaam;
+    private TextField loanExtensionCountCdDvd;
 
     @FXML
     private PasswordField txtWachtwoord;
 
     @FXML
+    private TextField loanExtensionCountGame;
+
+    @FXML
+    private TextField dayCountLoanExtension;
+
+    @FXML
+    private TextField txtPort;
+
+    @FXML
+    private TextField loanCountGame;
+
+    @FXML
+    private TextField loanExtensionCountBook;
+
+    @FXML
+    private TextField loanCountCdDvd;
+
+    @FXML
+    private TextField loanCountBook;
+
+    @FXML
+    private TextField txtSchema;
+
+    @FXML
+    private TextField loanCountStoryBag;
+
+    @FXML
     private TextField txtPdfPath;
+
+    @FXML
+    private TextField txtGebruikersnaam;
 
     @FXML
     void onDeleteItems() {
@@ -60,7 +90,7 @@ public class Settings extends ScrollPane {
 
     @FXML
     void onPdfPathSearch() {
-	File pdfPath = new File(SettingsManager.instance.getString("pdfPath"));
+	File pdfPath = new File(SettingsManager.INSTANCE.getString("pdfPath"));
 
 	if (!pdfPath.exists()) {
 	    pdfPath = new File(System.getProperty("user.home"));
@@ -74,7 +104,7 @@ public class Settings extends ScrollPane {
     @FXML
     void onSave() {
 	updateValues();
-	if (SettingsManager.instance.save()) {
+	if (SettingsManager.INSTANCE.save()) {
 	    PopupUtil.showNotification("Configuratie", "Configuratie opgeslagen. Gelieve te herstarten!", PopupUtil.Notification.INFORMATION, Duration.seconds(15));
 	} else {
 	    PopupUtil.showNotification("Configuratie", "Configuratie niet opgeslagen!", PopupUtil.Notification.ERROR, Duration.seconds(15));
@@ -82,20 +112,40 @@ public class Settings extends ScrollPane {
     }
 
     public void updateValues() {
-	SettingsManager.instance.setString("host", txtHost.getText());
-	SettingsManager.instance.setString("port", txtPort.getText());
-	SettingsManager.instance.setString("schema", txtSchema.getText());
-	SettingsManager.instance.setString("username", txtGebruikersnaam.getText());
-	SettingsManager.instance.setString("password", txtWachtwoord.getText());
-	SettingsManager.instance.setString("pdfPath", txtPdfPath.getText());
+	SettingsManager.INSTANCE.setString("host", txtHost.getText());
+	SettingsManager.INSTANCE.setString("port", txtPort.getText());
+	SettingsManager.INSTANCE.setString("schema", txtSchema.getText());
+	SettingsManager.INSTANCE.setString("username", txtGebruikersnaam.getText());
+	SettingsManager.INSTANCE.setString("password", txtWachtwoord.getText());
+	SettingsManager.INSTANCE.setString("pdfPath", txtPdfPath.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.DAY_COUNT_LOAN, dayCountLoan.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.DAY_COUNT_LOAN_EXTENSION, dayCountLoanExtension.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.EXTENSION_COUNT_BOOK, loanExtensionCountBook.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.EXTENSION_COUNT_CD_DVD, loanExtensionCountCdDvd.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.EXTENSION_COUNT_GAME, loanExtensionCountGame.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.EXTENSION_COUNT_STORYBAG, loanExtensionCountStoryBag.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.LOAN_COUNT_BOOK, loanCountBook.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.LOAN_COUNT_CD_DVD, loanCountCdDvd.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.LOAN_COUNT_GAME, loanCountGame.getText());
+	SettingsManager.INSTANCE.setSetting(SettingType.LOAN_COUNT_STORYBAG, loanCountStoryBag.getText());
     }
 
     public void updateGui() {
-	txtHost.setText(SettingsManager.instance.getString("host"));
-	txtPort.setText(SettingsManager.instance.getString("port"));
-	txtSchema.setText(SettingsManager.instance.getString("schema"));
-	txtGebruikersnaam.setText(SettingsManager.instance.getString("username"));
-	txtWachtwoord.setText(SettingsManager.instance.getString("password"));
-	txtPdfPath.setText(SettingsManager.instance.getString("pdfPath"));
+	txtHost.setText(SettingsManager.INSTANCE.getString("host"));
+	txtPort.setText(SettingsManager.INSTANCE.getString("port"));
+	txtSchema.setText(SettingsManager.INSTANCE.getString("schema"));
+	txtGebruikersnaam.setText(SettingsManager.INSTANCE.getString("username"));
+	txtWachtwoord.setText(SettingsManager.INSTANCE.getString("password"));
+	txtPdfPath.setText(SettingsManager.INSTANCE.getString("pdfPath"));
+	dayCountLoan.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.DAY_COUNT_LOAN)));
+	dayCountLoanExtension.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.DAY_COUNT_LOAN_EXTENSION)));
+	loanExtensionCountBook.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.EXTENSION_COUNT_BOOK)));
+	loanExtensionCountCdDvd.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.EXTENSION_COUNT_CD_DVD)));
+	loanExtensionCountGame.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.EXTENSION_COUNT_GAME)));
+	loanExtensionCountStoryBag.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.EXTENSION_COUNT_STORYBAG)));
+	loanCountBook.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.LOAN_COUNT_BOOK)));
+	loanCountCdDvd.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.LOAN_COUNT_CD_DVD)));
+	loanCountGame.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.LOAN_COUNT_GAME)));
+	loanCountStoryBag.setText(String.valueOf(SettingsManager.INSTANCE.getSettingValue(SettingType.LOAN_COUNT_STORYBAG)));
     }
 }

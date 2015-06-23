@@ -5,6 +5,8 @@ import domain.Item;
 import domain.ItemCopy;
 import domain.controllers.ItemManagementListItemController;
 import gui.controls.CopyButton;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -80,7 +82,15 @@ public class ItemManagementListItem extends AnchorPane {
 	    return i1.getCopyNumber().compareTo(i2.getCopyNumber());
 	});
 
-	copies.forEach(this::addCopyButtonFor);
+	List<ItemCopy> shouldVisit = new ArrayList<>();
+	copies.forEach(c -> {
+	    if(!shouldVisit.contains(c) || (shouldVisit.contains(c) && shouldVisit.get(shouldVisit.indexOf(c)).getLoans().isEmpty() && !c.getLoans().isEmpty())) {
+		shouldVisit.remove(c);
+		shouldVisit.add(c);
+	    }
+	});
+	
+	shouldVisit.forEach(this::addCopyButtonFor);
     }
 
     private void addCopyButtonFor(ItemCopy copy) {

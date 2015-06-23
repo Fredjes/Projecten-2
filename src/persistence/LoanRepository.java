@@ -136,15 +136,15 @@ public class LoanRepository extends Repository<Loan> {
 	} catch (InterruptedException ex) {
 	}
 
-	Loan loan = new Loan(ItemRepository.getInstance().getItemCopies().get(0), UserRepository.getInstance().getUsers().get(0));
-	Loan loan2 = new Loan(ItemRepository.getInstance().getItemCopies().get(1), UserRepository.getInstance().getUsers().get(1));
-	Loan loan3 = new Loan(ItemRepository.getInstance().getItemCopies().get(2), UserRepository.getInstance().getUsers().get(2));
-	Loan loan4 = new Loan(ItemRepository.getInstance().getItemCopies().get(3), UserRepository.getInstance().getUsers().get(2));
+//	Loan loan = new Loan(ItemRepository.getInstance().getItemCopies().get(0), UserRepository.getInstance().getUsers().get(0));
+//	Loan loan2 = new Loan(ItemRepository.getInstance().getItemCopies().get(1), UserRepository.getInstance().getUsers().get(1));
+//	Loan loan3 = new Loan(ItemRepository.getInstance().getItemCopies().get(2), UserRepository.getInstance().getUsers().get(2));
+//	Loan loan4 = new Loan(ItemRepository.getInstance().getItemCopies().get(3), UserRepository.getInstance().getUsers().get(2));
 
-	LoanRepository.getInstance().add(loan);
-	LoanRepository.getInstance().add(loan2);
-	LoanRepository.getInstance().add(loan3);
-	LoanRepository.getInstance().add(loan4);
+//	LoanRepository.getInstance().add(loan);
+//	LoanRepository.getInstance().add(loan2);
+//	LoanRepository.getInstance().add(loan3);
+//	LoanRepository.getInstance().add(loan4);
 
 	LoanRepository.getInstance().saveChanges();
     }

@@ -25,15 +25,18 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+	Object loanLock = new Object();
 	Runnable loadLoans = () -> {
-	    if (!otherLoaded) {
-		otherLoaded = true;
-		return;
+	    synchronized (loanLock) {
+		if (!otherLoaded) {
+		    otherLoaded = true;
+		    return;
+		}
 	    }
 
 	    LoanRepository.getInstance().sync();
 	};
-	
+
 	UserRepository.getInstance().addSyncListener(loadLoans);
 	ItemRepository.getInstance().addSyncListener(loadLoans);
 	ItemRepository.getInstance().sync();

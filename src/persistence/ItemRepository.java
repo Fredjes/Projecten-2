@@ -5,7 +5,6 @@ import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
 import domain.PdfExporter;
-import domain.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +89,9 @@ public class ItemRepository extends Repository<Item> {
 
     @Override
     public void add(Item item) {
-	items.add(item);
+	if (!items.contains(item)) {
+	    items.add(item);
+	}
     }
 
     @Override
@@ -230,7 +231,9 @@ public class ItemRepository extends Repository<Item> {
     }
 
     public ItemCopy createItemCopyFor(Item item) {
-	List<ItemCopy> list = ItemRepository.getInstance().getItemCopiesByPredicate(i -> i.getItem() != null && item.getClass().equals(i.getItem().getClass()));
+	List<ItemCopy> list = new ArrayList<>();
+	ItemRepository.getInstance().getItemCopiesByPredicate(i -> i.getItem() != null && item.getClass().equals(i.getItem().getClass())).forEach(list::add);
+	getItems().stream().filter(i -> !i.getItemCopies().isEmpty() && i.getClass().equals(item.getClass())).map(Item::getItemCopies).flatMap(List::stream).forEach(list::add);
 	Optional<ItemCopy> last = list.stream().max((ic1, ic2) -> {
 	    return Integer.parseInt(ic1.getCopyNumber().substring(1)) - Integer.parseInt(ic2.getCopyNumber().substring(1));
 	});

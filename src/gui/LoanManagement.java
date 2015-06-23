@@ -1,9 +1,15 @@
 package gui;
 
+import domain.Book;
+import domain.Cd;
+import domain.Dvd;
 import domain.FontCache;
+import domain.Game;
 import domain.Loan;
 import domain.LocaleConfig;
 import domain.SearchPredicate;
+import domain.Setting.SettingType;
+import domain.StoryBag;
 import domain.controllers.LoanManagementListItemController;
 import gui.dialogs.PopupUtil;
 import java.util.Calendar;
@@ -22,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import persistence.LoanRepository;
+import persistence.SettingsManager;
 
 /**
  * A GUI used to manage all {@link Loan}s.
@@ -125,16 +132,29 @@ public class LoanManagement extends BorderPane {
     public void onRenewLoanPeriod() {
 	if (!loanList.getSelectionModel().isEmpty()) {
 	    Loan selectedLoan = loanList.getSelectionModel().getSelectedItem();
-	    Calendar newDate = Calendar.getInstance();
-	    newDate.setTime(selectedLoan.getDate().getTime());
-	    newDate.add(Calendar.WEEK_OF_MONTH, 1);
-	    selectedLoan.setDate(newDate);
+	    SettingsManager sm = SettingsManager.INSTANCE;
 
-	    LoanRepository.getInstance().addSyncListener(() -> {
-		Platform.runLater(() -> PopupUtil.showNotification("Verlengd", "De uitlening is verlengd tot " + LocaleConfig.DATE_FORMAT.format(newDate.getTime())));
-	    });
+	    if (selectedLoan.getItemCopy().getItem() instanceof Book && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_BOOK)) {
+		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een boek kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_BOOK) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+	    } else if ((selectedLoan.getItemCopy().getItem() instanceof Cd || selectedLoan.getItemCopy().getItem() instanceof Dvd) && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_CD_DVD)) {
+		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een cd of dvd kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_CD_DVD) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+	    } else if (selectedLoan.getItemCopy().getItem() instanceof Game && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_GAME)) {
+		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een spelletje kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_GAME) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+	    } else if (selectedLoan.getItemCopy().getItem() instanceof StoryBag && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_STORYBAG)) {
+		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een verteltas kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_STORYBAG) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+	    } else {
+		Calendar newDate = Calendar.getInstance();
+		newDate.setTime(selectedLoan.getDate().getTime());
+		newDate.add(Calendar.DAY_OF_YEAR, sm.getSettingValue(SettingType.DAY_COUNT_LOAN_EXTENSION));
+		selectedLoan.setDate(newDate);
+		selectedLoan.setAmountOfExtensions(selectedLoan.getAmountOfExtensions() + 1);
 
-	    LoanRepository.getInstance().saveLoan(selectedLoan);
+		LoanRepository.getInstance().addSyncListener(() -> {
+		    Platform.runLater(() -> PopupUtil.showNotification("Verlengd", "De uitlening is verlengd tot " + LocaleConfig.DATE_FORMAT.format(newDate.getTime())));
+		});
+		
+		LoanRepository.getInstance().saveLoan(selectedLoan);
+	    }
 	}
     }
 }
