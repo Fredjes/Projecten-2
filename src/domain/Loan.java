@@ -147,7 +147,7 @@ public class Loan implements Serializable, Searchable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
 	return id;
     }
@@ -172,7 +172,7 @@ public class Loan implements Serializable, Searchable {
 	    return false;
 	}
 	final Loan other = (Loan) obj;
-	if (this.id != other.id) {
+	if (this.getId() != other.getId()) {
 	    return false;
 	}
 	return true;

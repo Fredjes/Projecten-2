@@ -93,7 +93,7 @@ public class User implements Serializable, Searchable, Importable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
 	return id;
     }

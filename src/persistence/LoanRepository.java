@@ -73,6 +73,7 @@ public class LoanRepository extends Repository<Loan> {
     public void saveChanges() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
+		List<Loan> loanCopy = loans;
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		// Make sure no deleted loans will be persisted
 		loans.removeAll(removedLoans);

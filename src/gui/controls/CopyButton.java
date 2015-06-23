@@ -90,7 +90,7 @@ public class CopyButton extends HBox implements Comparator<CopyButton> {
     }
 
     public void showDetails() {
-	ItemRepository.getInstance().saveItemCopy(copy);
+//	ItemRepository.getInstance().saveItemCopy(copy);
 	popOverContent.update();
 	popOver = PopupUtil.showPopOver(this, popOverContent);
     }
