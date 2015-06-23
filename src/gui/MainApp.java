@@ -21,15 +21,23 @@ public class MainApp extends Application {
     public static boolean DEVELOPMENT_MODE = false;
 
     public static final String ADMIN_PASSWORD = ".gnvxKQ5Y";
+    private boolean otherLoaded = false;
 
     @Override
     public void start(Stage primaryStage) {
-	ItemRepository.getInstance().addSyncListener(() -> {
-	    UserRepository.getInstance().addSyncListener(LoanRepository.getInstance()::sync);
-	    UserRepository.getInstance().sync();
-	});
+	Runnable loadLoans = () -> {
+	    if (!otherLoaded) {
+		otherLoaded = true;
+		return;
+	    }
 
+	    LoanRepository.getInstance().sync();
+	};
+	
+	UserRepository.getInstance().addSyncListener(loadLoans);
+	ItemRepository.getInstance().addSyncListener(loadLoans);
 	ItemRepository.getInstance().sync();
+	UserRepository.getInstance().sync();
 
 	Font.loadFont(getClass().getResourceAsStream("/resources/fonts/FontAwesome.otf"), 14);
 	ScreenSwitcher switcher = new ScreenSwitcher();

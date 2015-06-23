@@ -286,10 +286,7 @@ public class ItemManagement extends BorderPane {
     public void onSave() {
 	saveButton.setDisable(true);
 
-	ItemRepository.getInstance().addSyncListener(() -> {
-	    Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
-	    updateList();
-	});
+	ItemRepository.getInstance().addSyncListener(this::updateList);
 
 	ItemRepository.getInstance().saveChanges();
 	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");

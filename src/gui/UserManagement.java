@@ -92,14 +92,10 @@ public class UserManagement extends BorderPane {
 
     @FXML
     public void onSave() {
-	final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
 	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
 	if (!saved) {
 	    saved = true;
-	    UserRepository.getInstance().addSyncListener(r);
 	    UserRepository.getInstance().saveChanges();
-	} else {
-	    r.run();
 	}
     }
 

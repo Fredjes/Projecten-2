@@ -47,18 +47,14 @@ public class Settings extends ScrollPane {
     @FXML
     void onDeleteItems() {
 	ItemRepository.getInstance().getItemsByPredicate(i -> i.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).allMatch(Loan::getReturned)).forEach(ItemRepository.getInstance()::remove);
-	final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
 	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
-	ItemRepository.getInstance().addSyncListener(r);
 	ItemRepository.getInstance().saveChanges();
     }
 
     @FXML
     void onDeleteUsers() {
 	UserRepository.getInstance().getUsersByPredicate(u -> u.getUserType() == User.UserType.STUDENT && u.getLoans().stream().allMatch(Loan::getReturned)).forEach(UserRepository.getInstance()::remove);
-	final Runnable r = () -> Platform.runLater(() -> PopupUtil.showNotification("Opgeslaan", "De wijzigingen zijn succesvol opgeslaan."));
 	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
-	UserRepository.getInstance().addSyncListener(r);
 	UserRepository.getInstance().saveChanges();
     }
 

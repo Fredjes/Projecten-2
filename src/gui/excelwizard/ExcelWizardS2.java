@@ -99,7 +99,7 @@ public class ExcelWizardS2 extends BorderPane {
 	predictColumnNames();
     }
 
-    private void predictColumnNames() {
+    public void predictColumnNames() {
 	if (ExcelManager.getInstance().getEntry(id).getDestination() == Destination.UNKNOWN) {
 	    return;
 	}
