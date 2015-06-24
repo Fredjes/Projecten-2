@@ -8,6 +8,7 @@ import domain.controllers.LoanManagementListItemController;
 import gui.controls.AdvancedLoanSettings;
 import gui.dialogs.PopupUtil;
 import java.util.Calendar;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -87,10 +88,19 @@ public class LoanManagementListItem extends AnchorPane {
     }
 
     private void updateCopy() {
-	itemImage.imageProperty().unbind();
-	itemName.textProperty().unbind();
-	itemImage.imageProperty().bind(item.imageProperty());
-	itemName.textProperty().bind(Bindings.concat(item.nameProperty(), ", ", loan.getItemCopy().copyNumberProperty()));
+	if (Platform.isFxApplicationThread()) {
+	    itemImage.imageProperty().unbind();
+	    itemName.textProperty().unbind();
+	    itemImage.imageProperty().bind(item.imageProperty());
+	    itemName.textProperty().bind(Bindings.concat(item.nameProperty(), ", ", loan.getItemCopy().copyNumberProperty()));
+	} else {
+	    Platform.runLater(() -> {
+		itemImage.imageProperty().unbind();
+		itemName.textProperty().unbind();
+		itemImage.imageProperty().bind(item.imageProperty());
+		itemName.textProperty().bind(Bindings.concat(item.nameProperty(), ", ", loan.getItemCopy().copyNumberProperty()));
+	    });
+	}
     }
 
     private void updateUser(Observable user, User oldUser, User newUser) {

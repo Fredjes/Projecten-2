@@ -53,7 +53,7 @@ public class ItemCopy implements Serializable, Searchable {
 	setDamage(d);
     }
 
-    @OneToMany(mappedBy = "itemCopy", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "itemCopy", cascade = CascadeType.REMOVE)
     public List<Loan> getLoans() {
 	return this.loans;
     }

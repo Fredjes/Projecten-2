@@ -208,7 +208,12 @@ public class ItemManagement extends BorderPane {
     }
 
     public void updateList() {
+	Item selected = itemList.getSelectionModel().getSelectedItem();
 	filteredList.setPredicate(searchPredicate::test);
+	if (selected != null && filteredList.contains(selected)) {
+	    itemList.getSelectionModel().select(selected);
+	    itemList.scrollTo(selected);
+	}
     }
 
     private void refreshSelectedFilter(Object source) {
@@ -292,8 +297,9 @@ public class ItemManagement extends BorderPane {
 		ItemRepository.getInstance().saveItem(added);
 		added.setName(" ");
 		updateList();
-		added.setName("");
 		itemList.getSelectionModel().select(added);
+		itemList.scrollTo(added);
+		added.setName("");
 	    } catch (Exception ex) {
 		ex.printStackTrace();
 	    }

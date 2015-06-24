@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import persistence.ItemRepository;
 
 /**
@@ -71,7 +72,7 @@ public class ItemImporter<E extends Item> implements Importer {
 		    currentItem.setName(value);
 		    break;
 		case "Thema's":
-		    currentItem.setThemes(value == null ? new ArrayList<>() : Arrays.asList(value.split("[.,:+-;/]")));
+		    currentItem.setThemes(value == null ? new ArrayList<>() : Arrays.stream(value.split("[.,:+-;/]")).filter(v -> v != null && !v.trim().isEmpty()).map(String::trim).collect(Collectors.toList()));
 		    break;
 	    }
 	}
