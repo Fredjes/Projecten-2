@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -211,7 +212,13 @@ public class PdfExporter {
 	    cos.moveTextPositionByAmount(X_OFFSET, rectangle.getHeight() - Y_OFFSET - y);
 	    cos.setFont(FONT, 13);
 	    StringBuilder builder = new StringBuilder();
-	    item.getItemCopies().forEach(ic -> builder.append(ic.getCopyNumber()).append(", "));
+	    List<ItemCopy> itemCopies = new ArrayList<>();
+	    item.getItemCopies().forEach(ic -> {
+		if (!itemCopies.stream().anyMatch(i -> i.getCopyNumber().equals(ic.getCopyNumber()))) {
+		    itemCopies.add(ic);
+		}
+	    });
+	    itemCopies.forEach(ic -> builder.append(ic.getCopyNumber()).append(", "));
 
 	    cos.drawString(item.getName() + (item.getItemCopies().isEmpty() ? " zonder exemplaren." : (" met exemplaren: " + builder.toString().substring(0, builder.toString().length() - 2))));
 	    cos.moveTextPositionByAmount(20, -15);

@@ -125,6 +125,12 @@ public class ItemManagement extends BorderPane {
 	contentStackPane.getChildren().add(loadingIndicator);
 	loadingIndicator.visibleProperty().bind(ItemRepository.getInstance().isLoaded().not());
 	// End code loading indicator
+	
+	ItemRepository.getInstance().isLoaded().addListener(o -> {
+	    if (ItemRepository.getInstance().isLoaded().get()) {
+		updateList();
+	    }
+	});
 
 	itemList.setOnDragDetected(e -> {
 	    Dragboard db = itemList.startDragAndDrop(TransferMode.LINK);
