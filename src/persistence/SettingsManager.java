@@ -7,10 +7,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 
 /**
@@ -61,22 +66,30 @@ public enum SettingsManager {
 	return true;
     }
 
-    public void setSetting(SettingType type, String value) {
+    public void setSettingInt(SettingType type, String value) {
 	ensureLoadedSettings();
-	
+
 	try {
 	    int intValue = Integer.parseInt(value);
 	    settings.stream().filter(s -> s.getKey() == type).forEach(s -> s.setValue(intValue));
 	} catch (NumberFormatException ex) {
-	    int intValue = type.getDefaultValue();
-	    settings.stream().filter(s -> s.getKey() == type).forEach(s -> s.setValue(intValue));
 	}
     }
-    
+
+    public void setSettingString(SettingType type, String value) {
+	ensureLoadedSettings();
+
+	String stringValue = value == null || value.isEmpty() ? type.getDefaultValueString() : value;
+	settings.stream().filter(s -> s.getKey() == type).forEach(s -> s.setValue(stringValue));
+    }
+
     private void ensureLoadedSettings() {
-	if (settings.isEmpty()) {
-	    List<Setting> settingsList = JPAUtil.getInstance().getEntityManager().createNamedQuery("Setting.findAll", Setting.class).getResultList();
-	    settingsList.forEach(settings::add);
+	try {
+	    if (settings.isEmpty()) {
+		List<Setting> settingsList = JPAUtil.getInstance().getEntityManager().createNamedQuery("Setting.findAll", Setting.class).getResultList();
+		settingsList.forEach(settings::add);
+	    }
+	} catch (Exception sqlex) {
 	}
     }
 
@@ -94,6 +107,13 @@ public enum SettingsManager {
 	Setting setting = settings.stream().filter(s -> s.getKey() == type).findAny().orElse(new Setting(type, type.getDefaultValue()));
 	settings.add(setting);
 	return setting.getValue();
+    }
+
+    public String getSettingValueString(SettingType type) {
+	ensureLoadedSettings();
+	Setting setting = settings.stream().filter(s -> s.getKey() == type).findAny().orElse(new Setting(type, type.getDefaultValueString()));
+	settings.add(setting);
+	return setting.getValueString();
     }
 
     private class BrabbledFileInputStream extends FileInputStream {

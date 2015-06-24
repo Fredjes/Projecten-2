@@ -1,6 +1,10 @@
 package gui;
 
 import domain.User;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -28,6 +32,8 @@ public class PasswordChanger extends VBox {
 
     private PopOver popOver = new PopOver(this);
     private User user;
+
+    private Queue<CompletableFuture<String>> currentListeners = new LinkedList<>();
 
     public PasswordChanger() {
 	FXUtil.loadFXML(this, "password_change");
@@ -64,6 +70,10 @@ public class PasswordChanger extends VBox {
 		    UserRepository.getInstance().saveUser(user);
 		}
 
+		while (currentListeners.peek() != null) {
+		    currentListeners.poll().complete(password);
+		}
+
 		popOver.hide();
 	    }
 	} catch (IllegalArgumentException ex) {
@@ -74,5 +84,12 @@ public class PasswordChanger extends VBox {
     public void show(Node parent, User user) {
 	popOver.show(parent);
 	this.user = user;
+    }
+
+    public Future<String> show(Node parent) {
+	show(parent, null);
+	CompletableFuture<String> fut = new CompletableFuture<>();
+	currentListeners.add(fut);
+	return fut;
     }
 }

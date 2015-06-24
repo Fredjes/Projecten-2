@@ -47,7 +47,7 @@ public class ItemManagementListItemCell extends ListCell<Item> {
 	    listItem.getItem().visibleProperty().addListener(listener);
 	    if (listItem != null) {
 		if (Platform.isFxApplicationThread()) {
-		    if (listItem.getItem().getVisible()) {
+		    if (listItem != null && listItem.getItem().getVisible()) {
 			super.setGraphic(listItem);
 		    } else {
 			listItem = null;

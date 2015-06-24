@@ -1,5 +1,6 @@
 package gui;
 
+import domain.Setting;
 import gui.dialogs.PopupUtil;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 import persistence.ItemRepository;
 import persistence.LoanRepository;
 import persistence.Repository;
+import persistence.SettingsManager;
 import persistence.UserRepository;
 
 /**
@@ -20,7 +22,7 @@ public class MainApp extends Application {
 
     public static boolean DEVELOPMENT_MODE = false;
 
-    public static final String ADMIN_PASSWORD = ".gnvxKQ5Y";
+    public static final String ADMIN_PASSWORD = SettingsManager.INSTANCE.getSettingValueString(Setting.SettingType.ADMIN_PASSWORD);
     private boolean otherLoaded = false;
 
     @Override

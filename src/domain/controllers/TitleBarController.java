@@ -47,7 +47,11 @@ public class TitleBarController extends BaseController<Titlebar> {
 		showNode("uitleningenBeheren");
 		showNode("gebruikersBeheren");
 		showNode("excel");
-		showNode("settings");
+		if (UserRepository.getInstance().isAdminUser(UserRepository.getInstance().getAuthenticatedUser())) {
+		    showNode("settings");
+		} else {
+		    hideNode(getView().getSettings(), "settings");
+		}
 		getView().getVoorwerpenBeheren().getStyleClass().add("icon-voorwerpen-beheren");
 		getView().getVoorwerpenBeheren().getStyleClass().remove("icon-search");
 		break;

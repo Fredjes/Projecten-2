@@ -38,6 +38,8 @@ public class UserRepository extends Repository<User> {
 
     private final List<User> deletedUsers = new ArrayList();
 
+    private final User ADMIN_USER = new User(Integer.MIN_VALUE, "Admin", "", "", "", User.UserType.TEACHER, "");
+
     private UserRepository() {
 	super();
     }
@@ -47,6 +49,10 @@ public class UserRepository extends Repository<User> {
 	    INSTANCE = new UserRepository();
 	}
 	return INSTANCE;
+    }
+
+    public boolean isAdminUser(User user) {
+	return ADMIN_USER.equals(user);
     }
 
     public void add(User u) {
@@ -140,14 +146,18 @@ public class UserRepository extends Repository<User> {
 
     public boolean authenticate(String username, String password, boolean updateAuth) {
 	if (MainApp.DEVELOPMENT_MODE) {
-	    authenticatedUser.set(new User("Development Mode", "", "", "", User.UserType.TEACHER, ""));
+	    authenticatedUser.set(ADMIN_USER);
 	    return true;
 	}
 
-	if (username.equals("@") && password.equals(MainApp.ADMIN_PASSWORD)) {
-	    ScreenSwitcher.LOCAL_ADMIN = true;
-	    authenticatedUser.set(new User("@", "", "", "", User.UserType.TEACHER, ""));
-	    return true;
+	try {
+	    if (username.trim().equals("Admin") && new String(MessageDigest.getInstance("SHA-512").digest(password.getBytes())).equals(MainApp.ADMIN_PASSWORD)) {
+		ScreenSwitcher.LOCAL_ADMIN = true;
+		authenticatedUser.set(ADMIN_USER);
+		return true;
+	    }
+	} catch (NoSuchAlgorithmException ex) {
+	    Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
 	}
 
 	final String fUsername = username == null ? "" : username;
@@ -170,6 +180,7 @@ public class UserRepository extends Repository<User> {
     public void sync() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
+		loaded.set(false);
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		long count = (long) manager.createQuery("SELECT COUNT(u) FROM User u").getSingleResult();
 		users.clear();
@@ -204,6 +215,7 @@ public class UserRepository extends Repository<User> {
     private void saveChangesAfterSync() {
 	Runnable r = () -> {
 	    synchronized (this) {
+		loaded.set(false);
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		try {
 		    manager.getTransaction().begin();
@@ -223,6 +235,7 @@ public class UserRepository extends Repository<User> {
 
 		    manager.getTransaction().commit();
 		    deletedUsers.clear();
+		    loaded.set(true);
 		} catch (RollbackException ex) {
 		    System.err.println("Could not save changes for Users to the database. " + ex.getMessage());
 		    manager.getTransaction().rollback();
@@ -238,6 +251,7 @@ public class UserRepository extends Repository<User> {
     public void saveChanges() {
 	Runnable r = () -> {
 	    synchronized (this) {
+		loaded.set(false);
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		try {
 		    manager.getTransaction().begin();
@@ -298,5 +312,12 @@ public class UserRepository extends Repository<User> {
 	User pieterjan = new User("Pieter-Jan", "Geeroms", "2A", "pieterjangeeroms@hotmail.com", User.UserType.STUDENT, getInstance().generatePasswordHash("pj"));
 	getInstance().getUsers().addAll(frederik, brent, pieterjan);
 	getInstance().saveChanges();
+    }
+
+    private BooleanProperty loaded = new SimpleBooleanProperty(false);
+    
+    @Override
+    public BooleanProperty isLoaded() {
+	return loaded;
     }
 }

@@ -82,6 +82,16 @@ public class User implements Serializable, Searchable, Importable {
 	this.userType.set(userType);
 	this.passwordHash = passwordHash;
     }
+    
+    public User(int id, String firstName, String lastName, String classroom, String email, UserType userType, String passwordHash) {
+	this.id = id;
+	this.firstName.set(firstName);
+	this.lastName.set(lastName);
+	this.classRoom.set(classroom);
+	this.email.set(email);
+	this.userType.set(userType);
+	this.passwordHash = passwordHash;
+    }
 
     @OneToMany(mappedBy = "user")
     public List<Loan> getLoans() {

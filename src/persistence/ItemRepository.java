@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -46,7 +48,7 @@ public class ItemRepository extends Repository<Item> {
 	items.addListener(changeListener);
 	itemCopies.addListener(changeListener);
     }
-
+    
     /**
      * Will get all items from the database and add them in the internal list.
      * Observers of the ObservableList will receive updates containg the new
@@ -55,6 +57,7 @@ public class ItemRepository extends Repository<Item> {
     public void sync() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
+		loaded.set(false);
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		long count = (long) manager.createQuery("SELECT COUNT(i) FROM Item i").getSingleResult();
 		items.clear();
@@ -73,6 +76,7 @@ public class ItemRepository extends Repository<Item> {
 		    PdfExporter.saveItems();
 		} catch (IOException ex) {
 		}
+		loaded.set(true);
 	    }
 	});
 
@@ -150,6 +154,7 @@ public class ItemRepository extends Repository<Item> {
     public void saveChangesWithPredicate(Predicate<Item> itemPredicate) {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
+		loaded.set(false);
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		manager.getTransaction().begin();
 
@@ -268,5 +273,12 @@ public class ItemRepository extends Repository<Item> {
 	//ItemRepository.getInstance().add(sb);
 	ItemRepository.getInstance().saveChanges();
 	ItemRepository.getInstance().sync();
+    }
+    
+    private BooleanProperty loaded = new SimpleBooleanProperty(false);
+    
+    @Override
+    public BooleanProperty isLoaded() {
+	return loaded;
     }
 }

@@ -2,6 +2,7 @@ package persistence;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.BooleanProperty;
 
 /**
  * An abstract Repository with some basic implementations and a minimum amount
@@ -50,4 +51,6 @@ public abstract class Repository<E> {
     public abstract void remove(E e);
 
     public abstract void saveChanges();
+    
+    public abstract BooleanProperty isLoaded();
 }

@@ -14,9 +14,6 @@ import domain.controllers.LoanManagementListItemController;
 import gui.dialogs.PopupUtil;
 import java.util.Calendar;
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -80,23 +77,12 @@ public class LoanManagement extends BorderPane {
 	    }
 	});
 
-	// Show temporary loading indicator
+	// Show loading indicator
 	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
-	loadingIndicator.setMaxWidth(50);
+	loadingIndicator.setMaxWidth(40);
 	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
 	contentStackPane.getChildren().add(loadingIndicator);
-	if (filteredList.size() == 0) {
-	    Runnable removeIndicator = () -> Platform.runLater(() -> contentStackPane.getChildren().remove(loadingIndicator));
-	    final BooleanProperty prop = new SimpleBooleanProperty(false);
-	    filteredList.addListener((Observable obs) -> {
-		if (!prop.get()) {
-		    prop.set(true);
-		} else {
-		    removeIndicator.run();
-		}
-	    });
-	    LoanRepository.getInstance().addSyncListener(removeIndicator);
-	}
+	loadingIndicator.visibleProperty().bind(LoanRepository.getInstance().isLoaded().not());
 	// End code loading indicator
     }
 

@@ -5,153 +5,170 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root fitToHeight="true" fitToWidth="true" hmax="0.0" styleClass="white" type="ScrollPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <VBox alignment="CENTER" spacing="25.0" styleClass="white">
-         <children>
-            <TitledPane collapsible="false" styleClass="white" text="Database">
-               <content>
-                  <HBox alignment="CENTER" spacing="5.0" styleClass="white">
-                     <children>
-                        <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" HBox.hgrow="ALWAYS">
-                           <columnConstraints>
-                              <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="ALWAYS" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <Label text="Host:" />
-                              <TextField fx:id="txtHost" GridPane.columnIndex="1" />
-                              <Label text="Poort:" GridPane.rowIndex="1" />
-                              <TextField fx:id="txtPort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
-                              <Label text="Gebruikersnaam:" GridPane.rowIndex="4" />
-                              <Label text="Schema:" GridPane.rowIndex="2" />
-                              <TextField fx:id="txtSchema" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <TextField fx:id="txtGebruikersnaam" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <PasswordField fx:id="txtWachtwoord" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Label text="Wachtwoord:" GridPane.rowIndex="5" />
-                           </children>
-                        </GridPane>
-                     </children>
-                     <padding>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                     </padding>
-                  </HBox>
-               </content>
-            </TitledPane>
-            <TitledPane collapsible="false" text="Gegevens">
-               <content>
-                  <VBox spacing="5.0" styleClass="white">
-                     <children>
-                        <HBox alignment="CENTER" spacing="5.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#onDeleteUsers" text="Verwijder alle leerlingen">
-                                 <styleClass>
-                                    <String fx:value="btn" />
-                                    <String fx:value="btn-red" />
-                                 </styleClass>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#onDeleteItems" text="Verwijder vrije voorwerpen">
-                                 <styleClass>
-                                    <String fx:value="btn" />
-                                    <String fx:value="btn-red" />
-                                 </styleClass>
-                              </Button>
-                           </children>
-                           <padding>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                           </padding>
-                        </HBox>
-                        <Separator prefWidth="200.0" />
-                        <HBox alignment="CENTER" spacing="5.0">
-                           <padding>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                           </padding>
-                           <children>
-                              <Label text="PDF Opslagpad:" />
-                              <TextField fx:id="txtPdfPath" HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" onAction="#onPdfPathSearch" text="Bladeren">
-                                 <styleClass>
-                                    <String fx:value="btn" />
-                                    <String fx:value="btn-blue" />
-                                 </styleClass>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-            <TitledPane collapsible="false" text="Configuratie">
-               <content>
-                  <VBox spacing="5.0" styleClass="white">
-                     <children>
-                        <GridPane hgap="15.0" minHeight="-Infinity" prefHeight="400.0" vgap="8.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" />
-                            <ColumnConstraints hgrow="ALWAYS" maxWidth="600.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="Maximum aantal verlengingen (boek):" />
-                              <TextField fx:id="loanExtensionCountBook" GridPane.columnIndex="1" />
-                              <Label text="Maximum aantal verlengingen (cd + dvd):" GridPane.rowIndex="1" />
-                              <TextField fx:id="loanExtensionCountCdDvd" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label text="Maximum aantal verlengingen (spelletje):" GridPane.rowIndex="2" />
-                              <TextField fx:id="loanExtensionCountGame" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label text="Maximum aantal verlengingen (verteltas):" GridPane.rowIndex="3" />
-                              <TextField fx:id="loanExtensionCountStoryBag" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label text="Aantal dagen standaarduitlening:" GridPane.rowIndex="4" />
-                              <TextField fx:id="dayCountLoan" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Label text="Aantal bijkomende dagen bij verlenging:" GridPane.rowIndex="5" />
-                              <TextField fx:id="dayCountLoanExtension" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Label text="Maximum aantal uitleningen (boeken):" GridPane.rowIndex="6" />
-                              <TextField fx:id="loanCountBook" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Label text="Maximum aantal uitleningen (cd's + dvd's):" GridPane.rowIndex="7" />
-                              <TextField fx:id="loanCountCdDvd" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Label text="Maximum aantal uitleningen (spelletjes):" GridPane.rowIndex="8" />
-                              <TextField fx:id="loanCountGame" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                              <Label text="Maximum aantal uitleningen (verteltassen):" GridPane.rowIndex="9" />
-                              <TextField fx:id="loanCountStoryBag" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                           </children>
-                        </GridPane>
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-            <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true" hmax="0.0" styleClass="white">
+         <content>
+            <VBox alignment="CENTER" spacing="25.0" styleClass="white">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onSave" text="Opslaan">
-                     <styleClass>
-                        <String fx:value="btn" />
-                        <String fx:value="btn-lime" />
-                     </styleClass>
-                  </Button>
+                  <TitledPane collapsible="false" styleClass="white" text="Database">
+                     <content>
+                        <HBox alignment="CENTER" spacing="5.0" styleClass="white">
+                           <children>
+                              <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" HBox.hgrow="ALWAYS">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Host:" />
+                                    <TextField fx:id="txtHost" GridPane.columnIndex="1" />
+                                    <Label text="Poort:" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtPort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                                    <Label text="Gebruikersnaam:" GridPane.rowIndex="4" />
+                                    <Label text="Schema:" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtSchema" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtGebruikersnaam" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                       <children>
+                                          <PasswordField fx:id="txtWachtwoord" HBox.hgrow="ALWAYS" />
+                                          <Button fx:id="changeAdminPasswordButton" mnemonicParsing="false" onAction="#onChangeAdminPassword" text="Verander admin-wachtwoord">
+                                             <styleClass>
+                                                <String fx:value="btn" />
+                                                <String fx:value="btn-red" />
+                                             </styleClass>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <Label text="Wachtwoord:" GridPane.rowIndex="5" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </HBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane collapsible="false" text="Gegevens">
+                     <content>
+                        <VBox spacing="5.0" styleClass="white">
+                           <children>
+                              <HBox alignment="CENTER" spacing="5.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onDeleteUsers" text="Verwijder alle leerlingen">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="btn-red" />
+                                       </styleClass>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#onDeleteItems" text="Verwijder vrije voorwerpen">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="btn-red" />
+                                       </styleClass>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </padding>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <HBox alignment="CENTER" spacing="5.0">
+                                 <padding>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </padding>
+                                 <children>
+                                    <Label text="PDF Opslagpad:" />
+                                    <TextField fx:id="txtPdfPath" HBox.hgrow="ALWAYS" />
+                                    <Button mnemonicParsing="false" onAction="#onPdfPathSearch" text="Bladeren">
+                                       <styleClass>
+                                          <String fx:value="btn" />
+                                          <String fx:value="btn-blue" />
+                                       </styleClass>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane collapsible="false" text="Configuratie">
+                     <content>
+                        <VBox spacing="5.0" styleClass="white">
+                           <children>
+                              <GridPane hgap="15.0" minHeight="-Infinity" prefHeight="400.0" vgap="8.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" />
+                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="600.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Maximum aantal verlengingen (boek):" />
+                                    <TextField fx:id="loanExtensionCountBook" GridPane.columnIndex="1" />
+                                    <Label text="Maximum aantal verlengingen (cd + dvd):" GridPane.rowIndex="1" />
+                                    <TextField fx:id="loanExtensionCountCdDvd" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="Maximum aantal verlengingen (spelletje):" GridPane.rowIndex="2" />
+                                    <TextField fx:id="loanExtensionCountGame" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Maximum aantal verlengingen (verteltas):" GridPane.rowIndex="3" />
+                                    <TextField fx:id="loanExtensionCountStoryBag" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Aantal dagen standaarduitlening:" GridPane.rowIndex="4" />
+                                    <TextField fx:id="dayCountLoan" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label text="Aantal bijkomende dagen bij verlenging:" GridPane.rowIndex="5" />
+                                    <TextField fx:id="dayCountLoanExtension" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label text="Maximum aantal uitleningen (boeken):" GridPane.rowIndex="6" />
+                                    <TextField fx:id="loanCountBook" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label text="Maximum aantal uitleningen (cd's + dvd's):" GridPane.rowIndex="7" />
+                                    <TextField fx:id="loanCountCdDvd" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <Label text="Maximum aantal uitleningen (spelletjes):" GridPane.rowIndex="8" />
+                                    <TextField fx:id="loanCountGame" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <Label text="Maximum aantal uitleningen (verteltassen):" GridPane.rowIndex="9" />
+                                    <TextField fx:id="loanCountStoryBag" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
                </children>
-            </HBox>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+      <HBox alignment="BOTTOM_RIGHT" styleClass="white" VBox.vgrow="ALWAYS">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onSave" text="Opslaan">
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="btn-lime" />
+               </styleClass>
+            </Button>
          </children>
          <padding>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
          </padding>
-      </VBox>
-   </content>
+      </HBox>
+   </children>
 </fx:root>

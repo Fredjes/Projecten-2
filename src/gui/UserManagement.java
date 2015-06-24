@@ -9,12 +9,15 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import persistence.ItemRepository;
 import persistence.UserRepository;
 
 /**
@@ -117,5 +120,13 @@ public class UserManagement extends BorderPane {
 		Platform.runLater(() -> super.setBottom(detailViewUser));
 	    }
 	});
+
+	// Show loading indicator
+	ProgressIndicator loadingIndicator = new ProgressIndicator(-1);
+	loadingIndicator.setMaxWidth(40);
+	StackPane.setAlignment(loadingIndicator, Pos.CENTER);
+	contentStackPane.getChildren().add(loadingIndicator);
+	loadingIndicator.visibleProperty().bind(ItemRepository.getInstance().isLoaded().not());
+	// End code loading indicator
     }
 }

@@ -95,7 +95,7 @@ public class ScreenSwitcher extends BorderPane {
     }
 
     public void openSettings() {
-	if (!UserRepository.getInstance().getAuthenticatedUser().getName().equals("@")) {
+	if (UserRepository.getInstance().isAdminUser(UserRepository.getInstance().getAuthenticatedUser())) {
 	    if (!login(UserRepository.getInstance().getAuthenticatedUser().getName(),
 		    PopupUtil.input("Wachtwoord", "Gelieve uw wachtwoord nogmaals in te vullen"), false)) {
 		return;
@@ -223,11 +223,6 @@ public class ScreenSwitcher extends BorderPane {
 		authenticatedUserLabel.setText("Welkom " + USER_REPO_INSTANCE.getAuthenticatedUser().getName());
 		loginButton.setText("Afmelden");
 		//PopupUtil.showNotification("Development Mode", "Aangemeld met maximale rechten!", PopupUtil.Notification.INFORMATION);
-		return;
-	    }
-
-	    if (LOCAL_ADMIN) {
-		openSettings();
 		return;
 	    }
 

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.EntityManager;
@@ -49,11 +51,13 @@ public class LoanRepository extends Repository<Loan> {
     public void sync() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
+		loaded.set(false);
 		loans.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Loan.findAll", Loan.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized loan repository with database");
 		super.triggerListeners();
 		PdfExporter.saveLoans();
 		PdfExporter.saveLoanHistory();
+		loaded.set(true);
 	    }
 	});
 
@@ -73,6 +77,7 @@ public class LoanRepository extends Repository<Loan> {
     public void saveChanges() {
 	Thread t = new Thread(() -> {
 	    synchronized (this) {
+		loaded.set(false);
 		List<Loan> loanCopy = loans;
 		EntityManager manager = JPAUtil.getInstance().getEntityManager();
 		// Make sure no deleted loans will be persisted
@@ -97,6 +102,7 @@ public class LoanRepository extends Repository<Loan> {
 
 		PdfExporter.saveLoans();
 		PdfExporter.saveLoanHistory();
+		loaded.set(true);
 	    }
 	});
 
@@ -148,5 +154,12 @@ public class LoanRepository extends Repository<Loan> {
 //	LoanRepository.getInstance().add(loan4);
 
 	LoanRepository.getInstance().saveChanges();
+    }
+
+    private BooleanProperty loaded = new SimpleBooleanProperty(false);
+    
+    @Override
+    public BooleanProperty isLoaded() {
+	return loaded;
     }
 }
