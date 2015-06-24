@@ -158,7 +158,7 @@ public class ItemManagement extends BorderPane {
 	    updateList();
 	});
 
-	updateList();
+//	updateList();
     }
 
     public void hideDetailView() {

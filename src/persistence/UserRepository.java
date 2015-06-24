@@ -162,9 +162,10 @@ public class UserRepository extends Repository<User> {
 
 	final String fUsername = username == null ? "" : username;
 	final String fPassword = password == null ? "" : password;
-
+	final String hash = generatePasswordHash(fPassword);
+	
 	List<User> found = getUsersByPredicate((u) -> {
-	    return u.getName() != null && u.getName().equalsIgnoreCase(fUsername.trim()) && u.getPasswordHash() != null && u.getPasswordHash().equals(generatePasswordHash(fPassword.trim()));
+	    return u.getName() != null && u.getName().trim().equalsIgnoreCase(fUsername.trim()) && hash.equals(u.getPasswordHash());
 	});
 
 	if (!found.isEmpty()) {

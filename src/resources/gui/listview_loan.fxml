@@ -52,7 +52,7 @@
             </HBox>
             <HBox spacing="5.0" GridPane.rowIndex="1">
                <children>
-                  <Label alignment="TOP_LEFT" styleClass="normal" text="Gebruiker:" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Label alignment="TOP_LEFT" styleClass="normal" text="Uitgeleend aan:" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                   <Label fx:id="username" styleClass="normal" />
                </children>
             </HBox>
