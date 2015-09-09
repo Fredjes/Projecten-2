@@ -48,7 +48,7 @@ public class ItemRepository extends Repository<Item> {
 	items.addListener(changeListener);
 	itemCopies.addListener(changeListener);
     }
-    
+
     /**
      * Will get all items from the database and add them in the internal list.
      * Observers of the ObservableList will receive updates containg the new
@@ -104,7 +104,11 @@ public class ItemRepository extends Repository<Item> {
     }
 
     public void add(ItemCopy itemCopy) {
-	itemCopies.add(itemCopy);
+	if (itemCopies.contains(itemCopy)) {
+	    itemCopies.replaceAll(ic -> ic.equals(itemCopy) ? itemCopy : ic);
+	} else {
+	    itemCopies.add(itemCopy);
+	}
     }
 
     public void remove(ItemCopy itemCopy) {
@@ -274,9 +278,9 @@ public class ItemRepository extends Repository<Item> {
 	ItemRepository.getInstance().saveChanges();
 	ItemRepository.getInstance().sync();
     }
-    
+
     private BooleanProperty loaded = new SimpleBooleanProperty(false);
-    
+
     @Override
     public BooleanProperty isLoaded() {
 	return loaded;

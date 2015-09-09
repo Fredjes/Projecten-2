@@ -1,12 +1,16 @@
 package gui.dialogs;
 
 import domain.Damage;
+import domain.Item;
+import domain.ItemCopy;
 import domain.Loan;
 import domain.Searchable;
 import gui.ScreenSwitcher;
 import gui.controls.SearchTextField;
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -84,7 +88,11 @@ public class PopupUtil {
 	    loan.setReturned(true);
 	    LoanRepository.getInstance().saveLoan(loan);
 	    ItemRepository.getInstance().saveItemCopy(loan.getItemCopy());
-	    ItemRepository.getInstance().sync();
+	    Stream.concat(ItemRepository.getInstance().getItems().stream().map(Item::getItemCopies).flatMap(List::stream),
+		    ItemRepository.getInstance().getItemCopies().stream()).filter(loan.getItemCopy()::equals).forEach(ic -> {
+			ic.setDamage(loan.getItemCopy().getDamage());
+			ic.getLoans().stream().forEach(l -> l.setReturned(true));
+		    });
 	    popOver.hide();
 	});
 

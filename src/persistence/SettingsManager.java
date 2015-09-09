@@ -7,15 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 
 /**
@@ -58,8 +53,8 @@ public enum SettingsManager {
 
     public boolean save() {
 	try {
-	    saveSettingsToDb();
 	    properties.store(new BrabbledFileOutputStream("config.dat"), "");
+	    saveSettingsToDb();
 	} catch (IOException ex) {
 	    return false;
 	}

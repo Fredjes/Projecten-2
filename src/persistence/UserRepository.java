@@ -151,7 +151,7 @@ public class UserRepository extends Repository<User> {
 	}
 
 	try {
-	    if (username.trim().equals("Admin") && new String(MessageDigest.getInstance("SHA-512").digest(password.getBytes())).equals(MainApp.ADMIN_PASSWORD)) {
+	    if (username.trim().equalsIgnoreCase("Admin") && new String(MessageDigest.getInstance("SHA-512").digest(password.getBytes())).equals(MainApp.ADMIN_PASSWORD)) {
 		ScreenSwitcher.LOCAL_ADMIN = true;
 		authenticatedUser.set(ADMIN_USER);
 		return true;
@@ -164,9 +164,7 @@ public class UserRepository extends Repository<User> {
 	final String fPassword = password == null ? "" : password;
 	final String hash = generatePasswordHash(fPassword);
 	
-	List<User> found = getUsersByPredicate((u) -> {
-	    return u.getName() != null && u.getName().trim().equalsIgnoreCase(fUsername.trim()) && hash.equals(u.getPasswordHash());
-	});
+	List<User> found = getUsersByPredicate((u) -> u.getName() != null && u.getName().trim().equalsIgnoreCase(fUsername.trim()) && hash.equals(u.getPasswordHash()));
 
 	if (!found.isEmpty()) {
 	    assert found.size() == 1;

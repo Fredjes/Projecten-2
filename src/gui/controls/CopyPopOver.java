@@ -14,6 +14,7 @@ import gui.FXUtil;
 import gui.LoanEvent;
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -75,6 +76,7 @@ public class CopyPopOver extends BorderPane {
 	locationTxt.textProperty().bindBidirectional(copy.locationProperty());
 	damage.getSelectionModel().select(copy.getDamage());
 	copy.damageProperty().unbind();
+	copy.damageProperty().addListener(o -> damage.getSelectionModel().select(copy.getDamage()));
 	damage.getSelectionModel().selectedItemProperty().addListener(i -> copy.setDamage(damage.getSelectionModel().getSelectedItem()));
 	copyNumber.textProperty().bindBidirectional(copy.copyNumberProperty());
 	locationLabel.setTextFill(Color.BLACK);

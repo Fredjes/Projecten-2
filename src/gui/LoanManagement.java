@@ -1,6 +1,7 @@
 package gui;
 
 import domain.Book;
+import domain.Cache;
 import domain.Cd;
 import domain.Dvd;
 import domain.FontCache;
@@ -135,6 +136,7 @@ public class LoanManagement extends BorderPane {
 		selectedLoan.setDate(newDate);
 		selectedLoan.setAmountOfExtensions(selectedLoan.getAmountOfExtensions() + 1);
 
+		Cache.getLoanCache().get(selectedLoan).updateAll();
 		LoanRepository.getInstance().addSyncListener(() -> {
 		    Platform.runLater(() -> PopupUtil.showNotification("Verlengd", "De uitlening is verlengd tot " + LocaleConfig.DATE_FORMAT.format(newDate.getTime())));
 		});

@@ -86,7 +86,9 @@ public abstract class Item implements Serializable, Searchable, Importable {
     }
 
     public void setItemCopies(List<ItemCopy> itemCopies) {
-	this.itemCopies.setAll(itemCopies);
+	if (itemCopies != null) {
+	    this.itemCopies.setAll(itemCopies);
+	}
     }
 
     public StringProperty nameProperty() {
@@ -234,7 +236,7 @@ public abstract class Item implements Serializable, Searchable, Importable {
 	if (!visible.get()) {
 	    return false;
 	}
-	
+
 	outer:
 	for (String t : query.split("\\s+")) {
 	    boolean temp = SearchPredicate.containsIgnoreCase(getAgeCategory(), t)

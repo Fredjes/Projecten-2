@@ -54,6 +54,7 @@ public class LoanManagementListItem extends AnchorPane {
 
 	loan.itemCopyProperty().addListener((Observable o) -> updateItem());
 	loan.userProperty().addListener(this::updateUser);
+	loan.startDateProperty().addListener(this::updateDate);
 	loan.dateProperty().addListener(this::updateDate);
 	ItemRepository.getInstance().getItems().addListener((Observable o) -> updateItem());
 	updateItem();
@@ -62,7 +63,7 @@ public class LoanManagementListItem extends AnchorPane {
 	updateDate();
     }
 
-    private void updateAll() {
+    public void updateAll() {
 	if (item == null) {
 	    return;
 	}
@@ -70,6 +71,7 @@ public class LoanManagementListItem extends AnchorPane {
 	updateCopy();
 	updateUser(null, null, loan.getUser());
 	updateDate(null, null, loan.getDate());
+	updateDate();
     }
 
     private void updateItem() {
