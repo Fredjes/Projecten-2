@@ -13,14 +13,15 @@ import gui.FXUtil;
 import gui.LoanEvent;
 import gui.dialogs.PopupUtil;
 import java.util.Comparator;
-import javafx.beans.Observable;
+import javafx.beans.InvalidationListener;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
-import persistence.ItemRepository;
+import persistence.LoanRepository;
 
 /**
  * A button that holds the {@link domain.Item} icon and {@link ItemCopy} number.
@@ -53,10 +54,23 @@ public class CopyButton extends HBox implements Comparator<CopyButton> {
 	copyId.setText(copy.getCopyNumber());
 	createIcon();
 
+	final InvalidationListener onReturned = i -> updateIconAvailability();
+
 	updateIconAvailability();
 	copy.damageProperty().addListener(i -> updateIconAvailability());
-	copy.getLoans().stream().forEach((Loan l) -> l.returnedProperty().addListener(i -> updateIconAvailability()));
-	copy.getObservableLoans().addListener((Observable observable) -> updateIconAvailability());
+	copy.getLoans().stream().forEach(l -> l.returnedProperty().addListener(onReturned));
+	copy.getObservableLoans().addListener((ListChangeListener.Change<? extends Loan> c) -> {
+	    while (c.next()) {
+		if (c.wasAdded()) {
+		    c.getAddedSubList().forEach(l -> l.returnedProperty().addListener(onReturned));
+		}
+		
+		if (c.wasRemoved()) {
+		    c.getRemoved().forEach(l -> l.returnedProperty().removeListener(onReturned));
+		}
+
+	    }
+	});
     }
 
     public ItemCopy getCopy() {
@@ -64,7 +78,7 @@ public class CopyButton extends HBox implements Comparator<CopyButton> {
     }
 
     private void updateIconAvailability() {
-	if (copy.getLoans().stream().anyMatch(l -> !l.getReturned())) {
+	if (LoanRepository.getInstance().getLoans().stream().anyMatch(l -> l.getItemCopy().equals(copy) && !l.getReturned())) {
 	    icon.setTextFill(Color.RED);
 	} else if (copy.damageProperty().get() == Damage.MODERATE_DAMAGE || copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
 	    icon.setTextFill(Color.GREY);

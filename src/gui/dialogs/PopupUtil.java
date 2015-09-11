@@ -87,12 +87,6 @@ public class PopupUtil {
 	    LoanRepository.getInstance().addSyncListener(completionCallback);
 	    loan.setReturned(true);
 	    LoanRepository.getInstance().saveLoan(loan);
-	    ItemRepository.getInstance().saveItemCopy(loan.getItemCopy());
-	    Stream.concat(ItemRepository.getInstance().getItems().stream().map(Item::getItemCopies).flatMap(List::stream),
-		    ItemRepository.getInstance().getItemCopies().stream()).filter(loan.getItemCopy()::equals).forEach(ic -> {
-			ic.setDamage(loan.getItemCopy().getDamage());
-			ic.getLoans().stream().forEach(l -> l.setReturned(true));
-		    });
 	    popOver.hide();
 	});
 

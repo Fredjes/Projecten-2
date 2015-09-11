@@ -7,6 +7,7 @@ import domain.controllers.ItemManagementListItemController;
 import gui.controls.CopyButton;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -65,7 +66,7 @@ public class ItemManagementListItem extends AnchorPane {
 	item.getObservableItemCopies().addListener((ListChangeListener.Change<? extends ItemCopy> c) -> {
 	    while (c.next()) {
 		if (c.wasAdded()) {
-		    c.getAddedSubList().forEach(this::addCopyButtonFor);
+		    c.getAddedSubList().stream().forEach(this::addCopyButtonFor);
 		} else if (c.wasRemoved()) {
 		    copyList.getChildren().removeIf(b -> {
 			if (b instanceof CopyButton) {
@@ -84,19 +85,26 @@ public class ItemManagementListItem extends AnchorPane {
 
 	List<ItemCopy> shouldVisit = new ArrayList<>();
 	copies.forEach(c -> {
-	    if(!shouldVisit.contains(c) || (shouldVisit.contains(c) && shouldVisit.get(shouldVisit.indexOf(c)).getLoans().isEmpty() && !c.getLoans().isEmpty())) {
+	    if (!shouldVisit.contains(c) || (shouldVisit.contains(c) && shouldVisit.get(shouldVisit.indexOf(c)).getLoans().isEmpty() && !c.getLoans().isEmpty())) {
 		shouldVisit.remove(c);
 		shouldVisit.add(c);
 	    }
 	});
-	
+
 	shouldVisit.forEach(this::addCopyButtonFor);
     }
 
+    private ObservableList<ItemCopy> currentItemCopies = FXCollections.observableArrayList();
+
     private void addCopyButtonFor(ItemCopy copy) {
+	if (currentItemCopies.contains(copy)) {
+	    return;
+	}
+
 	CopyButton button = new CopyButton(copy);
 	initEvents(button, copy);
 	copyList.getChildren().add(button);
+	currentItemCopies.add(copy);
     }
 
     private ItemManagementListItem() {
@@ -127,11 +135,7 @@ public class ItemManagementListItem extends AnchorPane {
 	description.textProperty().bindBidirectional(item.get().descriptionProperty());
 	itemImage.imageProperty().bindBidirectional(item.get().imageProperty());
 	copyList.getChildren().clear();
-	ItemRepository.getInstance().getItemCopiesByPredicate((ItemCopy ic) -> ic.getItem() == item.get() || ic.getItem().equals(item.get())).forEach(ic -> {
-	    CopyButton button = new CopyButton(ic);
-	    initEvents(button, ic);
-	    copyList.getChildren().add(button);
-	});
+	ItemRepository.getInstance().getItemCopiesByPredicate((ItemCopy ic) -> ic.getItem() == item.get() || ic.getItem().equals(item.get())).forEach(this::addCopyButtonFor);
     }
 
     private void initEvents(CopyButton button, ItemCopy backedCopy) {

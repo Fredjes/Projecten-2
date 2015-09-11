@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,6 +60,8 @@ public class LoanRepository extends Repository<Loan> {
 		PdfExporter.saveLoanHistory();
 		loaded.set(true);
 	    }
+	    
+	    getLoans().stream().map(Loan::itemCopyProperty).map(ObjectProperty::get).forEach(ItemRepository.getInstance()::manage);
 	});
 
 	t.setName("Loan repository sync thread");

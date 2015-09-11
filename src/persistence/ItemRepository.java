@@ -4,14 +4,19 @@ import domain.Book;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
+import domain.Loan;
 import domain.PdfExporter;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -76,6 +81,9 @@ public class ItemRepository extends Repository<Item> {
 		    PdfExporter.saveItems();
 		} catch (IOException ex) {
 		}
+
+		updateManagedItemCopies();
+		updateManagedItems();
 		loaded.set(true);
 	    }
 	});
@@ -93,7 +101,9 @@ public class ItemRepository extends Repository<Item> {
 
     @Override
     public void add(Item item) {
-	if (!items.contains(item)) {
+	if (items.contains(item)) {
+	    items.replaceAll(i -> i.equals(item) ? item : i);
+	} else {
 	    items.add(item);
 	}
     }
@@ -237,6 +247,77 @@ public class ItemRepository extends Repository<Item> {
      */
     public void clearItems() {
 	items.clear();
+    }
+
+    // WeakReferences are used in case when all references to an {@link ItemCopy} or {@link Item} are lost, the object is eligible for garbage collection.
+    // The used bidirectional bindings are intrinsically weak.
+    private final List<WeakReference<ItemCopy>> foreignItemCopies = new ArrayList<>();
+    private final List<WeakReference<Item>> foreignItems = new ArrayList<>();
+
+    /**
+     * Makes sure that the foreign item copy (an {@link ItemCopy} loaded from a
+     * different EntityManager) will automatically sync with other instances of
+     * the same entity.
+     *
+     * @param itemCopy the foreign {@link ItemCopy}
+     */
+    public void manage(ItemCopy itemCopy) {
+	if (!itemCopies.contains(itemCopy)) {
+	    itemCopies.add(itemCopy);
+	}
+
+	Stream.concat(itemCopies.stream(), items.stream().map(Item::getItemCopies).flatMap(List::stream)).filter(itemCopy::equals).filter(ic -> itemCopy != ic).forEach(ic -> {
+	    itemCopy.damageProperty().bindBidirectional(ic.damageProperty());
+	    itemCopy.itemProperty().bindBidirectional(ic.itemProperty());
+	    itemCopy.locationProperty().bindBidirectional(ic.locationProperty());
+
+	    try {
+		Bindings.bindContentBidirectional(itemCopy.getObservableLoans(), ic.getObservableLoans());
+	    } catch (IndexOutOfBoundsException ex) {
+	    }
+	});
+
+	foreignItemCopies.removeIf(r -> r.get() == null);
+	if (foreignItemCopies.stream().map(WeakReference::get).noneMatch(itemCopy::equals)) {
+	    foreignItemCopies.add(new WeakReference<>(itemCopy));
+	}
+    }
+
+    /**
+     * Makes sure that the foreign item (an {@link Item} loaded from a different
+     * EntityManager) will automatically sync with other instances of the same
+     * entity. Note that the themes are not automatically synchronized.
+     *
+     * @param item the foreign {@link Item}
+     */
+    public void manage(Item item) {
+	if (!items.contains(item)) {
+	    items.add(item);
+	}
+
+	items.stream().forEach(i -> {
+	    item.ageCategoryProperty().bindBidirectional(i.ageCategoryProperty());
+	    item.descriptionProperty().bindBidirectional(i.descriptionProperty());
+	    item.imageProperty().bindBidirectional(i.imageProperty());
+	    item.nameProperty().bindBidirectional(i.nameProperty());
+	    item.visibleProperty().bindBidirectional(i.visibleProperty());
+	    Bindings.bindContentBidirectional(item.getObservableItemCopies(), i.getObservableItemCopies());
+	});
+
+	foreignItems.removeIf(r -> r.get() == null);
+	if (foreignItems.stream().map(WeakReference::get).noneMatch(item::equals)) {
+	    foreignItems.add(new WeakReference<>(item));
+	}
+    }
+
+    private void updateManagedItemCopies() {
+	foreignItemCopies.removeIf(r -> r.get() == null);
+	foreignItemCopies.stream().map(WeakReference::get).filter(Objects::nonNull).forEach(this::manage);
+    }
+
+    private void updateManagedItems() {
+	foreignItems.removeIf(r -> r.get() == null);
+	foreignItems.stream().map(WeakReference::get).filter(Objects::nonNull).forEach(this::manage);
     }
 
     public ItemCopy createItemCopyFor(Item item) {

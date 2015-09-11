@@ -152,10 +152,7 @@ public class ItemCopy implements Serializable, Searchable {
 	    return false;
 	}
 	final ItemCopy other = (ItemCopy) obj;
-	if (!this.copyNumber.get().equals(other.copyNumber.get())) {
-	    return false;
-	}
-	return true;
+	return this.copyNumber.get().equals(other.copyNumber.get());
     }
 
     @Override

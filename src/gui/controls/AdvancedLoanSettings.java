@@ -91,7 +91,6 @@ public class AdvancedLoanSettings extends GridPane {
 
 	if (copy != null) {
 	    loan.getItemCopy().getLoans().remove(loan);
-	    ItemRepository.getInstance().saveItemCopy(loan.getItemCopy());
 	    copy.getLoans().add(loan);
 	    loan.setItemCopy(copy);
 	    ItemRepository.getInstance().saveItemCopy(copy);
@@ -105,7 +104,5 @@ public class AdvancedLoanSettings extends GridPane {
 	if (callback != null) {
 	    ItemRepository.getInstance().addSyncListener(() -> Platform.runLater(callback::run));
 	}
-
-	ItemRepository.getInstance().sync();
     }
 }
