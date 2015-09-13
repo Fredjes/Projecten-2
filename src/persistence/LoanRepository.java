@@ -2,8 +2,10 @@ package persistence;
 
 import domain.Loan;
 import domain.PdfExporter;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
@@ -60,8 +62,9 @@ public class LoanRepository extends Repository<Loan> {
 		PdfExporter.saveLoanHistory();
 		loaded.set(true);
 	    }
-	    
+
 	    getLoans().stream().map(Loan::itemCopyProperty).map(ObjectProperty::get).forEach(ItemRepository.getInstance()::manage);
+	    updateManagedLoans();
 	});
 
 	t.setName("Loan repository sync thread");
@@ -137,6 +140,33 @@ public class LoanRepository extends Repository<Loan> {
 	t.start();
     }
 
+    private List<WeakReference<Loan>> foreignLoans = new ArrayList<>();
+
+    public void manage(Loan loan) {
+	if (!loans.contains(loan)) {
+	    loans.add(loan);
+	}
+
+	foreignLoans.removeIf(r -> r.get() == null);
+	if (foreignLoans.stream().map(WeakReference::get).noneMatch(loan::equals)) {
+	    foreignLoans.add(new WeakReference<>(loan));
+	}
+	
+	loans.stream().filter(loan::equals).filter(l -> loan != l).forEach(l -> {
+	    loan.amountOfExtensions().bindBidirectional(l.amountOfExtensions());
+	    loan.dateProperty().bindBidirectional(l.dateProperty());
+	    loan.itemCopyProperty().bindBidirectional(l.itemCopyProperty());
+	    loan.returnedProperty().bindBidirectional(l.returnedProperty());
+	    loan.startDateProperty().bindBidirectional(l.startDateProperty());
+	    loan.userProperty().bindBidirectional(l.userProperty());
+	});
+    }
+    
+    private void updateManagedLoans() {
+	foreignLoans.removeIf(r -> r.get() == null);
+	foreignLoans.stream().map(WeakReference::get).filter(Objects::nonNull).forEach(this::manage);
+    }
+
     public static void main(String[] args) {
 	ItemRepository.getInstance().sync();
 	UserRepository.getInstance().sync();
@@ -150,17 +180,15 @@ public class LoanRepository extends Repository<Loan> {
 //	Loan loan2 = new Loan(ItemRepository.getInstance().getItemCopies().get(1), UserRepository.getInstance().getUsers().get(1));
 //	Loan loan3 = new Loan(ItemRepository.getInstance().getItemCopies().get(2), UserRepository.getInstance().getUsers().get(2));
 //	Loan loan4 = new Loan(ItemRepository.getInstance().getItemCopies().get(3), UserRepository.getInstance().getUsers().get(2));
-
 //	LoanRepository.getInstance().add(loan);
 //	LoanRepository.getInstance().add(loan2);
 //	LoanRepository.getInstance().add(loan3);
 //	LoanRepository.getInstance().add(loan4);
-
 	LoanRepository.getInstance().saveChanges();
     }
 
     private BooleanProperty loaded = new SimpleBooleanProperty(false);
-    
+
     @Override
     public BooleanProperty isLoaded() {
 	return loaded;

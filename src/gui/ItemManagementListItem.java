@@ -144,12 +144,9 @@ public class ItemManagementListItem extends AnchorPane {
 	    item.get().getItemCopies().removeIf(ic -> ic.getCopyNumber().equals(backedCopy.getCopyNumber()));
 	});
 
-	button.setOnStartLoan(e -> {
-	    backedCopy.getLoans().add(e.getLoan());
-	    CopyButton newButton = new CopyButton(backedCopy);
-	    initEvents(newButton, backedCopy);
-	    copyList.getChildren().set(copyList.getChildren().indexOf(button), newButton);
-	});
+//	button.setOnStartLoan(e -> {
+//	    
+//	});
     }
 
     @FXML

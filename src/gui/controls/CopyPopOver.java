@@ -14,7 +14,6 @@ import gui.FXUtil;
 import gui.LoanEvent;
 import gui.dialogs.PopupUtil;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -27,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import persistence.ItemRepository;
 import persistence.LoanRepository;
 import persistence.SettingsManager;
 import persistence.UserRepository;
@@ -91,6 +91,10 @@ public class CopyPopOver extends BorderPane {
 	    startLoanButton.setDisable(nv == Damage.HIGH_DAMAGE);
 	});
     }
+    
+    public void updateStartLoan() {
+	startLoanButton.setDisable(backedCopy.getLoans().stream().anyMatch(i -> !i.getReturned()) || backedCopy.getDamage() == Damage.HIGH_DAMAGE);
+    }
 
     public void update() {
 	if (UserRepository.getInstance().getAuthenticatedUser() == null || UserRepository.getInstance().getAuthenticatedUser().getUserType() != User.UserType.TEACHER) {
@@ -130,10 +134,12 @@ public class CopyPopOver extends BorderPane {
 	    int constraint = sm.getSettingValue(Setting.SettingType.LOAN_COUNT_STORYBAG);
 	    Platform.runLater(() -> PopupUtil.showNotification("Uitlening", selectedUser.getName() + " mag niet meer dan  " + constraint + " verteltas" + (constraint > 1 ? "sen" : "") + " uitlenen.", PopupUtil.Notification.WARNING));
 	} else {
+	    ItemRepository.getInstance().saveItemCopy(backedCopy);
 	    Loan loan = new Loan(backedCopy, selectedUser, sm.getSettingValue(Setting.SettingType.DAY_COUNT_LOAN));
 
 	    selectedUser.getLoans().add(loan);
 	    backedCopy.getLoans().add(loan);
+	    LoanRepository.getInstance().manage(loan);
 	    LoanRepository.getInstance().saveLoan(loan);
 
 	    if (onStartLoan != null) {

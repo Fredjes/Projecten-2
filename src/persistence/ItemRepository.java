@@ -4,7 +4,6 @@ import domain.Book;
 import domain.Damage;
 import domain.Item;
 import domain.ItemCopy;
-import domain.Loan;
 import domain.PdfExporter;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -56,7 +55,7 @@ public class ItemRepository extends Repository<Item> {
 
     /**
      * Will get all items from the database and add them in the internal list.
-     * Observers of the ObservableList will receive updates containg the new
+     * Observers of the ObservableList will receive updates containing the new
      * data.
      */
     public void sync() {
@@ -73,10 +72,10 @@ public class ItemRepository extends Repository<Item> {
 		    query.setFirstResult(i);
 		    items.addAll(query.getResultList());
 		}
+		Stream.concat(itemCopies.stream(), items.stream().map(Item::getItemCopies).flatMap(List::stream)).flatMap(ic -> ic.getLoans().stream()).forEach(LoanRepository.getInstance()::manage);
 //		items.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("Item.findAll", Item.class).getResultList());
 //		itemCopies.setAll(JPAUtil.getInstance().getEntityManager().createNamedQuery("ItemCopy.findAll", ItemCopy.class).getResultList());
 		Logger.getLogger("Notification").log(Level.INFO, "Synchronized item repository with database");
-		super.triggerListeners();
 		try {
 		    PdfExporter.saveItems();
 		} catch (IOException ex) {
@@ -84,7 +83,9 @@ public class ItemRepository extends Repository<Item> {
 
 		updateManagedItemCopies();
 		updateManagedItems();
+		
 		loaded.set(true);
+		super.triggerListeners();
 	    }
 	});
 
@@ -265,22 +266,21 @@ public class ItemRepository extends Repository<Item> {
 	if (!itemCopies.contains(itemCopy)) {
 	    itemCopies.add(itemCopy);
 	}
+	
+	foreignItemCopies.removeIf(r -> r.get() == null);
+	if (foreignItemCopies.stream().map(WeakReference::get).noneMatch(itemCopy::equals)) {
+	    foreignItemCopies.add(new WeakReference<>(itemCopy));
+	} else {
+	    return;
+	}
 
 	Stream.concat(itemCopies.stream(), items.stream().map(Item::getItemCopies).flatMap(List::stream)).filter(itemCopy::equals).filter(ic -> itemCopy != ic).forEach(ic -> {
 	    itemCopy.damageProperty().bindBidirectional(ic.damageProperty());
 	    itemCopy.itemProperty().bindBidirectional(ic.itemProperty());
 	    itemCopy.locationProperty().bindBidirectional(ic.locationProperty());
-
-	    try {
-		Bindings.bindContentBidirectional(itemCopy.getObservableLoans(), ic.getObservableLoans());
-	    } catch (IndexOutOfBoundsException ex) {
-	    }
+	    Bindings.unbindContentBidirectional(itemCopy.getObservableLoans(), ic.getObservableLoans());
+	    Bindings.bindContentBidirectional(itemCopy.getObservableLoans(), ic.getObservableLoans());
 	});
-
-	foreignItemCopies.removeIf(r -> r.get() == null);
-	if (foreignItemCopies.stream().map(WeakReference::get).noneMatch(itemCopy::equals)) {
-	    foreignItemCopies.add(new WeakReference<>(itemCopy));
-	}
     }
 
     /**
@@ -295,19 +295,20 @@ public class ItemRepository extends Repository<Item> {
 	    items.add(item);
 	}
 
-	items.stream().forEach(i -> {
+	foreignItems.removeIf(r -> r.get() == null);
+	if (foreignItems.stream().map(WeakReference::get).noneMatch(item::equals)) {
+	    foreignItems.add(new WeakReference<>(item));
+	}
+	
+	items.stream().filter(item::equals).filter(i -> i != item).forEach(i -> {
 	    item.ageCategoryProperty().bindBidirectional(i.ageCategoryProperty());
 	    item.descriptionProperty().bindBidirectional(i.descriptionProperty());
 	    item.imageProperty().bindBidirectional(i.imageProperty());
 	    item.nameProperty().bindBidirectional(i.nameProperty());
 	    item.visibleProperty().bindBidirectional(i.visibleProperty());
+	    Bindings.unbindContentBidirectional(item.getObservableItemCopies(), i.getObservableItemCopies());
 	    Bindings.bindContentBidirectional(item.getObservableItemCopies(), i.getObservableItemCopies());
 	});
-
-	foreignItems.removeIf(r -> r.get() == null);
-	if (foreignItems.stream().map(WeakReference::get).noneMatch(item::equals)) {
-	    foreignItems.add(new WeakReference<>(item));
-	}
     }
 
     private void updateManagedItemCopies() {

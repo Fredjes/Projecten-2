@@ -82,7 +82,7 @@ public class Cache<K, E> {
 
         return loanInstance;
     }
-
+    
     /**
      * Will return a GUI-component for the specified entity. If it is the first
      * time that the entity is used, and thus there is no registered

@@ -2,11 +2,19 @@ package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -47,6 +55,7 @@ public class ItemCopy implements Serializable, Searchable {
     }
 
     public ItemCopy(String copyNumber, String location, Item i, Damage d) {
+	this();
 	setCopyNumber(copyNumber);
 	setLocation(location);
 	setItem(i);

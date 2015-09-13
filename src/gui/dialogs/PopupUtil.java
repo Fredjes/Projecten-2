@@ -1,16 +1,12 @@
 package gui.dialogs;
 
 import domain.Damage;
-import domain.Item;
-import domain.ItemCopy;
 import domain.Loan;
 import domain.Searchable;
 import gui.ScreenSwitcher;
 import gui.controls.SearchTextField;
 import java.io.File;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -40,7 +36,6 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
-import persistence.ItemRepository;
 import persistence.LoanRepository;
 
 /**
