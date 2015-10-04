@@ -170,7 +170,6 @@ public class ExcelManager {
 		dest = e.getKey();
 	    }
 	}
-	//System.out.println(dest + " won with " + highest + " for " + sheet.getSheetName());
 	if (highest > 0.0f) {
 	    return dest;
 	} else {

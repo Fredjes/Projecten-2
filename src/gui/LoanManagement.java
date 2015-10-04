@@ -122,13 +122,13 @@ public class LoanManagement extends BorderPane {
 	    SettingsManager sm = SettingsManager.INSTANCE;
 
 	    if (selectedLoan.getItemCopy().getItem() instanceof Book && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_BOOK)) {
-		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een boek kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_BOOK) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+		Platform.runLater(() -> PopupUtil.showNotification("Verlenging", "Een boek kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_BOOK) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
 	    } else if ((selectedLoan.getItemCopy().getItem() instanceof Cd || selectedLoan.getItemCopy().getItem() instanceof Dvd) && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_CD_DVD)) {
-		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een cd of dvd kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_CD_DVD) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+		Platform.runLater(() -> PopupUtil.showNotification("Verlenging", "Een cd of dvd kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_CD_DVD) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
 	    } else if (selectedLoan.getItemCopy().getItem() instanceof Game && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_GAME)) {
-		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een spelletje kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_GAME) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+		Platform.runLater(() -> PopupUtil.showNotification("Verlenigng", "Een spelletje kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_GAME) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
 	    } else if (selectedLoan.getItemCopy().getItem() instanceof StoryBag && selectedLoan.getAmountOfExtensions() >= sm.getSettingValue(SettingType.EXTENSION_COUNT_STORYBAG)) {
-		Platform.runLater(() -> PopupUtil.showNotification("Verlening", "Een verteltas kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_STORYBAG) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
+		Platform.runLater(() -> PopupUtil.showNotification("Verlenging", "Een verteltas kan maar " + sm.getSettingValue(SettingType.EXTENSION_COUNT_STORYBAG) + " keer worden verlengd.", PopupUtil.Notification.WARNING));
 	    } else {
 		Calendar newDate = Calendar.getInstance();
 		newDate.setTime(selectedLoan.getDate().getTime());

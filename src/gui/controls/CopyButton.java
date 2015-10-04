@@ -79,15 +79,11 @@ public class CopyButton extends HBox implements Comparator<CopyButton> {
 
     public void updateIconAvailability() {
 	popOverContent.updateStartLoan();
-	System.out.print(copy.getItem().getName() + ", " + copy.getCopyNumber() + ": ");
 	if (copy.getLoans().stream().anyMatch(i -> !i.getReturned())) {
-	    System.out.println("Red");
 	    icon.setTextFill(Color.RED);
 	} else if (copy.damageProperty().get() == Damage.MODERATE_DAMAGE || copy.damageProperty().get() == Damage.HIGH_DAMAGE) {
-	    System.out.println("Grey");
 	    icon.setTextFill(Color.GREY);
 	} else {
-	    System.out.println("Green");
 	    icon.setTextFill(Color.GREEN);
 	}
     }

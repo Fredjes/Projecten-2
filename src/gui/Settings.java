@@ -85,16 +85,20 @@ public class Settings extends VBox {
 
     @FXML
     private void onDeleteItems() {
-	ItemRepository.getInstance().getItemsByPredicate(i -> i.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).allMatch(Loan::getReturned)).forEach(ItemRepository.getInstance()::remove);
-	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
-	ItemRepository.getInstance().saveChanges();
+	if (PopupUtil.confirm("Voorwerpen verwijderen", "Bent u zeker dat u alle (vrij) voorwerpen wilt verwijderen?")) {
+	    ItemRepository.getInstance().getItemsByPredicate(i -> i.getItemCopies().stream().flatMap(ic -> ic.getLoans().stream()).allMatch(Loan::getReturned)).forEach(ItemRepository.getInstance()::remove);
+	    PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
+	    ItemRepository.getInstance().saveChanges();
+	}
     }
 
     @FXML
     private void onDeleteUsers() {
-	UserRepository.getInstance().getUsersByPredicate(u -> u.getUserType() == User.UserType.STUDENT && u.getLoans().stream().allMatch(Loan::getReturned)).forEach(UserRepository.getInstance()::remove);
-	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
-	UserRepository.getInstance().saveChanges();
+	if (PopupUtil.confirm("Gebruikers verwijderen", "Bent u zeker dat u alle gebruikers wilt verwijderen?")) {
+	    UserRepository.getInstance().getUsersByPredicate(u -> u.getUserType() == User.UserType.STUDENT && u.getLoans().stream().allMatch(Loan::getReturned)).forEach(UserRepository.getInstance()::remove);
+	    PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan.");
+	    UserRepository.getInstance().saveChanges();
+	}
     }
 
     @FXML
@@ -133,7 +137,7 @@ public class Settings extends VBox {
 	    } catch (InterruptedException | ExecutionException | NoSuchAlgorithmException ex) {
 	    }
 	});
-	
+
 	t.start();
     }
 
