@@ -1,6 +1,14 @@
 package gui;
 
+import domain.PdfExporter;
 import domain.controllers.TitleBarController;
+import gui.dialogs.PopupUtil;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,6 +16,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import persistence.SettingsManager;
 
 /**
  * The titlebar shown on top of every screen.
@@ -42,6 +52,9 @@ public class Titlebar extends GridPane {
 
     @FXML
     private Button settings;
+
+    @FXML
+    private Button btnPdf;
 
     private ScreenSwitcher switcher;
     private TitleBarController controller;
@@ -118,6 +131,21 @@ public class Titlebar extends GridPane {
     @FXML
     public void onSettings() {
 	switcher.openSettings();
+    }
+
+    @FXML
+    public void onPdf() {
+	try {
+	    Desktop.getDesktop().open(new File(SettingsManager.INSTANCE.getString("pdfPath")));
+	} catch (Exception ex) {
+	    Platform.runLater(() -> {
+		PopupUtil.showNotification("PDF map niet gevonden!", "De PDF map bestaat niet of kan niet geopend worden.", PopupUtil.Notification.ERROR, Duration.seconds(5));
+	    });
+	}
+    }
+
+    public Button getPdf() {
+	return btnPdf;
     }
 
     public Button getSettings() {

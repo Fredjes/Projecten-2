@@ -26,6 +26,7 @@ public class TitleBarController extends BaseController<Titlebar> {
 	    //hideNode(getView().getVoorwerpenBeheren(), "voorwerpenBeheren");
 	    hideNode(getView().getUitleningenBeheren(), "uitleningenBeheren");
 	    hideNode(getView().getSettings(), "settings");
+	    hideNode(getView().getPdf(), "pdf");
 	    getView().getVoorwerpenBeheren().getStyleClass().remove("icon-voorwerpen-beheren");
 	    getView().getVoorwerpenBeheren().getStyleClass().add("icon-search");
 	    return;
@@ -38,6 +39,7 @@ public class TitleBarController extends BaseController<Titlebar> {
 		hideNode(getView().getSettings(), "settings");
 		showNode("voorwerpenBeheren");
 		showNode("uitleningenBeheren");
+		showNode("pdf");
 		getView().getVoorwerpenBeheren().getStyleClass().remove("icon-voorwerpen-beheren");
 		getView().getVoorwerpenBeheren().getStyleClass().add("icon-search");
 		break;
@@ -47,6 +49,7 @@ public class TitleBarController extends BaseController<Titlebar> {
 		showNode("uitleningenBeheren");
 		showNode("gebruikersBeheren");
 		showNode("excel");
+		showNode("pdf");
 		if (UserRepository.getInstance().isAdminUser(UserRepository.getInstance().getAuthenticatedUser())) {
 		    showNode("settings");
 		} else {

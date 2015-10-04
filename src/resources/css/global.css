@@ -165,7 +165,7 @@
 }
 
 .btn-toolIcon:focused {
-    
+
 }
 
 .btn-blue {
@@ -414,6 +414,10 @@
 }
 
 .icon-settings {
+    -fx-font-family: "FontAwesome";
+}
+
+.icon-pdf {
     -fx-font-family: "FontAwesome";
 }
 
