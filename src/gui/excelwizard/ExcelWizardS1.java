@@ -143,8 +143,7 @@ public class ExcelWizardS1 extends BorderPane {
 
 	    n.loadData();
 	    n.predictColumnNames();
-	    onNext();
-//	    switcher.setScreen(n);
+	    switcher.setScreen(n);
 	} else {
 	    switcher.setScreen(loadingScreen);
 	    switcher.setNavigationAllowed(false);
