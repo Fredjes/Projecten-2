@@ -2,6 +2,7 @@ package persistence;
 
 import domain.Setting;
 import domain.Setting.SettingType;
+import gui.dialogs.PopupUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import javafx.application.Platform;
+import javafx.util.Duration;
 import javax.persistence.EntityManager;
 
 /**
@@ -90,6 +93,10 @@ public enum SettingsManager {
 
     private void saveSettingsToDb() {
 	EntityManager manager = JPAUtil.getInstance().getEntityManager();
+        if(manager == null) {
+            Platform.runLater(() -> {PopupUtil.showNotification("Kan instellingen niet opslaan!", "De instellingen konden niet worden opgeslagen.", PopupUtil.Notification.ERROR, Duration.seconds(5));});
+            return;
+        }
 	manager.getTransaction().begin();
 	List<Setting> dbSettings = JPAUtil.getInstance().getEntityManager().createNamedQuery("Setting.findAll", Setting.class).getResultList();
 	settings.stream().filter(dbSettings::contains).forEach(manager::merge);
