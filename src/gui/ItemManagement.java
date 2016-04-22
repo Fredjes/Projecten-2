@@ -281,11 +281,8 @@ public class ItemManagement extends BorderPane {
     @FXML
     public void onSave() {
 	saveButton.setDisable(true);
-
-	ItemRepository.getInstance().addSyncListener(this::updateList);
-
 	ItemRepository.getInstance().saveChanges();
-	PopupUtil.showNotification("Opslaan", "De wijzigingen worden opgeslaan...");
+	PopupUtil.showNotification("Opslaan", "De wijzigingen zijn opgeslaan!");
 	saveButton.setDisable(false);
     }
 

@@ -202,7 +202,8 @@ public class ItemRepository extends Repository<Item> {
 		});
 
 		manager.getTransaction().commit();
-		ItemRepository.getInstance().sync();
+		loaded.setValue(true);
+		// ItemRepository.getInstance().sync();
 	    }
 	});
 
