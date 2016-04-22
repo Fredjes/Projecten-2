@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" styleClass="title-bar" type="GridPane" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" styleClass="title-bar" type="GridPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER_LEFT" spacing="10.0">
          <children>
@@ -50,6 +50,13 @@
                         <String fx:value="btn" />
                         <String fx:value="btn-default" />
                         <String fx:value="icon-settings" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="btnPdf" focusTraversable="false" layoutX="146.0" layoutY="10.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPdf" text="PDF">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-default" />
+                        <String fx:value="icon-pdf" />
                      </styleClass>
                   </Button>
                </children>

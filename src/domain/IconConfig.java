@@ -39,6 +39,7 @@ public class IconConfig {
 	    put("icon-all", new Icon("\uf1ce", IconType.GRAPHIC, IconPosition.PREPEND));
 	    put("icon-settings", new Icon("\uf013", IconType.TEXT, IconPosition.OVERWRITE));
 	    put("icon-close", new Icon("\uf00d", IconType.TEXT, IconPosition.OVERWRITE));
+	    put("icon-pdf", new Icon("\uf15c", IconType.TEXT, IconPosition.OVERWRITE));
 
 	}
     };

@@ -48,7 +48,7 @@
 
     For list of available properties check the files
     nbproject/build-impl.xml and nbproject/jfx-impl.xml.
-
+-->
     <target name="-post-jfx-jar">
         <jar destfile="dist/De_Lettertuin.jar">
 		<zipfileset src="dist/lib/commons-logging-1.2.jar" excludes="META-INF/*" />
@@ -68,5 +68,5 @@
             </manifest>
         </jar>
     </target>
-    -->
+    
 </project>
